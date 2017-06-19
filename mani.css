@@ -1,0 +1,101 @@
+body {
+	font-family: MetricWeb, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	margin: 0 auto;
+	}
+
+.container {
+	margin: 0 auto;
+	max-width:1000px;
+	width: 100%
+}
+
+h1 {
+	display: inline-block;
+	content:"";
+	font-size: 60px;
+	font-weight: 200;
+	height: 13px;
+	margin-top: 10px;
+}
+h2 {
+	font-size: 36px;
+	font-weight: 100;
+}
+p {
+	font-family: MetricWeb, sans-serif;
+	font-size: 16px;
+	font-weight: 200;
+}
+p.intro-text {
+	font-size: 22px;
+	line-height: 28px;
+	font-weight: 200;
+}
+.container {
+	height:1000px;
+}
+.categ {
+	opacity:1.0;
+}
+.button {
+	opacity:0.7;
+}
+.buttonText {
+	font-size: 21px;
+	font-weight: 200;
+	text-anchor: middle;
+}
+.link {
+	opacity: 0.7;
+	stroke-width: 3px;
+	fill: none;
+}
+.panel{
+	margin: 0;
+	opacity:0.7;
+	padding-left:15px;
+	padding-right:10px;
+	padding-top:15px;
+
+}
+.infoHeading {
+	color: #ffffff;
+	font-size: 36px;
+	font-weight: 200;
+}
+.infoSubhead {
+	color: #ffffff;
+	font-size: 28px;
+	font-weight: 200;
+	margin-top: 12px;
+}
+.infoText {
+	color: #ffffff;
+	font-size: 22px;
+	line-height: 28px;
+	font-weight: 200;
+	margin-top: 5px;
+}
+.charts {
+}
+.chart {
+	margin-top: 5px;
+	vertical-align: top;
+	display:inline-block;
+	stroke: #ffffff;
+	color: #ffffff;
+	font-size: 21px;
+	font-weight: 200;
+	margin-right: 15px;
+}
+.chartDesc{
+	font-size: 16px;
+	line-height: 19px;
+	font-weight: 200;
+	margin-top: 8px;
+
+}
+
+
+
