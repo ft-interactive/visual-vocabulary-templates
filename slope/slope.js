@@ -4,9 +4,8 @@ function slopeChart(){
     let yAxisAlign = "right";
     let rem =10;
     const colourScale = d3.scaleOrdinal()
-        .range(gChartcolour.basicLineWeb)
-        .domain(['','highlight']);
-
+        .range('gChartcolour.basicLineWeb')
+        // .domain(['group']);
     let colourProperty = 'group';
     let includeLabel = (d)=>true;
     let seriesNames = [];
@@ -36,7 +35,7 @@ function slopeChart(){
         const labeled = parent.filter(includeLabel)
 
 //start circle...
-        labeled.append('circle')
+        parent.append('circle')
             .attrs({
                 'cx':xScale(xScale.domain()[0]),
                 'cy':d=>yScale(d[xScale.domain()[0]]),
@@ -56,7 +55,7 @@ function slopeChart(){
             .text(labelTextStart);
 
 //end circle...
-        labeled.append('circle')
+        parent.append('circle')
             .attrs({
                 'class': 'highlighted-circle',
                 'cx': xScale(xScale.domain()[1]),

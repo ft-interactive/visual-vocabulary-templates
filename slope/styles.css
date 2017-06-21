@@ -206,26 +206,28 @@ svg {
     stroke-width: 8px;
     fill: none;
 }
-/* .overall text styles on axis*/
-.ft-webgraphic-s .highlights,
-.ft-webgraphic-m .highlights,
-.ft-webgraphic-l .highlights {
-    fill: #F2DFCE;
+
+.ft-webgraphic-s .slope line,
+.ft-webgraphic-m .slope line,
+.ft-webgraphic-l .slope line {
+    stroke-width: 3px;
 }
 
-.ft-printgraphic .highlights{
-    fill: #95BFC5;
-    opacity: 0.3;
+.ft-printgraphic .slope line {
+    stroke-width: 2px;
 }
-.ft-socialgraphic .highlights{
-    fill: #ffffff;
-    opacity: 0.38;
+
+.ft-socialgraphic .slope line {
+    stroke-width: 4px;
 }
-.ft-videographic .highlights{
-    fill: #ffffff;
-    opacity: 0.38
+
+.ft-videographic .slope line {
+    stroke-width: 8px;
 }
+
+
 /* legend */
+
 .ft-webgraphic-s .legend,
 .ft-webgraphic-m .legend,
 .ft-webgraphic-l .legend {

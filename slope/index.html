@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/g-chartframe@0.4.24"></script>
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
-    <script src="main.js"></script>
+    <script src="slope.js"></script>
     <script src="legend.js"></script>
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
     <link rel="stylesheet" href="styles.css"/>
@@ -98,6 +98,11 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
+const dataSorter = function(a,b){    //Sort the data so that the labeled items are drawn on top
+    if(a.group) return 1;
+    return -1;
+};
+
 d3.csv('data.csv', function(data) {
     //make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
@@ -109,12 +114,15 @@ d3.csv('data.csv', function(data) {
     let seriesNames = getSeriesNames(data.columns)
     
     //Use the seriesNames array to calculate the minimum and max values in the dataset
+
     const valueExtent = extentMulti(data,seriesNames)
+    data.sort(dataSorter);
 
     const valueFormat = d=>d3.format(',')(d)
 
     //define chart
     const myChart = slopeChart()
+          .colourProperty( 'group' )
           .seriesNames(seriesNames)
           .xDomain( seriesNames )
           .yDomain( [Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])] )
@@ -149,7 +157,6 @@ d3.csv('data.csv', function(data) {
             .yScale( myChart.yScale() );
 
         // specifics based on frame type
-        myChart.colourPalette(frameName); // set colour palette
 
         //set y-axis tick label offset
         myAxes.tickOffset(-currentFrame.rem() / 4);
@@ -158,7 +165,7 @@ d3.csv('data.csv', function(data) {
         myAxes.labelOffset(-currentFrame.rem() * 1.3);
         
         // set radius of circles
-        myChart.dotRadius(currentFrame.rem() * 0.35);
+        myChart.dotRadius(currentFrame.rem() * 0.3);
 
         // specifics based on frame type
         myChart.colourPalette(frameName); // set colour palette
@@ -174,6 +181,7 @@ d3.csv('data.csv', function(data) {
           .enter()
           .append( 'g' )
               .attr('class','slope')
+              .attr('id', function(d) { return d.name; } )
           .call(myChart);
       
         // override chartframe margin.top to allow room for axis labels
