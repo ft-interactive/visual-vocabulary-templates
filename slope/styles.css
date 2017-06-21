@@ -37,22 +37,25 @@ svg {
 /* .tick text on yAxis*/
 .ft-webgraphic-s .yAxis text,
 .ft-webgraphic-m .yAxis text,
-.ft-webgraphic-l .yAxis text {
-    fill: #66605C;
-    text-anchor: end;
+.ft-webgraphic-l .yAxis text,
+.ft-webgraphic-s .xAxis-label,
+.ft-webgraphic-m .xAxis-label,
+.ft-webgraphic-l .xAxis-label  {
+    fill: #999189;
 }
-.ft-printgraphic .yAxis text{
-    text-anchor: end;
+.ft-printgraphic .yAxis text,
+.ft-printgraphic .xAxis-label {
+    fill:#666666;
 }
-.ft-socialgraphic .yAxis text{
+.ft-socialgraphic .yAxis text,
+.ft-socialgraphic .xAxis-label {
     fill-opacity: 0.5;
     fill: #FFFFFF;
-    text-anchor: end;
 }
-.ft-videographic .yAxis text{
+.ft-videographic .yAxis text,
+.ft-videographic .xAxis-label {
     fill-opacity: 0.5;
     fill: #FFFFFF;
-    text-anchor: end;
 }
 
 /* .tick line styles on yAxis*/
@@ -138,28 +141,19 @@ svg {
 
 .ft-webgraphic-s .highlighted-label {
     font-size: 14px;
-    fill: #66605C;
+    fill: #33302E;
 }
 
 .ft-webgraphic-m .highlighted-label {
     font-size: 16px;
-    fill: #66605C;
+    fill:#33302E;
 }
 .ft-webgraphic-l .highlighted-label {
     font-size: 18px;
-    fill: #66605C;
+    fill: #33302E;
 }
 
-.ft-socialgraphic .highlighted-label {
-    font-size: 28px;
-    fill-opacity: 0.5;
-    fill: #FFFFFF;
-}
-.ft-videographic .highlighted-label {
-    font-size: 48px;
-    fill-opacity: 0.5;
-    fill: #FFFFFF;
-}
+
 
 
 /* Style for the highlight or base line on yAxia*/
