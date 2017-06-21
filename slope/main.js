@@ -13,7 +13,7 @@ function slopeChart(){
     let labelTextStart = (d) => 'start text';
     let labelTextEnd = (d) => 'end text';
     let highlightColour = '#F00';
-    let dotRadius = 5;
+    let dotRadius = rem;
     let lineClasser = (d)=>{
         if(d[colourProperty]){
             return 'highlight-line';
@@ -184,19 +184,20 @@ function slopeChart(){
     return chart;
 }
 
-
 function slopeAxes(){
 
     let xScale = d3.scaleOrdinal();
     let yScale = d3.scaleLinear();
     let yTicks;
+    let yTickHighlight = 100;
     let startLabel = 'start';
     let endLabel = 'end';
     let tickFormatter = d=>d3.format(',')(d);
     let colourInverse = false;
-    let yAxisHighlight = 100;
+    let tickOffset = 5;
+    let labelOffset = 5;
     let tickColour = ()=>{
-        if (colourInverse){ 
+        if (colourInverse){
             return '#FFF'
         }
         return '#000'
@@ -206,24 +207,27 @@ function slopeAxes(){
     function axes(parent){
 
         const container = parent.append('g')
-            .attr('class','axes')
+            .attr('class','axis')
 
         container.append('text')
             .text(startLabel)
             .attrs({
-                'text-anchor': 'end',
+                'text-anchor': 'start',
                 'dx':-5,
-                'dy':-10,
-                'class': 'xaxis-label',
+                'dy':labelOffset,
+                'class': 'xAxis-label',
+                'fill':tickColour
             });
 
         container.append('text')
             .text(endLabel)
             .attrs({
                 'x':xScale.range()[1],
+                'text-anchor': 'end',
                 'dx':5,
-                'dy':-10,
-                'class': 'xaxis-label',
+                'dy':labelOffset,
+                'class': 'xAxis-label',
+                'fill':tickColour
             });
 
         if(yTicks === undefined){
@@ -235,7 +239,7 @@ function slopeAxes(){
                 .enter()
             .append('g')
                 .attrs({
-                    'class':'tick',
+                    'class':'yAxis tick',
                     'transform':(d)=>'translate(0,'+yScale(d)+')',
                 })
             .call(function(tick){
@@ -252,14 +256,25 @@ function slopeAxes(){
                     .attrs({
                         'text-anchor':'end',
                         'x':xScale.range()[1],
-                        'dy':-5,
-                        'dx':-10,
+                        'dy':tickOffset,
+                        'dx':0,
                         'fill':tickColour,
                     })
                     .text(tickFormatter)
-                    
+
 
             });
+
+        let numticks = container.selectAll('.yAxis.tick').size();
+        let base = container.selectAll('.yAxis.tick').filter(function(d, i) {
+           if (i === numticks - 1 || d === yTickHighlight ) {
+            return d;
+           }
+           return d === 0
+        })
+        console.log(base)
+        base.classed("base",true);
+
     }
 
     axes.startLabel = (x)=>{
@@ -277,13 +292,18 @@ function slopeAxes(){
         return axes;
     }
 
-    axes.xScale = (x)=>{
-        xScale = x;
+    axes.labelOffset = (x)=>{
+        labelOffset = x;
         return axes;
     }
 
-    axes.yAxisHighlight = (x)=>{
-        yAxisHighlight = x;
+    axes.tickOffset = (x)=>{
+        tickOffset = x;
+        return axes;
+    }
+
+    axes.xScale = (x)=>{
+        xScale = x;
         return axes;
     }
 
@@ -294,6 +314,11 @@ function slopeAxes(){
 
     axes.yTicks = (x)=>{
         yTicks = x;
+        return axes;
+    }
+
+    axes.yTickHighlight = (x)=>{
+        yTickHighlight = x;
         return axes;
     }
 

@@ -10,7 +10,6 @@
     <script src="main.js"></script>
     <script src="legend.js"></script>
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
-    <script src="https://rawgit.com/ft-interactive/g-xaxisdate/master/build/g-xaxisdate.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
@@ -36,14 +35,14 @@
 //User defined constants similar to version 2
 const dateStructure = "%d/%m/%Y";
 const sharedConfig = {
-  title:"Title not yet added",
-  subtitle:"Subtitle not yet added",  
+  title:"Title not |yet added",
+  subtitle:"Subtitle not| yet added",  
   source:"Source not yet added",
 }
-let yMin = false;//sets the minimum value on the yAxis
-let yMax = false;//sets the maximum value on the xAxis
+let yMin = 0;//sets the minimum value on the yAxis
+let yMax = 0;//sets the maximum value on the xAxis
 const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-const numTicksy = 3;//Number of tick on the uAxis
+const numTicksy = 5;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 // const interval = "years"//date interval on xAxis "decade", "lustrum", "years","months","days"
 // let annotate = true; // show annotations, defined in the 'annotate' column
@@ -55,20 +54,23 @@ const yAxisAlign = "right";//alignment of the axis
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
    webS: gChartframe.webFrameS(sharedConfig)
-   .margin({top:100, left:15, bottom:82, right:5})
+   .margin({top:100, left:80, bottom:62, right:80})
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
-   .height(400),
+   .height(400)
+   .sourcePlotYOffset(24),
 
    webM: gChartframe.webFrameM(sharedConfig)
-   .margin({top:100, left:20, bottom:86, right:5})
+   .margin({top:100, left:100, bottom:62, right:100})
    // .title("Put headline here")
-   .height(500),
+   .height(500)
+   .sourcePlotYOffset(28),
 
    webL: gChartframe.webFrameL(sharedConfig)
-   .margin({top:100, left:20, bottom:104, right:5})
+   .margin({top:100, left:150, bottom:76, right:150})
    // .title("Put headline here")
    .height(700)
+   .sourcePlotYOffset(32)
    .fullYear(true),
 
    print: gChartframe.printFrame(sharedConfig)
@@ -118,28 +120,53 @@ d3.csv('data.csv', function(data) {
           .yDomain( [Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])] )
           .yAxisAlign(yAxisAlign)
           .includeLabel( (row)=> (row.label === 'yes') )
-          .labelTextStart( (row)=> (row.name + ' ' + valueFormat(row.val1)) )
-          .labelTextEnd( (row)=> (row.name + ' ' + valueFormat(row.val2)) );
-    
-    console.log(myChart.yDomain)
+          .labelTextStart( (row)=> (row.name + ' ' + valueFormat(row[seriesNames[0]])) )
+          .labelTextEnd( (row)=> (row.name + ' ' + valueFormat(row[seriesNames[1]])) );
+          
+
+
+
+          // .plotDim(currentFrame.dimension())
+          // .rem(currentFrame.rem())
+          // .colourPalette((frameName));
     //general axes configuration
 
+    const myAxes = slopeAxes()
+              .startLabel(seriesNames[0])
+              .endLabel(seriesNames[1])
+              .yTickHighlight(yAxisHighlight); // y-axis tick to highlight, if chart is rebased put 100 here
+             
 
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
-        const myYAxis = gAxis.yaxisLinear();//sets up yAxis
-
-        //define other functions to be called
-        //const tickSize=currentFrame.dimension().width;//Used when drawing the yAxis ticks
-
-        d3.select(currentFrame.plot().node().parentNode)
-          .call(currentFrame);
-
+        
+        
         myChart
-          .yRange( [currentFrame.dimension().height,0] )
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
+        .yRange( [currentFrame.dimension().height,0] )
+        .xRange( [0, currentFrame.dimension().width] )
+       
+        myAxes.xScale( myChart.xScale() )
+            .yScale( myChart.yScale() );
+
+        // specifics based on frame type
+        myChart.colourPalette(frameName); // set colour palette
+
+        //set y-axis tick label offset
+        myAxes.tickOffset(-currentFrame.rem() / 4);
+
+        //set start/end label offset
+        myAxes.labelOffset(-currentFrame.rem() * 1.3);
+        
+        // set radius of circles
+        myChart.dotRadius(currentFrame.rem() * 0.35);
+
+        // specifics based on frame type
+        myChart.colourPalette(frameName); // set colour palette
+        myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
+
+
+        currentFrame.plot()
+            .call( myAxes );
 
         currentFrame.plot()
           .selectAll( 'g.slope' )
@@ -148,6 +175,10 @@ d3.csv('data.csv', function(data) {
           .append( 'g' )
               .attr('class','slope')
           .call(myChart);
+      
+        // override chartframe margin.top to allow room for axis labels
+        currentFrame.plot()
+          .attr('transform', 'translate(' + currentFrame.margin().left + ',' +  (currentFrame.margin().top + currentFrame.rem() * 1.2) + ' )')
     });
     // addSVGSavers('figure.saveable');
 });
