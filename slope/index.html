@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Wrapper starter - Visual Vocabulary</title>
+    <title>Slope chart - Visual Vocabulary</title>
     <script src="//d3js.org/d3.v4.js"></script>
     <script src="//d3js.org/d3-selection-multi.v1.min.js"></script>
     <script src="https://unpkg.com/g-chartframe@0.4.24"></script>
@@ -19,8 +19,8 @@
 </head>
 <body>
 
-    <h1>Line chart</h1>
-    <p>A suggested starting point new charts types in the visual vocab.</p>
+    <h1>Slope chart</h1>
+    <p>Good for showing changing data as long as the data can be simplified into 2 or 3 points without missing a key part of story.</p>
     <hr>
     <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
     <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
@@ -40,11 +40,11 @@ const sharedConfig = {
   subtitle:"Subtitle not yet added",  
   source:"Source not yet added",
 }
-// let yMin = 0;//sets the minimum value on the yAxis
-// let yMax = 1500;//sets the maximum value on the xAxis
-// const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-// const numTicksy = 3;//Number of tick on the uAxis
-// const yAxisAlign = "right";//alignment of the axis
+let yMin = false;//sets the minimum value on the yAxis
+let yMax = false;//sets the maximum value on the xAxis
+const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
+const numTicksy = 3;//Number of tick on the uAxis
+const yAxisAlign = "right";//alignment of the axis
 // const interval = "years"//date interval on xAxis "decade", "lustrum", "years","months","days"
 // let annotate = true; // show annotations, defined in the 'annotate' column
 // let markers = false;//show dots on lines
@@ -109,25 +109,52 @@ d3.csv('data.csv', function(data) {
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
 
+    const valueFormat = d=>d3.format(',')(d)
+
     //define chart
-    const myChart = drawChart()
+    const myChart = slopeChart()
           .seriesNames(seriesNames)
+          .xDomain( seriesNames )
+          .yDomain( [Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])] )
+          .yAxisAlign(yAxisAlign)
+          .includeLabel( (row)=> (row.label === 'yes') )
+          .labelTextStart( (row)=> (row.name + ' ' + valueFormat(row.val1)) )
+          .labelTextEnd( (row)=> (row.name + ' ' + valueFormat(row.val2)) );
     
+    console.log(myChart.yDomain)
+    //general axes configuration
+
+
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
+        const myYAxis = gAxis.yaxisLinear();//sets up yAxis
 
         //define other functions to be called
         //const tickSize=currentFrame.dimension().width;//Used when drawing the yAxis ticks
 
         d3.select(currentFrame.plot().node().parentNode)
-            .call(currentFrame);
+          .call(currentFrame);
+
+        myChart
+          .yRange( [currentFrame.dimension().height,0] )
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
+
+        currentFrame.plot()
+          .selectAll( 'g.slope' )
+          .data( data )
+          .enter()
+          .append( 'g' )
+              .attr('class','slope')
+          .call(myChart);
     });
     // addSVGSavers('figure.saveable');
 });
 
 //a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns){
-    var exclude = ['date']; // adjust column headings to match your dataset
+    var exclude = ['name','group','label']; // adjust column headings to match your dataset
     return columns.filter(d=>(exclude.indexOf(d) == -1));
 }
 
