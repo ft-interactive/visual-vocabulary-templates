@@ -1,18 +1,21 @@
 function drawChart() {
-    console.log('hello')
-    let yScale;
-    let xScale;
+
+    let yScale = d3.scaleLinear();
+    let xScale = d3.scaleOrdinal();
     let seriesNames = [];
     let yAxisAlign = "right"
     let rem =16;
-    let markers = false;
-    // let interpolation =d3.curveLinear
+
+
+
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
   
     function chart(parent){
 
-        
+
+            
+
     }
 
     chart.yScale = (d)=>{
@@ -30,6 +33,12 @@ function drawChart() {
         return chart;
     };
 
+    chart.orient = (d)=>{
+        if (!d) return orient;
+        orient = d;
+        return chart;
+    };
+
     chart.yRange = (d)=>{
         yScale.range(d);
         return chart;
@@ -44,10 +53,10 @@ function drawChart() {
         xScale = d;
         return chart;
     }
-    chart.xDomain = (d)=>{
-        xScale.domain(d);
-        return chart;
-    };
+     chart.xDomain = (d)=>{
+         xScale.domain(d);
+         return chart;
+     };
     chart.xRange = (d)=>{
         xScale.range(d);
         return chart;
@@ -60,19 +69,6 @@ function drawChart() {
     chart.rem = (d)=>{
         if(!d) return rem;
         rem = d;
-        return chart;
-    }
-    chart.includeMarker = (d)=>{
-        includeMarker = d;
-        return chart;
-    }
-    chart.markers = (d)=>{
-        markers = d;
-        return chart;
-    }
-    chart.interpolation = (d)=>{
-        if(!d) return interpolation;
-        interpolation = d;
         return chart;
     }
     chart.colourPalette = (d) =>{
