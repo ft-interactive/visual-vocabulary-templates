@@ -7,10 +7,7 @@
     <script src="https://unpkg.com/g-chartframe@0.4.24"></script>
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
-    <script src="lineChart.js"></script>
-    <script src="legend.js"></script>
-    <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
-    <script src="https://rawgit.com/ft-interactive/g-xaxisdate/master/build/g-xaxisdate.js"></script>
+    <script src="yAxisOrdinal.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
@@ -106,12 +103,7 @@ d3.csv('example.csv', function(data) {
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
     let seriesNames=getSeriesNames(data.columns)
     //format the dataset that is used to draw the lines
-    let plotData=seriesNames.map(function(d,i){
-        return {
-            name:d,
-            lineData:getlines(data,d)
-        }
-    })
+    let plotData
 
     // filter data for annotations
     const annos = data.filter((d)=> (d.annotate !="" && d.annotate !=undefined))
@@ -126,53 +118,23 @@ d3.csv('example.csv', function(data) {
     })
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
-    //define the chart x and x domains. yDomain will automatically overwrite the user defined min and max if the domain is too small
-    const myChart = lineChart()
-        .seriesNames(seriesNames)
-        .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
-        .xDomain(d3.extent(data, function(d) {return d.date;}))
-        .yAxisAlign(yAxisAlign)
-        .markers(markers)
-        .annotate(annotate)
-        .interpolation(interpolation)
+
+
 
 
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
         //define other functions to be called
-        const myYAxis = gAxis.yaxisLinear();//sets up yAxis
-
-        const myXAxis = gAxis.xaxisDate();//sets up xAxis
-        const myHighlights = drawHighlights()//sets up highlight tonal bands
-        const myAnnotations = drawAnnotations()//sets up annotations
-        const myLegend = drawLegend()//sets up the legend
+        const myYAxis = yAxisOrdinal();//sets up yAxis
+ 
         //const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize=currentFrame.dimension().width;//Used when drawing the yAxis ticks
+        const tickSize=currentFrame.dimension().height;//Used when drawing the yAxis ticks
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
             
-        //create a 'g' element at the back of the chart to add time period highlights after axis have been created
-        let axisHighlight = currentFrame.plot().append('g');
-       
-        //create a 'g' element behind the chart and in front of the highlights
-        let plotAnnotation = currentFrame.plot().append('g')
-                                .attr('class', 'annotations-holder');
-
-        myChart
-            .yRange( [currentFrame.dimension().height,0] )
-            .plotDim(currentFrame.dimension())
-            .rem(currentFrame.rem())
-            .colourPalette((frameName));
-
-        
-        myYAxis
-            .yScale(myChart.yScale())
-            .numTicks(numTicksy)
-            .tickSize(tickSize)
-            .yAxisHighlight(yAxisHighlight)
-            .tickAlign(myChart.yAxisAlign())
+      
 
         //Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
@@ -190,78 +152,10 @@ d3.csv('example.csv', function(data) {
             currentFrame.margin({left:newMargin});
         }
 
-        myChart.xRange( [0, currentFrame.dimension().width] );
-        //Set up xAxis for this frame
-        myXAxis
-            .fullYear(currentFrame.fullYear())
-            .scale(myChart.xScale())
-            .offset(currentFrame.dimension().height)
-            .interval(interval)
-            .tickSize(myChart.rem())
-            .minorAxis(minorAxis);
-
-        //Set up highlights for this frame
-        myHighlights
-            .yScale(myChart.yScale())
-            .yRange( [currentFrame.dimension().height,0] )
-            .xScale(myChart.xScale())
-            .xRange( [0,currentFrame.dimension().width] );
 
 
-        //Draw the highlights before the lines and xAxis
-        axisHighlight
-            .selectAll(".highlights")
-            .data(highlights)
-            .enter()
-            .append("g")
-            .call(myHighlights);
 
-        //Draw the xAxis
-        currentFrame.plot()
-            .call(myXAxis);
-        
-        //Set up highlights for this frame
-        myAnnotations
-            .yScale(myChart.yScale())
-            .yRange( [currentFrame.dimension().height,0] )
-            .xScale(myChart.xScale())
-            .xRange( [0,currentFrame.dimension().width] )
-            .rem(currentFrame.rem());
-
-        //Draw the annotations before the lines
-        plotAnnotation
-            .selectAll(".annotation")
-            .data(annos)
-            .enter()
-            .append("g")
-            .call(myAnnotations);
-
-        //Draw the lines  
-        currentFrame.plot()
-            .selectAll("lines")
-            .data(plotData)
-            .enter()
-            .append("g")
-            .attr('class','lines')
-            .call(myChart);
-
-        //Set up legend for this frame
-        myLegend
-            .seriesNames(seriesNames)
-            .colourPalette((frameName))
-            .rem(myChart.rem())
-            .alignment(legendAlign);
-        //Draw the Legend
-        currentFrame.plot()
-            .append("g")
-            .attr("id","legend")
-                .selectAll(".legend")
-                .data(seriesNames)
-                .enter()
-                .append("g")
-                .classed("legend",true)
-            .call(myLegend)
-
+    
      });
     // addSVGSavers('figure.saveable');
 });
@@ -288,23 +182,7 @@ function extentMulti(data, columns){
     },{});
     return [ext.min, ext.max];
 }
-//a function that sort the column information in the dataset into groups according to the column head, so that the line path can be passed as one object to the drawing function
-function getlines(data,group) {
-    let lineData=[]
-    data.forEach(function(el,i){
-        //console.log(el,i)
-        let column=new Object();
-        column.name = group
-        column.date = el.date
-        column.value = +el[group]
-        column.highlight = el.highlight
-        column.annotate = el.annotate
-        if(el[group]) {
-            lineData.push(column)  
-        } 
-    });
-    return lineData
-}
+
 
 </script>
 </html>
