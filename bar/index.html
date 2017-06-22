@@ -17,7 +17,7 @@
 </head>
 <body>
 
-    <h1>Line chart</h1>
+    <h1>Bar and grouped bar chart</h1>
     <p>A suggested starting point new charts types in the visual vocab.</p>
     <hr>
     <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
@@ -43,7 +43,8 @@ let xMin = -200;//sets the minimum value on the yAxis
 let xMax = 1000;//sets the maximum value on the xAxis
 const yAxisHighlight = 0; //sets which tick to highlight on the yAxis
 const numTicks = 7;//Number of tick on the uAxis
-const yAxisAlign = "left";//alignment of the axis
+let yAxisAlign = "left";//alignment of the axis
+let xAxisAlign = "bottom"
 let legendAlign = "vert"//hori or vert, alignment of the legend
 
 
@@ -130,7 +131,7 @@ d3.csv('example.csv', function(data) {
         const tickSize=currentFrame.dimension().height;//Used when drawing the yAxis ticks
 
         yAxis0
-            .tickAlign(yAxisAlign)
+            .align(yAxisAlign)
             .domain(groupNames)
             .rangeRound([0,currentFrame.dimension().height])
 
@@ -139,10 +140,11 @@ d3.csv('example.csv', function(data) {
             .rangeRound([0,yAxis0.bandwidth()])
         
         xAxis
+            .align(xAxisAlign)
             .domain([Math.min(xMin,valueExtent[0]),Math.max(xMax,valueExtent[1])])
             .numTicks(numTicks)
 
-        console.log(xMin,xMax,valueExtent, xAxis.domain)
+        //console.log(xMin,xMax,valueExtent, xAxis.domain)
 
         let base = currentFrame.plot().append("g")
 
@@ -175,6 +177,10 @@ d3.csv('example.csv', function(data) {
 
         currentFrame.plot()
             .call(xAxis);
+        if (xAxisAlign=="top") {
+            xAxis.xLabel()
+            .attr("transform","translate(0,"+currentFrame.dimension().height+")")
+        }
 
 
 
