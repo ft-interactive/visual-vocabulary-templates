@@ -23,7 +23,7 @@
 <body>
 
     <h1>Lollipop chart</h1>
-    <p>Lollipop charts draw more attention to the data value than bar charts. If the axis shouldn't start at 0, consider switching the 'stalks' off, creating a dot plot. This template can produce vertical and horizontal charts. </p>
+    <p>Lollipop charts draw more attention to the data value than bar charts. If the axis shouldn't start at 0, consider switching the 'stalks' off, creating a dot plot.</p>
     <hr>
     <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
     <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
@@ -42,11 +42,10 @@ const sharedConfig = {
   subtitle:"Subtitle not yet added",  
   source:"Source not yet added",
 }
-const chartOrient="vert"//specify 'vert' or 'hori'
 let yMin = 0;//sets the minimum value on the yAxis
-let yMax = 1500;//sets the maximum value on the xAxis
-const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-const numTicksy = 3;//Number of tick on the uAxis
+let yMax = 0;//sets the maximum value on the yAxis
+let yAxisHighlight// = 50; //sets which tick to highlight on the yAxis
+const numTicksy = 8;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 let legendAlign = "vert"//hori or vert, alignment of the legend
 
@@ -106,10 +105,11 @@ d3.csv('data.csv', function(data) {
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
 
+    const myYAxis = gAxis.yaxisLinear();//sets up yAxis
+
     //define chart
     const myChart = drawChart()
           .seriesNames(seriesNames)
-          .orient(chartOrient)
           .xDomain(data.map(function(d){return d.name}))
           .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
           //.yAxisAlign(yAxisAlign)
@@ -120,15 +120,30 @@ d3.csv('data.csv', function(data) {
         const currentFrame = frame[frameName];
 
         //define other functions to be called
-        //const tickSize=currentFrame.dimension().width;//Used when drawing the yAxis ticks
+        const tickSize=currentFrame.dimension().width;//Used when drawing the yAxis ticks
 
+         myChart
+            .yRange( [currentFrame.dimension().height,0] )
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette((frameName));
+
+          myYAxis
+            .yScale(myChart.yScale())
+            .numTicks(numTicksy)
+            .tickSize(tickSize)
+            .yAxisHighlight(yAxisHighlight)
+            .tickAlign(myChart.yAxisAlign())
+
+            currentFrame.plot()
+            .call(myYAxis);
 
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
         //you can draw things on the current frame like this
-        currentFrame.plot().append("circle").attr("r",60).attr("cx",100).attr("cy",100)
+        //currentFrame.plot().append("circle").attr("r",60).attr("cx",100).attr("cy",100)
 
 
 

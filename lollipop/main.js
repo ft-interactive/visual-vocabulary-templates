@@ -1,7 +1,11 @@
 function drawChart() {
 
+
+
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleOrdinal();
+
+    
     let seriesNames = [];
     let yAxisAlign = "right"
     let rem =16;
@@ -14,7 +18,6 @@ function drawChart() {
     function chart(parent){
 
 
-            
 
     }
 
