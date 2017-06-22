@@ -13,7 +13,7 @@ function yAxisOrdinal() {
             .tickSize(tickSize)
             .scale(scale)
 
-        const yLabel = parent.append("g")
+        yLabel = parent.append("g")
             .attr("class","axis yAxis")
             .call(yAxis)
 
@@ -22,15 +22,6 @@ function yAxisOrdinal() {
             function(){
                 labelWidth=Math.max(this.getBBox().width,labelWidth);
             })
-
-        //position label on right hand axis
-        // if (tickAlign=="left") {
-        //     yLabel.attr("transform","translate("+(labelWidth )+","+0+")")
-        // }
-        //translate if a right axis
-        if (tickAlign=="right") {
-            yLabel.attr("transform","translate("+(offset-labelWidth )+","+0+")")
-        }
         
     }
 
@@ -53,6 +44,11 @@ function yAxisOrdinal() {
 
         axis.labelWidth = (d)=>{
             if(d===undefined) return labelWidth
+            labelWidth=d;
+            return axis;
+        }
+        axis.yLabel = (d)=>{
+            if(d===undefined) return yLabel
             labelWidth=d;
             return axis;
         }

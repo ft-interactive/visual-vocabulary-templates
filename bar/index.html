@@ -148,17 +148,21 @@ d3.csv('example.csv', function(data) {
             let newMargin = yAxis0.labelWidth()+currentFrame.margin().right
             //Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({right:newMargin});
+            yAxis0.yLabel()
+                .attr("transform","translate("+(currentFrame.dimension().width+yAxis0.labelWidth() )+","+0+")")
         }
         else {
             let newMargin = yAxis0.labelWidth()+currentFrame.margin().left
             //Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({left:newMargin});
+
         }
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-       base.append("rect")
+        //temporary recct to check axis position
+        base.append("rect")
           .attr("width", currentFrame.dimension().width)
           .attr("height",currentFrame.dimension().height)
           .attr("fill","#ededee");
