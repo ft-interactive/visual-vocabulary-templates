@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Lollipop chart</title>
-    
 
     <!--production resources-->
     <!--
@@ -21,7 +20,6 @@
     <!--
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     -->
-
 
 <!--offline development resources-->
     <script src="local-assets/d3.v4.js"></script>
@@ -72,9 +70,10 @@ const sharedConfig = {
 }
 let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the yAxis
+let stalks = false;//show or hide the 'stalks' - setting to false will turn chart into dot plot
 let yAxisHighlight// = 50; //sets which tick to highlight on the yAxis
 const numTicksy = 8;//Number of tick on the uAxis
-const yAxisAlign = "right";//alignment of the axis
+const yAxisAlign = "right";//alignment of the y axis
 let legendAlign = "vert"//hori or vert, alignment of the legend
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -156,7 +155,8 @@ d3.csv('data.csv', function(data) {
           .xRange([currentFrame.dimension().width,0])
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName));
+          .colourPalette((frameName))
+          .stalks(stalks);
 
         myYAxis
           .yScale(myChart.yScale())
@@ -165,10 +165,16 @@ d3.csv('data.csv', function(data) {
           .yAxisHighlight(yAxisHighlight)
           .tickAlign(myChart.yAxisAlign())
 
+
+
+        //should be able to set domain from myChart??
         myXAxis
-          .domain(data.map(function(d){return d.name}))
+          .domain(myChart.xScale().domain())
           .rangeRound([0,currentFrame.dimension().width])
           .offset(currentFrame.dimension().height);
+
+
+//.domain(data.map(function(d){return d.name}))
 
 
           //call axes
@@ -183,7 +189,6 @@ d3.csv('data.csv', function(data) {
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
-
 
 
         //you can draw things on the current frame like this
