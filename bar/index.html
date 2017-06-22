@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Line chart - Visual Vocabulary</title>
+    <title>Bar chart - Visual Vocabulary</title>
     <script src="//d3js.org/d3.v4.js"></script>
     <script src="//d3js.org/d3-selection-multi.v1.min.js"></script>
     <script src="https://unpkg.com/g-chartframe@0.4.24"></script>
@@ -66,8 +66,7 @@ const frame = {
    webL: gChartframe.webFrameL(sharedConfig)
    .margin({top:100, left:20, bottom:104, right:5})
    // .title("Put headline here")
-   .height(700)
-   .fullYear(true),
+   .height(700),
 
    print: gChartframe.printFrame(sharedConfig)
    .margin({top:40, left:7, bottom:35, right:7})
@@ -95,27 +94,31 @@ d3.selectAll('.framed')
     });
 
 d3.csv('example.csv', function(data) {
-    //make sure all the dates in the date column are a date object
-    var parseDate = d3.timeParse(dateStructure)
-    data.forEach(function(d) {
-                d.date=parseDate(d.date);
-            });
+    
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
-    let seriesNames=getSeriesNames(data.columns)
-    //format the dataset that is used to draw the lines
-    let plotData
-
-    // filter data for annotations
-    const annos = data.filter((d)=> (d.annotate !="" && d.annotate !=undefined))
-
-    //format the data that is used to draw highlight tonal bands
-    const boundaries=data.filter((d)=> (d.highlight==="begin" || d.highlight==="end"))
-    let highlights=[]
-    boundaries.forEach(function(d,i){
-        if (d.highlight==="begin") {
-            highlights.push({begin: d.date,end:boundaries[i+1].date}) 
+    const seriesNames=getSeriesNames(data.columns)
+    const groupNames = [ ...new Set(data.map(d=>d.group)) ].filter(d=>d); // create an array of the group names
+    
+    let plotData=data.map(function(d) {
+        return {
+            name:d.group,
+            groups:getGroups(d),
         }
-    })
+    });
+
+    function getGroups(el) {
+        var groups=seriesNames.map(function(name,i) {
+            return {
+                name: name,
+                value:+el[name]
+            }
+        });
+       return groups
+    }
+
+    console.log(plotData)
+    console.log (groupNames)
+
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
 
@@ -132,6 +135,10 @@ d3.csv('example.csv', function(data) {
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
+        myYAxis
+            .domain(groupNames)
+            .rangeRound([0,currentFrame.dimension().height])
 
             
       
@@ -162,7 +169,7 @@ d3.csv('example.csv', function(data) {
 
 //a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns){
-    var exclude = ['date','annotate','highlight'];
+    var exclude = ['group'];
     return columns.filter(d=>(exclude.indexOf(d) == -1));
 }
 
