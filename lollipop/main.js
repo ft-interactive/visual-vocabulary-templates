@@ -10,14 +10,14 @@ function drawChart() {
     let yAxisAlign = "right"
     let rem =16;
 
-
-
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
+
   
     function chart(parent){
 
-
+        //check colourScale is working
+        parent.append("rect").attr("width",100).attr("height",100).attr("fill",colourScale(seriesNames[0]))
 
     }
 
@@ -33,12 +33,6 @@ function drawChart() {
     }
     chart.yDomain = (d)=>{
         yScale.domain(d);
-        return chart;
-    };
-
-    chart.orient = (d)=>{
-        if (!d) return orient;
-        orient = d;
         return chart;
     };
 
