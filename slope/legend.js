@@ -1,13 +1,13 @@
 function drawLegend() {
-	let seriesNames=[]
+	let groupNames=[]
 	const colourScale = d3.scaleOrdinal()
         .range(gChartcolour.lineWeb)
-        .domain(seriesNames);
+        .domain(groupNames);
     let rem=10
     let alignment="hori";
 
 	function legend(parent) {
-		let legendyOffset=0
+		let legendyOffset = 0
 
 		parent.attr ("id",function(d,i){
                 return "l"+i
@@ -53,8 +53,8 @@ function drawLegend() {
                 .on("drag", dragged)
                 .on("end", dragended));
 
-	legend.seriesNames = (d)=>{
-        seriesNames = d;
+	legend.groupNames = (d)=>{
+        groupNames = d;
         return legend;
     }
 

@@ -131,13 +131,23 @@ function slopeChart(){
         return chart;
     }
 
-     chart.colourPalette = (d) =>{
-        if(d==='social' || d==='video'){
-            colourScale.range(gChartcolour.lineSocial);
-        } else if (d==='webS' || d==='webM' || d==='webL') {
-            colourScale.range(gChartcolour.lineWeb);
-        } else if (d==='print') {
-            colourScale.range(gChartcolour.linePrint);
+    chart.colourPalette = (d, groupNames) =>{
+        if(groupNames.length > 0) {
+            if(d==='social' || d==='video'){
+                colourScale.range(gChartcolour.lineSocial);
+            } else if (d==='webS' || d==='webM' || d==='webL') {
+                colourScale.range(gChartcolour.mutedFirstLineWeb);
+            } else if (d==='print') {
+                colourScale.range(gChartcolour.linePrint);
+            }
+        } else {
+             if(d==='social' || d==='video'){
+                colourScale.range(gChartcolour.lineSocial);
+            } else if (d==='webS' || d==='webM' || d==='webL') {
+                colourScale.range(gChartcolour.lineWeb);
+            } else if (d==='print') {
+                colourScale.range(gChartcolour.linePrint);
+            }
         }
         return chart;
     }

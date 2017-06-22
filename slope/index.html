@@ -44,7 +44,7 @@ let yMax = 0;//sets the maximum value on the xAxis
 const yAxisHighlight = 0; //sets which tick to highlight on the yAxis
 const numTicksy = 5;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
-// let legendAlign = "vert"//hori or vert, alignment of the legend
+let legendAlign = "vert"//hori or vert, alignment of the legend
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -148,11 +148,12 @@ d3.csv('data.csv', function(data) {
 
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
-        
+        const myLegend = drawLegend()//sets up the legend
         
         myChart
         .yRange( [currentFrame.dimension().height,0] )
         .xRange( [0, currentFrame.dimension().width] )
+        .rem(currentFrame.rem())
        
         myAxes.xScale( myChart.xScale() )
             .yScale( myChart.yScale() );
@@ -169,7 +170,7 @@ d3.csv('data.csv', function(data) {
         myChart.dotRadius(currentFrame.rem() * 0.3);
 
         // specifics based on frame type
-        myChart.colourPalette(frameName); // set colour palette
+        myChart.colourPalette(frameName, groupNames); // set colour palette
         myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
 
 
@@ -184,6 +185,24 @@ d3.csv('data.csv', function(data) {
               .attr('class','slope')
               .attr('id', function(d) { return d.name; } )
           .call(myChart);
+
+          //Set up legend for this frame
+        myLegend
+            .groupNames(groupNames)
+            .colourPalette(frameName)
+            .rem(myChart.rem())
+            .alignment(legendAlign);
+       
+       //Draw the Legend
+        currentFrame.plot()
+            .append("g")
+            .attr("id","legend")
+                .selectAll(".legend")
+                .data(groupNames)
+                .enter()
+                .append("g")
+                .classed("legend",true)
+            .call(myLegend)
       
         // override chartframe margin.top to allow room for axis labels
         currentFrame.plot()
