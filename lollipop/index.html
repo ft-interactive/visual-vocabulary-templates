@@ -133,50 +133,61 @@ d3.csv('data.csv', function(data) {
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
 
-    const myYAxis = gAxis.yaxisLinear();//sets up yAxis
+    //set up axes
+    const myYAxis = gAxis.yaxisLinear();
+    const myXAxis = gAxis.xaxisOrdinal();
 
     //define chart
     const myChart = drawChart()
           .seriesNames(seriesNames)
           .xDomain(data.map(function(d){return d.name}))
           .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
-          //.yAxisAlign(yAxisAlign)
-
+          .yAxisAlign(yAxisAlign)
 
     //draw, for each frame
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
 
         //define other functions to be called
-        const tickSize=currentFrame.dimension().width;//Used when drawing the yAxis ticks
+        const tickSize = currentFrame.dimension().width;//Used when drawing the yAxis ticks
 
-         myChart
-            .yRange( [currentFrame.dimension().height,0] )
-            .plotDim(currentFrame.dimension())
-            .rem(currentFrame.rem())
-            .colourPalette((frameName));
+        myChart
+          .yRange( [currentFrame.dimension().height,0] )
+          .xRange([currentFrame.dimension().width,0])
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
-          myYAxis
-            .yScale(myChart.yScale())
-            .numTicks(numTicksy)
-            .tickSize(tickSize)
-            .yAxisHighlight(yAxisHighlight)
-            .tickAlign(myChart.yAxisAlign())
+        myYAxis
+          .yScale(myChart.yScale())
+          .numTicks(numTicksy)
+          .tickSize(tickSize)
+          .yAxisHighlight(yAxisHighlight)
+          .tickAlign(myChart.yAxisAlign())
 
+        myXAxis
+          .domain(data.map(function(d){return d.name}))
+          .rangeRound([0,currentFrame.dimension().width])
+          .offset(currentFrame.dimension().height);
+
+
+          //call axes
           currentFrame.plot()
             .call(myYAxis);
+          currentFrame.plot()
+            .call(myXAxis);
 
-            currentFrame.plot().call(myChart)
+          currentFrame.plot()
+            .call(myChart)
 
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
 
+
         //you can draw things on the current frame like this
         //currentFrame.plot().append("circle").attr("r",60).attr("cx",100).attr("cy",100)
-
-
 
     });
     // addSVGSavers('figure.saveable');
