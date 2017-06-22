@@ -4,7 +4,7 @@
     <title>Wrapper starter - Visual Vocabulary</title>
     <script src="//d3js.org/d3.v4.js"></script>
     <script src="//d3js.org/d3-selection-multi.v1.min.js"></script>
-    <script src="https://unpkg.com/g-chartframe@"></script>
+    <script src="https://unpkg.com/g-chartframe"></script>
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="main.js"></script>
@@ -65,6 +65,9 @@
 
 //User defined constants similar to version 2
 const dateStructure = "%d/%m/%Y";
+
+const dataFile = "data.csv"
+
 const sharedConfig = {
   title:"Title not yet added",
   subtitle:"Subtitle not yet added",  
@@ -126,7 +129,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-d3.csv('data.csv', function(data) {
+d3.csv(dataFile, function(data) {
     //make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
