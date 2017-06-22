@@ -93,11 +93,6 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-const dataSorter = function(a,b){    //Sort the data so that the labeled items are drawn on top
-    if(a.group) return 1;
-    return -1;
-};
-
 d3.csv('data.csv', function(data) {
     //make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
@@ -106,8 +101,19 @@ d3.csv('data.csv', function(data) {
     //         });
 
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
-    let seriesNames = getSeriesNames(data.columns)
+    let seriesNames = getSeriesNames(data.columns);
     
+    const groupNames = [ ...new Set(data.map(d=>d.group)) ].filter(d=>d); // create an array of the group names
+
+    const dataSorter = function(a, b){    //Sort the data so that the labeled items are drawn on top
+        if(groupNames.indexOf(a.group) > groupNames.indexOf(b.group)){
+          return 1;
+        }else if(groupNames.indexOf(a.group) == groupNames.indexOf(b.group)){
+          return 0;
+        }
+        return -1;
+    };
+
     //Use the seriesNames array to calculate the minimum and max values in the dataset
 
     const valueExtent = extentMulti(data,seriesNames)
