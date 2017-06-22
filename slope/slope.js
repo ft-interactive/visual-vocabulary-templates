@@ -13,6 +13,7 @@ function slopeChart(){
     let labelTextEnd = (d) => 'end text';
     let highlightColour = '#F00';
     let dotRadius = rem;
+    let yAxisHighlight = 0;
     let lineClasser = (d)=>{
         if(d[colourProperty]){
             return 'highlight-line';
@@ -188,7 +189,7 @@ function slopeAxes(){
     let xScale = d3.scaleOrdinal();
     let yScale = d3.scaleLinear();
     let yTicks;
-    let yTickHighlight = 100;
+    let yAxisHighlight = 0;
     let startLabel = 'start';
     let endLabel = 'end';
     let tickFormatter = d=>d3.format(',')(d);
@@ -264,15 +265,11 @@ function slopeAxes(){
 
             });
 
-        let numticks = container.selectAll('.yAxis.tick').size();
-        let base = container.selectAll('.yAxis.tick').filter(function(d, i) {
-           if (i === numticks - 1 || d === yTickHighlight ) {
-            return d;
-           }
-           return d === 0
-        })
-        console.log(base)
-        base.classed("base",true);
+
+        let originValue = 0;
+        let origin =  container.selectAll('.yAxis.tick').filter(function(d, i) {
+                return d==originValue || d==yAxisHighlight;
+            }).classed("baseline",true);
 
     }
 
@@ -316,8 +313,8 @@ function slopeAxes(){
         return axes;
     }
 
-    axes.yTickHighlight = (x)=>{
-        yTickHighlight = x;
+    axes.yAxisHighlight = (x)=>{
+        yAxisHighlight = x;
         return axes;
     }
 

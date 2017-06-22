@@ -153,6 +153,23 @@ svg {
     fill: #33302E;
 }
 
+.ft-printgraphic .highlighted-label {
+    font-size: 9.6px;
+    fill: #000;
+}
+
+.ft-socialgraphic .highlighted-label {
+    font-size: 28px;
+    fill: #fff;
+    opacity: 0.9;
+}
+
+.ft-videographic .highlighted-label {
+    font-size: 48px;
+    fill: #fff;
+    opacity: 0.9;
+}
+
 
 
 

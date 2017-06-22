@@ -41,7 +41,7 @@ const sharedConfig = {
 }
 let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the xAxis
-const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
+const yAxisHighlight = 0; //sets which tick to highlight on the yAxis
 const numTicksy = 5;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 // let legendAlign = "vert"//hori or vert, alignment of the legend
@@ -69,18 +69,18 @@ const frame = {
    .fullYear(true),
 
    print: gChartframe.printFrame(sharedConfig)
-   .margin({top:40, left:7, bottom:35, right:7})
+   .margin({top:40, left:40, bottom:35, right:40})
    // .title("Put headline here")
-   .height(68)
+   .height(90)
    .width(55),
 
    social: gChartframe.socialFrame(sharedConfig)
-   .margin({top:140, left:50, bottom:138, right:40})
+   .margin({top:140, left:150, bottom:138, right:150})
    // .title("Put headline here")
    .height(750), // 700 is ideal height for Instagram
 
    video: gChartframe.videoFrame(sharedConfig)
-   .margin({left:207, right:207, bottom:210, top:233})
+   .margin({left:400, right:400, bottom:210, top:233})
    // .title("Put headline here")
 };
 
@@ -102,7 +102,7 @@ d3.csv('data.csv', function(data) {
 
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
     let seriesNames = getSeriesNames(data.columns);
-    
+
     const groupNames = [ ...new Set(data.map(d=>d.group)) ].filter(d=>d); // create an array of the group names
 
     const dataSorter = function(a, b){    //Sort the data so that the labeled items are drawn on top
@@ -116,7 +116,7 @@ d3.csv('data.csv', function(data) {
 
     //Use the seriesNames array to calculate the minimum and max values in the dataset
 
-    const valueExtent = extentMulti(data,seriesNames)
+    const valueExtent = extentMulti(data,seriesNames);
     data.sort(dataSorter);
 
     const valueFormat = d=>d3.format(',')(d)
@@ -143,7 +143,7 @@ d3.csv('data.csv', function(data) {
     const myAxes = slopeAxes()
               .startLabel(seriesNames[0])
               .endLabel(seriesNames[1])
-              .yTickHighlight(yAxisHighlight); // y-axis tick to highlight, if chart is rebased put 100 here
+              .yAxisHighlight(yAxisHighlight); // y-axis tick to highlight, if chart is rebased put 100 here
              
 
     Object.keys(frame).forEach(frameName=>{
