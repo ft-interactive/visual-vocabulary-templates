@@ -2,7 +2,7 @@ function yAxisOrdinal() {
     let tickAlign ="left"
     let scale = d3.scaleBand()
         .domain(["Oranges", "Lemons", "Apples", "Pears"])
-        .rangeRound([0, 220]);
+        .rangeRound([0, 220])
     let labelWidth = 0;
     let tickSize = 0;
     let offset = 0;
@@ -24,9 +24,9 @@ function yAxisOrdinal() {
             })
 
         //position label on right hand axis
-        if (tickAlign=="left") {
-            yLabel.attr("transform","translate("+(labelWidth )+","+0+")")
-        }
+        // if (tickAlign=="left") {
+        //     yLabel.attr("transform","translate("+(labelWidth )+","+0+")")
+        // }
         //translate if a right axis
         if (tickAlign=="right") {
             yLabel.attr("transform","translate("+(offset-labelWidth )+","+0+")")
@@ -44,6 +44,10 @@ function yAxisOrdinal() {
         };
         axis.rangeRound = (d)=>{
             scale.rangeRound(d);
+            return axis;
+        };
+        axis.bandwidth = (  d)=>{
+            scale.bandwidth(d);
             return axis;
         };
 

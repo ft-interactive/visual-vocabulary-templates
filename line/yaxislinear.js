@@ -1,6 +1,6 @@
 function yaxislinear() {
     let yScale = d3.scaleLinear();
-    let yAxisAlign = "right"
+    let tickAlign = "right"
     let yLabelOffset = 0;
     let tickSize = 5;
     let yAxisHighlight = 0;
@@ -8,7 +8,7 @@ function yaxislinear() {
 
     function axis(parent) {
 
-        const yAxis =getAxis(yAxisAlign)
+        const yAxis =getAxis(tickAlign)
             .ticks(numTicksy)
             .scale(yScale)
         
@@ -25,12 +25,12 @@ function yaxislinear() {
         yLabel.call(yAxis.tickSize(tickSize-yLabelOffset))
 
         //position label on right hand axis
-        if(yAxisAlign=="right") {
+        if(tickAlign=="right") {
             yLabel.selectAll("text")
             .attr("dx",yLabelOffset)
         }
         //translate if a left axis
-        if (yAxisAlign=="left") {
+        if (tickAlign=="left") {
             yLabel.attr("transform","translate("+(tickSize-yLabelOffset)+","+0+")")
         }
         //identify 0 line if there is one
@@ -45,8 +45,8 @@ function yaxislinear() {
         yScale = d;
         return axis;
     }
-    axis.yAxisAlign = (d)=>{
-        yAxisAlign=d;
+    axis.tickAlign = (d)=>{
+        tickAlign=d;
         return axis;
     }
     axis.yLabelOffset = (d)=>{
@@ -67,9 +67,9 @@ function yaxislinear() {
         numTicksy = d;
         return axis;
     }
-    axis.yAxisAlign = (d)=>{
-        if(!d) return yAxisAlign;
-        yAxisAlign = d;
+    axis.tickAlign = (d)=>{
+        if(!d) return tickAlign;
+        tickAlign = d;
         return axis;
     }
     return axis
