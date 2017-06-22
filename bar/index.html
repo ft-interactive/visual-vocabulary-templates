@@ -8,6 +8,7 @@
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
     <script src="yAxisOrdinal.js"></script>
+    <script src="xAxisLinear.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
@@ -38,10 +39,10 @@ const sharedConfig = {
   subtitle:"Subtitle not yet added",  
   source:"Source not yet added",
 }
-let yMin = 0;//sets the minimum value on the yAxis
-let yMax = 1500;//sets the maximum value on the xAxis
-const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-const numTicksy = 3;//Number of tick on the uAxis
+let xMin = -200;//sets the minimum value on the yAxis
+let xMax = 1000;//sets the maximum value on the xAxis
+const yAxisHighlight = 0; //sets which tick to highlight on the yAxis
+const numTicks = 7;//Number of tick on the uAxis
 const yAxisAlign = "left";//alignment of the axis
 let legendAlign = "vert"//hori or vert, alignment of the legend
 
@@ -123,6 +124,7 @@ d3.csv('example.csv', function(data) {
         //define other functions to be called
         const yAxis0 = yAxisOrdinal();//sets up yAxis
         const yAxis1 = yAxisOrdinal();//sets up yAxis
+        const xAxis = xAxisLinear()
  
         //const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize=currentFrame.dimension().height;//Used when drawing the yAxis ticks
@@ -135,6 +137,12 @@ d3.csv('example.csv', function(data) {
         yAxis1
             .domain(seriesNames)
             .rangeRound([0,yAxis0.bandwidth()])
+        
+        xAxis
+            .domain([Math.min(xMin,valueExtent[0]),Math.max(xMax,valueExtent[1])])
+            .numTicks(numTicks)
+
+        console.log(xMin,xMax,valueExtent, xAxis.domain)
 
         let base = currentFrame.plot().append("g")
 
@@ -161,11 +169,22 @@ d3.csv('example.csv', function(data) {
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
+        xAxis
+            .range([0, currentFrame.dimension().width])
+            .tickSize(currentFrame.dimension().height)
+
+        currentFrame.plot()
+            .call(xAxis);
+
+
+
+
+
         //temporary recct to check axis position
         base.append("rect")
           .attr("width", currentFrame.dimension().width)
           .attr("height",currentFrame.dimension().height)
-          .attr("fill","#ededee");
+          .attr("fill","#fff8e8");
 
 
 
