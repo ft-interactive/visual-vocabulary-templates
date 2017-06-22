@@ -4,9 +4,9 @@
     <title>Slope chart - Visual Vocabulary</title>
     <script src="//d3js.org/d3.v4.js"></script>
     <script src="//d3js.org/d3-selection-multi.v1.min.js"></script>
-    <script src="https://unpkg.com/g-chartframe@0.4.24"></script>
+    <script src="https://unpkg.com/g-chartframe"></script>
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
-    <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
+    <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="slope.js"></script>
     <script src="legend.js"></script>
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
@@ -115,7 +115,6 @@ d3.csv('data.csv', function(data) {
     };
 
     //Use the seriesNames array to calculate the minimum and max values in the dataset
-
     const valueExtent = extentMulti(data,seriesNames);
     data.sort(dataSorter);
 
@@ -124,7 +123,7 @@ d3.csv('data.csv', function(data) {
     //define chart
     const myChart = slopeChart()
           .colourProperty( 'group' )
-          .seriesNames(seriesNames)
+          .groupNames(groupNames)
           .xDomain( seriesNames )
           .yDomain( [Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])] )
           .yAxisAlign(yAxisAlign)

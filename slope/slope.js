@@ -8,7 +8,7 @@ function slopeChart(){
         // .domain(['group']);
     let colourProperty = 'group';
     let includeLabel = (d)=>true;
-    let seriesNames = [];
+    let groupNames = [];
     let labelTextStart = (d) => 'start text';
     let labelTextEnd = (d) => 'end text';
     let highlightColour = '#F00';
@@ -30,7 +30,13 @@ function slopeChart(){
                 'y1':d=>yScale(d[xScale.domain()[0]]),
                 'y2':d=>yScale(d[xScale.domain()[1]]),
                 'stroke':d=>colourScale(d[colourProperty]),
-                'class':lineClasser
+                'class':lineClasser,
+                'opacity':d=> {
+                    if(groupNames.length > 0 && d[colourProperty] || groupNames.length === 0) {
+                        return 1;
+                    }
+                    return  0.2;
+                }
             });
 
         const labeled = parent.filter(includeLabel)
@@ -43,6 +49,12 @@ function slopeChart(){
                 'r':dotRadius,
                 'fill':d=>colourScale(d[colourProperty]),
                 'stroke':'none',
+                'opacity':d=> {
+                    if(groupNames.length > 0 && d[colourProperty] || groupNames.length === 0) {
+                        return 1;
+                    }
+                    return  0.2;
+                }
             });
 
         labeled.append('text')
@@ -64,6 +76,12 @@ function slopeChart(){
                 'r': dotRadius,
                 'fill': d=>colourScale(d[colourProperty]),
                 'stroke': 'none',
+                'opacity':d=> {
+                    if(groupNames.length > 0 && d[colourProperty] || groupNames.length === 0) {
+                        return 1;
+                    }
+                    return  0.2;
+                }
             });
 
         labeled.append('text')
@@ -126,8 +144,8 @@ function slopeChart(){
         return chart;
     }
 
-    chart.seriesNames = (x)=>{
-        seriesNames = x;
+    chart.groupNames = (x)=>{
+        groupNames = x;
         return chart;
     }
 
