@@ -1,9 +1,10 @@
 function drawLegend() {
-	let seriesNames=[]
+	let seriesNames=[];
+    let highlightNames = [];
 	const colourScale = d3.scaleOrdinal()
-        .range(gChartcolour.lineWeb)
+        // .range(gChartcolour.lineWeb)
         .domain(seriesNames);
-    let rem=16
+    let rem = 16;
     let alignment="hori";
 
 	function legend(parent) {
@@ -59,14 +60,25 @@ function drawLegend() {
     }
 
     legend.colourPalette = (d) =>{
-        if(d==='social' || d==='video'){
-            colourScale.range(gChartcolour.lineSocial);
-        } else if (d==='webS' || d==='webM' || d==='webL') {
-            colourScale.range(gChartcolour.lineWeb);
-        } else if (d==='print') {
-            colourScale.range(gChartcolour.linePrint);
+        if(highlightNames.length > 0) {
+            if(d==='social' || d==='video'){
+                colourScale.range(gChartcolour.lineSocial);
+            } else if (d==='webS' || d==='webM' || d==='webL') {
+                colourScale.range(gChartcolour.mutedFirstLineWeb);
+            } else if (d==='print') {
+                colourScale.range(gChartcolour.linePrint);
+            }
+            return legend;
+        }else {      
+            if(d==='social' || d==='video'){
+                colourScale.range(gChartcolour.lineSocial);
+            } else if (d==='webS' || d==='webM' || d==='webL') {
+                colourScale.range(gChartcolour.lineWeb);
+            } else if (d==='print') {
+                colourScale.range(gChartcolour.linePrint);
+            }
+            return legend;
         }
-        return legend;
     }
 
     legend.rem = (d)=>{
