@@ -152,11 +152,11 @@ function slopeChart(){
     chart.colourPalette = (d, groupNames) =>{
         if(groupNames.length > 0) {
             if(d==='social' || d==='video'){
-                colourScale.range(gChartcolour.lineSocial);
+                colourScale.range(gChartcolour.mutedFirstLineSocial);
             } else if (d==='webS' || d==='webM' || d==='webL') {
                 colourScale.range(gChartcolour.mutedFirstLineWeb);
             } else if (d==='print') {
-                colourScale.range(gChartcolour.linePrint);
+                colourScale.range(gChartcolour.mutedFirstLinePrint);
             }
         } else {
              if(d==='social' || d==='video'){
