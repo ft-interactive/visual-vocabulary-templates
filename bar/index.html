@@ -9,6 +9,7 @@
     <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
     <script src="yAxisOrdinal.js"></script>
     <script src="xAxisLinear.js"></script>
+    <script src="drawBars.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
@@ -51,18 +52,18 @@ let legendAlign = "vert"//hori or vert, alignment of the legend
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
    webS: gChartframe.webFrameS(sharedConfig)
-   .margin({top:100, left:15, bottom:82, right:5})
+   .margin({top:100, left:15, bottom:82, right:24})
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(400),
 
    webM: gChartframe.webFrameM(sharedConfig)
-   .margin({top:100, left:20, bottom:86, right:5})
+   .margin({top:100, left:20, bottom:86, right:24})
    // .title("Put headline here")
    .height(500),
 
    webL: gChartframe.webFrameL(sharedConfig)
-   .margin({top:100, left:20, bottom:104, right:5})
+   .margin({top:100, left:20, bottom:104, right:24})
    // .title("Put headline here")
    .height(700),
 
@@ -96,7 +97,7 @@ d3.csv('example.csv', function(data) {
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames=getSeriesNames(data.columns)
     const groupNames = [ ...new Set(data.map(d=>d.group)) ].filter(d=>d); // create an array of the group names
-    
+    //Buid the dataset for plotting
     let plotData=data.map(function(d) {
         return {
             name:d.group,
@@ -113,19 +114,16 @@ d3.csv('example.csv', function(data) {
         });
        return groups
     }
-
-    console.log(plotData)
-    console.log (groupNames)
-
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
-
+    //Draw the frames
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
         //define other functions to be called
         const yAxis0 = yAxisOrdinal();//sets up yAxis
         const yAxis1 = yAxisOrdinal();//sets up yAxis
         const xAxis = xAxisLinear()
+        const barChart = drawBars()
  
         //const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize=currentFrame.dimension().height;//Used when drawing the yAxis ticks
@@ -148,12 +146,11 @@ d3.csv('example.csv', function(data) {
 
         let base = currentFrame.plot().append("g")
 
-
         //Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
             .call(yAxis0);
               
-        //return the value in the variable newMargin
+        //return the value in the variable newMargin and move axis if needed
         if (yAxisAlign=="right") {
             let newMargin = yAxis0.labelWidth()+currentFrame.margin().right
             //Use newMargin redefine the new margin and range of xAxis
@@ -167,14 +164,14 @@ d3.csv('example.csv', function(data) {
             currentFrame.margin({left:newMargin});
 
         }
-
+        //Set the plot object to its new dimensions
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
-
+        //Use new widtth of frame to set the range of the x-axis and any other parameters   
         xAxis
             .range([0, currentFrame.dimension().width])
             .tickSize(currentFrame.dimension().height)
-
+        //Call the axis and move it if needed
         currentFrame.plot()
             .call(xAxis);
         if (xAxisAlign=="top") {
@@ -182,21 +179,26 @@ d3.csv('example.csv', function(data) {
             .attr("transform","translate(0,"+currentFrame.dimension().height+")")
         }
 
-
-
-
-
         //temporary recct to check axis position
         base.append("rect")
           .attr("width", currentFrame.dimension().width)
           .attr("height",currentFrame.dimension().height)
           .attr("fill","#fff8e8");
 
+        //console.log(plotData)
+
+        barChart.
+            .yAxis0(yAxis0)
+            .yAxis1(yAxis1)
+            .xAxis0(xAxis)
 
 
-
-
-
+        currentFrame.plot()
+            .selectAll(".groupHolder")
+            .data(plotData)
+            .enter()
+            .append("g")
+            .call(barChart)
     
      });
     // addSVGSavers('figure.saveable');
