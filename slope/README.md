@@ -1,8 +1,6 @@
-# Visual Vocabulary
+# Slope chart
 
-A library of data driven graphics -- to be used as starting points for static graphics to be further refined through Illustrator.
-[Viewable here](http://ft-interactive.github.io/visual-vocabulary/)
-
+Good for showing changing data as long as the data can be simplified into 2 or 3 points without missing a key part of story
 
 ## Licence
 
