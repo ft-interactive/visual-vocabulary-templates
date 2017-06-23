@@ -14,12 +14,26 @@
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
     .saveable button{ display: block; }
+    ul {line-height: 24px;}
     </style>
 </head>
 <body>
 
     <h1>Slope chart</h1>
     <p>Good for showing changing data as long as the data can be simplified into 2 or 3 points without missing a key part of story.</p>
+    <p><b>Some useful settings in the index.html</b>
+        <ul>
+            <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
+            <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
+        </ul>
+    </p>
+    <p><b>Column headings in the csv</b>
+        <ul>
+            <li><b>label</b> – use this column to turn the label on for a particular line, by putting 'yes' in the column</li>
+            <li><b>group</b> – use this column to group lines together, you can have up to 7 groups but ideally no more than four</li>
+        </ul>
+    </p>
+    <p>Please make sure than the <b>blue line</b> is on top as this is the primary line colour</p>
     <hr>
     <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
     <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
