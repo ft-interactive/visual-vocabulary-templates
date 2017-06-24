@@ -14,18 +14,17 @@ function drawBars() {
 		.enter()
 		.append("rect")
 		.attr("class","bars")
-		.attr("y",function(d) {return yScale1(d.name)})
-		.attr("height",function(d) {return yScale1.bandwidth()})
-		.attr("x",function(d) {
-			// console.log(d.value)
-			// console.log(xScale(d.value))
-			return xScale(d.value)})
-		//.attr("width",function(d) {return xScale(d.value)})
+		.attr("y",function(d) {return yScale0(d.group)})
+		//.attr("height",function(d) {return yScale1.bandwidth()})
+		// .attr("x",function(d) {
+		// 	// console.log(d.value)
+		// 	// console.log(xScale(d.value))
+		// 	return xScale(d.value)})
+		.attr("width",function(d) {return xScale(d.value)})
 
 	}
 
 	bars.yScale0 = (d)=>{
-		if(!d) return yScale0;
         yScale0 = d;
         return bars;
     }
@@ -34,12 +33,12 @@ function drawBars() {
         return bars;
     };
     bars.yRange0 = (d)=>{
-        yScale0.range(d);
+        yScale0.rangeRound(d);
         return bars;
     };
     bars.yScale1 = (d)=>{
     	if(!d) return yScale1;
-        yScale0 = d;
+        yScale1 = d;
         return bars;
     }
     bars.yDomain1 = (d)=>{
@@ -47,7 +46,7 @@ function drawBars() {
         return bars;
     };
     bars.yRange1 = (d)=>{
-        yScale1.range(d);
+        yScale1.rangeRound(d);
         return bars;
     };
     bars.xScale = (d)=>{

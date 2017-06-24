@@ -26,6 +26,7 @@ function yAxisOrdinal() {
     }
 
     axis.scale = (d)=>{
+        if(!d) return scale;
         scale = d;
         return axis;
     }

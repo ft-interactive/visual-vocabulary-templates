@@ -134,6 +134,7 @@ d3.csv('example.csv', function(data) {
             .rangeRound([0,currentFrame.dimension().height])
 
         yAxis1
+            .align(yAxisAlign)
             .domain(seriesNames)
             .rangeRound([0,yAxis0.bandwidth()])
         
@@ -188,9 +189,9 @@ d3.csv('example.csv', function(data) {
         console.log(plotData)
 
         barChart
-            .yScale0(yAxis0.scale)
-            .yScale1(yAxis1.scale)
-            .xScale(xAxis.scale)
+            .yScale0(yAxis0.scale())
+            .yScale1(yAxis1.scale())
+            .xScale(xAxis.scale())
 
 
         currentFrame.plot()
