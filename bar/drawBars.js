@@ -7,20 +7,20 @@ function drawBars() {
 
 	function bars(parent) {
 		console.log("bars")
-		//parent.attr("transform", function(d) { return "translate(0," + yScale0(d.name) + ")"; })
+		parent.attr("transform", function(d) { return "translate(0," + yScale0(d.name) + ")"; })
 		
 		parent.selectAll("rect")
 		.data(function(d) {return d.groups})
 		.enter()
 		.append("rect")
 		.attr("class","bars")
-		.attr("y",function(d) {return yScale0(d.group)})
+		.attr("y",(d)=> {return yScale0(d.name)})
 		//.attr("height",function(d) {return yScale1.bandwidth()})
 		// .attr("x",function(d) {
 		// 	// console.log(d.value)
 		// 	// console.log(xScale(d.value))
 		// 	return xScale(d.value)})
-		.attr("width",function(d) {return xScale(d.value)})
+		//.attr("width",function(d) {return xScale(d.value)})
 
 	}
 
