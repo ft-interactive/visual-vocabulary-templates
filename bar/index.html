@@ -185,19 +185,20 @@ d3.csv('example.csv', function(data) {
           .attr("height",currentFrame.dimension().height)
           .attr("fill","#fff8e8");
 
-        //console.log(plotData)
+        console.log(plotData)
 
-        barChart.
-            .yAxis0(yAxis0)
-            .yAxis1(yAxis1)
-            .xAxis0(xAxis)
+        barChart
+            .yScale0(yAxis0.scale)
+            .yScale1(yAxis1.scale)
+            .xScale(xAxis.scale)
 
 
         currentFrame.plot()
-            .selectAll(".groupHolder")
+            .selectAll(".barHolder")
             .data(plotData)
             .enter()
             .append("g")
+                // .attr("transform", function(d) { return "translate(0," + yAxis0(d.name) + ")"; })
             .call(barChart)
     
      });
