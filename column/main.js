@@ -1,6 +1,6 @@
 function columnChart() {
-    let yScale;
-    let xScale;
+    let yScale = d3.scaleLinear();
+    let xScale = d3.scaleBand();
     let seriesNames = [];
     let yAxisAlign = "right"
     let rem =16;

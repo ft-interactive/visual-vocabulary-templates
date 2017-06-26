@@ -75,9 +75,9 @@ const sharedConfig = {
   source:"Source not yet added",
 }
 let yMin = 0;//sets the minimum value on the yAxis
-let yMax = 1500;//sets the maximum value on the xAxis
+let yMax = 0;//sets the maximum value on the xAxis
 const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-const numTicksy = 3;//Number of tick on the uAxis
+const numTicksy = 5;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 const xAxisAlign = "bottom";//alignment of the axis
 // const interval = "years"//date interval on xAxis "decade", "lustrum", "years","months","days"
@@ -144,6 +144,7 @@ d3.csv(dataFile, function(data) {
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
 
+    console.log(valueExtent)
     const columnNames = [ ...new Set(data.map(d=>d.name)) ]; // create an array of the column names
     console.log(columnNames)
     //define chart
@@ -174,27 +175,60 @@ d3.csv(dataFile, function(data) {
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
 
-        const xAxis0 = xAxisOrdinal();//sets up yAxis
-        const xAxis1 = xAxisOrdinal();//sets up yAxis
-        const yAxis = gAxis.yaxisLinear();
+        const myXAxis0 = xAxisOrdinal();//sets up yAxis
+        const myXAxis1 = xAxisOrdinal();//sets up yAxis
+        const myYAxis = gAxis.yaxisLinear();
         const myChart = columnChart();
 
         //define other functions to be called
         const tickSize = currentFrame.dimension().width;//Used when drawing the yAxis ticks
 
-        xAxis0
+        myChart
+            .yRange( [currentFrame.dimension().height,0] )
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette((frameName));
+
+        
+        myYAxis
+            .yScale(myChart.yScale())
+            .numTicks(numTicksy)
+            .tickSize(tickSize)
+            .yAxisHighlight(yAxisHighlight)
+            .tickAlign(myChart.yAxisAlign())
+            
+        myXAxis0
             // .align(xAxisAlign)
             .domain(columnNames)
             .rangeRound([0,currentFrame.dimension().width])
-        xAxis1
+        myXAxis1
             // .align(xAxisAlign)
             .domain(seriesNames)
-            .rangeRound([0,xAxis0.bandwidth()])
+            .rangeRound([0,myXAxis0.bandwidth()])
         
-        yAxis
+        myYAxis
             .tickAlign(yAxisAlign)
             .domain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
             .numTicks(numTicksy)
+
+
+        currentFrame.plot()
+          .call(myYAxis);
+
+
+         //return the value in the variable newMargin
+        if (yAxisAlign=="right") {
+            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
+            //Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({right:newMargin});
+        }
+        else {
+            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
+            //Use newMargin re define the new margin and range of xAxis
+            currentFrame.margin({left:newMargin});
+        }
+
+        myChart.xRange( [0, currentFrame.dimension().width] );
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
