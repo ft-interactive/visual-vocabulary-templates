@@ -74,10 +74,10 @@ const sharedConfig = {
   subtitle:"Subtitle not yet added",  
   source:"Source not yet added",
 }
-let yMin = 0;//sets the minimum value on the yAxis
-let yMax = 0;//sets the maximum value on the xAxis
+let yMin = -600;//sets the minimum value on the yAxis
+let yMax = 1000;//sets the maximum value on the xAxis
 const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-const numTicksy = 5;//Number of tick on the uAxis
+const numTicksy = 8;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 const xAxisAlign = "bottom";//alignment of the axis
 // const interval = "years"//date interval on xAxis "decade", "lustrum", "years","months","days"
@@ -146,12 +146,10 @@ d3.csv(dataFile, function(data) {
 
     console.log(valueExtent)
     const columnNames = [ ...new Set(data.map(d=>d.name)) ]; // create an array of the column names
-    console.log(columnNames)
+
     //define chart
     const myChart = columnChart()
           .seriesNames(seriesNames)
-          .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
-          .xDomain1(d3.extent(data, function(d) {return d.date;}))
           .yAxisAlign(yAxisAlign)
     
     //Buid the dataset for plotting
@@ -199,21 +197,13 @@ d3.csv(dataFile, function(data) {
             .yAxisHighlight(yAxisHighlight)
             .tickAlign(myChart.yAxisAlign())
 
-        myXAxis0
-            // .align(xAxisAlign)
-            .domain(columnNames)
-            .rangeRound([0,currentFrame.dimension().width])
-        myXAxis1
-            // .align(xAxisAlign)
-            .domain(seriesNames)
-            .rangeRound([0,myXAxis0.bandwidth()])
-        
         myYAxis
             .tickAlign(yAxisAlign)
             .domain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
             .numTicks(numTicksy)
 
-
+        let base = currentFrame.plot().append("g")
+        
         currentFrame.plot()
           .call(myYAxis);
 
@@ -230,10 +220,36 @@ d3.csv(dataFile, function(data) {
             currentFrame.margin({left:newMargin});
         }
 
-        myChart.xRange1( [0, currentFrame.dimension().width] );
-
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
+        myXAxis0
+            .align(xAxisAlign)
+            .domain(columnNames)
+            .rangeRound([0,currentFrame.dimension().width],10)
+            .offset(currentFrame.dimension().height + currentFrame.rem()/2)
+        myXAxis1
+            .align(xAxisAlign)
+            .domain(seriesNames)
+            .rangeRound([0,myXAxis0.bandwidth()])
+
+        myChart
+            .xScale0(myXAxis0.scale())
+            .xScale1(myXAxis1.scale())
+            // .yScale(myYAxis.yScale())
+
+        currentFrame.plot()
+          .call(myXAxis0)
+
+
+        currentFrame.plot()
+          .selectAll(".columnHolder")
+          .data(plotData)
+          .enter()
+          .append("g")
+          .attr('class', 'columnHolder')
+          .call(myChart)
+
     });
     // addSVGSavers('figure.saveable');
 });

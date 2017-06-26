@@ -11,8 +11,19 @@ function columnChart() {
         .domain(seriesNames);
   
     function chart(parent){
-
+        parent.attr("transform", function(d) { return "translate(" + xScale0(d.name) + ",0)"; })
+            .attr('width', xScale0.bandwidth() )
         
+        parent.selectAll("rect")
+            .data(function(d) {return d.groups})
+            .enter()
+            .append("rect")
+            .attr("class","columns")
+            .attr("x",(d)=> {return xScale1(d.name)})
+            .attr("width",(d)=> {return xScale1.bandwidth()})
+            .attr("y",(d)=> {return yScale(Math.max(0, d.value))})
+            .attr("height", (d)=> {return Math.abs(yScale(d.value) - yScale(0))})
+            .attr("fill",(d)=> {return colourScale(d.name);})
     }
 
     chart.yScale = (d)=>{
@@ -50,7 +61,7 @@ function columnChart() {
         return chart;
     };
     chart.xRange0 = (d)=>{
-        xScale0.range(d);
+        xScale0.rangeRound(d);
         return chart;
     };
 
@@ -64,7 +75,7 @@ function columnChart() {
         return chart;
     };
     chart.xRange1 = (d)=>{
-        xScale1.range(d);
+        xScale1.rangeRound(d);
         return chart;
     };
     chart.plotDim = (d)=>{

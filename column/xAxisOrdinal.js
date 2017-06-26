@@ -1,8 +1,9 @@
 function xAxisOrdinal() {
-    let align ="right"
+    let align ="bottom"
     let scale = d3.scaleBand()
         .domain(["Oranges", "Lemons", "Apples", "Pears"])
         .rangeRound([0, 220])
+        .paddingInner(0.066)
     let labelWidth = 0;
     let tickSize = 0;
     let offset = 0;
@@ -15,8 +16,8 @@ function xAxisOrdinal() {
 
         xLabel = parent.append("g")
             .attr("class","axis xAxis")
+            .attr('transform','translate(0,' + offset +')' )
             .call(xAxis)
-        
     }
 
     axis.scale = (d)=>{
@@ -33,8 +34,14 @@ function xAxisOrdinal() {
         return axis;
     };
     axis.bandwidth = (  d)=>{
-        if(!d) return scale;
+        if (!d) return scale.bandwidth();
         scale.bandwidth(d);
+        return axis;
+    };
+
+    axis.paddingInner = (  d)=>{
+        if (!d) return scale.paddingInner();
+        scale.paddingInner(d);
         return axis;
     };
 
