@@ -17,7 +17,7 @@ function drawChart() {
 
         parent.append("circle")
             .attr("cx",function(d){
-                return xScale(d.name);
+                return xScale(d.name)+(xScale.bandwidth()/2);
             })
             .attr("cy", function(d){
                 return yScale(d[seriesNames[0]])
@@ -25,13 +25,15 @@ function drawChart() {
             .attr("r",dotRadius*xScale.bandwidth())
             .attr("fill",colourScale(seriesNames[0]))
 
+            console.log(stalks)
+
         if (stalks) {
             parent.append("line")
                 .attr("x1",function(d){
-                    return xScale(d.name)
+                    return xScale(d.name)+(xScale.bandwidth()/2)
                 })
                 .attr("x2",function(d){
-                    return xScale(d.name)
+                    return xScale(d.name)+(xScale.bandwidth()/2)
                 })
                .attr("y1",yScale(0))
                .attr("y2",function(d){
