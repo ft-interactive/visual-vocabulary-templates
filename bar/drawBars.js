@@ -14,15 +14,13 @@ function drawBars() {
 		.enter()
 		.append("rect")
 		.attr("class","bars")
-		.attr("y",(d)=> {return yScale0(d.name)})
-        .attr("height",function(d) {
-            console.log(yScale1.bandwidth())
-            return yScale1.bandwidth()})
-		// .attr("x",function(d) {
-		// 	// console.log(d.value)
-		// 	// console.log(xScale(d.value))
-		// 	return xScale(d.value)})
-		//.attr("width",function(d) {return xScale(d.value)})
+		.attr("y",(d)=> {return yScale1(d.name)})
+        .attr("height",function(d) {return yScale1.bandwidth()})
+		.attr("x",function(d) {
+			console.log (xScale(d.value))
+			return xScale(d.value)})
+		.attr("width",200)
+		.attr("fill","#f3e5c3")
 
 	}
 

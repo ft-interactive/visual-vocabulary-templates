@@ -39,7 +39,7 @@ function yAxisOrdinal() {
         return axis;
     };
     axis.bandwidth = (  d)=>{
-        if(!d) return scale;
+        if (!d) return scale.bandwidth();
         scale.bandwidth(d);
         return axis;
     };
