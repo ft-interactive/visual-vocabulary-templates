@@ -2,11 +2,14 @@ function drawBars() {
 
 	let yScale0 = d3.scaleBand();
 	let yScale1 = d3.scaleBand();
-	let xScale = d3.scaleLinear()
+	let xScale = d3.scaleLinear();
+	let seriesNames = [];
+	let colourProperty = "name"
+	let colourScale = d3.scaleOrdinal()
+        .domain(seriesNames);
 
 
 	function bars(parent) {
-		console.log("bars")
 		parent.attr("transform", function(d) { return "translate(0," + yScale0(d.name) + ")"; })
 		
 		parent.selectAll("rect")
@@ -18,7 +21,7 @@ function drawBars() {
         .attr("height",(d)=> {return yScale1.bandwidth()})
 		.attr("x",(d)=> {return xScale(Math.min(0, d.value))})
 		.attr("width", (d)=> {return Math.abs(xScale(d.value) - xScale(0))})
-		.attr("fill","#f3e5c3")
+		.attr("fill",(d)=> {return colourScale(d.name)})
 
 	}
 
@@ -56,8 +59,27 @@ function drawBars() {
         xScale.domain(d);
         return bars;
     };
+    
     bars.xRange = (d)=>{
         xScale.range(d);
+        return bars;
+    };
+    bars.colourProperty = (d)=>{
+        colourProperty = d;
+        return bars;
+    };
+    bars.colourPalette = (d) =>{
+        if(d==='social' || d==='video'){
+            colourScale.range(gChartcolour.lineSocial);
+        } else if (d==='webS' || d==='webM' || d==='webL') {
+            colourScale.range(gChartcolour.lineWeb);
+        } else if (d==='print') {
+            colourScale.range(gChartcolour.linePrint);
+        }
+        return bars;
+    }
+    bars.seriesNames = (d)=>{
+        seriesNames = d;
         return bars;
     };
 
