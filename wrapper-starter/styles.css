@@ -1,242 +1,242 @@
 /* overall text style for each chart frame*/
 
-.axis {
-    font-size: inherit !important;
+svg {
+    font-size: 0;
 }
 
 /* .overall text styles on axis*/
-[data-frame^="webS"] .axis text,
-[data-frame^="webM"] .axis text,
-[data-frame^="webL"] .axis text {
+.ft-webgraphic-s .axis text,
+.ft-webgraphic-m .axis text,
+.ft-webgraphic-l .axis text {
     font-family: metric;
 }
 
-[data-frame^="webS"] .axis text {
+.ft-webgraphic-s .axis text {
     font-size: 14px;
 }
 
-[data-frame^="webM"] .axis text {
+.ft-webgraphic-m .axis text {
     font-size: 16px;
 }
 
-[data-frame^="webL"] .axis text {
+.ft-webgraphic-l .axis text {
     font-size: 18px;
 }
 
-[data-frame^="print"] .axis text {
+.ft-printgraphic .axis text {
     font-family: metric;
     font-size: 9.6px;
 }
-[data-frame^="social"] .axis text {
+.ft-socialgraphic .axis text {
     font-family: metric;
     font-size: 28px;
 }
-[data-frame^="video"] .axis text {
+.ft-videographic .axis text {
     font-family: metric;
     font-size: 48px;
 }
 
 /* .tick text on yAxis*/
-[data-frame^="webS"] .yAxis text,
-[data-frame^="webM"] .yAxis text,
-[data-frame^="webL"] .yAxis text {
+.ft-webgraphic-s .yAxis text,
+.ft-webgraphic-m .yAxis text,
+.ft-webgraphic-l .yAxis text {
     fill: #66605C;
     text-anchor: end;
 }
-[data-frame^="print"] .yAxis text{
+.ft-printgraphic .yAxis text{
     text-anchor: end;
 }
-[data-frame^="social"] .yAxis text{
+.ft-socialgraphic .yAxis text{
     fill-opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: end;
 }
-[data-frame^="video"] .yAxis text{
+.ft-videographic .yAxis text{
     fill-opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: end;
 }
 
 /* .tick line styles on yAxis*/
-[data-frame^="webS"] .yAxis line,
-[data-frame^="webM"] .yAxis line,
-[data-frame^="webL"] .yAxis line {
+.ft-webgraphic-s .yAxis line,
+.ft-webgraphic-m .yAxis line,
+.ft-webgraphic-l .yAxis line {
     stroke: #CCC1B7;
     stroke-width: 1px;
     stroke-dasharray: 4, 4;
 }
-[data-frame^="print"] .yAxis line{
+.ft-printgraphic .yAxis line{
     stroke: #000000;
     stroke-width: 0.3px;
 }
-[data-frame^="social"] .yAxis line{
+.ft-socialgraphic .yAxis line{
     stroke: #FFFFFF;
     stroke-width: 2px;
     stroke-dasharray: 2, 8;
     stroke-opacity: 0.38;
 }
-[data-frame^="video"] .yAxis line{
+.ft-videographic .yAxis line{
     stroke: #FFFFFF;
     stroke-width: 4px;
     stroke-opacity: 0.38;
 }
 /* Makes domian invivible on yAxis*/
-[data-frame^="webS"] .domain,
-[data-frame^="webM"] .domain,
-[data-frame^="webL"] .domain {
+.ft-webgraphic-s .domain,
+.ft-webgraphic-m .domain,
+.ft-webgraphic-l .domain {
     stroke-width: 0px;
 }
-[data-frame^="print"] .domain{
+.ft-printgraphic .domain{
     stroke-width: 0px;
 }
-[data-frame^="social"] .domain{
+.ft-socialgraphic .domain{
     stroke-width: 0px;
 }
-[data-frame^="video"] .domain{
+.ft-videographic .domain{
     stroke-width: 0px;
 }
 /* .tick text on yAxis*/
-[data-frame^="webS"] .xAxis text,
-[data-frame^="webM"] .xAxis text,
-[data-frame^="webL"] .xAxis text {
+.ft-webgraphic-s .xAxis text,
+.ft-webgraphic-m .xAxis text,
+.ft-webgraphic-l .xAxis text {
     fill: #66605C;
     text-anchor: middle;
 }
-[data-frame^="print"] .xAxis text{
+.ft-printgraphic .xAxis text{
     text-anchor: middle;
 }
-[data-frame^="social"] .xAxis text{
+.ft-socialgraphic .xAxis text{
     fill-opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: middle;
 }
-[data-frame^="video"] .xAxis text{
+.ft-videographic .xAxis text{
     fill-opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: middle;
 }
-[data-frame^="webS"] .xAxis line,
-[data-frame^="webM"] .xAxis line,
-[data-frame^="webL"] .xAxis line {
+.ft-webgraphic-s .xAxis line,
+.ft-webgraphic-m .xAxis line,
+.ft-webgraphic-l .xAxis line {
     stroke: #CEC6B9;
     stroke-width: 1px;
     stroke-dasharray: 2,1;
 }
-[data-frame^="print"] .xAxis line{
+.ft-printgraphic .xAxis line{
     stroke: #000000;
     stroke-width: 0.3px;
 }
-[data-frame^="social"] .xAxis line{
+.ft-socialgraphic .xAxis line{
     stroke: #FFFFFF;
     stroke-width: 2px;
     stroke-dasharray: 2, 8;
     stroke-opacity: 0.38;
 }
-[data-frame^="video"] .xAxis line{
+.ft-videographic .xAxis line{
     stroke: #FFFFFF;
     stroke-width: 4px;
     stroke-opacity: 0.38;
 }
 /* Style for the highlight or base line on yAxia*/
-[data-frame^="webS"] .baseline line, 
-[data-frame^="webM"] .baseline line,
-[data-frame^="webL"] .baseline line {
+.ft-webgraphic-s .baseline line, 
+.ft-webgraphic-m .baseline line,
+.ft-webgraphic-l .baseline line {
     stroke: #CEC6B9;
     stroke-width: 1px;
     stroke-dasharray: 1, 0;
 }
-[data-frame^="print"] .baseline line{
+.ft-printgraphic .baseline line{
     stroke: #000000;
     stroke-width: 0.6px;
 }
-[data-frame^="social"] .baseline line{
+.ft-socialgraphic .baseline line{
     stroke: #FFFFFF;
     stroke-width: 2px;
     stroke-dasharray: 1, 0;
     stroke-opacity: 0.5;
 }
-[data-frame^="video"] .baseline line{
+.ft-videographic .baseline line{
     stroke: #FFFFFF;
     stroke-width: 4px;
     stroke-opacity: .38;
 }
 /* Styles for lines on chart*/
-[data-frame^="webS"] .lines,
-[data-frame^="webM"] .lines,
-[data-frame^="webL"] .lines {
+.ft-webgraphic-s .lines,
+.ft-webgraphic-m .lines,
+.ft-webgraphic-l .lines {
     stroke-linecap: square;
     stroke-linejoin: round;
     stroke-width: 3px;
     fill: none;
 }
-[data-frame^="print"] .lines{
+.ft-printgraphic .lines{
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 2px;
     fill: none;
 }
-[data-frame^="social"] .lines{
+.ft-socialgraphic .lines{
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 5px;
     fill: none;
 }
-[data-frame^="video"] .lines{
+.ft-videographic .lines{
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 8px;
     fill: none;
 }
 /* .overall text styles on axis*/
-[data-frame^="webS"] .highlights,
-[data-frame^="webM"] .highlights,
-[data-frame^="webL"] .highlights {
+.ft-webgraphic-s .highlights,
+.ft-webgraphic-m .highlights,
+.ft-webgraphic-l .highlights {
     fill: #F2DFCE;
 }
 
-[data-frame^="print"] .highlights{
+.ft-printgraphic .highlights{
     fill: #95BFC5;
     opacity: 0.3;
 }
-[data-frame^="social"] .highlights{
+.ft-socialgraphic .highlights{
     fill: #ffffff;
     opacity: 0.38;
 }
-[data-frame^="video"] .highlights{
+.ft-videographic .highlights{
     fill: #ffffff;
     opacity: 0.38
 }
 /* legend */
-[data-frame^="webS"] .legend,
-[data-frame^="webM"] .legend,
-[data-frame^="webL"] .legend {
+.ft-webgraphic-s .legend,
+.ft-webgraphic-m .legend,
+.ft-webgraphic-l .legend {
     font-family: metric;
     fill: #66605C;
 }
 
-[data-frame^="webS"] .legend {
+.ft-webgraphic-s .legend {
     font-size: 14px;
 }
 
-[data-frame^="webM"] .legend {
+.ft-webgraphic-m .legend {
     font-size: 16px;
 }
 
-[data-frame^="webL"] .legend {
+.ft-webgraphic-l .legend {
     font-size: 18px;
 }
 
-[data-frame^="print"] .legend{
+.ft-printgraphic .legend{
     font-family: metric;
     font-size: 9.6px;
 }
-[data-frame^="social"] .legend{
+.ft-socialgraphic .legend{
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;
     font-size: 28px;
 }
-[data-frame^="video"] .legend{
+.ft-videographic .legend{
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;

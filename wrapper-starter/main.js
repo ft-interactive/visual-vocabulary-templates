@@ -1,5 +1,4 @@
 function drawChart() {
-    console.log('hello')
     let yScale;
     let xScale;
     let seriesNames = [];
