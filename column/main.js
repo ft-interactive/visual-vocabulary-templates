@@ -1,6 +1,7 @@
 function columnChart() {
     let yScale = d3.scaleLinear();
-    let xScale = d3.scaleBand();
+    let xScale0 = d3.scaleBand();
+    let xScale1 = d3.scaleBand();
     let seriesNames = [];
     let yAxisAlign = "right"
     let rem =16;
@@ -19,11 +20,6 @@ function columnChart() {
         yScale = d;
         return chart;
     }
-    chart.yAxisAlign = (d)=>{
-        if(!d) return yAxisAlign;
-        yAxisAlign = d;
-        return chart;
-    }
     chart.yDomain = (d)=>{
         yScale.domain(d);
         return chart;
@@ -34,21 +30,41 @@ function columnChart() {
         return chart;
     };
 
+    chart.yAxisAlign = (d)=>{
+        if(!d) return yAxisAlign;
+        yAxisAlign = d;
+        return chart;
+    }
+
     chart.seriesNames = (d)=>{
         seriesNames = d;
         return chart;
     }
-    chart.xScale = (d)=>{
-        if(!d) return xScale;
-        xScale = d;
+    chart.xScale0 = (d)=>{
+        if(!d) return xScale0;
+        xScale0 = d;
         return chart;
     }
-    chart.xDomain = (d)=>{
-        xScale.domain(d);
+    chart.xDomain0 = (d)=>{
+        xScale0.domain(d);
         return chart;
     };
-    chart.xRange = (d)=>{
-        xScale.range(d);
+    chart.xRange0 = (d)=>{
+        xScale0.range(d);
+        return chart;
+    };
+
+    chart.xScale1 = (d)=>{
+        if(!d) return xScale1;
+        xScale1 = d;
+        return chart;
+    }
+    chart.xDomain1 = (d)=>{
+        xScale1.domain(d);
+        return chart;
+    };
+    chart.xRange1 = (d)=>{
+        xScale1.range(d);
         return chart;
     };
     chart.plotDim = (d)=>{

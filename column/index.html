@@ -150,6 +150,9 @@ d3.csv(dataFile, function(data) {
     //define chart
     const myChart = columnChart()
           .seriesNames(seriesNames)
+          .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
+          .xDomain1(d3.extent(data, function(d) {return d.date;}))
+          .yAxisAlign(yAxisAlign)
     
     //Buid the dataset for plotting
     let plotData = data.map(function(d) {
@@ -189,14 +192,13 @@ d3.csv(dataFile, function(data) {
             .rem(currentFrame.rem())
             .colourPalette((frameName));
 
-        
         myYAxis
             .yScale(myChart.yScale())
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
             .tickAlign(myChart.yAxisAlign())
-            
+
         myXAxis0
             // .align(xAxisAlign)
             .domain(columnNames)
@@ -228,7 +230,7 @@ d3.csv(dataFile, function(data) {
             currentFrame.margin({left:newMargin});
         }
 
-        myChart.xRange( [0, currentFrame.dimension().width] );
+        myChart.xRange1( [0, currentFrame.dimension().width] );
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
