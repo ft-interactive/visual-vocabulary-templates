@@ -35,7 +35,15 @@ function drawChart() {
                 .attr("x2",function(d){
                     return xScale(d.name)+(xScale.bandwidth()/2)
                 })
-               .attr("y1",yScale(yScale.domain()[0]))
+               .attr("y1",function(d){
+                    //case negative scales
+                    if (yScale.domain()[0]<0){
+                        return yScale(0)
+                    }   else    {//positive scales
+                        return yScale(yScale.domain()[0])
+                    }
+
+                })
                .attr("y2",function(d){
                     return yScale(d[seriesNames[0]])
                })
