@@ -7,7 +7,7 @@
     
     <script src="//d3js.org/d3.v4.js"></script>
     <script src="//d3js.org/d3-selection-multi.v1.min.js"></script>
-    <script src="https://unpkg.com/g-chartframe@0.4.24"></script>
+    <script src="https://unpkg.com/g-chartframe"></script>
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
@@ -46,10 +46,12 @@ const sharedConfig = {
 }
 let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the yAxis
+
+//display options
 const dots = true;
 const dotWidth = 0.5;//0.5 = half the width of the column, 1 = full width
 const stalks = true;
-const stalkWidth = .1;//0.5 = half the width of the column, 1 = full width
+const stalkWidth = 0.1;//0.5 = half the width of the column, 1 = full width
 
 let yAxisHighlight// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 8;//Number of tick on the uAxis
@@ -125,6 +127,9 @@ d3.csv('data.csv', function(data) {
         //define other functions to be called
         const tickSize = currentFrame.dimension().width;//Used when drawing the yAxis ticks
 
+
+        myChart.stalks(stalks)
+
         myChart
           .yRange( [currentFrame.dimension().height,0] )
           .xRange([currentFrame.dimension().width,0])
@@ -133,8 +138,8 @@ d3.csv('data.csv', function(data) {
           .colourPalette((frameName))
           .stalkWidth(stalkWidth)
           .dotWidth(dotWidth)
-          .stalks(stalks)
-          .dots(dots);
+          .dots(dots)
+
 
         myYAxis
           .yScale(myChart.yScale())
