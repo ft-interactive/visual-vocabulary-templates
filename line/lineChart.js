@@ -16,6 +16,7 @@ function lineChart() {
   
     function chart(parent){
 
+        
         var lineData= d3.line()
             .curve(interpolation)
             .x(function(d,i) { 
