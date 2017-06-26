@@ -2,7 +2,8 @@ function drawChart() {
 
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleBand()
-    let stalks = true;
+    let stalks = false;
+    let dots = false;
     let stalkWidth = .1;
     let dotWidth = .25;
     
@@ -15,6 +16,8 @@ function drawChart() {
   
     function chart(parent){
 
+        if (dots){
+
         parent.append("circle")
             .attr("cx",function(d){
                 return xScale(d.name)+(xScale.bandwidth()/2);
@@ -25,7 +28,7 @@ function drawChart() {
             .attr("r",(dotWidth/2)*xScale.bandwidth())
             .attr("fill",colourScale(seriesNames[0]))
 
-            console.log(stalks)
+        }
 
         if (stalks) {
             parent.append("line")
@@ -50,9 +53,6 @@ function drawChart() {
                .attr("stroke-width",stalkWidth*xScale.bandwidth())
                .attr("stroke",colourScale(seriesNames[0]))
         }
-
-
-
     }
 
     chart.yScale = (d)=>{
@@ -76,6 +76,11 @@ function drawChart() {
     chart.stalks = (d)=>{
         if(!d) return stalks;
         stalks = d;
+        return chart;
+    };
+    chart.dots = (d)=>{
+        if(!d) return dots;
+        dots = d;
         return chart;
     };
     chart.stalkWidth = (d)=>{
