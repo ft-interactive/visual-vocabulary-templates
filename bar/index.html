@@ -49,7 +49,7 @@ const colourProperty = "name"
 let yAxisAlign = "left";//alignment of the axis
 let xAxisAlign = "bottom"
 let legendAlign = "vert"//hori or vert, alignment of the legend
-let sort = "descending";
+let sort = "ascending";
 let sortOn = 2
 
 
@@ -131,7 +131,7 @@ d3.csv('example.csv', function(data) {
         }
     else { plotData = plotData.sort(function(a, b) { return a.groups[sortOn].value - b.groups[sortOn].value; })} //Sorts biggest rects to the left
 
-    console.log("After",sorted)
+    console.log("After",plotData)
 
     //Draw the frames
     Object.keys(frame).forEach(frameName=>{
@@ -148,7 +148,7 @@ d3.csv('example.csv', function(data) {
         yAxis0
             .align(yAxisAlign)
             .domain(groupNames)
-            .rangeRound([currentFrame.dimension().height,0])
+            .rangeRound([0,currentFrame.dimension().height])
 
         yAxis1
             .paddingInner(0.06)
