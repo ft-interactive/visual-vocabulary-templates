@@ -3,7 +3,7 @@ function xAxisOrdinal() {
     let scale = d3.scaleBand()
         .domain(["Oranges", "Lemons", "Apples", "Pears"])
         .rangeRound([0, 220])
-        .paddingInner(0.066)
+        .paddingInner(0.1)
         .paddingOuter(0.05)
     let labelWidth = 0;
     let tickSize = 0;
@@ -14,6 +14,12 @@ function xAxisOrdinal() {
         const xAxis =getAxis(align)
             .tickSize(tickSize)
             .scale(scale)
+
+        if (scale.domain.length > 1) {
+            scale.paddingInner(0.1)
+        } else {
+            scale.paddingInner(0.2)
+        }
 
         xLabel = parent.append("g")
             .attr("class","axis xAxis")
