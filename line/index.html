@@ -4,9 +4,9 @@
     <title>Line chart - Visual Vocabulary</title>
     <script src="//d3js.org/d3.v4.js"></script>
     <script src="//d3js.org/d3-selection-multi.v1.min.js"></script>
-    <script src="https://unpkg.com/g-chartframe@0.4.24"></script>
+    <script src="https://unpkg.com/g-chartframe"></script>
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
-    <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
+    <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="lineChart.js"></script>
     <script src="legend.js"></script>
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
@@ -15,12 +15,30 @@
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
     .saveable button{ display: block; }
+    ul {line-height: 24px;}
     </style>
 </head>
 <body>
 
     <h1>Line chart</h1>
-    <p>A suggested starting point new charts types in the visual vocab.</p>
+    <p>The standard way to show a changing time series. If data are irregular, consider markers to represent data points</p>
+    <p><b>Some useful settings in the index.html</b>
+        <ul>
+            <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
+            <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
+            <li><b>annotate</b> – set to 'true' will display annotations in your dataset's 'annotate' column</li>
+            <li><b>highlightNames</b> – put the column names of the data you want to highlight, all other series will be muted</li>
+            <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
+        </ul>
+    </p>
+     <p><b>Column headings in the csv</b>
+        <ul>
+            <li><b>annotate</b> – use this column to create annotations for a particular point in time</li>
+            <li><b>highlight</b> – use this column to define highlight bands in the background of your chart, add 'begin' where you want the band to start and 'end' where you want it to finish. You can have as many highlights as you want.</li>
+        </ul>
+    </p>
+    <p>Please make sure than the <b>blue line</b> is on top as this is the primary line colour</p>
+
     <hr>
     <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
     <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
@@ -36,28 +54,33 @@
 
 //User defined constants similar to version 2
 const dateStructure = "%d/%m/%Y";
+
+const dataFile = "data.csv";
+
 const sharedConfig = {
   title:"Title not yet added",
   subtitle:"Subtitle not yet added",  
   source:"Source not yet added",
 }
+
 let yMin = 0;//sets the minimum value on the yAxis
-let yMax = 1500;//sets the maximum value on the xAxis
-const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-const numTicksy = 3;//Number of tick on the uAxis
+let yMax = 0;//sets the maximum value on the xAxis
+let yAxisHighlight = 100; //sets which tick to highlight on the yAxis
+const numTicksy = 4;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
-const interval = "years"//date interval on xAxis "decade", "lustrum", "years","months","days"
+const interval = "years"//date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 let annotate = true; // show annotations, defined in the 'annotate' column
 let markers = false;//show dots on lines
 let legendAlign = "vert"//hori or vert, alignment of the legend
-let interpolation=d3.curveLinear//curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 let minorAxis = true//turns on or off the minor axis
+let highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
+let interpolation=d3.curveLinear//curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
    webS: gChartframe.webFrameS(sharedConfig)
    .margin({top:100, left:15, bottom:82, right:5})
-   // .title("Put headline here") //use this if you need to override the defaults
+   .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(400),
 
@@ -97,7 +120,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-d3.csv('example.csv', function(data) {
+d3.csv(dataFile, function(data) {
     //make sure all the dates in the date column are a date object
     var parseDate = d3.timeParse(dateStructure)
     data.forEach(function(d) {
@@ -105,6 +128,9 @@ d3.csv('example.csv', function(data) {
             });
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
     let seriesNames=getSeriesNames(data.columns)
+
+
+
     //format the dataset that is used to draw the lines
     let plotData=seriesNames.map(function(d,i){
         return {
@@ -112,6 +138,18 @@ d3.csv('example.csv', function(data) {
             lineData:getlines(data,d)
         }
     })
+
+
+    const dataSorter = function(a, b){    //Sort the data so that the labeled items are drawn on top
+        if(highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)){
+          return 1;
+        }else if(highlightNames.indexOf(a.name) == highlightNames.indexOf(b.name)){
+          return 0;
+        }
+        return -1;
+    };
+
+    if(highlightNames){ plotData.sort(dataSorter)};
 
     // filter data for annotations
     const annos = data.filter((d)=> (d.annotate !="" && d.annotate !=undefined))
@@ -129,6 +167,7 @@ d3.csv('example.csv', function(data) {
     //define the chart x and x domains. yDomain will automatically overwrite the user defined min and max if the domain is too small
     const myChart = lineChart()
         .seriesNames(seriesNames)
+        .highlightNames(highlightNames)
         .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
         .xDomain(d3.extent(data, function(d) {return d.date;}))
         .yAxisAlign(yAxisAlign)
@@ -247,7 +286,7 @@ d3.csv('example.csv', function(data) {
 
         //Set up legend for this frame
         myLegend
-            .seriesNames(seriesNames)
+            .seriesNames(seriesNames, highlightNames)
             .colourPalette((frameName))
             .rem(myChart.rem())
             .alignment(legendAlign);
@@ -256,7 +295,14 @@ d3.csv('example.csv', function(data) {
             .append("g")
             .attr("id","legend")
                 .selectAll(".legend")
-                .data(seriesNames)
+                .data(function () {
+                     if(highlightNames.length > 0) {
+                        return highlightNames;
+                    } else {
+                        return seriesNames;
+                    }
+
+                    })
                 .enter()
                 .append("g")
                 .classed("legend",true)

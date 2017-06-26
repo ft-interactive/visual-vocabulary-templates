@@ -3,6 +3,7 @@ function lineChart() {
     let yScale=d3.scaleLinear();
     let xScale=d3.scaleTime();
     let seriesNames = [];
+    let highlightNames = [];
     let yAxisAlign = "right"
     let rem =10;
     let markers = false;
@@ -26,7 +27,29 @@ function lineChart() {
             })
 
         parent.append("path")
-            .attr("stroke",function (d){return colourScale(d.name)})
+            .attr("stroke",function (d){
+                if(highlightNames.length > 0) {
+                    if (highlightNames.indexOf(d.name) !== -1) {
+                        return colourScale(d.name);
+                    } else {
+                        d.name = ''
+                        return colourScale(d.name);
+                    }
+                } else {
+                    return colourScale(d.name);
+                }
+            })
+            .attr('opacity', function(d) { 
+                if(highlightNames.length > 0) {
+                    if (highlightNames.indexOf(d.name) !== -1) {
+                        return 1;
+                    } else {
+                        return 0.5;
+                    }
+                } else {
+                    return 1;
+                }
+            })
             .attr('d', function(d){
                 return lineData(d.lineData); })
 
@@ -68,6 +91,10 @@ function lineChart() {
         return chart;
     };
 
+    chart.highlightNames = (d)=>{
+        highlightNames = d;
+        return chart;
+    }
     chart.seriesNames = (d)=>{
         seriesNames = d;
         return chart;
@@ -109,14 +136,25 @@ function lineChart() {
         return chart;
     }
     chart.colourPalette = (d) =>{
-        if(d==='social' || d==='video'){
-            colourScale.range(gChartcolour.lineSocial);
-        } else if (d==='webS' || d==='webM' || d==='webL') {
-            colourScale.range(gChartcolour.lineWeb);
-        } else if (d==='print') {
-            colourScale.range(gChartcolour.linePrint);
+        if(highlightNames.length > 0) {
+            if(d==='social' || d==='video'){
+                colourScale.range(gChartcolour.mutedFirstLineSocial);
+            } else if (d==='webS' || d==='webM' || d==='webL') {
+                colourScale.range(gChartcolour.mutedFirstLineWeb);
+            } else if (d==='print') {
+                colourScale.range(gChartcolour.mutedFirstLinePrint);
+            }
+            return chart;
+        }else {      
+            if(d==='social' || d==='video'){
+                colourScale.range(gChartcolour.lineSocial);
+            } else if (d==='webS' || d==='webM' || d==='webL') {
+                colourScale.range(gChartcolour.lineWeb);
+            } else if (d==='print') {
+                colourScale.range(gChartcolour.linePrint);
+            }
+            return chart;
         }
-        return chart;
     }
 
     return chart
