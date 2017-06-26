@@ -48,8 +48,8 @@ let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the yAxis
 
 //display options
-const dotWidth = 0.5;//0.5 = half the width of the column, 1 = full width
-const stalkWidth = 0.1;//0.5 = half the width of the column, 1 = full width
+const dotWidth = .3//0 = no display, 0.5 = half the width of the column, 1 = full width
+const stalkWidth = .1;//0 = no display 0.5 = half the width of the column, 1 = full width
 
 
 let dots;
@@ -143,6 +143,12 @@ d3.csv('data.csv', function(data) {
 
         myChart.stalks(stalks)
         myChart.dots(dots)
+        if (dots){
+            myChart.dotWidth(dotWidth)
+        }
+        if(stalks){
+            myChart.stalkWidth(stalkWidth)
+        }
         
         myChart
           .yRange( [currentFrame.dimension().height,0] )
@@ -150,10 +156,9 @@ d3.csv('data.csv', function(data) {
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName))
-          .stalkWidth(stalkWidth)
-          .dotWidth(dotWidth)
+          
 
-        myYAxis
+        myYAxis 
           .yScale(myChart.yScale())
           .numTicks(numTicksy)
           .tickSize(tickSize)
