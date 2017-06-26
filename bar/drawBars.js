@@ -17,7 +17,7 @@ function drawBars() {
 		.attr("y",(d)=> {return yScale1(d.name)})
         .attr("height",(d)=> {return yScale1.bandwidth()})
 		.attr("x",(d)=> {return xScale(Math.min(0, d.value))})
-		.attr("width", (d)=> {return 200})
+		.attr("width", (d)=> {return Math.abs(xScale(d.value) - xScale(0))})
 		.attr("fill","#f3e5c3")
 
 	}
