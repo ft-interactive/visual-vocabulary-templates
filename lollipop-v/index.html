@@ -195,13 +195,8 @@ d3.csv('data.csv', function(data) {
             })
             .call(myChart)
 
-
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
-
-
-        //you can draw things on the current frame like this
-        //currentFrame.plot().append("circle").attr("r",60).attr("cx",100).attr("cy",100)
 
     });
     // addSVGSavers('figure.saveable');
