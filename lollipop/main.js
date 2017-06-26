@@ -17,14 +17,6 @@ function drawChart() {
 
 
 
-        const lollies = parent.append("g")
-            .attr("id","lollipops")
-
-        //buds
-        lollies.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
 
     //colourScale(seriesNames[0])
 

@@ -183,8 +183,17 @@ d3.csv('data.csv', function(data) {
           currentFrame.plot()
             .call(myXAxis);
 
+          //draw lollipops
           currentFrame.plot()
+            .append("g")
+            .attr("id","lollipops")
+            .selectAll("g")
+            .data(data)
+            .enter()
+            .append("g")
+            .attr("class","lollipop")
             .call(myChart)
+
 
 
         d3.select(currentFrame.plot().node().parentNode)
