@@ -1,7 +1,5 @@
 function drawChart() {
 
-
-
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleOrdinal();
     let stalks = false;
@@ -17,9 +15,19 @@ function drawChart() {
   
     function chart(parent){
 
-        //check colourScale is working
-        parent.append("rect").attr("width",100).attr("height",100).attr("fill",colourScale(seriesNames[0]))
-        console.log(stalks)
+
+
+        const lollies = parent.append("g")
+            .attr("id","lollipops")
+
+        //buds
+        lollies.selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+
+    //colourScale(seriesNames[0])
+
 
 
     }
