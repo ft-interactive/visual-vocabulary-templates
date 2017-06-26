@@ -1,4 +1,4 @@
-function drawChart() {
+function columnChart() {
     let yScale;
     let xScale;
     let seriesNames = [];
