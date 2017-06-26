@@ -48,10 +48,24 @@ let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the yAxis
 
 //display options
-const dots = true;
 const dotWidth = 0.5;//0.5 = half the width of the column, 1 = full width
-const stalks = true;
 const stalkWidth = 0.1;//0.5 = half the width of the column, 1 = full width
+
+
+let dots;
+let stalks;
+
+if (dotWidth>0){
+  dots = true;
+} else  {
+  dots=false;
+}
+
+if (stalkWidth>0){
+  stalks = true;
+} else  {
+  stalks=false;
+}
 
 let yAxisHighlight// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 8;//Number of tick on the uAxis
@@ -127,9 +141,9 @@ d3.csv('data.csv', function(data) {
         //define other functions to be called
         const tickSize = currentFrame.dimension().width;//Used when drawing the yAxis ticks
 
-
         myChart.stalks(stalks)
-
+        myChart.dots(dots)
+        
         myChart
           .yRange( [currentFrame.dimension().height,0] )
           .xRange([currentFrame.dimension().width,0])
@@ -138,8 +152,6 @@ d3.csv('data.csv', function(data) {
           .colourPalette((frameName))
           .stalkWidth(stalkWidth)
           .dotWidth(dotWidth)
-          .dots(dots)
-
 
         myYAxis
           .yScale(myChart.yScale())
