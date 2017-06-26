@@ -4,6 +4,7 @@ function xAxisOrdinal() {
         .domain(["Oranges", "Lemons", "Apples", "Pears"])
         .rangeRound([0, 220])
         .paddingInner(0.066)
+        .paddingOuter(0.05)
     let labelWidth = 0;
     let tickSize = 0;
     let offset = 0;
@@ -44,6 +45,12 @@ function xAxisOrdinal() {
         scale.paddingInner(d);
         return axis;
     };
+    
+    axis.paddingOuter = (  d)=>{
+            if (!d) return scale.paddinguter();
+            scale.paddinguter(d);
+            return axis;
+        };
 
     axis.xLabel = (d)=>{
         if(d===undefined) return yLabel

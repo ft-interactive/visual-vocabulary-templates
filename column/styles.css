@@ -207,36 +207,36 @@ svg {
     opacity: 0.38
 }
 /* legend */
-.ft-webgraphic-s .legend,
-.ft-webgraphic-m .legend,
-.ft-webgraphic-l .legend {
+.ft-webgraphic-s .legend text,
+.ft-webgraphic-m .legend text,
+.ft-webgraphic-l .legend text{
     font-family: metric;
     fill: #66605C;
 }
 
-.ft-webgraphic-s .legend {
+.ft-webgraphic-s .legend text{
     font-size: 14px;
 }
 
-.ft-webgraphic-m .legend {
+.ft-webgraphic-m .legend text{
     font-size: 16px;
 }
 
-.ft-webgraphic-l .legend {
+.ft-webgraphic-l .legend text{
     font-size: 18px;
 }
 
-.ft-printgraphic .legend{
+.ft-printgraphic .legend text{
     font-family: metric;
     font-size: 9.6px;
 }
-.ft-socialgraphic .legend{
+.ft-socialgraphic .legend text{
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;
     font-size: 28px;
 }
-.ft-videographic .legend{
+.ft-videographic .legend text{
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;
