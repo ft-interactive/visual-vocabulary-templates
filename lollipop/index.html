@@ -70,7 +70,9 @@ const sharedConfig = {
 }
 let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the yAxis
-let stalks = false;//show or hide the 'stalks' - setting to false will turn chart into dot plot
+const dotRadius = .25;//.5 means a full width dot
+const stalkWidth = .1;//set to 0 to turn stalks off
+let stalks;
 let yAxisHighlight// = 50; //sets which tick to highlight on the yAxis
 const numTicksy = 8;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the y axis
@@ -121,11 +123,6 @@ d3.selectAll('.framed')
 
 d3.csv('data.csv', function(data) {
   
-    /*if you need to parse/coerce the data, do it here*/
-    // data.forEach(function(d) {
-    //             
-    //         });
-
     //automatically calculate the seriesnames excluding the reserved "name" and "group" fields
     let seriesNames = getSeriesNames(data.columns)
 
@@ -135,6 +132,12 @@ d3.csv('data.csv', function(data) {
     //set up axes
     const myYAxis = gAxis.yaxisLinear();
     const myXAxis = gAxis.xaxisOrdinal();
+
+    if (stalkWidth==0){
+      stalks = false;  
+    } else  {
+      stalks = true;
+    }
 
     //define chart
     const myChart = drawChart()
@@ -156,6 +159,8 @@ d3.csv('data.csv', function(data) {
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName))
+          .stalkWidth(stalkWidth)
+          .dotRadius(dotRadius)
           .stalks(stalks);
 
         myYAxis
@@ -164,8 +169,6 @@ d3.csv('data.csv', function(data) {
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
           .tickAlign(myChart.yAxisAlign())
-
-
 
         //should be able to set domain from myChart??
         myXAxis
@@ -187,13 +190,12 @@ d3.csv('data.csv', function(data) {
           currentFrame.plot()
             .append("g")
             .attr("id","lollipops")
-            .selectAll("g")
+            .selectAll(".lollipops")
             .data(data)
             .enter()
             .append("g")
-            .attr("class","lollipop")
+            .attr('class','lollipops')
             .call(myChart)
-
 
 
         d3.select(currentFrame.plot().node().parentNode)
