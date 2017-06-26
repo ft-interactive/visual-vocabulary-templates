@@ -70,9 +70,10 @@ const sharedConfig = {
 }
 let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the yAxis
-const dotRadius = .25;//.5 means a full width dot
-const stalkWidth = 0.1;//set to 0 to turn stalks off
-let stalks;
+const dotWidth = 0.5;//0.5 = half the width of the column, 1 = full width
+let stalks = false;
+const stalkWidth = .1;//0.5 = half the width of the column, 1 = full width
+
 let yAxisHighlight// = 50; //sets which tick to highlight on the yAxis
 const numTicksy = 8;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the y axis
@@ -133,12 +134,6 @@ d3.csv('data.csv', function(data) {
     const myYAxis = gAxis.yaxisLinear();
     const myXAxis = gAxis.xaxisOrdinal();
 
-    if (stalkWidth==0){
-      stalks = false;  
-    } else  {
-      stalks = true;
-    }
-
     //define chart
     const myChart = drawChart()
           .seriesNames(seriesNames)
@@ -160,7 +155,7 @@ d3.csv('data.csv', function(data) {
           .rem(currentFrame.rem())
           .colourPalette((frameName))
           .stalkWidth(stalkWidth)
-          .dotRadius(dotRadius)
+          .dotWidth(dotWidth)
           .stalks(stalks);
 
         myYAxis
@@ -195,6 +190,9 @@ d3.csv('data.csv', function(data) {
             .enter()
             .append("g")
             .attr('class','lollipops')
+            .attr("id",function(d){
+              return d.name
+            })
             .call(myChart)
 
 

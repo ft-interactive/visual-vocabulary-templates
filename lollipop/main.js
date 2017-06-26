@@ -2,9 +2,9 @@ function drawChart() {
 
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleBand()
-    let stalks = false;
+    let stalks = true;
     let stalkWidth = .1;
-    let dotRadius = .5;
+    let dotWidth = .25;
     
     let seriesNames = [];
     let yAxisAlign = "right"
@@ -22,7 +22,7 @@ function drawChart() {
             .attr("cy", function(d){
                 return yScale(d[seriesNames[0]])
             })
-            .attr("r",dotRadius*xScale.bandwidth())
+            .attr("r",(dotWidth/2)*xScale.bandwidth())
             .attr("fill",colourScale(seriesNames[0]))
 
             console.log(stalks)
@@ -75,9 +75,9 @@ function drawChart() {
         stalkWidth = d;
         return chart;
     };
-    chart.dotRadius = (d)=>{
-        if(!d) return dotRadius;
-        dotRadius = d;
+    chart.dotWidth = (d)=>{
+        if(!d) return dotWidth;
+        dotWidth = d;
         return chart;
     };
     chart.seriesNames = (d)=>{
