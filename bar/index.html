@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,6 +49,8 @@ const colourProperty = "name"
 let yAxisAlign = "left";//alignment of the axis
 let xAxisAlign = "bottom"
 let legendAlign = "vert"//hori or vert, alignment of the legend
+let sort = "descending";
+let sortOn = 2
 
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -94,10 +97,11 @@ d3.selectAll('.framed')
     });
 
 d3.csv('example.csv', function(data) {
-    
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames=getSeriesNames(data.columns)
     const groupNames = [ ...new Set(data.map(d=>d.group)) ].filter(d=>d); // create an array of the group names
+    //Use the seriesNames array to calculate the minimum and max values in the dataset
+    const valueExtent = extentMulti(data,seriesNames);
     //Buid the dataset for plotting
     let plotData=data.map(function(d) {
         return {
@@ -115,8 +119,20 @@ d3.csv('example.csv', function(data) {
         });
        return groups
     }
-    //Use the seriesNames array to calculate the minimum and max values in the dataset
-    const valueExtent = extentMulti(data,seriesNames)
+
+     console.log("before",plotData)
+     let sorted
+     
+    if (sort=="descending") {
+        plotData = plotData.sort(function(a, b) {
+        // console.log("sortON=",sortOn)
+        // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
+        return b.groups[sortOn].value - a.groups[sortOn].value; })//Sorts biggest rects to the left
+        }
+    else { plotData = plotData.sort(function(a, b) { return a.groups[sortOn].value - b.groups[sortOn].value; })} //Sorts biggest rects to the left
+
+    console.log("After",sorted)
+
     //Draw the frames
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
@@ -132,7 +148,7 @@ d3.csv('example.csv', function(data) {
         yAxis0
             .align(yAxisAlign)
             .domain(groupNames)
-            .rangeRound([0,currentFrame.dimension().height])
+            .rangeRound([currentFrame.dimension().height,0])
 
         yAxis1
             .paddingInner(0.06)
@@ -188,8 +204,6 @@ d3.csv('example.csv', function(data) {
           .attr("height",currentFrame.dimension().height)
           .attr("fill","#fff8e8");
 
-        console.log(plotData)
-
         barChart
             //.paddingInner(0.06)
             .colourProperty(colourProperty)
@@ -209,7 +223,10 @@ d3.csv('example.csv', function(data) {
     
      });
     // addSVGSavers('figure.saveable');
+
+
 });
+
 
 //a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns){
