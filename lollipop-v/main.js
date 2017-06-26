@@ -35,7 +35,7 @@ function drawChart() {
                 .attr("x2",function(d){
                     return xScale(d.name)+(xScale.bandwidth()/2)
                 })
-               .attr("y1",yScale(0))
+               .attr("y1",yScale(yScale.domain()[0]))
                .attr("y2",function(d){
                     return yScale(d[seriesNames[0]])
                })
