@@ -136,7 +136,10 @@ d3.csv('example.csv', function(data) {
         yAxis1
             .align(yAxisAlign)
             .domain(seriesNames)
-            .rangeRound([0,yAxis0.bandwidth()])
+            .rangeRound([0,30])
+            // .rangeRound([0,yAxis0.bandwidth()])
+
+        console.log("bandwidth",yAxis1.bandwidth())
         
         xAxis
             .align(xAxisAlign)

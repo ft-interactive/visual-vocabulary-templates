@@ -15,7 +15,9 @@ function drawBars() {
 		.append("rect")
 		.attr("class","bars")
 		.attr("y",(d)=> {return yScale0(d.name)})
-		//.attr("height",function(d) {return yScale1.bandwidth()})
+        .attr("height",function(d) {
+            console.log(yScale1.bandwidth())
+            return yScale1.bandwidth()})
 		// .attr("x",function(d) {
 		// 	// console.log(d.value)
 		// 	// console.log(xScale(d.value))
