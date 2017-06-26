@@ -49,7 +49,7 @@ let yMax = 0;//sets the maximum value on the yAxis
 
 //display options
 const dotWidth = .3//0 = no display, 0.5 = half the width of the column, 1 = full width
-const stalkWidth = .1;//0 = no display 0.5 = half the width of the column, 1 = full width
+const stalkWidth = 0.1;//0 = no display 0.5 = half the width of the column, 1 = full width
 
 
 let dots;
@@ -169,7 +169,7 @@ d3.csv('data.csv', function(data) {
         myXAxis
           .domain(myChart.xScale().domain())
           .rangeRound([0,currentFrame.dimension().width])
-          .offset(currentFrame.dimension().height);
+          .offset(currentFrame.dimension().height + currentFrame.rem()/2);
 
 
 //.domain(data.map(function(d){return d.name}))
