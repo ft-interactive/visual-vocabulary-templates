@@ -8,11 +8,11 @@
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="main.js"></script>
-    <script src="legend.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-legend/master/build/g-legend.js"></script>
     <!-- Uncomment which axes you need to include for your chart -->
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
     <!-- <script src="https://rawgit.com/ft-interactive/g-yaxisOrdinal/master/build/g-yaxisOrdinal.js"></script> -->
-    <!-- <script src="https://rawgit.com/ft-interactive/g-xaxisdate/master/build/g-xaxisdate.js"></script> -->
+    <script src="https://rawgit.com/ft-interactive/g-xaxisdate/master/build/g-xaxisdate.js"></script>
     <script src="xAxisOrdinal.js"></script>
     <!-- <script src="https://rawgit.com/ft-interactive/g-xaxisOrdinal/master/build/g-xaxisOrdinal.js"></script> -->
     <!-- <script src="https://rawgit.com/ft-interactive/g-xaxisLinear/master/build/g-xaxisLinear.js"></script> -->
@@ -20,14 +20,37 @@
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
     .saveable button{ display: block; }
+    .add-date {
+      display: inline-block;
+      padding: 10px 10px 6px;
+      background-color: #c00;
+      vertical-align: top;
+    }
+    [data-frame="webS"] {
+      width:350px;
+      display: inline-block;
+    }
     </style>
 </head>
 <body>
 
     <h1>Column chart</h1>
-    <p>A suggested starting point for creating cross-platform artisinal charts with default FT styling</p>
+    <p>Columns work well for showing change over time - but usually best with only one series of data at a time, although the template can accommodate multiple series if required</p>
+    <p><b>Some useful settings in the index.html</b>
+        <ul>
+            <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
+            <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
+            <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
+        </ul>
+    </p>
+     <p><b>Column headings in the csv</b>
+        <ul>
+            <li><b>highlight</b> – use this column to define highlight bands in the background of your chart, add 'begin' where you want the band to start and 'end' where you want it to finish. You can have as many highlights as you want.</li>
+        </ul>
+    </p>
     <hr>
     <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <div class="add-date"><img src="images/add-extra-date.png" alt=""></div>
     <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
     <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
     <figure class="framed saveable" data-frame="print"><svg></svg></figure>
@@ -39,7 +62,7 @@
 <script type="text/javascript">
 
 //User defined constants similar to version 2
-const dateStructure = "%d/%m/%Y";
+const dateStructure = "%d-%b-%y";
 
 const dataFile = "data.csv"
 
@@ -50,12 +73,14 @@ const sharedConfig = {
 }
 let yMin = 0;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the xAxis
-const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
+const yAxisHighlight = -1; //sets which tick to highlight on the yAxis
 const numTicksy = 5;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 const xAxisAlign = "bottom";//alignment of the axis
-let legendAlign = "vert"//hori or vert, alignment of the legend
-let legendType = 'rect' //rect, line or circ, geometry of legend marker
+const interval = "years";//date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+let minorAxis = false;//turns on or off the minor axis
+let legendAlign = "vert";//hori or vert, alignment of the legend
+let legendType = 'rect';//rect, line or circ, geometry of legend marker
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -103,10 +128,10 @@ d3.selectAll('.framed')
 
 d3.csv(dataFile, function(data) {
     //make sure all the dates in the date column are a date object
-    // var parseDate = d3.timeParse("%d/%m/%Y")
-    // data.forEach(function(d) {
-    //             d.date=parseDate(d.date);
-    //         });
+    var parseDate = d3.timeParse(dateStructure)
+    data.forEach(function(d) {
+                d.date=parseDate(d.date);
+            });
 
     //automatically calculate the seriesnames excluding the "name" column
     const seriesNames = getSeriesNames(data.columns)
@@ -114,47 +139,53 @@ d3.csv(dataFile, function(data) {
     //Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = extentMulti(data,seriesNames)
 
-    console.log(valueExtent)
-    const columnNames = [ ...new Set(data.map(d=>d.name)) ]; // create an array of the column names
+    const columnNames = [ ...new Set(data.map(d=>d.date)) ]; // create an array of the column names
 
-    console.log(columnNames)
+    //format the data that is used to draw highlight tonal bands
+    const boundaries=data.filter((d)=> (d.highlight==="begin" || d.highlight==="end"))
+    let highlights=[]
+    boundaries.forEach(function(d,i){
+        if (d.highlight==="begin") {
+            highlights.push({begin: d.date,end:boundaries[i+1].date}) 
+        }
+    })
+
     //define chart
     const myChart = columnChart()
           .seriesNames(seriesNames)
+          .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
+          .xDomain0(d3.extent(data, function(d) {return d.date;}))
           .yAxisAlign(yAxisAlign)
     
-    //Buid the dataset for plotting
-    let plotData = data.map(function(d) {
+    
+    //format the dataset that is used to draw the lines
+    let plotData=seriesNames.map(function(d,i){
         return {
-            name:d.name,
-            groups:getGroups(d),
+            name:d,
+            columnData:getColumns(data,d)
         }
-    });
+    })
+
 
     console.log(plotData);
 
-    function getGroups(el) {
-        var groups = seriesNames.map(function(name,i) {
-            return {
-                name: name,
-                value: +el[name]
-            }
-        });
-       return groups
-    }
-
-
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
-
-        const myXAxis0 = xAxisOrdinal();//sets up yAxis
+        const myXAxis0 = gAxis.xaxisDate();//sets up yAxis
         const myXAxis1 = xAxisOrdinal();//sets up yAxis
+        const myXAxis2 = xAxisOrdinal();//sets up yAxis
         const myYAxis = gAxis.yaxisLinear();
-        const myChart = columnChart();
-        const myLegend = drawLegend();
+        const myLegend = gLegend.legend();
+        const myHighlights = drawHighlights()//sets up highlight tonal bands
 
         //define other functions to be called
         const tickSize = currentFrame.dimension().width;//Used when drawing the yAxis ticks
+
+        d3.select(currentFrame.plot().node().parentNode)
+            .call(currentFrame);
+
+        //create a 'g' element at the back of the chart to add time period highlights after axis have been created
+        let axisHighlight = currentFrame.plot().append('g');
 
         myChart
             .yRange( [currentFrame.dimension().height,0] )
@@ -168,11 +199,6 @@ d3.csv(dataFile, function(data) {
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
             .tickAlign(myChart.yAxisAlign())
-
-        myYAxis
-            .tickAlign(yAxisAlign)
-            .domain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
-            .numTicks(numTicksy)
 
         let base = currentFrame.plot().append("g")
         
@@ -192,24 +218,49 @@ d3.csv(dataFile, function(data) {
             currentFrame.margin({left:newMargin});
         }
 
-        d3.select(currentFrame.plot().node().parentNode)
-            .call(currentFrame);
+
+        myChart.xRange0( [0, currentFrame.dimension().width] );
+        myChart.xRange1( [0, currentFrame.dimension().width] );
+        myChart.xRange2( [0, currentFrame.dimension().width] );
 
         myXAxis0
-            .align(xAxisAlign)
-            .domain(columnNames)
-            .rangeRound([0,currentFrame.dimension().width],10)
-            .offset(currentFrame.dimension().height + currentFrame.rem()/2)
+            .fullYear(currentFrame.fullYear())
+            .scale(myChart.xScale0())
+            .offset(currentFrame.dimension().height)
+            .interval(interval)
+            .tickSize(myChart.rem())
+            .minorAxis(minorAxis);
+        
+         //Set up highlights for this frame
+        myHighlights
+            .yScale(myChart.yScale())
+            .yRange( [currentFrame.dimension().height,0] )
+            .xScale(myChart.xScale0())
+            .xRange( [0,currentFrame.dimension().width] );
 
         myXAxis1
             .align(xAxisAlign)
+            .domain(columnNames)
+            .rangeRound([0,currentFrame.dimension().width])
+
+        myXAxis2
+            .align(xAxisAlign)
             .domain(seriesNames)
-            .rangeRound([0,myXAxis0.bandwidth()])
+            .rangeRound([0,myXAxis1.bandwidth()])
 
         myChart
-            .xScale0(myXAxis0.scale())
             .xScale1(myXAxis1.scale())
+            .xScale2(myXAxis2.scale())
             // .yScale(myYAxis.yScale())
+
+
+        //Draw the highlights before the lines and xAxis
+        axisHighlight
+            .selectAll(".highlights")
+            .data(highlights)
+            .enter()
+            .append("g")
+            .call(myHighlights);
 
         currentFrame.plot()
           .call(myXAxis0)
@@ -221,6 +272,7 @@ d3.csv(dataFile, function(data) {
           .enter()
           .append("g")
           .attr('class', 'columnHolder')
+          .attr('id', function(d) { return d.name; })
           .call(myChart)
 
 
@@ -248,7 +300,7 @@ d3.csv(dataFile, function(data) {
 
 //a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns){
-    var exclude = ['name']; // adjust column headings to match your dataset
+    var exclude = ['date','highlight']; // adjust column headings to match your dataset
     return columns.filter(d=>(exclude.indexOf(d) == -1));
 }
 
@@ -269,6 +321,22 @@ function extentMulti(data, columns){
     return [ext.min, ext.max];
 }
 
+function getColumns(data,group) {
+    let columnData=[]
+    data.forEach(function(el,i){
+        //console.log(el,i)
+        let column=new Object();
+        column.name = group
+        column.date = el.date
+        column.value = +el[group]
+        column.highlight = el.highlight
+        column.annotate = el.annotate
+        if(el[group]) {
+            columnData.push(column)  
+        } 
+    });
+    return columnData
+}
 
 </script>
 </html>
