@@ -117,6 +117,7 @@ d3.csv(dataFile, function(data) {
     console.log(valueExtent)
     const columnNames = [ ...new Set(data.map(d=>d.name)) ]; // create an array of the column names
 
+    console.log(columnNames)
     //define chart
     const myChart = columnChart()
           .seriesNames(seriesNames)
@@ -199,6 +200,7 @@ d3.csv(dataFile, function(data) {
             .domain(columnNames)
             .rangeRound([0,currentFrame.dimension().width],10)
             .offset(currentFrame.dimension().height + currentFrame.rem()/2)
+
         myXAxis1
             .align(xAxisAlign)
             .domain(seriesNames)

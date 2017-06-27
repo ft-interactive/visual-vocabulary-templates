@@ -1,7 +1,8 @@
 function columnChart() {
     let yScale = d3.scaleLinear();
     let xScale0 = d3.scaleTime();
-    // let xScale1 = d3.scaleBand();
+    let xScale1 = d3.scaleBand();
+    let xScale2 = d3.scaleBand();
     let seriesNames = [];
     let yAxisAlign = "right"
     let rem =16;
@@ -11,19 +12,19 @@ function columnChart() {
         .domain(seriesNames);
   
     function chart(parent){
-        // parent.attr("transform", function(d) { return "translate(" + xScale0(d.name) + ",0)"; })
-        //     .attr('width', xScale0.bandwidth() )
+        parent.attr("transform", function(d) { return "translate(" + xScale2(d.name) + ",0)"; })
+            .attr('width', xScale1.bandwidth() )
         
-        // parent.selectAll("rect")
-        //     .data(function(d) {return d.groups})
-        //     .enter()
-        //     .append("rect")
-        //     .attr("class","columns")
-        //     .attr("x",(d)=> {return xScale1(d.name)})
-        //     .attr("width",(d)=> {return xScale1.bandwidth()})
-        //     .attr("y",(d)=> {return yScale(Math.max(0, d.value))})
-        //     .attr("height", (d)=> {return Math.abs(yScale(d.value) - yScale(0))})
-        //     .attr("fill",(d)=> {return colourScale(d.name);})
+        parent.selectAll("rect")
+            .data(function(d) {return d.columnData})
+            .enter()
+            .append("rect")
+            .attr("class","columns")
+            .attr("x",(d)=> {return xScale0(d.date)})
+            .attr("width",(d)=> {return xScale2.bandwidth()})
+            .attr("y",(d)=> {return yScale(Math.max(0, d.value))})
+            .attr("height", (d)=> {return Math.abs(yScale(d.value) - yScale(0))})
+            .attr("fill",(d)=> {return colourScale(d.name);})
     }
 
     chart.yScale = (d)=>{
@@ -78,6 +79,20 @@ function columnChart() {
         xScale1.rangeRound(d);
         return chart;
     };
+
+    chart.xScale2 = (d)=>{
+        if(!d) return xScale2;
+        xScale2 = d;
+        return chart;
+    }
+    chart.xDomain2 = (d)=>{
+        xScale2.domain(d);
+        return chart;
+    };
+    chart.xRange2 = (d)=>{
+        xScale2.rangeRound(d);
+        return chart;
+    };
     chart.plotDim = (d)=>{
         if(!d) return plotDim;
         plotDim = d;
@@ -114,3 +129,38 @@ function columnChart() {
 
     return chart
 }
+
+function drawHighlights() {
+    let yScale=d3.scaleLinear();
+    let xScale=d3.scaleTime();
+
+    function highlights(parent){
+        parent.append('rect')
+            .attr('class',"highlights" )
+            .attr("x", (d)=> xScale(d.begin))
+            .attr("width", (d)=> xScale(d.end)-xScale(d.begin))
+            .attr("y", (d)=> yScale.range()[1])
+            .attr("height", (d)=> yScale.range()[0])
+            .attr("fill","#fff1e0")
+    }
+
+    highlights.yScale = (d)=>{
+        yScale = d;
+        return highlights;
+    }
+    highlights.xScale = (d)=>{
+        xScale = d;
+        return highlights;
+    }
+    highlights.yRange = (d)=>{
+        yScale.range(d);
+        return highlights;
+    };
+    highlights.xRange = (d)=>{
+        xScale.range(d);
+        return highlights;
+    };
+
+    return highlights;
+}
+
