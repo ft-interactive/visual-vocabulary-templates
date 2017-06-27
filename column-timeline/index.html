@@ -20,12 +20,22 @@
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
     .saveable button{ display: block; }
+    .add-date {
+      display: inline-block;
+      padding: 10px 10px 6px;
+      background-color: #c00;
+      vertical-align: top;
+    }
+    [data-frame="webS"] {
+      width:350px;
+      display: inline-block;
+    }
     </style>
 </head>
 <body>
 
     <h1>Column chart</h1>
-    <p>A suggested starting point for creating cross-platform artisinal charts with default FT styling</p>
+    <p>Columns work well for showing change over time - but usually best with only one series of data at a time, although the template can accommodate multiple series if required</p>
     <p><b>Some useful settings in the index.html</b>
         <ul>
             <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
@@ -40,6 +50,7 @@
     </p>
     <hr>
     <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <div class="add-date"><img src="images/add-extra-date.png" alt=""></div>
     <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
     <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
     <figure class="framed saveable" data-frame="print"><svg></svg></figure>
