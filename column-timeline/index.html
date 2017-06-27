@@ -8,7 +8,7 @@
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="main.js"></script>
-    <script src="legend.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-legend/master/build/g-legend.js"></script>
     <!-- Uncomment which axes you need to include for your chart -->
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
     <!-- <script src="https://rawgit.com/ft-interactive/g-yaxisOrdinal/master/build/g-yaxisOrdinal.js"></script> -->
@@ -171,12 +171,11 @@ d3.csv(dataFile, function(data) {
 
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
-
         const myXAxis0 = gAxis.xaxisDate();//sets up yAxis
         const myXAxis1 = xAxisOrdinal();//sets up yAxis
         const myXAxis2 = xAxisOrdinal();//sets up yAxis
         const myYAxis = gAxis.yaxisLinear();
-        const myLegend = drawLegend();
+        const myLegend = gLegend.legend();
         const myHighlights = drawHighlights()//sets up highlight tonal bands
 
         //define other functions to be called
