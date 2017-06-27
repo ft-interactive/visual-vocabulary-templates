@@ -1,7 +1,7 @@
 function columnChart() {
     let yScale = d3.scaleLinear();
-    let xScale0 = d3.scaleBand();
-    let xScale1 = d3.scaleBand();
+    let xScale0 = d3.scaleTime();
+    // let xScale1 = d3.scaleBand();
     let seriesNames = [];
     let yAxisAlign = "right"
     let rem =16;
@@ -11,19 +11,19 @@ function columnChart() {
         .domain(seriesNames);
   
     function chart(parent){
-        parent.attr("transform", function(d) { return "translate(" + xScale0(d.name) + ",0)"; })
-            .attr('width', xScale0.bandwidth() )
+        // parent.attr("transform", function(d) { return "translate(" + xScale0(d.name) + ",0)"; })
+        //     .attr('width', xScale0.bandwidth() )
         
-        parent.selectAll("rect")
-            .data(function(d) {return d.groups})
-            .enter()
-            .append("rect")
-            .attr("class","columns")
-            .attr("x",(d)=> {return xScale1(d.name)})
-            .attr("width",(d)=> {return xScale1.bandwidth()})
-            .attr("y",(d)=> {return yScale(Math.max(0, d.value))})
-            .attr("height", (d)=> {return Math.abs(yScale(d.value) - yScale(0))})
-            .attr("fill",(d)=> {return colourScale(d.name);})
+        // parent.selectAll("rect")
+        //     .data(function(d) {return d.groups})
+        //     .enter()
+        //     .append("rect")
+        //     .attr("class","columns")
+        //     .attr("x",(d)=> {return xScale1(d.name)})
+        //     .attr("width",(d)=> {return xScale1.bandwidth()})
+        //     .attr("y",(d)=> {return yScale(Math.max(0, d.value))})
+        //     .attr("height", (d)=> {return Math.abs(yScale(d.value) - yScale(0))})
+        //     .attr("fill",(d)=> {return colourScale(d.name);})
     }
 
     chart.yScale = (d)=>{
@@ -61,7 +61,7 @@ function columnChart() {
         return chart;
     };
     chart.xRange0 = (d)=>{
-        xScale0.rangeRound(d);
+        xScale0.range(d);
         return chart;
     };
 
