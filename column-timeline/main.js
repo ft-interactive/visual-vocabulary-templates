@@ -20,6 +20,7 @@ function columnChart() {
             .enter()
             .append("rect")
             .attr("class","columns")
+            .attr('id' ,(d)=> 'date: ' + d.date + ' value: ' + d.value)
             .attr("x",(d)=> {return xScale0(d.date)})
             .attr("width",(d)=> {return xScale2.bandwidth()})
             .attr("y",(d)=> {return yScale(Math.max(0, d.value))})
