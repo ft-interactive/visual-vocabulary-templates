@@ -8,7 +8,7 @@
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="main.js"></script>
-    <script src="legend.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-legend/master/build/g-legend.js"></script>
     <!-- Uncomment which axes you need to include for your chart -->
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
     <!-- <script src="https://rawgit.com/ft-interactive/g-yaxisOrdinal/master/build/g-yaxisOrdinal.js"></script> -->
@@ -151,7 +151,7 @@ d3.csv(dataFile, function(data) {
         const myXAxis1 = xAxisOrdinal();//sets up yAxis
         const myYAxis = gAxis.yaxisLinear();
         const myChart = columnChart();
-        const myLegend = drawLegend();
+        const myLegend = gLegend.legend();
 
         //define other functions to be called
         const tickSize = currentFrame.dimension().width;//Used when drawing the yAxis ticks
