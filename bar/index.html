@@ -42,7 +42,7 @@ const sharedConfig = {
   source:"Source not yet added",
 }
 let xMin = -200;//sets the minimum value on the yAxis
-let xMax = 1000;//sets the maximum value on the xAxis
+let xMax = 200;//sets the maximum value on the xAxis
 const yAxisHighlight = 0; //sets which tick to highlight on the yAxis
 const numTicks = 7;//Number of tick on the uAxis
 const colourProperty = "name"
@@ -198,12 +198,6 @@ d3.csv('example2.csv', function(data) {
             .attr("transform","translate(0,"+currentFrame.dimension().height+")")
         }
 
-        //temporary recct to check axis position
-        // base.append("rect")
-        //   .attr("width", currentFrame.dimension().width)
-        //   .attr("height",currentFrame.dimension().height)
-        //   .attr("fill","#fff8e8");
-
         barChart
             //.paddingInner(0.06)
             .colourProperty(colourProperty)
@@ -222,6 +216,11 @@ d3.csv('example2.csv', function(data) {
             .enter()
             .append("g")
             .call(barChart)
+        //remove ticks if numbers are added to vars
+        if (numbers) {
+            let clear = xAxis.xLabel().selectAll(".tick").filter(function(d) {return d!=0})
+            clear.remove()
+        }
     
      });
     // addSVGSavers('figure.saveable');

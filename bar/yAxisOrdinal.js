@@ -14,6 +14,12 @@ function yAxisOrdinal() {
             .tickSize(tickSize)
             .scale(scale)
 
+        if (scale.domain.length > 1) {
+            scale.paddingInner(0.1)
+        } else {
+            scale.paddingInner(0.2)
+        }
+
         yLabel = parent.append("g")
             .attr("class","axis yAxis")
             .call(yAxis)

@@ -36,8 +36,26 @@ function drawBars() {
             .attr("y",(d)=> {return yScale1(d.name)+(yScale1.bandwidth()/2)+(rem/2.5)})
             .attr("x",(d)=> {return xScale(0)})
             .attr("fill","#ffffff")
+
+            let labelWidth = 0
+            let labels = parent.selectAll(".label").each(
+                function(){
+                    labelWidth=Math.max(this.getBBox().width,labelWidth);
+                    console.log(labelWidth)
+                    //positionText(this,labelWidth)
+            })
+
+            parent.selectAll(".label").each(
+            function(){
+                positionText(this,labelWidth)   
+            })
+
         }
 
+        function positionText(item,labelWidth) {
+            let object=d3.select(item)
+            object.attr("transform", function(d) {return "translate("+(labelWidth+(rem/2))+",0)";})
+        }
 	}
 
 	bars.yScale0 = (d)=>{
