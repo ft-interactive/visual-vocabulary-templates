@@ -49,8 +49,8 @@ const colourProperty = "name"
 let yAxisAlign = "left";//alignment of the axis
 let xAxisAlign = "bottom"
 let legendAlign = "vert"//hori or vert, alignment of the legend
-let sort = "ascending";
-let sortOn = 2
+let sort = "descending";
+let sortOn = 3
 
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -120,16 +120,15 @@ d3.csv('example.csv', function(data) {
        return groups
     }
 
-     console.log("before",plotData)
-     let sorted
+     console.log("before",plotData);
      
     if (sort=="descending") {
-        plotData = plotData.sort(function(a, b) {
+        plotData.sort(function(a, b) {
         // console.log("sortON=",sortOn)
         // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
         return b.groups[sortOn].value - a.groups[sortOn].value; })//Sorts biggest rects to the left
         }
-    else { plotData = plotData.sort(function(a, b) { return a.groups[sortOn].value - b.groups[sortOn].value; })} //Sorts biggest rects to the left
+    else { plotData.sort(function(a, b) { return a.groups[sortOn].value - b.groups[sortOn].value; })} //Sorts biggest rects to the left
 
     console.log("After",plotData)
 
@@ -147,7 +146,7 @@ d3.csv('example.csv', function(data) {
 
         yAxis0
             .align(yAxisAlign)
-            .domain(groupNames)
+            .domain(plotData.map(function(d) { return d.name;}))
             .rangeRound([0,currentFrame.dimension().height])
 
         yAxis1
