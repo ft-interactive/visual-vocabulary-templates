@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lollipop chart</title>
+
+
+    
+    <script src="//d3js.org/d3.v4.js"></script>
+    <script src="//d3js.org/d3-selection-multi.v1.min.js"></script>
+    <script src="https://unpkg.com/g-chartframe"></script>
+    <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
+    <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-xaxisOrdinal/master/build/g-xaxisOrdinal.js"></script> 
+    <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
+
+    <script src="main.js"></script>
+    <script src="legend.js"></script>
+    <link rel="stylesheet" href="styles.css"/>
+
+    <style>
+    .saveable button{ display: block; }
+    </style>
+</head>
+<body>
+
+    <h1>Lollipop chart</h1>
+    <p>Lollipop charts draw more attention to the data value than bar charts - and can work well in small spaces. If you want the axis to start at something other than 0, consider switching the 'stalks' off, creating a dot plot.</p>
+    <hr>
+    <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="print"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="social"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="video"><svg></svg></figure>
+
+</body>
+
+<script type="text/javascript">
+
+
+const sharedConfig = {
+  title:"Title not yet added",
+  subtitle:"Subtitle not yet added",  
+  source:"Source not yet added",
+}
+let yMin = 0;//sets the minimum value on the yAxis
+let yMax = 0;//sets the maximum value on the yAxis
+
+//display options
+const dotWidth = .3//0 = no display, 0.5 = half the width of the column, 1 = full width
+const stalkWidth = 0.1;//0 = no display 0.5 = half the width of the column, 1 = full width
+
+
+let dots;
+let stalks;
+
+if (dotWidth>0){
+  dots = true;
+} else  {
+  dots=false;
+}
+
+if (stalkWidth>0){
+  stalks = true;
+} else  {
+  stalks=false;
+}
+
+let yAxisHighlight// = 20; //sets which tick to highlight on the yAxis
+const numTicksy = 8;//Number of tick on the uAxis
+const yAxisAlign = "right";//alignment of the y axis
+let legendAlign = "vert"//hori or vert, alignment of the legend
+
+//Individual frame configuratiuon, used to set margins (defaults shown below) etc
+const frame = {
+   webS: gChartframe.webFrameS(sharedConfig)
+   .margin({top:100, left:15, bottom:82, right:5})
+   // .title("Put headline here") //use this if you need to override the defaults
+   // .subtitle("Put headline |here") //use this if you need to override the defaults
+   .height(400),
+
+   webM: gChartframe.webFrameM(sharedConfig)
+   .margin({top:100, left:20, bottom:86, right:5})
+   // .title("Put headline here")
+   .height(500),
+
+   webL: gChartframe.webFrameL(sharedConfig)
+   .margin({top:100, left:20, bottom:104, right:5})
+   // .title("Put headline here")
+   .height(700),
+
+   print: gChartframe.printFrame(sharedConfig)
+   .margin({top:40, left:7, bottom:35, right:7})
+   // .title("Put headline here")
+   .height(68)
+   .width(55),
+
+   social: gChartframe.socialFrame(sharedConfig)
+   .margin({top:140, left:50, bottom:138, right:40})
+   // .title("Put headline here")
+   .height(750), // 700 is ideal height for Instagram
+
+   video: gChartframe.videoFrame(sharedConfig)
+   .margin({left:207, right:207, bottom:210, top:233})
+   // .title("Put headline here")
+};
+
+
+//add the frames to the page...
+d3.selectAll('.framed')
+    .each(function(){
+        const figure = d3.select(this);
+        figure.select('svg')
+            .call(frame[figure.node().dataset.frame]);
+    });
+
+d3.csv('data.csv', function(data) {
+  
+    //automatically calculate the seriesnames excluding the reserved "name" and "group" fields
+    let seriesNames = getSeriesNames(data.columns)
+
+    //Use the seriesNames array to calculate the minimum and max values in the dataset
+    const valueExtent = extentMulti(data,seriesNames)
+
+    //set up axes
+    const myYAxis = gAxis.yaxisLinear();
+    const myXAxis = gAxis.xaxisOrdinal();
+
+    //define chart
+    const myChart = drawChart()
+          .seriesNames(seriesNames)
+          .xDomain(data.map(function(d){return d.name}))
+          .yDomain([Math.min(yMin,valueExtent[0]),Math.max(yMax,valueExtent[1])])
+          .yAxisAlign(yAxisAlign)
+
+    //draw, for each frame
+    Object.keys(frame).forEach(frameName=>{
+        const currentFrame = frame[frameName];
+
+        //define other functions to be called
+        const tickSize = currentFrame.dimension().width;//Used when drawing the yAxis ticks
+
+        myChart.stalks(stalks)
+        myChart.dots(dots)
+        if (dots){
+            myChart.dotWidth(dotWidth)
+        }
+        if(stalks){
+            myChart.stalkWidth(stalkWidth)
+        }
+        
+        myChart
+          .yRange( [currentFrame.dimension().height,0] )
+          .xRange([currentFrame.dimension().width,0])
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName))
+          
+
+        myYAxis 
+          .yScale(myChart.yScale())
+          .numTicks(numTicksy)
+          .tickSize(tickSize)
+          .yAxisHighlight(yAxisHighlight)
+          .tickAlign(myChart.yAxisAlign())
+
+        //should be able to set domain from myChart??
+        myXAxis
+          .domain(myChart.xScale().domain())
+          .rangeRound([0,currentFrame.dimension().width])
+          .offset(currentFrame.dimension().height + currentFrame.rem()/2);
+
+
+//.domain(data.map(function(d){return d.name}))
+
+
+          //call axes
+          currentFrame.plot()
+            .call(myYAxis);
+          currentFrame.plot()
+            .call(myXAxis);
+
+          //draw lollipops
+          currentFrame.plot()
+            .append("g")
+            .attr("id","lollipops")
+            .selectAll(".lollipops")
+            .data(data)
+            .enter()
+            .append("g")
+            .attr('class','lollipops')
+            .attr("id",function(d){
+              return d.name
+            })
+            .call(myChart)
+
+        d3.select(currentFrame.plot().node().parentNode)
+            .call(currentFrame);
+
+    });
+    // addSVGSavers('figure.saveable');
+});
+
+//a function that returns the columns headers from the top of the dataset, excluding specified
+function getSeriesNames(columns){
+    var exclude = ['name','group']; // adjust column headings to match your dataset
+    return columns.filter(d=>(exclude.indexOf(d) == -1));
+}
+
+//a function to work out the extent of values in an array accross multiple properties...
+function extentMulti(data, columns){
+    const ext = data.reduce((acc, row, index)=>{
+        let values = columns.map(key=> +row[key])
+        let rowExtent = d3.extent(values);
+        if(!acc.max){
+            acc.max = rowExtent[1];
+            acc.min = rowExtent[0];
+        }else{
+            acc.max = Math.max(acc.max, rowExtent[1]);
+            acc.min = Math.min(acc.min, rowExtent[0]);
+        }
+        return acc;
+    },{});
+    return [ext.min, ext.max];
+}
+
+
+</script>
+</html>
