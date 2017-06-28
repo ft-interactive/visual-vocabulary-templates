@@ -68,12 +68,12 @@ let yMax = 0;//sets the maximum value on the xAxis
 let yAxisHighlight = 100; //sets which tick to highlight on the yAxis
 const numTicksy = 4;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
-const interval = "years"//date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = "years";//date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 let annotate = true; // show annotations, defined in the 'annotate' column
 let markers = false;//show dots on lines
-let legendAlign = "vert"//hori or vert, alignment of the legend
-let legendType = "line"//hori or vert, alignment of the legend
-let minorAxis = true//turns on or off the minor axis
+let legendAlign = "vert";//hori or vert, alignment of the legend
+let legendType = "line";//rect, line or circ, geometry of legend marker
+let minorAxis = true;//turns on or off the minor axis
 let highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 let interpolation=d3.curveLinear//curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 
