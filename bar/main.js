@@ -1,4 +1,4 @@
-function drawBars() {
+function barChart() {
 
 	let yScale0 = d3.scaleBand();
 	let yScale1 = d3.scaleBand();

@@ -10,7 +10,7 @@
     <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
     <script src="yAxisOrdinal.js"></script>
     <script src="xAxisLinear.js"></script>
-    <script src="drawBars.js"></script>
+    <script src="main.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
@@ -140,7 +140,7 @@ d3.csv('example2.csv', function(data) {
         const yAxis0 = yAxisOrdinal();//sets up yAxis
         const yAxis1 = yAxisOrdinal();//sets up yAxis
         const xAxis = xAxisLinear()
-        const barChart = drawBars()
+        const myChart = barChart()
  
         //const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize=currentFrame.dimension().height;//Used when drawing the yAxis ticks
@@ -198,7 +198,7 @@ d3.csv('example2.csv', function(data) {
             .attr("transform","translate(0,"+currentFrame.dimension().height+")")
         }
 
-        barChart
+        myChart
             //.paddingInner(0.06)
             .colourProperty(colourProperty)
             .colourPalette((frameName))
@@ -214,7 +214,7 @@ d3.csv('example2.csv', function(data) {
             .data(plotData)
             .enter()
             .append("g")
-            .call(barChart)
+            .call(myChart)
         //remove ticks if numbers are added to vars
         if (numbers) {
             let clear = xAxis.xLabel().selectAll(".tick").filter(function(d) {return d!=0})
