@@ -79,7 +79,7 @@ const yAxisAlign = "right";//alignment of the axis
 const xAxisAlign = "bottom";//alignment of the axis
 const interval = "years";//date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 let minorAxis = false;//turns on or off the minor axis
-let legendAlign = "vert";//hori or vert, alignment of the legend
+let legendAlign = "hori";//hori or vert, alignment of the legend
 let legendType = 'rect';//rect, line or circ, geometry of legend marker
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -280,6 +280,7 @@ d3.csv(dataFile, function(data) {
         myLegend
             .seriesNames(seriesNames)
             .geometry(legendType)
+            .frameName(frameName)
             .rem(myChart.rem())
             .alignment(legendAlign)
             .colourPalette((frameName));
