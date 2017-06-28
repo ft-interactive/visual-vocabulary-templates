@@ -8,7 +8,7 @@
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="lineChart.js"></script>
-    <script src="legend.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-legend/master/build/g-legend.js"></script>
     <script src="https://rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js"></script>
     <script src="https://rawgit.com/ft-interactive/g-xaxisdate/master/build/g-xaxisdate.js"></script>
     <link rel="stylesheet" href="styles.css"/>
@@ -72,6 +72,7 @@ const interval = "years"//date interval on xAxis "century", "jubilee", "decade",
 let annotate = true; // show annotations, defined in the 'annotate' column
 let markers = false;//show dots on lines
 let legendAlign = "vert"//hori or vert, alignment of the legend
+let legendType = "line"//hori or vert, alignment of the legend
 let minorAxis = true//turns on or off the minor axis
 let highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 let interpolation=d3.curveLinear//curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
@@ -184,7 +185,7 @@ d3.csv(dataFile, function(data) {
         const myXAxis = gAxis.xaxisDate();//sets up xAxis
         const myHighlights = drawHighlights()//sets up highlight tonal bands
         const myAnnotations = drawAnnotations()//sets up annotations
-        const myLegend = drawLegend()//sets up the legend
+        const myLegend = gLegend.legend()//sets up the legend
         //const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize=currentFrame.dimension().width;//Used when drawing the yAxis ticks
 
@@ -289,6 +290,7 @@ d3.csv(dataFile, function(data) {
             .seriesNames(seriesNames, highlightNames)
             .colourPalette((frameName))
             .rem(myChart.rem())
+            .geometry(legendType)
             .alignment(legendAlign);
         //Draw the Legend
         currentFrame.plot()

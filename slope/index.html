@@ -8,7 +8,7 @@
     <script src="//ft-interactive.github.io/visual-vocabulary/shared/svg2png.js"></script>
     <script src="https://unpkg.com/g-chartcolour"></script>
     <script src="slope.js"></script>
-    <script src="legend.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-legend/master/build/g-legend.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
@@ -58,6 +58,7 @@ const yAxisHighlight = 0; //sets which tick to highlight on the yAxis
 const numTicksy = 5;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 let legendAlign = "vert"//hori or vert, alignment of the legend
+let legendType = "line"//hori or vert, alignment of the legend
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -160,7 +161,7 @@ d3.csv('data.csv', function(data) {
 
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
-        const myLegend = drawLegend()//sets up the legend
+        const myLegend = gLegend.legend()//sets up the legend
         
         myChart
         .yRange( [currentFrame.dimension().height,0] )
@@ -200,10 +201,11 @@ d3.csv('data.csv', function(data) {
 
           //Set up legend for this frame
         myLegend
-            .groupNames(groupNames)
+            .seriesNames(groupNames)
             .colourPalette(frameName)
             .rem(myChart.rem())
-            .alignment(legendAlign);
+            .alignment(legendAlign)
+            .geometry(legendType);
        
        //Draw the Legend
         currentFrame.plot()
