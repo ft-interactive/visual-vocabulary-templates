@@ -2,42 +2,14 @@
 <html>
 <head>
     <title>Line chart - Visual Vocabulary</title>
-    <!-- <script src="//unpkg.com/systemjs@0.20.14"></script> -->
-    <script src="//rawgit.com/ft-interactive/d3-bootloader/master/d3-bootloader.js"></script>
+    <script src="//unpkg.com/systemjs@0.20.14"></script>
+    <script src="//rawgit.com/ft-interactive/d3-bootloader/master/index.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <style>
     .saveable button{ display: block; }
     ul {line-height: 24px;}
     </style>
-
-    <!-- <script type="text/javascript">
-    SystemJS.config({
-      map: {
-        'plugin-babel': '//unpkg.com/systemjs-plugin-babel@0.0.24',
-        'systemjs-babel-build': '//unpkg.com/systemjs-plugin-babel@0.0.24/systemjs-babel-browser.js',
-        d3: '//d3js.org/d3.v4.js',
-        'd3-selection': '//d3js.org/d3.v4.js',
-        'd3-array': '//d3js.org/d3.v4.js',
-        'd3-transition': '//d3js.org/d3.v4.js',
-        'g-chartcolour': '//unpkg.com/g-chartcolour',
-      },
-      transpiler: 'plugin-babel',
-    });
-
-    window.boot = function boot() {
-      return Promise.all([
-        '//d3js.org/d3.v4.js',
-        '//d3js.org/d3-selection-multi.v1.min.js',
-        '//unpkg.com/g-chartframe',
-        '//rawgit.com/ft-interactive/g-legend/master/build/g-legend.js',
-        '//rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js',
-        '//rawgit.com/ft-interactive/g-xaxisdate/master/build/g-xaxisdate.js',
-        './lineChart.js',
-        './data.js',
-      ].map(item => SystemJS.import(item)));
-    };
-    </script> -->
 </head>
 <body>
 
@@ -72,9 +44,22 @@
 
 <script type="text/javascript">
 (async () => {
-  const [d3, , gChartframe, gLegend, GyaxisLinear, GxaxisDate, lineChart, parseData] = await window.boot();
-  const { yaxisLinear } = GyaxisLinear;
-  const { xaxisDate } = GxaxisDate;
+  const {
+    d3,
+    gChartframe,
+    gLegend,
+    gYAxisLinear,
+    gXAxisDate,
+    lineChart,
+    parseData,
+  } = await window.boot({
+    parseData: './data.js',
+    lineChart: './lineChart.js',
+  });
+
+  const { yaxisLinear } = gYAxisLinear;
+  const { xaxisDate } = gXAxisDate;
+
   // User defined constants similar to version 2
   const dateStructure = '%d/%m/%Y';
 
@@ -386,6 +371,6 @@
     });
     return lineData;
   }
-})(); // Bottom of IIFE — important!
+})();
 </script>
 </html>
