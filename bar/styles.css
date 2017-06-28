@@ -297,10 +297,52 @@ svg {
     fill: #FFFFFF;
     font-size: 28px;
 }
-.ft-videographic .legend{
+.ft-webgraphic-s .label {
     font-family: metric;
-    fill-opacity: 0.5;
+    text-anchor: end;
+    fill-opacity: 1.0;
     fill: #FFFFFF;
+    font-size: 14px;
+}
+
+.ft-webgraphic-m .label {
+    font-family: metric;
+    text-anchor: end;
+    fill-opacity: 1.0;
+    fill: #FFFFFF;
+    font-size: 16px;
+}
+
+.ft-webgraphic-l .label {
+    font-family: metric;
+    text-anchor: end;
+    fill-opacity: 1.0;
+    fill: #FFFFFF;
+    font-size: 18px;
+}
+.ft-videographic .label{
+    font-family: metric;
+    text-anchor: end;
+    fill-opacity: 1.0;
+    font-size: 9.6px;
+}
+
+.ft-printgraphic .label{
+    font-family: metric;
+    text-anchor: end;
+    fill-opacity: 1.0;
+    font-size: 9.6px;
+}
+.ft-socialgraphic .label{
+    font-family: metric;
+    text-anchor: end;
+    fill-opacity: 1.0;
+    font-size: 28px;
+}
+.ft-videographic .label{
+    font-family: metric;
+    text-anchor: end;
+    fill-opacity: 1.0;
     font-size: 48px;
 }
 

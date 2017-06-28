@@ -7,6 +7,8 @@ function drawBars() {
 	let colourProperty = "name"
 	let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
+    let rem = 10
+    let numbers = false
 
 
 	function bars(parent) {
@@ -22,6 +24,19 @@ function drawBars() {
 		.attr("x",(d)=> {return xScale(Math.min(0, d.value))})
 		.attr("width", (d)=> {return Math.abs(xScale(d.value) - xScale(0))})
 		.attr("fill",(d)=> {return colourScale(d.name)})
+
+        if (numbers) {
+            parent.selectAll("text")
+            .data(function(d) {return d.groups})
+            .enter()
+            .append("text")
+            .html((d)=> {return d.value})
+            .attr("class","label")
+            .style("text-anchor", "end")
+            .attr("y",(d)=> {return yScale1(d.name)+(yScale1.bandwidth()/2)+(rem/2.5)})
+            .attr("x",(d)=> {return xScale(0)})
+            .attr("fill","#ffffff")
+        }
 
 	}
 
@@ -80,6 +95,14 @@ function drawBars() {
     }
     bars.seriesNames = (d)=>{
         seriesNames = d;
+        return bars;
+    };
+    bars.rem = (d)=>{
+        rem = d;
+        return bars;
+    };
+    bars.numbers = (d)=>{
+        numbers = d;
         return bars;
     };
 

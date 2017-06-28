@@ -50,7 +50,8 @@ let yAxisAlign = "left";//alignment of the axis
 let xAxisAlign = "bottom"
 let legendAlign = "vert"//hori or vert, alignment of the legend
 let sort = "descending";
-let sortOn = 3
+let sortOn = 0;
+let numbers = true;
 
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -96,7 +97,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-d3.csv('example.csv', function(data) {
+d3.csv('example2.csv', function(data) {
     //automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames=getSeriesNames(data.columns)
     const groupNames = [ ...new Set(data.map(d=>d.group)) ].filter(d=>d); // create an array of the group names
@@ -198,10 +199,10 @@ d3.csv('example.csv', function(data) {
         }
 
         //temporary recct to check axis position
-        base.append("rect")
-          .attr("width", currentFrame.dimension().width)
-          .attr("height",currentFrame.dimension().height)
-          .attr("fill","#fff8e8");
+        // base.append("rect")
+        //   .attr("width", currentFrame.dimension().width)
+        //   .attr("height",currentFrame.dimension().height)
+        //   .attr("fill","#fff8e8");
 
         barChart
             //.paddingInner(0.06)
@@ -211,6 +212,8 @@ d3.csv('example.csv', function(data) {
             .yScale0(yAxis0.scale())
             .yScale1(yAxis1.scale())
             .xScale(xAxis.scale())
+            .rem(currentFrame.rem())
+            .numbers(numbers)
 
 
         currentFrame.plot()
