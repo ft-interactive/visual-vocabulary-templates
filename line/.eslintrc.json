@@ -1,11 +1,13 @@
 {
   "extends": "airbnb-base",
   "parserOptions": {
-    "sourceType": "script"
+    "sourceType": "module"
   },
   "rules": {
     "no-param-reassign": [0],
-    "no-use-before-define": ["error", { "functions": false }]
+    "no-use-before-define": ["error", { "functions": false }],
+    "max-len": [0],
+    "import/prefer-default-export": [0]
   },
   "env": {
     "browser": true
