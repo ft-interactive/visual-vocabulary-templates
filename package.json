@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/ft-interactive/visual-vocabulary-templates#readme",
   "devDependencies": {
-    "eslint": "^4.1.1",
+    "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-plugin-html": "^3.0.0",
     "eslint-plugin-import": "^2.6.0"
@@ -25,8 +25,15 @@
       "sourceType": "script"
     },
     "rules": {
-      "no-param-reassign": [0],
-      "no-use-before-define": ["error", { "functions": false }]
+      "no-param-reassign": [
+        0
+      ],
+      "no-use-before-define": [
+        "error",
+        {
+          "functions": false
+        }
+      ]
     },
     "env": {
       "browser": true
