@@ -3,7 +3,8 @@ function yAxisOrdinal() {
     let scale = d3.scaleBand()
         .domain(["Oranges", "Lemons", "Apples", "Pears"])
         .rangeRound([0, 220])
-        .paddingInner(0)
+        .paddingInner(0.1)
+        .paddingOuter(0.05)
     let labelWidth = 0;
     let tickSize = 0;
     let offset = 0;
@@ -16,7 +17,8 @@ function yAxisOrdinal() {
 
         if (scale.domain.length > 1) {
             scale.paddingInner(0.1)
-        } else {
+        }
+        else {
             scale.paddingInner(0.2)
         }
 

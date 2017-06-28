@@ -51,7 +51,7 @@ let xAxisAlign = "bottom"
 let legendAlign = "vert"//hori or vert, alignment of the legend
 let sort = "descending";
 let sortOn = 0;
-let numbers = true;
+let numbers = false;
 
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -208,7 +208,6 @@ d3.csv('example2.csv', function(data) {
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
             .numbers(numbers)
-
 
         currentFrame.plot()
             .selectAll(".barHolder")

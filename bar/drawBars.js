@@ -103,11 +103,11 @@ function drawBars() {
     };
     bars.colourPalette = (d) =>{
         if(d==='social' || d==='video'){
-            colourScale.range(gChartcolour.categorical_bar);
+            colourScale.range(gChartcolour.lineSocial);
         } else if (d==='webS' || d==='webM' || d==='webL') {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d==='print') {
-            colourScale.range(gChartcolour.categorical_bar);
+            colourScale.range(gChartcolour.linePrint);
         }
         return bars;
     }
