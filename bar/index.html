@@ -10,6 +10,7 @@
     <script src="//ft-interactive.github.io/g-chartcolour/build/g-chartcolour.js"></script>
     <script src="yAxisOrdinal.js"></script>
     <script src="xAxisLinear.js"></script>
+    <script src="https://rawgit.com/ft-interactive/g-legend/master/build/g-legend.js"></script>
     <script src="main.js"></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
@@ -48,10 +49,12 @@ const numTicks = 7;//Number of tick on the uAxis
 const colourProperty = "name"
 let yAxisAlign = "left";//alignment of the axis
 let xAxisAlign = "bottom"
-let legendAlign = "vert"//hori or vert, alignment of the legend
 let sort = "descending";
 let sortOn = 0;
 let numbers = false;
+let legendAlign = "vert"//hori or vert, alignment of the legend
+let legendType = 'rect' //rect, line or circ, geometry of legend marker
+
 
 
 //Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -141,6 +144,7 @@ d3.csv('example2.csv', function(data) {
         const yAxis1 = yAxisOrdinal();//sets up yAxis
         const xAxis = xAxisLinear()
         const myChart = barChart()
+        const myLegend = gLegend.legend();
  
         //const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize=currentFrame.dimension().height;//Used when drawing the yAxis ticks
@@ -220,6 +224,24 @@ d3.csv('example2.csv', function(data) {
             let clear = xAxis.xLabel().selectAll(".tick").filter(function(d) {return d!=0})
             clear.remove()
         }
+
+        //Set up legend for this frame
+        myLegend
+            .seriesNames(seriesNames)
+            .colourPalette((frameName))
+            .rem(myChart.rem())
+            .geometry(legendType)
+            .alignment(legendAlign);
+        //Draw the Legend
+        currentFrame.plot()
+            .append("g")
+            .attr("id","legend")
+                .selectAll(".legend")
+                .data(seriesNames)
+                .enter()
+                .append("g")
+                .classed("legend",true)
+            .call(myLegend)
     
      });
     // addSVGSavers('figure.saveable');
