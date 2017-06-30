@@ -1,5 +1,5 @@
 function barChart() {
-    
+
     let yScale0 = d3.scaleBand();
     let yScale1 = d3.scaleBand();
     let xScale = d3.scaleLinear();
@@ -111,7 +111,7 @@ function barChart() {
         }
         return bars;
     }
-    bars.seriesNames = (d)=>{
+    bars.seriesNames = (d) => {
         seriesNames = d;
         return bars;
     };
