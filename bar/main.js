@@ -1,14 +1,14 @@
 function barChart() {
-
-	let yScale0 = d3.scaleBand();
-	let yScale1 = d3.scaleBand();
-	let xScale = d3.scaleLinear();
-	let seriesNames = [];
-	let colourProperty = "name"
+    
+    let yScale0 = d3.scaleBand();
+    let yScale1 = d3.scaleBand();
+    let xScale = d3.scaleLinear();
+    let seriesNames = [];
+	let colourProperty = "name";
 	let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
-    let rem = 10
-    let numbers = false
+    let rem = 10;
+    let numbers = false;
 
 
 	function bars(parent) {

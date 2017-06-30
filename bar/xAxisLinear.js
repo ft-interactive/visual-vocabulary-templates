@@ -3,21 +3,30 @@ function xAxisLinear() {
         .domain([0,100])
         .range([0,220]);
     let tickSize = 50;
-    let offset = 0;
     let numTicks = 5
     let align = "bottom"
+    let xAxisHighlight = 0
     let xLabel
 
     function axis(parent) {
 
-        const xAxis =getAxis(align)
-            .tickSize(tickSize)
-            .ticks(numTicks)
-            .scale(scale)
+    const xAxis = getAxis(align)
+        .tickSize(tickSize)
+        .ticks(numTicks)
+        .scale(scale)
 
-        xLabel = parent.append("g")
+    xLabel = parent.append("g")
             .attr("class", "axis xAxis" )
             .call(xAxis)
+
+    xLabel.each((d) => {
+        console.log("d",d);
+    })
+
+    var origin = xLabel.selectAll(".tick").filter(function(d, i) {
+            console.log(d)
+            return d==0 || d==xAxisHighlight;
+        }).classed("baseline", true);
            
     }
     axis.align = (d)=>{
@@ -51,17 +60,15 @@ function xAxisLinear() {
         return axis;
     }
 
-    axis.offset = (d)=>{
-        if(d===undefined) return offset
-        offset=d;
-        return axis;
-    }
-
     axis.numTicks = (d)=>{
         if(d===undefined) return numTicks
         numTicks=d;
         return axis;
-    }
+    };
+    axis.xAxisHighlight = (d)=>{
+        xAxisHighlight = d;
+        return axis;
+    };
 
     function getAxis(alignment){
         return{

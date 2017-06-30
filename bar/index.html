@@ -45,7 +45,7 @@ const sharedConfig = {
 }
 let xMin = -200;//sets the minimum value on the yAxis
 let xMax = 200;//sets the maximum value on the xAxis
-const yAxisHighlight = 0; //sets which tick to highlight on the yAxis
+const xAxisHighlight = -200; //sets which tick to highlight on the yAxis
 const numTicks = 7;//Number of tick on the uAxis
 const colourProperty = "name"
 let yAxisAlign = "left";//alignment of the axis
@@ -124,8 +124,6 @@ d3.csv('example2.csv', function(data) {
         });
        return groups
     }
-
-     console.log("before",plotData);
      
     if (sort=="descending") {
         plotData.sort(function(a, b) {
@@ -135,8 +133,6 @@ d3.csv('example2.csv', function(data) {
         }
     else { plotData.sort(function(a, b) { return a.groups[sortOn].value - b.groups[sortOn].value; })} //Sorts biggest rects to the left
 
-    console.log("After",plotData)
-
     //Draw the frames
     Object.keys(frame).forEach(frameName=>{
         const currentFrame = frame[frameName];
@@ -144,7 +140,7 @@ d3.csv('example2.csv', function(data) {
         
         const yAxis0 = gAxis.yOrdinal();//sets up yAxis
         const yAxis1 = yAxisOrdinal();//sets up yAxis
-        const xAxis = xAxisLinear()
+        const xAxis = gAxis.xLinear()
         const myChart = barChart()
         const myLegend = gLegend.legend();
  
@@ -166,6 +162,7 @@ d3.csv('example2.csv', function(data) {
             .align(xAxisAlign)
             .domain([Math.min(xMin,valueExtent[0]),Math.max(xMax,valueExtent[1])])
             .numTicks(numTicks)
+            .xAxisHighlight(xAxisHighlight)
 
         //console.log(xMin,xMax,valueExtent, xAxis.domain)
 
