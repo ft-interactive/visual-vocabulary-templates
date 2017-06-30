@@ -22,7 +22,7 @@ function yAxisOrdinal() {
             scale.paddingInner(0.2)
         }
 
-        yLabel = parent.append("g")
+        let yLabel = parent.append("g")
             .attr("class","axis yAxis")
             .call(yAxis)
 
@@ -60,12 +60,17 @@ function yAxisOrdinal() {
     }
     axis.yLabel = (d)=>{
         if(d===undefined) return yLabel
-        labelWidth=d;
+        yLabel=d;
         return axis;
     }
     axis.paddingInner = (  d)=>{
         if (!d) return scale.paddingInner();
         scale.paddingInner(d);
+        return axis;
+    };
+    axis.paddingOuter = (  d)=>{
+        if (!d) return scale.paddingOuter();
+        scale.paddingOuter(d);
         return axis;
     };
     
