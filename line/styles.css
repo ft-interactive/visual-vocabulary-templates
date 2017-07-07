@@ -139,7 +139,7 @@ svg {
     stroke-opacity: 0.38;
 }
 /* Style for the highlight or base line on yAxis*/
-.ft-webgraphic-s .baseline line, 
+.ft-webgraphic-s .baseline line,
 .ft-webgraphic-m .baseline line,
 .ft-webgraphic-l .baseline line {
     stroke: #CEC6B9;
@@ -308,4 +308,13 @@ svg text{
     font-feature-settings: 'tnum',1;
     -webkit-font-feature-settings: 'tnum';
     -moz-font-feature-settings: 'tnum';
+}
+
+
+.saveable button{
+  display: block;
+}
+
+ul {
+  line-height: 24px;
 }
