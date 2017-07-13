@@ -53,23 +53,19 @@ export function extentMulti(d, columns) {
 /**
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
- * @param  {[type]} data  [description]
- * @param  {[type]} group [description]
- * @return {[type]}       [description]
  */
 export function getlines(d, group) {
-  const lineData = [];
-  d.forEach((el) => {
-      // console.log(el,i)
-    const column = {};
-    column.name = group;
-    column.date = el.date;
-    column.value = +el[group];
-    column.highlight = el.highlight;
-    column.annotate = el.annotate;
+  return d.map((el) => {
     if (el[group]) {
-      lineData.push(column);
+      return {
+        name: group,
+        date: el.date,
+        value: +el[group],
+        highlight: el.highlight,
+        annotate: el.annotate,
+      };
     }
-  });
-  return lineData;
+
+    return undefined;
+  }).filter(i => i);
 }

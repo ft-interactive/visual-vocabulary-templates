@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Line chart - Visual Vocabulary</title>
-    <script src="//unpkg.com/systemjs@0.20.14"></script>
+    <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
 </head>
@@ -57,54 +57,4 @@
     <figure class="framed saveable" data-frame="video"><svg></svg></figure>
 
 </body>
-
-<script type="text/javascript">
-// @TODO This all should be moved to somewhere else...
-SystemJS.config({
-  map: {
-    'plugin-babel': '//unpkg.com/systemjs-plugin-babel@0.0.24',
-    'systemjs-babel-build': '//unpkg.com/systemjs-plugin-babel@0.0.24/systemjs-babel-browser.js',
-    d3: '//d3js.org/d3.v4.js',
-    'd3-array': '//d3js.org/d3.v4.js',
-    'd3-axis': '//d3js.org/d3.v4.js',
-    'd3-brush': '//d3js.org/d3.v4.js',
-    'd3-chord': '//d3js.org/d3.v4.js',
-    'd3-collection': '//d3js.org/d3.v4.js',
-    'd3-color': '//d3js.org/d3.v4.js',
-    'd3-dispatch': '//d3js.org/d3.v4.js',
-    'd3-drag': '//d3js.org/d3.v4.js',
-    'd3-dsv': '//d3js.org/d3.v4.js',
-    'd3-ease': '//d3js.org/d3.v4.js',
-    'd3-force': '//d3js.org/d3.v4.js',
-    'd3-format': '//d3js.org/d3.v4.js',
-    'd3-geo': '//d3js.org/d3.v4.js',
-    'd3-hierarchy': '//d3js.org/d3.v4.js',
-    'd3-interpolate': '//d3js.org/d3.v4.js',
-    'd3-path': '//d3js.org/d3.v4.js',
-    'd3-polygon': '//d3js.org/d3.v4.js',
-    'd3-quadtree': '//d3js.org/d3.v4.js',
-    'd3-queue': '//d3js.org/d3.v4.js',
-    'd3-random': '//d3js.org/d3.v4.js',
-    'd3-request': '//d3js.org/d3.v4.js',
-    'd3-scale': '//d3js.org/d3.v4.js',
-    'd3-selection': '//d3js.org/d3.v4.js',
-    'd3-shape': '//d3js.org/d3.v4.js',
-    'd3-time': '//d3js.org/d3.v4.js',
-    'd3-time-format': '//d3js.org/d3.v4.js',
-    'd3-timer': '//d3js.org/d3.v4.js',
-    'd3-transition': '//d3js.org/d3.v4.js',
-    'd3-voronoi': '//d3js.org/d3.v4.js',
-    'd3-zoom': '//d3js.org/d3.v4.js',
-    'g-chartcolour': '//unpkg.com/g-chartcolour',
-    'g-legend': '//unpkg.com/g-legend',
-    'g-chartframe': '//unpkg.com/g-chartframe',
-    'g-xaxisdate': '//rawgit.com/ft-interactive/g-xaxisdate/master/build/g-xaxisdate.js',
-    'g-yaxislinear': '//rawgit.com/ft-interactive/g-yaxislinear/master/build/g-yaxislinear.js',
-  },
-  transpiler: 'plugin-babel',
-});
-
-// Okay, let's go!
-SystemJS.import('./index.js');
-</script>
 </html>

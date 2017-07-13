@@ -10,7 +10,7 @@ svg {
 .ft-webgraphic-s .axis text,
 .ft-webgraphic-m .axis text,
 .ft-webgraphic-l .axis text {
-    font-family: metric;
+  font-family: metric;
 }
 
 .ft-webgraphic-s .axis text {
