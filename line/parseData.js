@@ -1,20 +1,20 @@
 import * as d3 from 'd3';
 
 export function fromCSV(url, dateStructure) {
-  return new Promise((resolve, reject) => {
-    d3.csv(url, (error, data) => {
-      if (error) reject(error);
-      else {
+    return new Promise((resolve, reject) => {
+        d3.csv(url, (error, data) => {
+            if (error) reject(error);
+            else {
         // make sure all the dates in the date column are a date object
-        const parseDate = d3.timeParse(dateStructure);
-        data.forEach((d) => {
-          d.date = parseDate(d.date);
-        });
+                const parseDate = d3.timeParse(dateStructure);
+                data.forEach((d) => {
+                    d.date = parseDate(d.date);
+                });
 
-        resolve(data);
-      }
+                resolve(data);
+            }
+        });
     });
-  });
 }
 
 
@@ -24,8 +24,8 @@ export function fromCSV(url, dateStructure) {
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-  const exclude = ['date', 'annotate', 'highlight'];
-  return columns.filter(d => (exclude.indexOf(d) === -1));
+    const exclude = ['date', 'annotate', 'highlight'];
+    return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
 /**
@@ -35,19 +35,19 @@ export function getSeriesNames(columns) {
  * @return {[type]}         [description]
  */
 export function extentMulti(d, columns) {
-  const ext = d.reduce((acc, row) => {
-    const values = columns.map(key => +row[key]);
-    const rowExtent = d3.extent(values);
-    if (!acc.max) {
-      acc.max = rowExtent[1];
-      acc.min = rowExtent[0];
-    } else {
-      acc.max = Math.max(acc.max, rowExtent[1]);
-      acc.min = Math.min(acc.min, rowExtent[0]);
-    }
-    return acc;
-  }, {});
-  return [ext.min, ext.max];
+    const ext = d.reduce((acc, row) => {
+        const values = columns.map(key => +row[key]);
+        const rowExtent = d3.extent(values);
+        if (!acc.max) {
+            acc.max = rowExtent[1];
+            acc.min = rowExtent[0];
+        } else {
+            acc.max = Math.max(acc.max, rowExtent[1]);
+            acc.min = Math.min(acc.min, rowExtent[0]);
+        }
+        return acc;
+    }, {});
+    return [ext.min, ext.max];
 }
 
 /**
@@ -55,17 +55,17 @@ export function extentMulti(d, columns) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group) {
-  return d.map((el) => {
-    if (el[group]) {
-      return {
-        name: group,
-        date: el.date,
-        value: +el[group],
-        highlight: el.highlight,
-        annotate: el.annotate,
-      };
-    }
+    return d.map((el) => {
+        if (el[group]) {
+            return {
+                name: group,
+                date: el.date,
+                value: +el[group],
+                highlight: el.highlight,
+                annotate: el.annotate,
+            };
+        }
 
-    return undefined;
-  }).filter(i => i);
+        return undefined;
+    }).filter(i => i);
 }
