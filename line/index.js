@@ -5,13 +5,9 @@
 import * as d3 from 'd3';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
-import GYAxisLinear from 'g-yaxislinear';
-import GXAxisDate from 'g-xaxisdate';
+import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
-
-const { xaxisDate } = GXAxisDate;
-const { yaxisLinear } = GYAxisLinear;
 
 // User defined constants similar to version 2
 const dateStructure = '%d/%m/%Y';
@@ -83,16 +79,16 @@ d3.selectAll('.framed')
   });
 
 parseData.fromCSV(dataFile, dateStructure).then((data) => {
-  // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+    // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames = parseData.getSeriesNames(data.columns);
 
-  // Format the dataset that is used to draw the lines
+    // Format the dataset that is used to draw the lines
     const plotData = seriesNames.map(d => ({
         name: d,
         lineData: parseData.getlines(data, d),
     }));
 
-  // Sort the data so that the labeled items are drawn on top
+    // Sort the data so that the labeled items are drawn on top
     const dataSorter = function dataSorter(a, b) {
         if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
             return 1;
@@ -104,10 +100,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
     if (highlightNames) { plotData.sort(dataSorter); }
 
-  // Filter data for annotations
+    // Filter data for annotations
     const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
-  // Format the data that is used to draw highlight tonal bands
+    // Format the data that is used to draw highlight tonal bands
     const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
     const highlights = [];
 
@@ -117,153 +113,153 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         }
     });
 
-  // Use the seriesNames array to calculate the minimum and max values in the dataset
+    // Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = parseData.extentMulti(data, seriesNames);
 
-  // Define the chart x and x domains.
-  // yDomain will automatically overwrite the user defined min and max if the domain is too small
+    // Define the chart x and x domains.
+    // yDomain will automatically overwrite the user defined min and max if the domain is too small
     const myChart = lineChart.draw()
-    .seriesNames(seriesNames)
-    .highlightNames(highlightNames)
-    .yDomain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-    .xDomain(d3.extent(data, d => d.date))
-    .yAxisAlign(yAxisAlign)
-    .markers(markers)
-    .annotate(annotate)
-    .interpolation(interpolation);
+      .seriesNames(seriesNames)
+      .highlightNames(highlightNames)
+      .yDomain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+      .xDomain(d3.extent(data, d => d.date))
+      .yAxisAlign(yAxisAlign)
+      .markers(markers)
+      .annotate(annotate)
+      .interpolation(interpolation);
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-    // define other functions to be called
-        const myYAxis = yaxisLinear();// sets up yAxis
-        const myXAxis = xaxisDate();// sets up xAxis
+        // define other functions to be called
+        const myYAxis = gAxis.yLinear();// sets up yAxis
+        const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = lineChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
-    // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
+        // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
         d3.select(currentFrame.plot().node().parentNode)
-      .call(currentFrame);
+          .call(currentFrame);
 
 
-    // create a 'g' element at the back of the chart to add time period
-    // highlights after axis have been created
+        // create a 'g' element at the back of the chart to add time period
+        // highlights after axis have been created
         const axisHighlight = currentFrame.plot().append('g');
 
-    // create a 'g' element behind the chart and in front of the highlights
+        // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         myChart
-      .yRange([currentFrame.dimension().height, 0])
-      .plotDim(currentFrame.dimension())
-      .rem(currentFrame.rem())
-      .colourPalette((frameName));
+          .yRange([currentFrame.dimension().height, 0])
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
         myYAxis
-      .yScale(myChart.yScale())
-      .numTicks(numTicksy)
-      .tickSize(tickSize)
-      .yAxisHighlight(yAxisHighlight)
-      .tickAlign(myChart.yAxisAlign());
+          .scale(myChart.yScale())
+          .numTicks(numTicksy)
+          .tickSize(tickSize)
+          .yAxisHighlight(yAxisHighlight)
+          .align(myChart.yAxisAlign());
 
-    // Draw the yAxis first, this will position the yAxis correctly and
-    // measure the width of the label text
+        // Draw the yAxis first, this will position the yAxis correctly and
+        // measure the width of the label text
         currentFrame.plot()
-      .call(myYAxis);
+          .call(myYAxis);
 
-    // return the value in the variable newMargin
+        // return the value in the variable newMargin
         if (yAxisAlign === 'right') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
 
-      // Use newMargin redefine the new margin and range of xAxis
+            // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
         } else {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
 
-      // Use newMargin re define the new margin and range of xAxis
+            // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
         }
 
         myChart.xRange([0, currentFrame.dimension().width]);
 
-    // Set up xAxis for this frame
+        // Set up xAxis for this frame
         myXAxis
-      .fullYear(currentFrame.fullYear())
-      .scale(myChart.xScale())
-      .offset(currentFrame.dimension().height)
-      .interval(interval)
-      .tickSize(myChart.rem())
-      .minorAxis(minorAxis);
+          .fullYear(currentFrame.fullYear())
+          .scale(myChart.xScale())
+          .offset(currentFrame.dimension().height)
+          .interval(interval)
+          .tickSize(myChart.rem())
+          .minorAxis(minorAxis);
 
-    // Set up highlights for this frame
+        // Set up highlights for this frame
         myHighlights
-      .yScale(myChart.yScale())
-      .yRange([currentFrame.dimension().height, 0])
-      .xScale(myChart.xScale())
-      .xRange([0, currentFrame.dimension().width]);
+          .yScale(myChart.yScale())
+          .yRange([currentFrame.dimension().height, 0])
+          .xScale(myChart.xScale())
+          .xRange([0, currentFrame.dimension().width]);
 
-    // Draw the highlights before the lines and xAxis
+        // Draw the highlights before the lines and xAxis
         axisHighlight
-      .selectAll('.highlights')
-      .data(highlights)
-      .enter()
-      .append('g')
-      .call(myHighlights);
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .call(myHighlights);
 
-    // Draw the xAxis
+        // Draw the xAxis
         currentFrame.plot()
-      .call(myXAxis);
+          .call(myXAxis);
 
-    // Set up highlights for this frame
+        // Set up highlights for this frame
         myAnnotations
-      .yScale(myChart.yScale())
-      .yRange([currentFrame.dimension().height, 0])
-      .xScale(myChart.xScale())
-      .xRange([0, currentFrame.dimension().width])
-      .rem(currentFrame.rem());
+          .yScale(myChart.yScale())
+          .yRange([currentFrame.dimension().height, 0])
+          .xScale(myChart.xScale())
+          .xRange([0, currentFrame.dimension().width])
+          .rem(currentFrame.rem());
 
-    // Draw the annotations before the lines
+        // Draw the annotations before the lines
         plotAnnotation
-      .selectAll('.annotation')
-      .data(annos)
-      .enter()
-      .append('g')
-      .call(myAnnotations);
+          .selectAll('.annotation')
+          .data(annos)
+          .enter()
+          .append('g')
+          .call(myAnnotations);
 
-    // Draw the lines
+        // Draw the lines
         currentFrame.plot()
-      .selectAll('lines')
-      .data(plotData)
-      .enter()
-      .append('g')
-      .attr('class', 'lines')
-      .call(myChart);
+          .selectAll('lines')
+          .data(plotData)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .call(myChart);
 
-    // Set up legend for this frame
+        // Set up legend for this frame
         myLegend
-      .seriesNames(seriesNames)
-      .colourPalette((frameName))
-      .rem(myChart.rem())
-      .geometry(legendType)
-      .alignment(legendAlign);
+          .seriesNames(seriesNames)
+          .colourPalette((frameName))
+          .rem(myChart.rem())
+          .geometry(legendType)
+          .alignment(legendAlign);
 
-    // Draw the Legend
+        // Draw the Legend
         currentFrame.plot()
-      .append('g')
-      .attr('id', 'legend')
-      .selectAll('.legend')
-        .data(() => {
-            if (highlightNames.length > 0) {
-                return highlightNames;
-            }
-            return seriesNames;
-        })
-        .enter()
-        .append('g')
-        .classed('legend', true)
-        .call(myLegend);
+          .append('g')
+          .attr('id', 'legend')
+          .selectAll('.legend')
+            .data(() => {
+                if (highlightNames.length > 0) {
+                    return highlightNames;
+                }
+                return seriesNames;
+            })
+            .enter()
+            .append('g')
+            .classed('legend', true)
+            .call(myLegend);
     });
-  // addSVGSavers('figure.saveable');
+    // addSVGSavers('figure.saveable');
 });
