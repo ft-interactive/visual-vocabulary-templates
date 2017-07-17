@@ -11,7 +11,7 @@
     "import/extensions": [0],
     "import/no-unresolved": [0],
     "import/no-extraneous-dependencies": [0],
-    "indent": ["error", 2]
+    "indent": ["error", 4]
   },
   "env": {
     "browser": true
