@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as gChartframe from 'g-chartframe';
+import gChartframe from 'g-chartframe';
 import * as CHANGETHISTOYOURCHARTNAME from './chartNameHere.js';
 import * as parseData from './parseData.js';
 

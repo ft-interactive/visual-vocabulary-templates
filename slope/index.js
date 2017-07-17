@@ -5,7 +5,6 @@
 import * as d3 from 'd3';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
-import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as slopeChart from './slopeChart.js';
 
@@ -19,7 +18,7 @@ const sharedConfig = {
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
+// const numTicksy = 5; // Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
@@ -71,7 +70,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('./data.csv').then(({ seriesNames, groupNames, dataSorter, data }) => {
+parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, groupNames, dataSorter, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = parseData.extentMulti(data, seriesNames);
     data.sort(dataSorter);
@@ -162,7 +161,7 @@ parseData.fromCSV('./data.csv').then(({ seriesNames, groupNames, dataSorter, dat
 
         // override chartframe margin.top to allow room for axis labels
         currentFrame.plot()
-          .attr('transform', `translate(${currentFrame.margin().left},${currentFrame.margin().top + currentFrame.rem() * 1.2} )`);
+          .attr('transform', `translate(${currentFrame.margin().left},${currentFrame.margin().top + (currentFrame.rem() * 1.2)} )`);
     });
     // addSVGSavers('figure.saveable');
 });

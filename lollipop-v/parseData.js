@@ -30,7 +30,6 @@ export function fromCSV(url) {
     });
 }
 
-
 /**
  * Returns the columns headers from the top of the dataset, excluding specified
  * @param  {[type]} columns [description]
