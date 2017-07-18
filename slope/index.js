@@ -148,12 +148,23 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, groupNames, 
             .alignment(legendAlign)
             .geometry(legendType);
 
+            //extract unique group names
+            const nest = d3.nest()
+              .key(function(d) { return d; })
+              .entries(groupNames);
+
+            let uniqueGroupNames = [];
+
+            nest.forEach(function(d,i){
+                uniqueGroupNames.push(d.key)
+            })
+
        // Draw the Legend
         currentFrame.plot()
             .append('g')
             .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(groupNames)
+                .data(uniqueGroupNames)
                 .enter()
                 .append('g')
                 .classed('legend', true)
