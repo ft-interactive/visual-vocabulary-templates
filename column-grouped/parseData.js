@@ -20,31 +20,34 @@ export function fromCSV(url, dateStructure) {
                     d.date = parseDate(d.date);
                 });
 
-                resolve(data);
+                const seriesNames = getSeriesNames(data.columns);
+
+                // Use the seriesNames array to calculate the minimum and max values in the dataset
+                const valueExtent = extentMulti(data, seriesNames);
+
+                const columnNames = [...new Set(data.map(d => d.name))]; // create an array of the column names
+
+                resolve({
+                    valueExtent,
+                    columnNames,
+                    seriesNames,
+                    data,
+                });
             }
         });
     });
 }
 
 
-/**
- * Returns the columns headers from the top of the dataset, excluding specified
- * @param  {[type]} columns [description]
- * @return {[type]}         [description]
- */
-export function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight'];
+// a function that returns the columns headers from the top of the dataset, excluding specified
+function getSeriesNames(columns) {
+    const exclude = ['name']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
-/**
- * Calculates the extent of values in an array accross multiple properties
- * @param  {[type]} d       [description]
- * @param  {[type]} columns [description]
- * @return {[type]}         [description]
- */
-export function extentMulti(d, columns) {
-    const ext = d.reduce((acc, row) => {
+// a function to work out the extent of values in an array accross multiple properties...
+function extentMulti(data, columns) {
+    const ext = data.reduce((acc, row) => {
         const values = columns.map(key => +row[key]);
         const rowExtent = d3.extent(values);
         if (!acc.max) {
@@ -57,24 +60,4 @@ export function extentMulti(d, columns) {
         return acc;
     }, {});
     return [ext.min, ext.max];
-}
-
-/**
- * Sorts the column information in the dataset into groups according to the column
- * head, so that the line path can be passed as one object to the drawing function
- */
-export function getlines(d, group) {
-    return d.map((el) => {
-        if (el[group]) {
-            return {
-                name: group,
-                date: el.date,
-                value: +el[group],
-                highlight: el.highlight,
-                annotate: el.annotate,
-            };
-        }
-
-        return undefined;
-    }).filter(i => i);
 }
