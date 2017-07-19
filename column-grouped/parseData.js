@@ -25,7 +25,7 @@ export function fromCSV(url, dateStructure) {
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames);
 
-                const columnNames = [...new Set(data.map(d => d.name))]; // create an array of the column names
+                const columnNames = data.map(d => d.name); // create an array of the column names
 
                 resolve({
                     valueExtent,

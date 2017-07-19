@@ -16,7 +16,7 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the xAxis
+const yMax = 0;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -116,14 +116,14 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .colourPalette((frameName));
 
         myYAxis
-            .yScale(myChart.yScale())
+            .scale(myChart.yScale())
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
-            .tickAlign(myChart.yAxisAlign());
+            .align(myChart.yAxisAlign());
 
         myYAxis
-            .tickAlign(yAxisAlign)
+            .align(yAxisAlign)
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
             .numTicks(numTicksy);
 
@@ -131,7 +131,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
         currentFrame.plot()
           .call(myYAxis);
-
 
          // return the value in the variable newMargin
         if (yAxisAlign === 'right') {

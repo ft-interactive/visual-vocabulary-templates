@@ -38,6 +38,7 @@ const interval = 'years';// date interval on xAxis "century", "jubilee", "decade
 const minorAxis = false;// turns on or off the minor axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
+const highlights = [];
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -94,9 +95,9 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
-        const myXAxis0 = gAxis.xDate();// sets up yAxis
-        const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
-        const myXAxis2 = gAxis.xOrdinal();// sets up yAxis
+        const myXAxis0 = gAxis.xDate();// sets up xAxis
+        const myXAxis1 = gAxis.xOrdinal();// sets up xAxis
+        const myXAxis2 = gAxis.xOrdinal();// sets up xAxis
         const myYAxis = gAxis.yLinear();
         const myLegend = gLegend.legend();
         const myHighlights = columnTimelineChart.drawHighlights();// sets up highlight tonal bands
@@ -161,14 +162,14 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
             .xRange([0, currentFrame.dimension().width]);
 
         myXAxis1
-            // .align(xAxisAlign) // @TODO does xOrdinal have an align property?
+            .align(xAxisAlign)
             .domain(columnNames)
             .rangeRound([0, currentFrame.dimension().width]);
 
         myXAxis2
-            // .align(xAxisAlign) // @TODO does xOrdinal have an align property?
+            .align(xAxisAlign)
             .domain(seriesNames)
-            // .rangeRound([0, myXAxis1.bandwidth()]); // @TODO xOrdinal doesn't have bandwidth() method?
+            .rangeRound([0, myXAxis1.bandwidth()]);
 
         myChart
             .xScale1(myXAxis1.scale())
@@ -177,13 +178,12 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
 
 
         // Draw the highlights before the lines and xAxis
-        // @TODO I don't know where the highlights var is instantiated
-        // axisHighlight
-        //     .selectAll('.highlights')
-        //     .data(highlights)
-        //     .enter()
-        //     .append('g')
-        //     .call(myHighlights);
+        axisHighlight
+            .selectAll('.highlights')
+            .data(highlights)
+            .enter()
+            .append('g')
+            .call(myHighlights);
 
         currentFrame.plot()
           .call(myXAxis0);
@@ -196,7 +196,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
           .append('g')
           .attr('class', 'columnHolder')
           .attr('id', d => d.name)
-          .call(myChart); // @TODO this breaks rendering
+          .call(myChart);
 
 
         // Set up legend for this frame

@@ -16,33 +16,35 @@ export function fromCSV(url, dateStructure, options) {
             else {
                 const { sort, sortOn } = options;
                 // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
+                // const parseDate = d3.timeParse(dateStructure);
+                // data.forEach((d) => {
+                //     d.date = parseDate(d.date);
+                // });
                 // automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
-                const groupNames = [...new Set(data.map(d => d.group))].filter(d => d); // create an array of the group names
+                const groupNames = data.map(d => d.group).filter(d => d); // create an array of the group names
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames);
                 // Buid the dataset for plotting
                 const plotData = data.map(d => ({
                     name: d.group,
-                    groups: getGroups(d),
+                    groups: getGroups(seriesNames, d),
                 }));
-
 
                 if (sort === 'descending') {
                     plotData.sort((a, b) =>
                     // console.log("sortON=",sortOn)
                     // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
-                         b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
-                } else { plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value); } // Sorts biggest rects to the left
+                        b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
+                } else {
+                    plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
+                } // Sorts biggest rects to the left
 
                 resolve({
                     groupNames,
                     valueExtent,
                     seriesNames,
+                    plotData,
                     data,
                 });
             }

@@ -23,7 +23,7 @@ const xAxisAlign = 'bottom';
 const sort = 'descending';
 const sortOn = 0;
 const numbers = false;
-const legendAlign = 'vert';// hori or vert, alignment of the legend
+const legendAlign = 'vert'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
 
@@ -70,7 +70,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure, { sort, sortOn }).then(({ seriesNames, groupNames, valueExtent, plotData, data }) => {
+parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
+.then(({ seriesNames, plotData, valueExtent, data }) => {
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
