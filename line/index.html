@@ -76,10 +76,10 @@ const sharedConfig = {
   source:"Source not yet added",
 }
 
-let yMin = 0;//sets the minimum value on the yAxis
+let yMin = 200;//sets the minimum value on the yAxis
 let yMax = 0;//sets the maximum value on the xAxis
-let yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-const numTicksy = 4;//Number of tick on the uAxis
+let yAxisHighlight = 150; //sets which tick to highlight on the yAxis
+const numTicksy = 10;//Number of tick on the uAxis
 const yAxisAlign = "right";//alignment of the axis
 const interval = "years";//date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 let annotate = true; // show annotations, defined in the 'annotate' column
@@ -337,7 +337,12 @@ function getSeriesNames(columns){
 //a function to work out the extent of values in an array accross multiple properties...
 function extentMulti(data, columns){
     const ext = data.reduce((acc, row, index)=>{
-        let values = columns.map(key=> +row[key])
+        let values = columns.map(key=> row[key])
+        values = values.map(function(d){
+            if (d == "" || d == NaN || d == "undefined" || d == "*") {
+                return yMin};
+            return Number(d)
+        })
         let rowExtent = d3.extent(values);
         if(!acc.max){
             acc.max = rowExtent[1];
