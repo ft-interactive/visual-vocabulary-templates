@@ -48,7 +48,7 @@ const numTicks = 7;//Number of tick on the uAxis
 const colourProperty = "name"
 let yAxisAlign = "left";//alignment of the axis
 let xAxisAlign = "bottom"
-let sort = "descending";
+let sort = "";
 let sortOn = 0;
 let numbers = false;
 let legendAlign = "vert"//hori or vert, alignment of the legend
@@ -129,7 +129,7 @@ d3.csv('example2.csv', function(data) {
         // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
         return b.groups[sortOn].value - a.groups[sortOn].value; })//Sorts biggest rects to the left
         }
-    else { plotData.sort(function(a, b) { return a.groups[sortOn].value - b.groups[sortOn].value; })} //Sorts biggest rects to the left
+    if (sort=="ascending") { plotData.sort(function(a, b) { return a.groups[sortOn].value - b.groups[sortOn].value; })} //Sorts biggest rects to the left
 
     //Draw the frames
     Object.keys(frame).forEach(frameName=>{
