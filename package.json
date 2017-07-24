@@ -33,7 +33,11 @@
         {
           "functions": false
         }
-      ]
+      ],
+      "max-len": ["error", {
+        "ignoreTrailingComments": true
+      }],
+      "indent": ["error", 2]
     },
     "env": {
       "browser": true
@@ -45,6 +49,14 @@
       "html/html-extensions": [
         ".html"
       ]
+    },
+    "globals": {
+      "SystemJS": false
     }
+  },
+  "dependencies": {
+    "d3": "^4.9.1",
+    "g-chartcolour": "^0.8.11",
+    "locate-path": "^2.0.0"
   }
 }
