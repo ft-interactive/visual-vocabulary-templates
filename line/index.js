@@ -22,9 +22,10 @@ const sharedConfig = {
 
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 1500;// sets the maximum value on the xAxis
-const yAxisHighlight = 150; // sets which tick to highlight on the yAxis
+const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 10;// Number of tick on the uAxis
-const yAxisAlign = 'left';// alignment of the axis
+const yAxisAlign = 'right';// alignment of the axis
+const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
@@ -183,88 +184,101 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        axisHighlight.append("rect")
-          .attr("width", currentFrame.dimension().width)
-          .attr("height",currentFrame.dimension().height)
-          .attr("fill","#ededee");
+        // axisHighlight.append("rect")
+        //   .attr("width", currentFrame.dimension().width)
+        //   .attr("height",currentFrame.dimension().height)
+        //   .attr("fill","#ededee");
 
         myChart.xRange([0, currentFrame.dimension().width]);
 
         // Set up xAxis for this frame
-        // myXAxis
-        //   .fullYear(currentFrame.fullYear())
-        //   .scale(myChart.xScale())
-        //   .interval(interval)
-        //   .tickSize(myChart.rem())
-        //   .minorAxis(minorAxis);
+        myXAxis
+            .align(xAxisAlign)
+          .fullYear(false)
+          .scale(myChart.xScale())
+          .interval(interval)
+          .tickSize(myChart.rem())
+          .minorAxis(minorAxis)
+          .fullYear(false);
 
         // // Set up highlights for this frame
-        // myHighlights
-        //   .yScale(myChart.yScale())
-        //   .yRange([currentFrame.dimension().height, 0])
-        //   .xScale(myChart.xScale())
-        //   .xRange([0, currentFrame.dimension().width]);
+        myHighlights
+          .yScale(myChart.yScale())
+          .yRange([currentFrame.dimension().height, 0])
+          .xScale(myChart.xScale())
+          .xRange([0, currentFrame.dimension().width]);
 
-        // // Draw the highlights before the lines and xAxis
-        // axisHighlight
-        //   .selectAll('.highlights')
-        //   .data(highlights)
-        //   .enter()
-        //   .append('g')
-        //   .call(myHighlights);
+        // Draw the highlights before the lines and xAxis
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .call(myHighlights);
 
-        // // Draw the xAxis
-        // currentFrame.plot()
-        //   .call(myXAxis);
+        // Draw the xAxis
+        currentFrame.plot()
+          .call(myXAxis);
 
-        // // Set up highlights for this frame
-        // myAnnotations
-        //   .yScale(myChart.yScale())
-        //   .yRange([currentFrame.dimension().height, 0])
-        //   .xScale(myChart.xScale())
-        //   .xRange([0, currentFrame.dimension().width])
-        //   .rem(currentFrame.rem());
+        if (xAxisAlign == 'bottom' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            if(minorAxis) {
+                myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
 
-        // // Draw the annotations before the lines
-        // plotAnnotation
-        //   .selectAll('.annotation')
-        //   .data(annos)
-        //   .enter()
-        //   .append('g')
-        //   .call(myAnnotations);
+            }
+        }
+        if (xAxisAlign == 'top' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        }
 
-        // // Draw the lines
-        // currentFrame.plot()
-        //   .selectAll('lines')
-        //   .data(plotData)
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'lines')
-        //   .call(myChart);
+        // Set up highlights for this frame
+        myAnnotations
+          .yScale(myChart.yScale())
+          .yRange([currentFrame.dimension().height, 0])
+          .xScale(myChart.xScale())
+          .xRange([0, currentFrame.dimension().width])
+          .rem(currentFrame.rem());
 
-        // // Set up legend for this frame
-        // myLegend
-        //   .seriesNames(seriesNames)
-        //   .colourPalette((frameName))
-        //   .rem(myChart.rem())
-        //   .geometry(legendType)
-        //   .alignment(legendAlign);
+        // Draw the annotations before the lines
+        plotAnnotation
+          .selectAll('.annotation')
+          .data(annos)
+          .enter()
+          .append('g')
+          .call(myAnnotations);
 
-        // // Draw the Legend
-        // currentFrame.plot()
-        //   .append('g')
-        //   .attr('id', 'legend')
-        //   .selectAll('.legend')
-        //     .data(() => {
-        //         if (highlightNames.length > 0) {
-        //             return highlightNames;
-        //         }
-        //         return seriesNames;
-        //     })
-        //     .enter()
-        //     .append('g')
-        //     .classed('legend', true)
-        //     .call(myLegend);
+        // Draw the lines
+        currentFrame.plot()
+          .selectAll('lines')
+          .data(plotData)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .call(myChart);
+
+        // Set up legend for this frame
+        myLegend
+          .seriesNames(seriesNames)
+          .colourPalette((frameName))
+          .rem(myChart.rem())
+          .geometry(legendType)
+          .alignment(legendAlign);
+
+        // Draw the Legend
+        currentFrame.plot()
+          .append('g')
+          .attr('id', 'legend')
+          .selectAll('.legend')
+            .data(() => {
+                if (highlightNames.length > 0) {
+                    return highlightNames;
+                }
+                return seriesNames;
+            })
+            .enter()
+            .append('g')
+            .classed('legend', true)
+            .call(myLegend);
     });
     // addSVGSavers('figure.saveable');
 });
