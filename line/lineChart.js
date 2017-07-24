@@ -19,6 +19,7 @@ export function draw() {
 
     function chart(parent) {
         const lineData = d3.line()
+        .defined(function(d) { return d; })
       .curve(interpolation)
       .x(d => xScale(d.date))
       .y(d => yScale(d.value));

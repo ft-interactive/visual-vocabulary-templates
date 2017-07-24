@@ -46,12 +46,12 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        const values = columns.map(key => row[key])
+        let values = columns.map(key => row[key])
         .map((item) => {
             if (!item || item === '*') {
                 return yMin;
             }
-            return Number(d);
+            return Number(item);
         });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
@@ -80,6 +80,9 @@ export function getlines(d, group) {
                 highlight: el.highlight,
                 annotate: el.annotate,
             };
+        }
+        if(el[group]==false) {
+            lineData.push(null)  
         }
 
         return undefined;
