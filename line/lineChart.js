@@ -18,11 +18,12 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
+    
         const lineData = d3.line()
         .defined(function(d) { return d; })
-      .curve(interpolation)
-      .x(d => xScale(d.date))
-      .y(d => yScale(d.value));
+        .curve(interpolation)
+        .x(d => xScale(d.date))
+        .y(d => yScale(d.value));
 
         parent.append('path')
       .attr('stroke', (d) => {

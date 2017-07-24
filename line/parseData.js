@@ -71,20 +71,35 @@ export function extentMulti(d, columns, yMin) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group) {
-    return d.map((el) => {
-        if (el[group]) {
-            return {
-                name: group,
-                date: el.date,
-                value: +el[group],
-                highlight: el.highlight,
-                annotate: el.annotate,
-            };
+    let lineData=[]
+    d.forEach(function(el,i){
+        //console.log(el,i)
+        let column=new Object();
+        column.name = group
+        column.date = el.date
+        column.value = +el[group]
+        column.highlight = el.highlight
+        column.annotate = el.annotate
+        if(el[group]) {
+            lineData.push(column)  
         }
-        if(el[group]==false) {
+        if(el[group] == false) {
             lineData.push(null)  
         }
 
-        return undefined;
-    }).filter(i => i);
+    });
+    return lineData
+    // return d.map((el) => {
+    //     if (el[group]) {
+    //         return {
+    //             name: group,
+    //             date: el.date,
+    //             value: +el[group],
+    //             highlight: el.highlight,
+    //             annotate: el.annotate,
+    //         };
+    //     }
+
+    //     return null;
+    // }).filter(i => i);
 }

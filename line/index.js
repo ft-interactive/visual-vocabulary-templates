@@ -89,6 +89,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         lineData: parseData.getlines(data, d),
     }));
 
+    console.log(plotData)
+
     // Sort the data so that the labeled items are drawn on top
     const dataSorter = function dataSorter(a, b) {
         if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
@@ -140,7 +142,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
