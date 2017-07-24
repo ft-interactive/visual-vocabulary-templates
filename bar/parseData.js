@@ -36,7 +36,7 @@ export function fromCSV(url, dateStructure, options) {
                     // console.log("sortON=",sortOn)
                     // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
                         b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
-                } else {
+                } else if (sort === 'ascending') {
                     plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
                 } // Sorts biggest rects to the left
 

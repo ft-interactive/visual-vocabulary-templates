@@ -20,10 +20,10 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 0;// sets the minimum value on the yAxis
+const yMin = 200;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
-const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
-const numTicksy = 4;// Number of tick on the uAxis
+const yAxisHighlight = 150; // sets which tick to highlight on the yAxis
+const numTicksy = 10;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
@@ -114,7 +114,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     });
 
     // Use the seriesNames array to calculate the minimum and max values in the dataset
-    const valueExtent = parseData.extentMulti(data, seriesNames);
+    const valueExtent = parseData.extentMulti(data, seriesNames, yMin);
 
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small

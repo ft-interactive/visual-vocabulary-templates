@@ -38,14 +38,21 @@ export function getSeriesNames(columns) {
 }
 
 /**
- * Calculates the extent of values in an array accross multiple properties
+ * Calculates the extent of multiple columns
  * @param  {[type]} d       [description]
  * @param  {[type]} columns [description]
+ * @param  {[type]} yMin    [description]
  * @return {[type]}         [description]
  */
-export function extentMulti(d, columns) {
+export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        const values = columns.map(key => +row[key]);
+        const values = columns.map(key => row[key])
+        .map((item) => {
+            if (!item || item === '*') {
+                return yMin;
+            }
+            return Number(d);
+        });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
