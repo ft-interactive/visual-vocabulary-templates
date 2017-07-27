@@ -37,7 +37,7 @@ if (stalkWidth > 0) {
 
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 8;// Number of tick on the uAxis
-const yAxisAlign = 'left';// alignment of the y axis
+const yAxisAlign = 'right';// alignment of the y axis
 const xAxisAlign = 'bottom'
 
 // const legendAlign = 'vert';// hori or vert, alignment of the legend
