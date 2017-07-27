@@ -37,7 +37,9 @@ if (stalkWidth > 0) {
 
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 8;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the y axis
+const yAxisAlign = 'left';// alignment of the y axis
+const xAxisAlign = 'bottom'
+
 // const legendAlign = 'vert';// hori or vert, alignment of the legend
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -125,6 +127,27 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
           .align(myChart.yAxisAlign());
+
+        currentFrame.plot()
+          .call(myYAxis);
+
+        //return the value in the variable newMargin
+        if (yAxisAlign == 'right' ){
+            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
+            //Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({right:newMargin});
+            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        }
+        if (yAxisAlign == 'left' ){
+            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
+            //Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({left:newMargin});
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+        }
+
+
+        d3.select(currentFrame.plot().node().parentNode)
+            .call(currentFrame);
 
         // should be able to set domain from myChart??
         myXAxis

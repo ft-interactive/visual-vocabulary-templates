@@ -19,7 +19,7 @@ const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
+const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -132,17 +132,19 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         currentFrame.plot()
           .call(myYAxis);
 
-         // return the value in the variable newMargin
-        if (yAxisAlign === 'right') {
-            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
-            // Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({ right: newMargin });
-        } else {
-            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
-            // Use newMargin re define the new margin and range of xAxis
-            currentFrame.margin({ left: newMargin });
+        //return the value in the variable newMargin
+        if (yAxisAlign == 'right' ){
+            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
+            //Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({right:newMargin});
+            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-
+        if (yAxisAlign == 'left' ){
+            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
+            //Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({left:newMargin});
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+        }
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
