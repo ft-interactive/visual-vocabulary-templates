@@ -149,7 +149,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
         myXAxis0
             .fullYear(currentFrame.fullYear())
             .scale(myChart.xScale0())
-            .offset(currentFrame.dimension().height)
             .interval(interval)
             .tickSize(myChart.rem())
             .minorAxis(minorAxis);
@@ -185,8 +184,19 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
             .append('g')
             .call(myHighlights);
 
+
         currentFrame.plot()
           .call(myXAxis0);
+        if (xAxisAlign == 'bottom' ){
+            myXAxis0.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            if(minorAxis) {
+                myXAxis0.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+
+            }
+        }
+        if (xAxisAlign == 'top' ){
+            myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+        }
 
 
         currentFrame.plot()
