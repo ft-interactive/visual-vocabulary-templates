@@ -112,34 +112,26 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
         if (stalks) {
             myChart.stalkWidth(stalkWidth);
         }
-
-        myChart
-          .yRange([currentFrame.dimension().height, 0])
-          .xRange([currentFrame.dimension().width, 0])
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
-
-
         myYAxis
-          .scale(myChart.yScale())
+          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+          .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksy)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
-          .align(myChart.yAxisAlign());
+          .align(yAxisAlign);
 
         currentFrame.plot()
           .call(myYAxis);
 
         //return the value in the variable newMargin
         if (yAxisAlign == 'right' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
+            let newMargin = myYAxis.labelWidth() +currentFrame.margin().right
             //Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({right:newMargin});
             //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
         if (yAxisAlign == 'left' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
+            let newMargin = myYAxis.labelWidth() + currentFrame.margin().left
             //Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({left:newMargin});
             myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
@@ -151,16 +143,22 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
 
         // should be able to set domain from myChart??
         myXAxis
-          .domain(myChart.xScale().domain())
+          .domain(data.map(d => d.name))
           .rangeRound([0, currentFrame.dimension().width])
-          .offset(currentFrame.dimension().height + (currentFrame.rem() / 2));
+          // .offset(currentFrame.dimension().height + (currentFrame.rem() / 2))
+          .tickSize(currentFrame.dimension().height);
           // .domain(data.map(function(d){return d.name}))
 
         // call axes
         currentFrame.plot()
-          .call(myYAxis);
-        currentFrame.plot()
           .call(myXAxis);
+
+        myChart
+          .yRange([currentFrame.dimension().height, 0])
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
           // draw lollipops
         currentFrame.plot()

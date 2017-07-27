@@ -17,11 +17,12 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
+        const r = (dotWidth / 2) * xScale.bandwidth();
         if (dots) {
             parent.append('circle')
             .attr('cx', d => xScale(d.name) + (xScale.bandwidth() / 2))
             .attr('cy', d => yScale(d[seriesNames[0]]))
-            .attr('r', (dotWidth / 2) * xScale.bandwidth())
+            .attr('r', r)
             .attr('fill', colourScale(seriesNames[0]));
         }
 
@@ -93,8 +94,8 @@ export function draw() {
         xScale.domain(d);
         return chart;
     };
-    chart.xRange = (d) => {
-        xScale.range(d);
+    chart.xRangeRound = (d) => {
+        xScale.rangeRound(d);
         return chart;
     };
     chart.plotDim = (d) => {
