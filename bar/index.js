@@ -23,7 +23,7 @@ const xAxisAlign = 'bottom';
 const sort = '';
 const sortOn = 0;
 const numbers = false;
-const legendAlign = 'vert'; // hori or vert, alignment of the legend
+const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
 
@@ -162,6 +162,27 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         }
 
         // Set up legend for this frame
+        console.log('frameName',(frameName))
+        
+        myLegend
+            .seriesNames(seriesNames)
+            .geometry(legendType)
+            .frameName(frameName)
+            .rem(currentFrame.rem())
+            .alignment(legendAlign)
+            .colourPalette((frameName));
+
+        // Draw the Legend
+        currentFrame.plot()
+            .append('g')
+            .attr('id', 'legend')
+                .selectAll('.legend')
+                .data(seriesNames)
+                .enter()
+                .append('g')
+                .classed('legend', true)
+            .call(myLegend);
+
     });
     // addSVGSavers('figure.saveable');
 });
