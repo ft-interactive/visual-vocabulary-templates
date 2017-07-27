@@ -145,8 +145,7 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
         myXAxis
           .domain(data.map(d => d.name))
           .rangeRound([0, currentFrame.dimension().width])
-          // .offset(currentFrame.dimension().height + (currentFrame.rem() / 2))
-          .tickSize(currentFrame.dimension().height);
+          .offset(currentFrame.dimension().height + (currentFrame.rem() / 2))
           // .domain(data.map(function(d){return d.name}))
 
         // call axes
