@@ -167,6 +167,13 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         currentFrame.plot()
           .call(myXAxis0);
 
+        if (xAxisAlign == 'bottom' ){
+            myXAxis0.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        }
+        if (xAxisAlign == 'top' ){
+            myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+        }
+
 
         currentFrame.plot()
           .selectAll('.columnHolder')
