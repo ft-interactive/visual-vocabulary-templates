@@ -9,10 +9,20 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
-
 const dataFile = 'data.csv';
+const dateStructure = '%d/%m/%Y';
+/*
+  some common formatting parsers....
+  '%m/%d/%Y'        01/28/1986
+  '%d-%b-%y'        28-Jan-86
+  '%Y %b'           1986 Jan
+  '%Y-%m-%d'        1986-01-28
+  '%B %d'           January 28
+  '%d %b'           28 Jan
+  '%H:%M'           11:39
+  '%H:%M %p'        11:39 AM
+  '%d/%m/%Y %H:%M'  28/01/2016 11:39
+*/
 
 const sharedConfig = {
     title: 'Title not yet added',
