@@ -145,12 +145,19 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
         myXAxis
           .domain(data.map(d => d.name))
           .rangeRound([0, currentFrame.dimension().width])
-          .offset(currentFrame.dimension().height + (currentFrame.rem() / 2))
+          .align(xAxisAlign)
           // .domain(data.map(function(d){return d.name}))
 
         // call axes
         currentFrame.plot()
           .call(myXAxis);
+
+        if (xAxisAlign == 'bottom' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        }
+        if (xAxisAlign == 'top' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        }
 
         myChart
           .yRange([currentFrame.dimension().height, 0])
