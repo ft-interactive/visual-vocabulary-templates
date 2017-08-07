@@ -11,6 +11,7 @@ export function draw() {
     let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
+    let doubleScale = 0
   const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
   let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
@@ -24,7 +25,12 @@ export function draw() {
         .defined(function(d) { return d; })
         .curve(interpolation)
         .x(d => xScale(d.date))
-        .y(d => yScaleL(d.value));
+        .y(function (d) {
+            if(d.index >= doubleScale ) {
+                return yScaleR(d.value)
+            }
+            return yScaleL(d.value)
+        });
 
         parent.append('path')
       .attr('stroke', (d) => {
@@ -81,6 +87,11 @@ export function draw() {
     chart.yAxisAlign = (d) => {
         if (!d) return yAxisAlign;
         yAxisAlign = d;
+        return chart;
+    };
+    chart.doubleScale = (d) => {
+        if (!d) return doubleScale;
+        doubleScale = d;
         return chart;
     };
     chart.yDomainL = (d) => {

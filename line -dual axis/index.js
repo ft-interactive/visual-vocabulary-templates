@@ -30,13 +30,13 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMinL = 0;// sets the minimum value on the yAxisL
-const yMaxL = 1500;// sets the maximum value on the xAxisL
-const yMinR = 50;// sets the minimum value on the yAxisR
-const yMaxR = 400;// sets the maximum value on the xAxisR
+const yMinL = 200;// sets the minimum value on the yAxisL
+const yMaxL = 1400;// sets the maximum value on the xAxisL
+const yMinR = 20;// sets the minimum value on the yAxisR
+const yMaxR = 70;// sets the maximum value on the xAxisR
 const doubleScale = 2
-const numTicksL = 10;// Number of tick on the uAxis
-const numTicksR = 5;// Number of tick on the uAxis
+const numTicksL = 7;// Number of tick on the uAxis
+const numTicksR = 6;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
@@ -136,8 +136,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     const valueExtentL = parseData.extentMulti(data, seriesNames.slice(0,doubleScale), yMinL);
     const valueExtentR = parseData.extentMulti(data, seriesNames.slice(doubleScale ), yMinR);
 
-    console.log('Left', valueExtentL, 'Right',valueExtentR)
-
     // Define the chart x and x domains.
     // yDomainL will automatically overwrite the user defined min and max if the domain is too small
     const myChart = lineChart.draw()
@@ -148,6 +146,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
       .xDomain(d3.extent(data, d => d.date))
       .markers(markers)
       .annotate(annotate)
+      .doubleScale(doubleScale)
       .interpolation(interpolation);
 
     Object.keys(frame).forEach((frameName) => {
@@ -207,11 +206,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         yAxisR.yLabel().attr('transform', `translate(${(currentFrame.dimension().width)},0)`);
 
-
-        axisHighlight.append("rect")
-          .attr("width", currentFrame.dimension().width)
-          .attr("height",currentFrame.dimension().height)
-          .attr("fill","#ededee");
+        // axisHighlight.append("rect")
+        //   .attr("width", currentFrame.dimension().width)
+        //   .attr("height",currentFrame.dimension().height)
+        //   .attr("fill","#ededee");
 
         myChart.xRange([0, currentFrame.dimension().width]);
 
@@ -280,9 +278,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .attr('class', 'lines')
           .call(myChart);
 
+        
         // Set up legend for this frame
         myLegend
-          .seriesNames(seriesNames)
+          .seriesNames(seriesNames.slice(0,doubleScale))
           .colourPalette((frameName))
           .rem(myChart.rem())
           .geometry(legendType)
