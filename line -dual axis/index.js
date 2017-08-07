@@ -205,7 +205,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        yAxisL.yLabel().attr('transform', `translate(${(yAxisL.tickSize()-yAxisL.labelWidth())},0)`);
         yAxisR.yLabel().attr('transform', `translate(${(currentFrame.dimension().width)},0)`);
 
 
