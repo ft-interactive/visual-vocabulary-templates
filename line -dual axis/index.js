@@ -32,9 +32,9 @@ const sharedConfig = {
 
 const yMinL = 0;// sets the minimum value on the yAxisL
 const yMaxL = 1500;// sets the maximum value on the xAxisL
-const yMinR = 0;// sets the minimum value on the yAxisR
+const yMinR = 90;// sets the minimum value on the yAxisR
 const yMaxR = 1500;// sets the maximum value on the xAxisR
-const doubleScale = 1
+const doubleScale = 2
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 10;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
@@ -97,10 +97,13 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     const seriesNames = parseData.getSeriesNames(data.columns);
 
     // Format the dataset that is used to draw the lines
-    const plotData = seriesNames.map(d => ({
+    const plotData = seriesNames.map(function(d,i) {
+      return {
         name: d,
-        lineData: parseData.getlines(data, d),
-    }));
+        index: i,
+        lineData: parseData.getlines(data, d, i)
+      }
+    });
 
     console.log(plotData)
 
@@ -130,14 +133,18 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     });
 
     // Use the seriesNames array to calculate the minimum and max values in the dataset
-    const valueExtent = parseData.extentMulti(data, seriesNames, yMinL);
+    const valueExtentL = parseData.extentMulti(data, seriesNames.slice(0,doubleScale), yMinL);
+    const valueExtentR = parseData.extentMulti(data, seriesNames.slice(doubleScale ), yMinR);
+
+    console.log('Left', valueExtentL, 'Right',valueExtentR)
 
     // Define the chart x and x domains.
-    // yDomain will automatically overwrite the user defined min and max if the domain is too small
+    // yDomainL will automatically overwrite the user defined min and max if the domain is too small
     const myChart = lineChart.draw()
       .seriesNames(seriesNames)
       .highlightNames(highlightNames)
-      .yDomain([Math.min(yMinL, valueExtent[0]), Math.max(yMaxL, valueExtent[1])])
+      .yDomainL([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
+      .yDomainR([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
       .xDomain(d3.extent(data, d => d.date))
       .yAxisAlign(yAxisAlign)
       .markers(markers)
@@ -172,9 +179,9 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .colourPalette((frameName));
 
         yAxisL
-          .scale(myChart.yScale())
+          .scale(myChart.yScaleL())
           .numTicks(numTicksy)
-          .tickSize(tickSize)
+          .tickSize(currentFrame.rem())
           .yAxisHighlight(yAxisHighlight)
           .align(myChart.yAxisAlign());
 
@@ -183,26 +190,18 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         currentFrame.plot()
           .call(yAxisL);
 
-        //return the value in the variable newMargin
-        if (yAxisAlign == 'right' ){
-            let newMargin = yAxisL.labelWidth()+currentFrame.margin().right
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({right:newMargin});
-            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
-        }
-        if (yAxisAlign == 'left' ){
-            let newMargin = yAxisL.labelWidth()+currentFrame.margin().left
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({left:newMargin});
-            yAxisL.yLabel().attr('transform', `translate(${(yAxisL.tickSize()-yAxisL.labelWidth())},0)`);
-        }
+        let newMarginL = yAxisL.labelWidth()+currentFrame.margin().left
+        currentFrame.margin({left:newMarginL});
+
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+        yAxisL.yLabel().attr('transform', `translate(${(yAxisL.tickSize()-yAxisL.labelWidth())},0)`);
 
-        // axisHighlight.append("rect")
-        //   .attr("width", currentFrame.dimension().width)
-        //   .attr("height",currentFrame.dimension().height)
-        //   .attr("fill","#ededee");
+
+        axisHighlight.append("rect")
+          .attr("width", currentFrame.dimension().width)
+          .attr("height",currentFrame.dimension().height)
+          .attr("fill","#ededee");
 
         myChart.xRange([0, currentFrame.dimension().width]);
 
@@ -218,7 +217,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // // Set up highlights for this frame
         myHighlights
-          .yScale(myChart.yScale())
+          .yScaleL(myChart.yScaleL())
           .yRange([currentFrame.dimension().height, 0])
           .xScale(myChart.xScale())
           .xRange([0, currentFrame.dimension().width]);
@@ -248,7 +247,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up highlights for this frame
         myAnnotations
-          .yScale(myChart.yScale())
+          .yScaleL(myChart.yScaleL())
           .yRange([currentFrame.dimension().height, 0])
           .xScale(myChart.xScale())
           .xRange([0, currentFrame.dimension().width])

@@ -4,7 +4,8 @@ import gChartcolour from 'g-chartcolour';
 let rem = 10;
 
 export function draw() {
-    let yScale = d3.scaleLinear();
+    let yScaleL = d3.scaleLinear();
+    let yScaleR = d3.scaleLinear();
     let xScale = d3.scaleTime();
     let seriesNames = [];
     let highlightNames = [];
@@ -23,7 +24,7 @@ export function draw() {
         .defined(function(d) { return d; })
         .curve(interpolation)
         .x(d => xScale(d.date))
-        .y(d => yScale(d.value));
+        .y(d => yScaleL(d.value));
 
         parent.append('path')
       .attr('stroke', (d) => {
@@ -61,15 +62,15 @@ export function draw() {
         .classed('markers', true)
         .attr('id', d => `date: ${d.date} value: ${d.value}`)
         .attr('cx', d => xScale(d.date))
-        .attr('cy', d => yScale(d.value))
+        .attr('cy', d => yScaleL(d.value))
         .attr('r', rem * 0.25)
         .attr('fill', d => colourScale(d.name));
         }
     }
 
-    chart.yScale = (d) => {
-        if (!d) return yScale;
-        yScale = d;
+    chart.yScaleL = (d) => {
+        if (!d) return yScaleL;
+        yScaleL = d;
         return chart;
     };
     chart.yAxisAlign = (d) => {
@@ -77,13 +78,17 @@ export function draw() {
         yAxisAlign = d;
         return chart;
     };
-    chart.yDomain = (d) => {
-        yScale.domain(d);
+    chart.yDomainL = (d) => {
+        yScaleL.domain(d);
+        return chart;
+    };
+    chart.yDomainR = (d) => {
+        yScaleR.domain(d);
         return chart;
     };
 
     chart.yRange = (d) => {
-        yScale.range(d);
+        yScaleL.range(d);
         return chart;
     };
 
@@ -156,7 +161,7 @@ export function draw() {
 }
 
 export function drawHighlights() {
-    let yScale = d3.scaleLinear();
+    let yScaleL = d3.scaleLinear();
     let xScale = d3.scaleTime();
 
     function highlights(parent) {
@@ -164,13 +169,13 @@ export function drawHighlights() {
       .attr('class', 'highlights')
       .attr('x', d => xScale(d.begin))
       .attr('width', d => xScale(d.end) - xScale(d.begin))
-      .attr('y', () => yScale.range()[1])
-      .attr('height', () => yScale.range()[0])
+      .attr('y', () => yScaleL.range()[1])
+      .attr('height', () => yScaleL.range()[0])
       .attr('fill', '#fff1e0');
     }
 
-    highlights.yScale = (d) => {
-        yScale = d;
+    highlights.yScaleL = (d) => {
+        yScaleL = d;
         return highlights;
     };
     highlights.xScale = (d) => {
@@ -178,7 +183,7 @@ export function drawHighlights() {
         return highlights;
     };
     highlights.yRange = (d) => {
-        yScale.range(d);
+        yScaleL.range(d);
         return highlights;
     };
     highlights.xRange = (d) => {
@@ -190,7 +195,7 @@ export function drawHighlights() {
 }
 
 export function drawAnnotations() {
-    let yScale = d3.scaleLinear();
+    let yScaleL = d3.scaleLinear();
     let xScale = d3.scaleTime();
 
     function annotations(parent) {
@@ -198,19 +203,19 @@ export function drawAnnotations() {
       .attr('class', 'annotation')
       .attr('x1', d => xScale(d.date))
       .attr('x2', d => xScale(d.date))
-      .attr('y1', yScale.range()[0])
-      .attr('y2', yScale.range()[1] - 5);
+      .attr('y1', yScaleL.range()[0])
+      .attr('y2', yScaleL.range()[1] - 5);
 
         parent.append('text')
       .attr('class', 'annotation')
       .attr('text-anchor', 'middle')
       .attr('x', d => xScale(d.date))
-      .attr('y', yScale.range()[1] - (rem / 2))
+      .attr('y', yScaleL.range()[1] - (rem / 2))
       .text(d => d.annotate);
     }
 
-    annotations.yScale = (d) => {
-        yScale = d;
+    annotations.yScaleL = (d) => {
+        yScaleL = d;
         return annotations;
     };
     annotations.xScale = (d) => {
@@ -218,7 +223,7 @@ export function drawAnnotations() {
         return annotations;
     };
     annotations.yRange = (d) => {
-        yScale.range(d);
+        yScaleL.range(d);
         return annotations;
     };
     annotations.xRange = (d) => {

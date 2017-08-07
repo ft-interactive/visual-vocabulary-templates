@@ -70,12 +70,13 @@ export function extentMulti(d, columns, yMin) {
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
  */
-export function getlines(d, group) {
+export function getlines(d, group, i) {
     let lineData=[]
     d.forEach(function(el,i){
         //console.log(el,i)
         let column=new Object();
         column.name = group
+        column.index = i
         column.date = el.date
         column.value = +el[group]
         column.highlight = el.highlight
