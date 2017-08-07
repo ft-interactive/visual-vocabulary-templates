@@ -73,6 +73,11 @@ export function draw() {
         yScaleL = d;
         return chart;
     };
+    chart.yScaleR = (d) => {
+        if (!d) return yScaleR;
+        yScaleR = d;
+        return chart;
+    };
     chart.yAxisAlign = (d) => {
         if (!d) return yAxisAlign;
         yAxisAlign = d;

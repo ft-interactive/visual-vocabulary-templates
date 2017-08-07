@@ -190,6 +190,13 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         currentFrame.plot()
           .call(yAxisL);
 
+        yAxisL
+          .scale(myChart.yScaleR())
+          .numTicks(numTicksy)
+          .tickSize(currentFrame.rem())
+          .yAxisHighlight(yAxisHighlight)
+          .align('right');
+
         let newMarginL = yAxisL.labelWidth()+currentFrame.margin().left
         currentFrame.margin({left:newMarginL});
 
