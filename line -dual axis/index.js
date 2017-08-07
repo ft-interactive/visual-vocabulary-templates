@@ -183,7 +183,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .numTicks(numTicksy)
           .tickSize(currentFrame.rem())
           .yAxisHighlight(yAxisHighlight)
-          .align(myChart.yAxisAlign());
+          .align('left');
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
