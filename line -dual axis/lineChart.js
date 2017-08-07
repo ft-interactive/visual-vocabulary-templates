@@ -91,12 +91,14 @@ export function draw() {
         yScaleR.domain(d);
         return chart;
     };
-
-    chart.yRange = (d) => {
+    chart.yRangeL = (d) => {
         yScaleL.range(d);
         return chart;
     };
-
+    chart.yRangeR = (d) => {
+        yScaleR.range(d);
+        return chart;
+    };
     chart.highlightNames = (d) => {
         highlightNames = d;
         return chart;

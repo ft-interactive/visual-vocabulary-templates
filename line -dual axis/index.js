@@ -32,11 +32,11 @@ const sharedConfig = {
 
 const yMinL = 0;// sets the minimum value on the yAxisL
 const yMaxL = 1500;// sets the maximum value on the xAxisL
-const yMinR = 90;// sets the minimum value on the yAxisR
-const yMaxR = 1500;// sets the maximum value on the xAxisR
+const yMinR = 50;// sets the minimum value on the yAxisR
+const yMaxR = 400;// sets the maximum value on the xAxisR
 const doubleScale = 2
-const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 10;// Number of tick on the uAxis
+const numTicksL = 10;// Number of tick on the uAxis
+const numTicksR = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
@@ -146,7 +146,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
       .yDomainL([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
       .yDomainR([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
       .xDomain(d3.extent(data, d => d.date))
-      .yAxisAlign(yAxisAlign)
       .markers(markers)
       .annotate(annotate)
       .interpolation(interpolation);
@@ -173,16 +172,16 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
 
         myChart
-          .yRange([currentFrame.dimension().height, 0])
+          .yRangeL([currentFrame.dimension().height, 0])
+          .yRangeR([currentFrame.dimension().height, 0])
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
 
         yAxisL
           .scale(myChart.yScaleL())
-          .numTicks(numTicksy)
+          .numTicks(numTicksL)
           .tickSize(currentFrame.rem())
-          .yAxisHighlight(yAxisHighlight)
           .align('left');
 
         // Draw the yAxis first, this will position the yAxis correctly and
@@ -190,19 +189,24 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         currentFrame.plot()
           .call(yAxisL);
 
-        yAxisL
+        yAxisR
           .scale(myChart.yScaleR())
-          .numTicks(numTicksy)
+          .numTicks(numTicksR)
           .tickSize(currentFrame.rem())
-          .yAxisHighlight(yAxisHighlight)
           .align('right');
 
+        currentFrame.plot()
+          .call(yAxisR);
+
         let newMarginL = yAxisL.labelWidth()+currentFrame.margin().left
-        currentFrame.margin({left:newMarginL});
+        let newMarginR = yAxisR.labelWidth()+currentFrame.margin().right
+        currentFrame.margin({left:newMarginL,right:newMarginR});
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
         yAxisL.yLabel().attr('transform', `translate(${(yAxisL.tickSize()-yAxisL.labelWidth())},0)`);
+        yAxisR.yLabel().attr('transform', `translate(${(currentFrame.dimension().width)},0)`);
 
 
         axisHighlight.append("rect")
