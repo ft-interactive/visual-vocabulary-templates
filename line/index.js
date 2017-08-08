@@ -58,11 +58,17 @@ const frame = {
  // .title("Put headline here")
  .height(500),
 
+
     webL: gChartframe.webFrameL(sharedConfig)
  .margin({ top: 100, left: 20, bottom: 104, right: 5 })
  // .title("Put headline here")
  .height(700)
  .fullYear(true),
+
+    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+ .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+ // .title("Put headline here")
+ .height(500),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
