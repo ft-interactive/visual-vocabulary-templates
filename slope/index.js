@@ -38,6 +38,12 @@ const frame = {
    .height(500)
    .sourcePlotYOffset(28),
 
+   webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    // .title("Put headline here")
+   .height(500),
+
+
     webL: gChartframe.webFrameL(sharedConfig)
    .margin({ top: 100, left: 150, bottom: 76, right: 150 })
    // .title("Put headline here")
