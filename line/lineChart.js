@@ -18,7 +18,7 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-    
+
         const lineData = d3.line()
         .defined(function(d) { return d; })
         .curve(interpolation)
@@ -135,7 +135,7 @@ export function draw() {
         if (highlightNames.length > 0) {
             if (d === 'social' || d === 'video') {
                 colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webL') {
+            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
                 colourScale.range(gChartcolour.mutedFirstLineWeb);
             } else if (d === 'print') {
                 colourScale.range(gChartcolour.mutedFirstLinePrint);
@@ -144,7 +144,7 @@ export function draw() {
         }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webL') {
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);

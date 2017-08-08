@@ -61,6 +61,11 @@ const frame = {
  // .title("Put headline here")
  .height(500),
 
+    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    // .title("Put headline here")
+    .height(500),
+
     webL: gChartframe.webFrameL(sharedConfig)
  .margin({ top: 100, left: 20, bottom: 104, right: 5 })
  // .title("Put headline here")
@@ -278,7 +283,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .attr('class', 'lines')
           .call(myChart);
 
-        
+
         // Set up legend for this frame
         myLegend
           .seriesNames(seriesNames.slice(0,doubleScale))

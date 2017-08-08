@@ -1,4 +1,14 @@
 /* overall text style for each chart frame*/
+
+.section-heading {
+    background-color: #00757F;
+    color: #fff;
+    font-family: Metric;
+    font-weight: 600;
+    font-size: 20px;
+    padding: 8px 8px 5px;
+}
+
 svg {
     font-size: 0;
 }
