@@ -323,13 +323,13 @@ svg {
     font-family: metric;
     font-size: 9.6px;
 }
-.ft-socialgraphic .legend{
+.ft-socialgraphic .legend text{
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;
     font-size: 28px;
 }
-.ft-videographic .legend{
+.ft-videographic .legend text{
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;
