@@ -140,7 +140,7 @@ svg {
 .ft-webgraphic-l .xAxis line {
     stroke: #CEC6B9;
     stroke-width: 1px;
-    stroke-dasharray: 2,1;
+    stroke-dasharray: 4,4;
 }
 .ft-printgraphic .xAxis line{
     stroke: #000000;
