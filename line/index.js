@@ -220,7 +220,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .minorAxis(minorAxis)
           .minorTickSize(myChart.rem()* 0.3)
           .fullYear(false)
-          .frameName(frameName)
+         // .frameName(frameName)
 
         // // Set up highlights for this frame
         myHighlights
