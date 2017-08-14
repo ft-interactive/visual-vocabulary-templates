@@ -126,12 +126,13 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
-            .align(myChart.yAxisAlign());
+            .align(myChart.yAxisAlign())
 
         myYAxis
             .align(yAxisAlign)
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-            .numTicks(numTicksy);
+            .numTicks(numTicksy)
+            .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
@@ -158,7 +159,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .align(xAxisAlign)
             .domain(columnNames)
             .rangeRound([0, currentFrame.dimension().width], 10)
-            .offset(currentFrame.dimension().height + (currentFrame.rem() / 2));
+            .frameName(frameName);
 
         myXAxis1
             .align(xAxisAlign)
