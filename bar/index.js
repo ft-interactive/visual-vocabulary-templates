@@ -95,7 +95,8 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         yAxis0
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
-            .rangeRound([0, currentFrame.dimension().height]);
+            .rangeRound([0, currentFrame.dimension().height])
+            .frameName(frameName);
 
         yAxis1
             .paddingInner(0.06)
@@ -107,8 +108,8 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .align(xAxisAlign)
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .numTicks(numTicks)
-            .xAxisHighlight(xAxisHighlight);
-            //.frameName(frameName);
+            .xAxisHighlight(xAxisHighlight)
+            .frameName(frameName);
 
         // console.log(xMin,xMax,valueExtent, xAxis.domain)
 
