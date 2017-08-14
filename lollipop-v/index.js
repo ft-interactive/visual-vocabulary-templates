@@ -124,7 +124,8 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
           .numTicks(numTicksy)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
-          .align(yAxisAlign);
+          .align(yAxisAlign)
+          .frameName(frameName);
 
         currentFrame.plot()
           .call(myYAxis);
@@ -152,6 +153,7 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
           .domain(data.map(d => d.name))
           .rangeRound([0, currentFrame.dimension().width])
           .align(xAxisAlign)
+          .frameName(frameName);
           // .domain(data.map(function(d){return d.name}))
 
         // call axes
