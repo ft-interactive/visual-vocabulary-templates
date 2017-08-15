@@ -35,7 +35,7 @@ export function fromCSV(url, dateStructure) {
                 };
 
                 function hasGroupName(element, index, array) {
-                  return element != '';
+                  return element !== '';
                 }
 
                 const setColourPalette = data.map(d => d.group).every(hasGroupName);

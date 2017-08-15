@@ -152,7 +152,7 @@ export function draw() {
         return chart;
     };
 
-    chart.colourPalette = (d, groups) => {
+    chart.colourPalette = (d, groups, setPalette) => {
         if (groups.length > 0 && setPalette === false) {
             if (d === 'social' || d === 'video') {
                 colourScale.range(gChartcolour.mutedFirstLineSocial);

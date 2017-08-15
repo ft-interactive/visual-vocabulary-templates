@@ -83,7 +83,6 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPal
 
     const valueFormat = d => d3.format(',')(d);
 
-    console.log(setColourPalette);
 
     // define chart
     const myChart = slopeChart.draw()
@@ -132,8 +131,7 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPal
         myChart.dotRadius(currentFrame.rem() * 0.3);
 
         // specifics based on frame type
-        myChart.setPalette(setColourPalette);
-        myChart.colourPalette(frameName, groupNames); // set colour palette
+        myChart.colourPalette(frameName, groupNames, setColourPalette); // set colour palette
         myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
 
 
