@@ -34,8 +34,16 @@ export function fromCSV(url, dateStructure) {
                     return -1;
                 };
 
+                function hasGroupName(element, index, array) {
+                  return element != '';
+                }
+
+                const setColourPalette = data.map(d => d.group).every(hasGroupName);
+
+
                 resolve({
                     seriesNames,
+                    setColourPalette,
                     groupNames,
                     dataSorter,
                     data,

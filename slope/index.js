@@ -39,7 +39,7 @@ const frame = {
    .sourcePlotYOffset(28),
 
    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 120 })
     // .title("Put headline here")
    .height(500),
 
@@ -76,12 +76,14 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, groupNames, dataSorter, data }) => {
+parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPalette, groupNames, dataSorter, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = parseData.extentMulti(data, seriesNames);
     data.sort(dataSorter);
 
     const valueFormat = d => d3.format(',')(d);
+
+    console.log(setColourPalette);
 
     // define chart
     const myChart = slopeChart.draw()
@@ -130,6 +132,7 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, groupNames, 
         myChart.dotRadius(currentFrame.rem() * 0.3);
 
         // specifics based on frame type
+        myChart.setPalette(setColourPalette);
         myChart.colourPalette(frameName, groupNames); // set colour palette
         myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
 
