@@ -64,6 +64,7 @@ svg {
 .ft-printgraphic .highlighted-label {
     font-family: metric;
     font-size: 9.6px;
+    fill: #000000;
 }
 .ft-socialgraphic .axis text,
 .ft-socialgraphic .highlighted-label {
