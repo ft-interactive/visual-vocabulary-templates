@@ -142,7 +142,7 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPal
           .data(data)
           .enter()
           .append('g')
-              .attr('class', 'slope')
+              .attr('class', 'slope, lines')
               .attr('id', d => d.name)
           .call(myChart);
 
