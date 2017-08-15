@@ -77,12 +77,13 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, groupNames, dataSorter, data }) => {
+parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPalette, groupNames, dataSorter, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = parseData.extentMulti(data, seriesNames);
     data.sort(dataSorter);
 
     const valueFormat = d => d3.format(',')(d);
+
 
     // define chart
     const myChart = slopeChart.draw()
@@ -131,7 +132,7 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, groupNames, 
         myChart.dotRadius(currentFrame.rem() * 0.3);
 
         // specifics based on frame type
-        myChart.colourPalette(frameName, groupNames); // set colour palette
+        myChart.colourPalette(frameName, groupNames, setColourPalette); // set colour palette
         myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
 
 
