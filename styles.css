@@ -22,6 +22,7 @@ svg {
 .ft-webgraphic-m-default .axis text,
 .ft-webgraphic-l .axis text {
   font-family: metric;
+  fill: #66605C;
 }
 
 .ft-webgraphic-s .axis text {
