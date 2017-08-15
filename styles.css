@@ -25,6 +25,11 @@ svg {
   fill: #66605C;
 }
 
+.ft-socialgraphic .axis text,
+.ft-videographic .axis text {
+    fill-opacity: 0.5;
+}
+
 .ft-webgraphic-s .highlighted-label,
 .ft-webgraphic-m .highlighted-label,
 .ft-webgraphic-m-default .highlighted-label,
