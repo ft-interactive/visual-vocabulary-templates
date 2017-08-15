@@ -25,6 +25,18 @@ svg {
   fill: #66605C;
 }
 
+.ft-webgraphic-s .highlighted-label,
+.ft-webgraphic-m .highlighted-label,
+.ft-webgraphic-m-default .highlighted-label,
+.ft-webgraphic-l .highlighted-label {
+  fill: #000000;
+}
+
+.ft-socialgraphic .highlighted-label,
+.ft-videographic .highlighted-label {
+    colour: #ffffff;
+    opacity: 1;
+}
 .ft-webgraphic-s .axis text,
 .ft-webgraphic-s .highlighted-label {
     font-size: 14px;
@@ -39,7 +51,7 @@ svg {
 }
 
 .ft-webgraphic-l .axis text,
-.ft-webgraphic-m .highlighted-label {
+.ft-webgraphic-l .highlighted-label {
     font-size: 18px;
 }
 
