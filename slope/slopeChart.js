@@ -186,11 +186,6 @@ export function draw() {
         return chart;
     };
 
-    chart.setPalette = (x) => {
-        setPalette = x;
-        return chart;
-    };
-
     chart.xScale = (x) => {
         if (!x) return xScale;
         xScale = x;
