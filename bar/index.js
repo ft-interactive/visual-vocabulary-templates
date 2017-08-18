@@ -193,7 +193,7 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
 
         const legendSelection = currentFrame.plot().select('#legend');
         const legheight = (legendSelection.node().getBBox().height);
-        legendSelection.attr('transform', `translate(${-currentFrame.margin().left},${-legheight})`);
+        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
     });
     // addSVGSavers('figure.saveable');

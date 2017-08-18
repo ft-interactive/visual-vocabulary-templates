@@ -302,7 +302,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
             .call(myLegend);
 
         const legendSelection = currentFrame.plot().select('#legend');
-        legendSelection.attr('transform', `translate(${-currentFrame.margin().left},${-currentFrame.rem()})`);
+        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
     });
     // addSVGSavers('figure.saveable');
