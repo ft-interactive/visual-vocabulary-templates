@@ -143,7 +143,7 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .call(xAxis);
         if (xAxisAlign === 'top') {
             xAxis.xLabel()
-            .attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
         }
 
         myChart
@@ -190,6 +190,10 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
                 .append('g')
                 .classed('legend', true)
             .call(myLegend);
+
+        const legendSelection = currentFrame.plot().select('#legend');
+        const legheight = (legendSelection.node().getBBox().height);
+        legendSelection.attr('transform', `translate(${-currentFrame.margin().left},${-legheight})`);
 
     });
     // addSVGSavers('figure.saveable');
