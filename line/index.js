@@ -279,6 +279,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up legend for this frame
         myLegend
+          .frameName(frameName)
           .seriesNames(seriesNames)
           .colourPalette((frameName))
           .rem(myChart.rem())
