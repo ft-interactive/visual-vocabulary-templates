@@ -300,6 +300,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
             .append('g')
             .classed('legend', true)
             .call(myLegend);
+
+        const legendSelection = currentFrame.plot().select('#legend');
+        legendSelection.attr('transform', `translate(${-currentFrame.margin().left},${-currentFrame.rem()})`);
+
     });
     // addSVGSavers('figure.saveable');
 });
