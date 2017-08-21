@@ -260,21 +260,19 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .append('g')
           .call(myHighlights);
 
-        // // Set up highlights for this frame
-        // myAnnotations
-        //   .yScale(myChart.yScale())
-        //   .yRange([currentFrame.dimension().height, 0])
-        //   .xScale(myChart.xScale())
-        //   .xRange([0, currentFrame.dimension().width])
-        //   .rem(currentFrame.rem());
+        // Set up highlights for this frame
+        myAnnotations
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .rem(currentFrame.rem());
 
-        // // Draw the annotations before the lines
-        // plotAnnotation
-        //   .selectAll('.annotation')
-        //   .data(annos)
-        //   .enter()
-        //   .append('g')
-        //   .call(myAnnotations);
+        // Draw the annotations before the lines
+        plotAnnotation
+          .selectAll('.annotation')
+          .data(annos)
+          .enter()
+          .append('g')
+          .call(myAnnotations);
 
 
         // Set up legend for this frame
