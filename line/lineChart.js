@@ -166,24 +166,22 @@ export function drawHighlights() {
 
     function highlights(parent) {
         let highlights = parent.append('rect')
-      .attr('class', 'highlights')
-      .attr('x', d => xScale(d.begin))
-      .attr('width', d => xScale(d.end) - xScale(d.begin))
-      .attr('y', function(d) {
-        if(invertScale) {
+        .attr('class', 'highlights')
+        .attr('x', d => xScale(d.begin))
+        .attr('width', d => xScale(d.end) - xScale(d.begin))
+        .attr('y', function(d) {
+            if(invertScale) {
+                return yScale.range()[0]
+            }
+              return yScale.range()[1]
+            })
+        .attr('height', function (d) {
+            if(invertScale) {
+                return yScale.range()[1]
+            }
             return yScale.range()[0]
-        }
-          return yScale.range()[1]
-      })
-      .attr('height', function (d) {
-        if(invertScale) {
-            return yScale.range()[1]
-        }
-          return yScale.range()[0]
-
-      })
-      .attr('fill', '#fff1e0');
-
+        })
+        .attr('fill', '#fff1e0');
     }
 
     highlights.yScale = (d) => {
