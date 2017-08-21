@@ -138,10 +138,12 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
+    const myYAxis = gAxis.yLinear();// sets up yAxis
+    const myXAxis = gAxis.xDate();// sets up xAxis
+    
     const myChart = lineChart.draw()
       .seriesNames(seriesNames)
       .highlightNames(highlightNames)
-      .yDomain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
       .xDomain(d3.extent(data, d => d.date))
       .yAxisAlign(yAxisAlign)
       .markers(markers)
@@ -152,8 +154,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
-        const myYAxis = gAxis.yLinear();// sets up yAxis
-        const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = lineChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
@@ -167,15 +167,9 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
-
-        myChart
-          .yRange([currentFrame.dimension().height, 0])
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
-
         myYAxis
-          .scale(myChart.yScale())
+          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+          .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksy)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
@@ -208,11 +202,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         //   .attr("height",currentFrame.dimension().height)
         //   .attr("fill","#ededee");
 
-        myChart.xRange([0, currentFrame.dimension().width]);
 
         // Set up xAxis for this frame
         myXAxis
-            .align(xAxisAlign)
+          .align(xAxisAlign)
           .fullYear(false)
           .scale(myChart.xScale())
           .interval(interval)
@@ -222,60 +215,68 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .fullYear(false)
           .frameName(frameName);
 
-        // // Set up highlights for this frame
-        myHighlights
-          .yScale(myChart.yScale())
-          .yRange([currentFrame.dimension().height, 0])
-          .xScale(myChart.xScale())
-          .xRange([0, currentFrame.dimension().width]);
-
-        // Draw the highlights before the lines and xAxis
-        axisHighlight
-          .selectAll('.highlights')
-          .data(highlights)
-          .enter()
-          .append('g')
-          .call(myHighlights);
-
-        // Draw the xAxis
-        currentFrame.plot()
-          .call(myXAxis);
-
-        if (xAxisAlign == 'bottom' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            if(minorAxis) {
-                myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-
-            }
-        }
-        if (xAxisAlign == 'top' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        }
-
-        // Set up highlights for this frame
-        myAnnotations
-          .yScale(myChart.yScale())
-          .yRange([currentFrame.dimension().height, 0])
-          .xScale(myChart.xScale())
+        myChart
+          .yScale(myYAxis.scale())
           .xRange([0, currentFrame.dimension().width])
-          .rem(currentFrame.rem());
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
-        // Draw the annotations before the lines
-        plotAnnotation
-          .selectAll('.annotation')
-          .data(annos)
-          .enter()
-          .append('g')
-          .call(myAnnotations);
 
-        // Draw the lines
-        currentFrame.plot()
-          .selectAll('lines')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', 'lines')
-          .call(myChart);
+        // // // Set up highlights for this frame
+        // myHighlights
+        //   .yScale(myChart.yScale())
+        //   .yRange([currentFrame.dimension().height, 0])
+        //   .xScale(myChart.xScale())
+        //   .xRange([0, currentFrame.dimension().width]);
+
+        // // Draw the highlights before the lines and xAxis
+        // axisHighlight
+        //   .selectAll('.highlights')
+        //   .data(highlights)
+        //   .enter()
+        //   .append('g')
+        //   .call(myHighlights);
+
+        // // Draw the xAxis
+        // currentFrame.plot()
+        //   .call(myXAxis);
+
+        // if (xAxisAlign == 'bottom' ){
+        //     myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        //     if(minorAxis) {
+        //         myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+
+        //     }
+        // }
+        // if (xAxisAlign == 'top' ){
+        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        // }
+
+        // // Set up highlights for this frame
+        // myAnnotations
+        //   .yScale(myChart.yScale())
+        //   .yRange([currentFrame.dimension().height, 0])
+        //   .xScale(myChart.xScale())
+        //   .xRange([0, currentFrame.dimension().width])
+        //   .rem(currentFrame.rem());
+
+        // // Draw the annotations before the lines
+        // plotAnnotation
+        //   .selectAll('.annotation')
+        //   .data(annos)
+        //   .enter()
+        //   .append('g')
+        //   .call(myAnnotations);
+
+        // // Draw the lines
+        // currentFrame.plot()
+        //   .selectAll('lines')
+        //   .data(plotData)
+        //   .enter()
+        //   .append('g')
+        //   .attr('class', 'lines')
+        //   .call(myChart);
 
         // Set up legend for this frame
         myLegend
