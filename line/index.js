@@ -44,7 +44,8 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const invertScale = false
+const invertScale = false;
+const logScale = false;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -251,6 +252,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         myHighlights
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
+          .invertScale(invertScale);
 
         //Draw the highlights before the lines and xAxis
         axisHighlight

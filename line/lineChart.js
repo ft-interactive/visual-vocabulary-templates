@@ -162,15 +162,28 @@ export function draw() {
 export function drawHighlights() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let invertScale = false
 
     function highlights(parent) {
-        parent.append('rect')
+        let highlights = parent.append('rect')
       .attr('class', 'highlights')
       .attr('x', d => xScale(d.begin))
       .attr('width', d => xScale(d.end) - xScale(d.begin))
-      .attr('y', () => yScale.range()[1])
-      .attr('height', () => yScale.range()[0])
+      .attr('y', function(d) {
+        if(invertScale) {
+            return yScale.range()[0]
+        }
+          return yScale.range()[1]
+      })
+      .attr('height', function (d) {
+        if(invertScale) {
+            return yScale.range()[1]
+        }
+          return yScale.range()[0]
+
+      })
       .attr('fill', '#fff1e0');
+
     }
 
     highlights.yScale = (d) => {
@@ -187,6 +200,10 @@ export function drawHighlights() {
     };
     highlights.xRange = (d) => {
         xScale.range(d);
+        return highlights;
+    };
+    highlights.invertScale = (d) => {
+        invertScale = d;
         return highlights;
     };
 
