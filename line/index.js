@@ -31,12 +31,12 @@ const sharedConfig = {
 };
 
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 1500;// sets the maximum value on the xAxis
+const yMax = 1600;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 10;// Number of tick on the uAxis
+const numTicksy = 9;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'lustrum';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -44,6 +44,7 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
+const invertScale = false
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -139,15 +140,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
   
-    
-    const myChart = lineChart.draw()
-      .seriesNames(seriesNames)
-      .highlightNames(highlightNames)
-      .xDomain(d3.extent(data, d => d.date))
-      .yAxisAlign(yAxisAlign)
-      .markers(markers)
-      .annotate(annotate)
-      .interpolation(interpolation);
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -160,6 +152,12 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+        const myChart = lineChart.draw()
+          .seriesNames(seriesNames)
+          .highlightNames(highlightNames)
+          .markers(markers)
+          .annotate(annotate)
+          .interpolation(interpolation);
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
@@ -175,7 +173,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
           .align(myChart.yAxisAlign())
-          .frameName(frameName);
+          .frameName(frameName)
+          .invert(invertScale);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
@@ -206,6 +205,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up xAxis for this frame
         myXAxis
+          .domain (d3.extent(data, d => d.date))
           .range([0, currentFrame.dimension().width])
           .align(xAxisAlign)
           .fullYear(false)
@@ -231,28 +231,34 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
-        // myChart
-        //   //.yScale(myYAxis.scale())
-        //   .xRange([0, currentFrame.dimension().width])
-        //   .plotDim(currentFrame.dimension())
-        //   .rem(currentFrame.rem())
-        //   .colourPalette((frameName));
+        myChart
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
+        //Draw the lines
+        currentFrame.plot()
+          .selectAll('lines')
+          .data(plotData)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .call(myChart);
 
-        // // // Set up highlights for this frame
-        // myHighlights
-        //   .yScale(myChart.yScale())
-        //   .yRange([currentFrame.dimension().height, 0])
-        //   .xScale(myChart.xScale())
-        //   .xRange([0, currentFrame.dimension().width]);
+        // Set up highlights for this frame
+        myHighlights
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
 
-        // // Draw the highlights before the lines and xAxis
-        // axisHighlight
-        //   .selectAll('.highlights')
-        //   .data(highlights)
-        //   .enter()
-        //   .append('g')
-        //   .call(myHighlights);
+        //Draw the highlights before the lines and xAxis
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .call(myHighlights);
 
         // // Set up highlights for this frame
         // myAnnotations
@@ -270,14 +276,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         //   .append('g')
         //   .call(myAnnotations);
 
-        // // Draw the lines
-        // currentFrame.plot()
-        //   .selectAll('lines')
-        //   .data(plotData)
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'lines')
-        //   .call(myChart);
 
         // Set up legend for this frame
         myLegend
