@@ -36,7 +36,7 @@ const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 10;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'lustrum';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -138,8 +138,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
-    const myYAxis = gAxis.yLinear();// sets up yAxis
-    const myXAxis = gAxis.xDate();// sets up xAxis
+  
     
     const myChart = lineChart.draw()
       .seriesNames(seriesNames)
@@ -154,6 +153,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
+        const myYAxis = gAxis.yLinear();// sets up yAxis
+        const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = lineChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
@@ -205,22 +206,37 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up xAxis for this frame
         myXAxis
+          .range([0, currentFrame.dimension().width])
           .align(xAxisAlign)
           .fullYear(false)
-          .scale(myChart.xScale())
           .interval(interval)
-          .tickSize(myChart.rem()* 0.75)
+          .tickSize(currentFrame.rem()* 0.75)
           .minorAxis(minorAxis)
-          .minorTickSize(myChart.rem()* 0.3)
+          .minorTickSize(currentFrame.rem()* 0.3)
           .fullYear(false)
           .frameName(frameName);
 
-        myChart
-          .yScale(myYAxis.scale())
-          .xRange([0, currentFrame.dimension().width])
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
+        // Draw the xAxis
+        currentFrame.plot()
+          .call(myXAxis);
+
+        if (xAxisAlign == 'bottom' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            if(minorAxis) {
+                myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+
+            }
+        }
+        if (xAxisAlign == 'top' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        }
+
+        // myChart
+        //   //.yScale(myYAxis.scale())
+        //   .xRange([0, currentFrame.dimension().width])
+        //   .plotDim(currentFrame.dimension())
+        //   .rem(currentFrame.rem())
+        //   .colourPalette((frameName));
 
 
         // // // Set up highlights for this frame
@@ -237,21 +253,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         //   .enter()
         //   .append('g')
         //   .call(myHighlights);
-
-        // // Draw the xAxis
-        // currentFrame.plot()
-        //   .call(myXAxis);
-
-        // if (xAxisAlign == 'bottom' ){
-        //     myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        //     if(minorAxis) {
-        //         myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-
-        //     }
-        // }
-        // if (xAxisAlign == 'top' ){
-        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        // }
 
         // // Set up highlights for this frame
         // myAnnotations
