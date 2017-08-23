@@ -9,7 +9,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 
-const dataFile = 'data.csv';
+const dataFile = 'coal1.csv';
 const dateStructure = '%d/%m/%Y';
 /*
   some common formatting parsers....
@@ -30,11 +30,11 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMinL = 0;// sets the minimum value on the yAxisL
-const yMaxL = 1500;// sets the maximum value on the xAxisL
-const yMinR = 20;// sets the minimum value on the yAxisR
-const yMaxR = 70;// sets the maximum value on the xAxisR
-const doubleScale = 2;
+const yMinL = 20;// sets the minimum value on the yAxisL
+const yMaxL = 80;// sets the maximum value on the xAxisL
+const yMinR = 0;// sets the minimum value on the yAxisR
+const yMaxR = 10;// sets the maximum value on the xAxisR
+const doubleScale = 1;
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 6;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
@@ -186,8 +186,9 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         yAxisL
           .scale(myChart.yScaleL())
           .numTicks(numTicksL)
-          .tickSize(currentFrame.rem())
-          .align('left');
+          .tickSize(currentFrame.rem()*2)
+          .align('left')
+          .frameName(frameName);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
@@ -197,8 +198,9 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         yAxisR
           .scale(myChart.yScaleR())
           .numTicks(numTicksR)
-          .tickSize(currentFrame.rem())
-          .align('right');
+          .tickSize(currentFrame.rem()*2)
+          .align('right')
+          .frameName(frameName);
 
         currentFrame.plot()
           .call(yAxisR);
@@ -212,7 +214,12 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        yAxisR.yLabel().attr('transform', `translate(${(currentFrame.dimension().width)},0)`);
+        yAxisL.yLabel()
+          .attr('transform', `translate(${(yAxisL.tickSize()-yAxisL.labelWidth())},0)`)
+          .classed('baseline', true);
+        yAxisR.yLabel()
+          .attr('transform', `translate(${(currentFrame.dimension().width-currentFrame.rem())},0)`)
+          .classed('baseline', true);
 
         // axisHighlight.append("rect")
         //   .attr("width", currentFrame.dimension().width)
@@ -229,7 +236,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .interval(interval)
           .tickSize(myChart.rem())
           .minorAxis(minorAxis)
-          .fullYear(false);
+          .fullYear(false)
+          .frameName(frameName);
 
         // // Set up highlights for this frame
         myHighlights
