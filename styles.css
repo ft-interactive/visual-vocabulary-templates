@@ -11,6 +11,7 @@
 
 svg {
     font-size: 0;
+    fill: transparent;
 }
 .axis {
     font-size: inherit !important;
