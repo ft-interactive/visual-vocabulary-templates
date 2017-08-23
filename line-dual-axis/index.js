@@ -30,11 +30,11 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMinL = 200;// sets the minimum value on the yAxisL
-const yMaxL = 1400;// sets the maximum value on the xAxisL
+const yMinL = 0;// sets the minimum value on the yAxisL
+const yMaxL = 1500;// sets the maximum value on the xAxisL
 const yMinR = 20;// sets the minimum value on the yAxisR
 const yMaxR = 70;// sets the maximum value on the xAxisR
-const doubleScale = 2
+const doubleScale = 2;
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 6;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
@@ -203,6 +203,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         currentFrame.plot()
           .call(yAxisR);
 
+        console.log(yAxisL.labelWidth(),yAxisR.labelWidth())
+
         let newMarginL = yAxisL.labelWidth()+currentFrame.margin().left
         let newMarginR = yAxisR.labelWidth()+currentFrame.margin().right
         currentFrame.margin({left:newMarginL,right:newMarginR});
@@ -221,7 +223,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up xAxis for this frame
         myXAxis
-            .align(xAxisAlign)
+          .align(xAxisAlign)
           .fullYear(false)
           .scale(myChart.xScale())
           .interval(interval)
@@ -287,7 +289,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up legend for this frame
         myLegend
-          .seriesNames(seriesNames.slice(0,doubleScale))
+          .seriesNames(seriesNames)
           .colourPalette((frameName))
           .rem(myChart.rem())
           .geometry(legendType)
