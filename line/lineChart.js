@@ -78,11 +78,13 @@ export function draw() {
         return chart;
     };
     chart.yDomain = (d) => {
+        if (!d) return yDomain;
         yScale.domain(d);
         return chart;
     };
 
     chart.yRange = (d) => {
+        if (!d) return yRange;
         yScale.range(d);
         return chart;
     };
@@ -101,10 +103,12 @@ export function draw() {
         return chart;
     };
     chart.xDomain = (d) => {
+        if (!d) return xDomain;
         xScale.domain(d);
         return chart;
     };
     chart.xRange = (d) => {
+        if (!d) return xRange;
         xScale.range(d);
         return chart;
     };
@@ -158,15 +162,26 @@ export function draw() {
 export function drawHighlights() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let invertScale = false
 
     function highlights(parent) {
-        parent.append('rect')
-      .attr('class', 'highlights')
-      .attr('x', d => xScale(d.begin))
-      .attr('width', d => xScale(d.end) - xScale(d.begin))
-      .attr('y', () => yScale.range()[1])
-      .attr('height', () => yScale.range()[0])
-      .attr('fill', '#fff1e0');
+        let highlights = parent.append('rect')
+        .attr('class', 'highlights')
+        .attr('x', d => xScale(d.begin))
+        .attr('width', d => xScale(d.end) - xScale(d.begin))
+        .attr('y', function(d) {
+            if(invertScale) {
+                return yScale.range()[0]
+            }
+              return yScale.range()[1]
+            })
+        .attr('height', function (d) {
+            if(invertScale) {
+                return yScale.range()[1]
+            }
+            return yScale.range()[0]
+        })
+        .attr('fill', '#fff1e0');
     }
 
     highlights.yScale = (d) => {
@@ -183,6 +198,10 @@ export function drawHighlights() {
     };
     highlights.xRange = (d) => {
         xScale.range(d);
+        return highlights;
+    };
+    highlights.invertScale = (d) => {
+        invertScale = d;
         return highlights;
     };
 
