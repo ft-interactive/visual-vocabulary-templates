@@ -25,7 +25,7 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const yMin = 0;// sets the minimum value on the yAxis
+const yMin = -1;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = -1; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
@@ -125,7 +125,8 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
-            .align(myChart.yAxisAlign());
+            .align(myChart.yAxisAlign())
+            .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); //eslint-disable-line
 
@@ -154,7 +155,8 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
             .scale(myChart.xScale0())
             .interval(interval)
             .tickSize(myChart.rem())
-            .minorAxis(minorAxis);
+            .minorAxis(minorAxis)
+            .frameName(frameName);
 
          // Set up highlights for this frame
         myHighlights
@@ -166,7 +168,8 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
         myXAxis1
             .align(xAxisAlign)
             .domain(columnNames)
-            .rangeRound([0, currentFrame.dimension().width]);
+            .rangeRound([0, currentFrame.dimension().width])
+            .frameName(frameName);
 
         myXAxis2
             .align(xAxisAlign)
