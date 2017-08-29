@@ -105,7 +105,7 @@ svg {
 .ft-webgraphic-m .yAxis line,
 .ft-webgraphic-m-default .yAxis line,
 .ft-webgraphic-l .yAxis line {
-    stroke: #CCC1B7;
+    stroke: #e6d9ce;
     stroke-width: 1px;
     stroke-dasharray: 4, 4;
 }
@@ -349,7 +349,6 @@ svg {
 .ft-printgraphic .legend{
     font-family: metric;
     font-size: 9.6px;
-    fill: #000000;
 }
 .ft-socialgraphic .legend text{
     font-family: metric;
