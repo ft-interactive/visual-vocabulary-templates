@@ -15,15 +15,15 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
+const yMin = -500;// sets the minimum value on the yAxis
+const yMax = 2000;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = 'ascending';
+const sort = 'descending';
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -122,12 +122,15 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         });
        return stacks
     }
+      console.log('before: ', plotData);
 
     if (sort==="descending") {
+        console.log('descending')
         plotData.sort(function (a, b) {
         return b.total - a.total; })//Sorts biggest rects to the left
     }
     if (sort==="ascending") {
+        console.log('ascending')
         plotData.sort(function (a, b) {
         return a.total - b.total; })//Sorts biggest rects to the left
     }
@@ -139,7 +142,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
     if (sort=="none") {
         //no sorting applied
     }
-      console.log(plotData);
+      console.log('after: ', plotData);
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -193,7 +196,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
         myXAxis
             .align(xAxisAlign)
-            .domain(columnNames)
+            .domain(plotData.map(function(d) { return d.name;}))
             .rangeRound([0, currentFrame.dimension().width], 10)
             .frameName(frameName);
 
@@ -217,7 +220,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
           .data(plotData)
           .enter()
           .append('g')
-          .attr('class', 'columnHolder')
+          .attr('class', function(d) { return d.name + '_columnHolder'; })
           .call(myChart);
 
 
