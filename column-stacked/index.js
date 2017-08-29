@@ -15,8 +15,8 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-let yMin = -500;// sets the minimum value on the yAxis
-let yMax = 2000;// sets the maximum value on the yAxis
+let yMin = 0;// sets the minimum value on the yAxis
+let yMax = 0;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
@@ -93,7 +93,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         name: d.name,
         bands:getBands(d),
         total:d3.sum(getBands(d), function(d) { return d.height; })
-        // groups: getGroups(d),
     }));
 
     function getBands(el) {
@@ -120,17 +119,9 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
                 height:+el[name]
             }
         });
-        yMin=Math.min(yMin,negCumulative)
-        yMax=Math.max(yMax,posCumulative)
+        yMin = Math.min(yMin,negCumulative)
+        yMax = Math.max(yMax,posCumulative)
        return bands
-    }
-    console.log("plotData",plotData)
-    function getGroups(el) {
-        const groups = seriesNames.map(name => ({
-            name,
-            value: +el[name],
-        }));
-        return groups;
     }
 
 

@@ -18,33 +18,14 @@ export function draw() {
             .attr('width', xScale.bandwidth());
 
         parent.selectAll('rect')
-            .data(function(d) { return d.bands; })
-            .enter().append("rect")
-            .attr("width", xScale.bandwidth())
-            .attr("x", function(d) { return xScale(d.name)})
-            .attr("y", function(d) {
-                { return yScale(Math.max(d.y, d.y1))}
-            })
-            .attr("height", function(d) {
-                return Math.abs(yScale(0)-yScale(d.height))
-            })
+            .data(d => d.bands)
+            .enter()
+            .append('rect')
+            .attr('width', xScale.bandwidth())
+            .attr('x', d => xScale(d.name))
+            .attr('y', d => yScale(Math.max(d.y, d.y1)))
+            .attr('height',  d => Math.abs(yScale(0)-yScale(d.height)))
             .attr('fill', d => colourScale(d.name));
-            // .style("fill", function(d,i) { return colours[i] })
-            // .attr("transform",function(){
-            //     if(yAlign=="right") {
-            //         return "translate("+(margin.left)+","+(margin.top)+")"
-            //     }
-            //      else {return "translate("+(margin.left+yLabelOffset)+","+(margin.top)+")"}
-            // });
-        //     .data(d => d.groups)
-        //     .enter()
-        //     .append('rect')
-        //     .attr('class', 'columns')
-        //     .attr('x', d => xScale1(d.name))
-        //     .attr('width', () => xScale1.bandwidth())
-        //     .attr('y', d => yScale(Math.max(0, d.value)))
-        //     .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
-        //     .attr('fill', d => colourScale(d.name));
     }
 
     chart.yScale = (d) => {
