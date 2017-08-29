@@ -107,7 +107,6 @@ svg {
 .ft-webgraphic-l .yAxis line {
     stroke: #e6d9ce;
     stroke-width: 1px;
-    stroke-dasharray: 4, 4;
 }
 .ft-printgraphic .yAxis line{
     stroke: #000000;
