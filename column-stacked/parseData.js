@@ -9,21 +9,77 @@ import * as d3 from 'd3';
  * @param  {String} url Path to CSV file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
+export function fromCSV(url, dateStructure, options) {
     return new Promise((resolve, reject) => {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
+                const { sort } = options;
                 // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
+                // const parseDate = d3.timeParse(dateStructure);
+                // data.forEach((d) => {
+                //     d.date = parseDate(d.date);
+                // });
 
                 const seriesNames = getSeriesNames(data.columns);
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames);
+
+                const plotData = data.map(d => ({
+                    name: d.name,
+                    bands: getStacks(d),
+                    total: d3.sum(getStacks(d), (d) => { return d.value;} )
+                }));
+
+                // function that calculates the position of each rectangle in the stack
+                function getStacks(el) {
+                    let posCumulative = 0;
+                    let negCumulative = 0;
+                    let baseY = 0
+                    let baseY1 = 0
+                    var stacks = seriesNames.map(function(name, i) {
+                        if (el[name] > 0) {
+                            baseY1 = posCumulative
+                            posCumulative = posCumulative + (+el[name]);
+                            baseY = posCumulative;
+                        }
+                        if (el[name] < 0){
+                            baseY1 = negCumulative
+                            negCumulative = negCumulative + (+el[name]);
+                            baseY = negCumulative;
+                            if (i < 1) {baseY = 0; baseY1 = negCumulative;}
+                        }
+                        return {
+                            name: name,
+                            y: +baseY,
+                            y1: +baseY1,
+                            value: +el[name]
+                        }
+                    });
+                   return stacks
+                }
+
+                switch (sort) {
+                    case 'descending':
+                        plotData.sort(function (a, b) {
+                            return b.total - a.total;
+                        })//Sorts biggest rects to the left
+                        break;
+                    case 'ascending':
+                        plotData.sort(function (a, b) {
+                            return a.total - b.total;
+                        })//Sorts biggest rects to the right
+                        break;
+
+                    case 'alpha':
+                        plotData.sort(function (a, b) {
+                           return a.name.localeCompare(b.name);
+                        });
+                        break;
+                    default:
+                       break;
+                }
 
                 const columnNames = data.map(d => d.name); // create an array of the column names
 
@@ -31,6 +87,7 @@ export function fromCSV(url, dateStructure) {
                     valueExtent,
                     columnNames,
                     seriesNames,
+                    plotData,
                     data,
                 });
             }
