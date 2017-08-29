@@ -349,6 +349,7 @@ svg {
 .ft-printgraphic .legend{
     font-family: metric;
     font-size: 9.6px;
+    fill: #000000;
 }
 .ft-socialgraphic .legend text{
     font-family: metric;
