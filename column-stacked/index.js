@@ -141,10 +141,8 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             });
             break;
         default:
-        console.log('switch')
            break;
     }
-    console.log(plotData)
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
