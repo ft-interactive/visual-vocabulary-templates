@@ -23,6 +23,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const sort = 'ascending';
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -82,7 +83,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
     //         });
 
     // automatically calculate the seriesnames excluding the "name" column
-    console.log(seriesNames)
     // define chart
     const myChart = stackedColumnChart.draw() // eslint-disable-line
           .seriesNames(seriesNames)
@@ -92,6 +92,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
     const plotData = data.map(d => ({
         name: d.name,
         bands: getStacks(d),
+        total: d3.sum(getStacks(d), function(d) { return d.value; })
     }));
 
     // function that calculates the position of each rectangle in the stack
@@ -122,7 +123,23 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
        return stacks
     }
 
-
+    if (sort==="descending") {
+        plotData.sort(function (a, b) {
+        return b.total - a.total; })//Sorts biggest rects to the left
+    }
+    if (sort==="ascending") {
+        plotData.sort(function (a, b) {
+        return a.total - b.total; })//Sorts biggest rects to the left
+    }
+    if (sort==="alpha") {
+        plotData.sort(function (a, b) {
+           return a.name.localeCompare(b.name);
+        });
+    }
+    if (sort=="none") {
+        //no sorting applied
+    }
+      console.log(plotData);
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
