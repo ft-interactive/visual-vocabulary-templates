@@ -15,8 +15,8 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-let yMin = 0;// sets the minimum value on the yAxis
-let yMax = 0;// sets the maximum value on the yAxis
+const yMin = 0;// sets the minimum value on the yAxis
+const yMax = 0;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -91,37 +91,35 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
     // Buid the dataset for plotting
     const plotData = data.map(d => ({
         name: d.name,
-        bands:getBands(d),
-        total:d3.sum(getBands(d), function(d) { return d.height; })
+        bands: getStacks(d),
     }));
 
-    function getBands(el) {
-        let posCumulative=0;
-        let negCumulative=0;
-        let baseY=0
-        let baseY1=0
-        var bands=seriesNames.map(function(name,i) {
-            if(el[name]>0){
-                baseY1=posCumulative
-                posCumulative = posCumulative+(+el[name]);
-                baseY=posCumulative;
+    // function that calculates the position of each rectangle in the stack
+    function getStacks(el) {
+        let posCumulative = 0;
+        let negCumulative = 0;
+        let baseY = 0
+        let baseY1 = 0
+        var stacks = seriesNames.map(function(name, i) {
+            if (el[name] > 0) {
+                baseY1 = posCumulative
+                posCumulative = posCumulative + (+el[name]);
+                baseY = posCumulative;
             }
-            if(el[name]<0){
-                baseY1=negCumulative
-                negCumulative = negCumulative+(+el[name]);
-                baseY=negCumulative;
-                if (i<1){baseY=0;baseY1=negCumulative}
+            if (el[name] < 0){
+                baseY1 = negCumulative
+                negCumulative = negCumulative + (+el[name]);
+                baseY = negCumulative;
+                if (i < 1) {baseY = 0; baseY1 = negCumulative;}
             }
             return {
                 name: name,
                 y: +baseY,
-                y1:+baseY1,
-                height:+el[name]
+                y1: +baseY1,
+                value: +el[name]
             }
         });
-        yMin = Math.min(yMin,negCumulative)
-        yMax = Math.max(yMax,posCumulative)
-       return bands
+       return stacks
     }
 
 

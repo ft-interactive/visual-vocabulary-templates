@@ -24,7 +24,7 @@ export function draw() {
             .attr('width', xScale.bandwidth())
             .attr('x', d => xScale(d.name))
             .attr('y', d => yScale(Math.max(d.y, d.y1)))
-            .attr('height',  d => Math.abs(yScale(0)-yScale(d.height)))
+            .attr('height',  d => Math.abs(yScale(0)-yScale(d.value)))
             .attr('fill', d => colourScale(d.name));
     }
 

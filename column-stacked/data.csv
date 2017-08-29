@@ -1,1 +1,6 @@
-name,Apples,Pears,Oranges,LemonsUK,850,562,203.5,32.5Canada,856,572.5,204,33Germany,863.5,568.5,-450,33.5France,875.5,628.5,183.5,33.5Swtzerland,875.5,621.5,189,34
+name,Apples,Pears,Oranges,Lemons
+UK,850,562,203.5,32.5
+Canada,856,572.5,204,33
+Germany,863.5,568.5,-450,-33.5
+France,875.5,628.5,183.5,33.5
+Swtzerland,875.5,621.5,189,34
