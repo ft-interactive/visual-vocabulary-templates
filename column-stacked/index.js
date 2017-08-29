@@ -23,7 +23,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = 'descending';
+const sort = '';//specify 'ascending', 'descending', 'alpha' (for alphabetical)
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -92,7 +92,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
     const plotData = data.map(d => ({
         name: d.name,
         bands: getStacks(d),
-        total: d3.sum(getStacks(d), function(d) { return d.value; })
+        total: d3.sum(getStacks(d), (d) => { return d.value;} )
     }));
 
     // function that calculates the position of each rectangle in the stack
@@ -122,27 +122,30 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         });
        return stacks
     }
-      console.log('before: ', plotData);
 
-    if (sort==="descending") {
-        console.log('descending')
-        plotData.sort(function (a, b) {
-        return b.total - a.total; })//Sorts biggest rects to the left
+    switch (sort) {
+        case 'descending':
+            plotData.sort(function (a, b) {
+                return b.total - a.total;
+            })//Sorts biggest rects to the left
+            break;
+        case 'ascending':
+            plotData.sort(function (a, b) {
+                return a.total - b.total;
+            })//Sorts biggest rects to the right
+            break;
+
+        case 'alpha':
+            plotData.sort(function (a, b) {
+               return a.name.localeCompare(b.name);
+            });
+            break;
+        default:
+        console.log('switch')
+           break;
     }
-    if (sort==="ascending") {
-        console.log('ascending')
-        plotData.sort(function (a, b) {
-        return a.total - b.total; })//Sorts biggest rects to the left
-    }
-    if (sort==="alpha") {
-        plotData.sort(function (a, b) {
-           return a.name.localeCompare(b.name);
-        });
-    }
-    if (sort=="none") {
-        //no sorting applied
-    }
-      console.log('after: ', plotData);
+    console.log(plotData)
+
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
