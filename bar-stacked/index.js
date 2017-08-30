@@ -15,7 +15,7 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const xMin = -500;// sets the minimum value on the yAxis
+const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 2000;// sets the maximum value on the yAxis
 const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
@@ -23,7 +23,7 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = '';//specify 'ascending', 'descending', 'alpha' (for alphabetical)
+const sort = '';//specify 'ascending', 'descending', 'alphabetical'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {

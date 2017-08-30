@@ -15,7 +15,6 @@ export function draw() {
 
     function chart(parent) {
         parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
-            // .attr('height', yScale.bandwidth());
 
         parent.selectAll('rect')
             .data(d => d.bands)
@@ -23,7 +22,7 @@ export function draw() {
             .append('rect')
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(d.name))
-            .attr('x', d => xScale(Math.max(d.x, d.x1)))
+            .attr('x', d => xScale(Math.min(d.x, d.x1)))
             .attr('width',  d => Math.abs(xScale(d.value) - xScale(0)))
             .attr('fill', d => colourScale(d.name));
     }
