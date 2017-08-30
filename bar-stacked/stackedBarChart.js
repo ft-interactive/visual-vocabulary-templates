@@ -5,7 +5,7 @@ export function draw() {
     let xScale = d3.scaleLinear();
     let yScale = d3.scaleBand();
     let seriesNames = [];
-    let yAxisAlign = 'right';
+    let yAxisAlign = 'left';
     let rem = 16;
     let markers = false; // eslint-disable-line
     let includeMarker = undefined; // eslint-disable-line
@@ -14,17 +14,17 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        parent.attr('transform', d => `translate(${xScale(d.name)},0)`)
-            .attr('width', xScale.bandwidth());
+        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
+            // .attr('height', yScale.bandwidth());
 
         parent.selectAll('rect')
             .data(d => d.bands)
             .enter()
             .append('rect')
-            .attr('width', xScale.bandwidth())
-            .attr('x', d => xScale(d.name))
-            .attr('y', d => yScale(Math.max(d.y, d.y1)))
-            .attr('height',  d => Math.abs(yScale(0)-yScale(d.value)))
+            .attr('height', yScale.bandwidth())
+            .attr('y', d => yScale(d.name))
+            .attr('x', d => xScale(Math.max(d.x, d.x1)))
+            .attr('width',  d => Math.abs(xScale(d.value) - xScale(0)))
             .attr('fill', d => colourScale(d.name));
     }
 
