@@ -23,7 +23,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = '';//specify 'ascending', 'descending', 'alpha' (for alphabetical)
+const sort = '';//specify 'ascending', 'descending', 'alphabetical'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {

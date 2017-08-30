@@ -72,7 +72,7 @@ export function fromCSV(url, dateStructure, options) {
                         })//Sorts biggest rects to the right
                         break;
 
-                    case 'alpha':
+                    case 'alphabetical':
                         plotData.sort(function (a, b) {
                            return a.name.localeCompare(b.name);
                         });
