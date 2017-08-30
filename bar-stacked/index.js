@@ -16,7 +16,7 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 2000;// sets the maximum value on the yAxis
+const xMax = 0;// sets the maximum value on the yAxis
 const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
