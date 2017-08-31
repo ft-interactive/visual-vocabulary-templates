@@ -8,17 +8,21 @@ export function draw() {
     let xScale = d3.scaleTime();
     let seriesNames = [];
     let yAxisAlign = 'right';
-    let markers = false;
-  const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
+    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
-    let interpolation = d3.curveLinear;
     const colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
 
     function chart(parent) {
+        const area = d3.area()
+        .x(d => xScale(d.data.date))
+        .y0(d => yScale(d[0]))
+        .y1(d => yScale(d[1]));
 
-
+        parent.append('path')
+          .attr('d', area)
+          .style('fill', d => colourScale(d.key))
     }
 
     chart.yScale = (d) => {
@@ -76,15 +80,7 @@ export function draw() {
         annotate = d;
         return chart;
     };
-    chart.markers = (d) => {
-        markers = d;
-        return chart;
-    };
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
+
    chart.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
@@ -99,54 +95,6 @@ export function draw() {
     return chart;
 }
 
-export function drawHighlights() {
-    let yScale = d3.scaleLinear();
-    let xScale = d3.scaleTime();
-    let invertScale = false
-
-    function highlights(parent) {
-        let highlights = parent.append('rect')
-        .attr('class', 'highlights')
-        .attr('x', d => xScale(d.begin))
-        .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', function(d) {
-            if(invertScale) {
-                return yScale.range()[0]
-            }
-              return yScale.range()[1]
-            })
-        .attr('height', function (d) {
-            if(invertScale) {
-                return yScale.range()[1]
-            }
-            return yScale.range()[0]
-        })
-        .attr('fill', '#fff1e0');
-    }
-
-    highlights.yScale = (d) => {
-        yScale = d;
-        return highlights;
-    };
-    highlights.xScale = (d) => {
-        xScale = d;
-        return highlights;
-    };
-    highlights.yRange = (d) => {
-        yScale.range(d);
-        return highlights;
-    };
-    highlights.xRange = (d) => {
-        xScale.range(d);
-        return highlights;
-    };
-    highlights.invertScale = (d) => {
-        invertScale = d;
-        return highlights;
-    };
-
-    return highlights;
-}
 
 export function drawAnnotations() {
     let yScale = d3.scaleLinear();

@@ -33,7 +33,7 @@ export function fromCSV(url, dateStructure) {
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight'];
+    const exclude = ['date', 'annotate'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
@@ -44,16 +44,20 @@ export function getSeriesNames(columns) {
  * @param  {[type]} yMin    [description]
  * @return {[type]}         [description]
  */
-export function extentMulti(d, columns, yMin) {
-    const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => row[key])
-        .map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
-        const rowExtent = d3.extent(values);
+// a function that calculates the cumulative ma min values of the dataset
+function getMaxMin(values) {
+    let cumulativeMax = d3.sum(values.filter(d => (d > 0)));
+    let cumulativeMin = d3.sum(values.filter(d => (d < 0)));
+    // console.log(cumulativeMax,cumulativeMin)
+   return [cumulativeMin,cumulativeMax]
+}
+
+// a function to work out the extent of values in an array accross multiple properties...
+export function extentMulti(data, columns) {
+    const ext = data.reduce((acc, row) => {
+        const values = columns.map(key => +row[key]);
+        const maxMin = getMaxMin(values);
+        const rowExtent = maxMin;
         if (!acc.max) {
             acc.max = rowExtent[1];
             acc.min = rowExtent[0];
@@ -71,7 +75,7 @@ export function extentMulti(d, columns, yMin) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group) {
-    let lineData=[]
+    let values=[]
     d.forEach(function(el,i){
         //console.log(el,i)
         let column=new Object();
@@ -81,14 +85,14 @@ export function getlines(d, group) {
         column.highlight = el.highlight
         column.annotate = el.annotate
         if(el[group]) {
-            lineData.push(column)  
+            values.push(column)
         }
         if(el[group] == false) {
-            lineData.push(null)  
+            values.push(null)
         }
 
     });
-    return lineData
+    return values
     // return d.map((el) => {
     //     if (el[group]) {
     //         return {

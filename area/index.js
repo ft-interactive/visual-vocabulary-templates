@@ -3,8 +3,8 @@
  */
 
 import * as d3 from 'd3';
-import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
+import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as areaChart from './areaChart.js';
@@ -31,7 +31,7 @@ const sharedConfig = {
 };
 
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 1600;// sets the maximum value on the xAxis
+const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 9;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -39,10 +39,9 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'months';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
-const legendAlign = 'vert';// hori or vert, alignment of the legend
-const legendType = 'line';// rect, line or circ, geometry of legend marker
+const legendAlign = 'hori';// hori or vert, alignment of the legend
+const legendType = 'rect';// rect, line or circ, geometry of legend marker
 const minorAxis = false;// turns on or off the minor axis
-const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const logScale = false;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -100,30 +99,19 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames = parseData.getSeriesNames(data.columns);
 
-    // Format the dataset that is used to draw the lines
-    const plotData = seriesNames.map(d => ({
-        name: d,
-        lineData: parseData.getlines(data, d),
-    }));
+    // create stack data object
+    const plotData = d3.stack()
+        plotData.keys(seriesNames)
 
-    console.log(plotData)
+    plotData.order(d3.stackOrderNone);
+    plotData.offset(d3.stackOffsetNone);
 
 
     // Filter data for annotations
     const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
-    // Format the data that is used to draw highlight tonal bands
-    // const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-    // const highlights = [];
-
-    // boundaries.forEach((d, i) => {
-    //     if (d.highlight === 'begin') {
-    //         highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-    //     }
-    // });
-
     // Use the seriesNames array to calculate the minimum and max values in the dataset
-    const valueExtent = parseData.extentMulti(data, seriesNames, yMin);
+    const valueExtent = parseData.extentMulti(data, seriesNames);
 
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
@@ -137,19 +125,13 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         const myXAxis = gAxis.xDate();// sets up xAxis
         // const myHighlights = areaChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = areaChart.drawAnnotations();// sets up annotations
-        const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = areaChart.draw()
           .seriesNames(seriesNames)
-          .markers(markers)
           .annotate(annotate)
-          .interpolation(interpolation);
-          // .highlightNames(highlightNames)
 
-        // create a 'g' element at the back of the chart to add time period
-        // highlights after axis have been created
-        const axisHighlight = currentFrame.plot().append('g');
+        const myLegend = gLegend.legend();// sets up the legend
 
         // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
@@ -179,21 +161,16 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
             let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
             //Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({left:newMargin});
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+            // myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
         }
+
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
-
-        // axisHighlight.append("rect")
-        //   .attr("width", currentFrame.dimension().width)
-        //   .attr("height",currentFrame.dimension().height)
-        //   .attr("fill","#ededee");
-
 
         // Set up xAxis for this frame
         myXAxis
           .domain (d3.extent(data, d => d.date))
-          .range([0, currentFrame.dimension().width])
+          .range([0, currentFrame.dimension().width - currentFrame.rem()])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)
@@ -227,33 +204,20 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         //Draw the lines
         currentFrame.plot()
-          .selectAll('lines')
-          .data(plotData)
+          .selectAll('areas')
+          .data(plotData(data))
           .enter()
           .append('g')
-          .attr('class', 'lines')
+          .attr('class', 'areas')
           .call(myChart);
 
-        // Set up highlights for this frame
-        // myHighlights
-        //   .yScale(myYAxis.scale())
-        //   .xScale(myXAxis.scale())
-
-        //Draw the highlights before the lines and xAxis
-        // axisHighlight
-        //   .selectAll('.highlights')
-        //   .data(highlights)
-        //   .enter()
-        //   .append('g')
-        //   .call(myHighlights);
-
-        // Set up highlights for this frame
+        // Set up annotations for this frame
         myAnnotations
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
           .rem(currentFrame.rem());
 
-        // Draw the annotations before the lines
+        // Draw the annotations before the areas
         plotAnnotation
           .selectAll('.annotation')
           .data(annos)
@@ -261,14 +225,13 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .append('g')
           .call(myAnnotations);
 
-
         // Set up legend for this frame
         myLegend
           .frameName(frameName)
+          .geometry(legendType)
           .seriesNames(seriesNames)
           .colourPalette((frameName))
           .rem(myChart.rem())
-          .geometry(legendType)
           .alignment(legendAlign);
 
         // Draw the Legend
@@ -276,12 +239,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .append('g')
           .attr('id', 'legend')
           .selectAll('.legend')
-            .data(() => {
-                // if (highlightNames.length > 0) {
-                //     return highlightNames;
-                // }
-                return seriesNames;
-            })
+            .data(seriesNames)
             .enter()
             .append('g')
             .classed('legend', true)
