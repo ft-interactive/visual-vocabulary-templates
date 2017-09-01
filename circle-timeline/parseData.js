@@ -63,7 +63,7 @@ export function fromCSV(url, dateStructure) {
                     columnNames,
                     seriesNames,
                     plotData,
-                    dates
+                    dateDomain
                 });
             }
         });

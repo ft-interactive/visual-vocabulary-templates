@@ -74,7 +74,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, seriesNames, plotData, dates }) => {
+parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, seriesNames, plotData, dateDomain }) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
@@ -127,7 +127,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
         myXAxis
             .align(xAxisAlign)
-            .domain(d3.extent(dates))
+            .domain(dateDomain)
             .range([0, currentFrame.dimension().width])
             .frameName(frameName);
 
