@@ -30,28 +30,28 @@ const frame = {
    .margin({ top: 100, left: 15, bottom: 82, right: 5 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
-   .height(400),
+   .height(700),
 
     webM: gChartframe.webFrameM(sharedConfig)
    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
    // .title("Put headline here")
-   .height(500),
+   .height(800),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
     .margin({ top: 100, left: 20, bottom: 86, right: 5 })
     // .title("Put headline here")
-    .height(500),
+    .height(800),
 
     webL: gChartframe.webFrameL(sharedConfig)
    .margin({ top: 100, left: 20, bottom: 104, right: 5 })
    // .title("Put headline here")
-   .height(700)
+   .height(1000)
    .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
    // .title("Put headline here")
-   .height(69.85)
+   .height(150)
    .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -87,7 +87,9 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
     const myChart = circleTimeline.draw() // eslint-disable-line
           .seriesNames(seriesNames)
 
-        console.log(plotData)
+    const countCategories = plotData.length;
+
+        console.log(countCategories)
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -98,6 +100,20 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+
+         //Get the size of the container to set scales for each box
+        const h = currentFrame.dimension().height;
+        const w = currentFrame.dimension().width;
+        const chartWidth = w - currentFrame.margin().left - currentFrame.margin().right;
+        const chartHeight = h - currentFrame.margin().top - currentFrame.margin().bottom;
+
+        //calculate the size of the max circle - here using height
+        const maxCircle = (chartHeight / 100) * countCategories;
+
+        //set radius scale
+        const rScale = d3.scalePow().exponent(0.5)
+            .domain([0, valueExtent[1]])
+            .range([0, maxCircle]);
 
         myChart
             .plotDim(currentFrame.dimension())
@@ -117,26 +133,30 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
         myChart
             .xScale(myXAxis.scale())
+            .rScale(rScale)
+            .maxCircle(maxCircle)
             // .yScale(myYAxis.yScale())
 
+        // currentFrame.plot()
+        //   .call(myXAxis);
+
+        // if (xAxisAlign == 'bottom' ){
+        //     myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        // }
+        // if (xAxisAlign == 'top' ){
+        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        // }
+
+
         currentFrame.plot()
-          .call(myXAxis);
-
-        if (xAxisAlign == 'bottom' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        }
-        if (xAxisAlign == 'top' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        }
-
-
-        currentFrame.plot()
-          .selectAll('.columnHolder')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', 'columnHolder')
-          .call(myChart);
+            .selectAll('.timelineHolder')
+            .data(plotData)
+            .enter()
+            .append('g')
+                .attr('transform', (d,i) => `translate(${currentFrame.margin().left}, ${(i*maxCircle*3)})`)
+                .attr('class', 'timelineHolder')
+            .call(myChart)
+            .call(myXAxis);
 
 
         // Set up legend for this frame
