@@ -139,6 +139,30 @@ svg {
 .ft-videographic .domain{
     stroke-width: 0px;
 }
+
+/* reinstate domain for circle timelines*/
+
+.ft-webgraphic-s .timelineHolder .domain,
+.ft-webgraphic-m .timelineHolder .domain,
+.ft-webgraphic-m-default .timelineHolder .domain,
+.ft-webgraphic-l .timelineHolder .domain,
+.ft-printgraphic .timelineHolder .domain {
+    stroke-width: 1px;
+    stroke-opacity: 0.6;
+}
+
+.ft-socialgraphic .timelineHolder .domain,
+.ft-videographic .timelineHolder .domain {
+    stroke: #ffffff;
+}
+
+.ft-socialgraphic .timelineHolder .domain {
+    stroke-width: 2px
+}
+
+.ft-videographic .timelineHolder .domain {
+    stroke-width: 4px
+}
 /* .tick text on yAxis*/
 .ft-webgraphic-s .xAxis text,
 .ft-webgraphic-m .xAxis text,
