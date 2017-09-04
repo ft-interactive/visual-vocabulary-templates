@@ -58,6 +58,7 @@ export function fromCSV(url, dateStructure) {
                                                             item.values = allCategoryData;
                                                             return item;
                                                          });
+                console.log(plotData)
                 resolve({
                     valueExtent,
                     columnNames,

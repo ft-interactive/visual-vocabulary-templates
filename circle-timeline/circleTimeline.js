@@ -18,8 +18,8 @@ export function draw() {
     function chart(parent) {
         parent.append("g")
             .attr('class', 'webfill')
-            .attr('fill', d => colourScale(d.name) )
-            .attr('stroke', d => colourScale(d.name))
+            .attr('fill', d => colourScale(d.key) )
+            .attr('stroke', d => colourScale(d.key))
 
         let timeLine = parent.select("g");
 
@@ -41,7 +41,7 @@ export function draw() {
             .append("text")
             .attr("x", d =>  xScale(d.date))
             .attr("y", d =>  0 - rScale(d.value) -12)
-            .text( d => `${d.name} (${d.date})`)
+            .text( d => `${d.key} (${d.date})`)
             .attr("text-anchor", "middle")
             .attr("fill", "black");
 
@@ -66,7 +66,7 @@ export function draw() {
 
         //add chart subtitle
         parent.append("text")
-            .attr("class", "websubtitle")
+            .attr("class", "timeline-label")
                 .text(d => d.key )
             .attr('y', -(maxCircle*0.4) )
     }

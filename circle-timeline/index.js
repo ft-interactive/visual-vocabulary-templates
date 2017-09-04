@@ -27,41 +27,41 @@ const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+   .margin({ top: 100, left: 15, bottom: 82, right: 50 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(700),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 50 })
    // .title("Put headline here")
    .height(800),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    .margin({ top: 100, left: 20, bottom: 86, right: 50 })
     // .title("Put headline here")
     .height(800),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 104, right: 50 })
    // .title("Put headline here")
    .height(1000)
    .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+   .margin({ top: 40, left: 7, bottom: 35, right: 15 })
    // .title("Put headline here")
    .height(150)
    .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+   .margin({ top: 100, left: 50, bottom: 100, right: 80 })
    // .title("Put headline here")
    .width(612)
    .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
-   .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+   .margin({ left: 150, right: 207, bottom:150, top: 233 }),
    // .title("Put headline here")
 };
 
@@ -105,10 +105,11 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         const h = currentFrame.dimension().height;
         const w = currentFrame.dimension().width;
         const chartWidth = w - currentFrame.margin().left - currentFrame.margin().right;
-        const chartHeight = h - currentFrame.margin().top - currentFrame.margin().bottom;
+        const chartHeight = h - currentFrame.margin().bottom;
 
         //calculate the size of the max circle - here using height
         const maxCircle = (chartHeight / 100) * countCategories;
+        console.log(frameName,h,)
 
         //set radius scale
         const rScale = d3.scalePow().exponent(0.5)
@@ -132,9 +133,9 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .frameName(frameName);
 
         myChart
-            .xScale(myXAxis.scale())
             .rScale(rScale)
             .maxCircle(maxCircle)
+            .xScale(myXAxis.scale())
             // .yScale(myYAxis.yScale())
 
         // currentFrame.plot()
@@ -153,7 +154,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .data(plotData)
             .enter()
             .append('g')
-                .attr('transform', (d,i) => `translate(${currentFrame.margin().left}, ${(i*maxCircle*3)})`)
+                .attr('transform', (d,i) => `translate(${currentFrame.margin().left}, ${(i*maxCircle*2.75)})`)
                 .attr('class', 'timelineHolder')
             .call(myChart)
             .call(myXAxis);
