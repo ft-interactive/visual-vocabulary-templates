@@ -173,7 +173,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .numTicks(numTicksy)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
-          .align(myChart.yAxisAlign())
+          .align(yAxisAlign)
           .frameName(frameName)
           .invert(invertScale);
 
