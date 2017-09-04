@@ -149,6 +149,7 @@ svg {
     stroke: #000000;
     stroke-width: 1px;
     stroke-dasharray: 1, 0;
+    stroke-opacity: 0.4;
 }
 
 .ft-webgraphic-s .timelineHolder .domain,
