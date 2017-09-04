@@ -6,6 +6,7 @@ export function draw() {
     let xScale = d3.scaleTime();
     let maxCircle;
     let rScale = d3.scalePow().exponent(0.5);
+    let dateFormat;
     let seriesNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
@@ -17,9 +18,8 @@ export function draw() {
 
     function chart(parent) {
         parent.append("g")
-            .attr('class', 'webfill')
-            .attr('fill', d => colourScale(d.key) )
-            .attr('stroke', d => colourScale(d.key))
+            .style('fill', d => colourScale(d.key) )
+            .style('stroke', d => colourScale(d.key))
 
         let timeLine = parent.select("g");
 
@@ -30,10 +30,15 @@ export function draw() {
             .attr("id", d => d.date + d.value)
             .attr("r", d => rScale(d.value) )
             .attr("cx", (d, i) => xScale(d.date) )
-            .attr("cy", 0 );
+            .attr("cy", 0 )
+            .style('fill-opacity', 0.5)
+            .style('stroke-width', 1)
 
         //add labels to circles that need it
-        parent.append("g").selectAll("text")
+        let parseDate = d3.timeFormat(dateFormat);
+        parent.append("g")
+            .attr('class', 'annotations-holder')
+            .selectAll("text")
             .data( d => {
                  return d.values.filter( e => e.label === 'yes' )
                 })
@@ -41,7 +46,9 @@ export function draw() {
             .append("text")
             .attr("x", d =>  xScale(d.date))
             .attr("y", d =>  0 - rScale(d.value) -12)
-            .text( d => `${d.key} (${d.date})`)
+            .text( d => {
+                console.log()
+                return `${d.name} (${parseDate(d.date)})`})
             .attr("text-anchor", "middle")
             .attr("fill", "black");
 
@@ -52,6 +59,7 @@ export function draw() {
             })
             .enter()
             .append("line")
+            .style('stroke', '#000')
             .attr("x1", d => xScale(d.date))
             .attr("x2", d => xScale(d.date))
             .attr("y1", d => 0-rScale(d.value))
@@ -82,7 +90,12 @@ export function draw() {
         return chart;
     };
     chart.rScale = (d) => {
-        xScale = d;
+        rScale = d;
+        return chart;
+    };
+
+    chart.setDateFormat = (d) => {
+        dateFormat = d;
         return chart;
     };
     chart.maxCircle = (d) => {

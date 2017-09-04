@@ -27,29 +27,29 @@ const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 50 })
+   .margin({ top: 100, left: 15, bottom: 82, right: 60 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(700),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 50 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 60 })
    // .title("Put headline here")
    .height(800),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 50 })
+    .margin({ top: 100, left: 20, bottom: 86, right: 60 })
     // .title("Put headline here")
     .height(800),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 50 })
+   .margin({ top: 100, left: 20, bottom: 104, right: 60 })
    // .title("Put headline here")
    .height(1000)
    .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 7, bottom: 35, right: 15 })
+   .margin({ top: 40, left: 7, bottom: 40, right: 25 })
    // .title("Put headline here")
    .height(150)
    .width(55),
@@ -89,7 +89,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
     const countCategories = plotData.length;
 
-        console.log(countCategories)
+        console.log(valueExtent[1])
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -131,11 +131,12 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .domain(dateDomain)
             .range([0, currentFrame.dimension().width])
             .frameName(frameName);
-
+        console.log(dateStructure)
         myChart
             .rScale(rScale)
             .maxCircle(maxCircle)
             .xScale(myXAxis.scale())
+            .setDateFormat(dateStructure)
             // .yScale(myYAxis.yScale())
 
         // currentFrame.plot()
@@ -158,27 +159,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
                 .attr('class', 'timelineHolder')
             .call(myChart)
             .call(myXAxis);
-
-
-        // Set up legend for this frame
-        myLegend
-            .seriesNames(seriesNames)
-            .geometry(legendType)
-            .frameName(frameName)
-            .rem(myChart.rem())
-            .alignment(legendAlign)
-            .colourPalette((frameName));
-
-        // Draw the Legend
-        currentFrame.plot()
-            .append('g')
-            .attr('id', 'legend')
-                .selectAll('.legend')
-                .data(seriesNames)
-                .enter()
-                .append('g')
-                .classed('legend', true)
-            .call(myLegend);
     });
     // addSVGSavers('figure.saveable');
 });
