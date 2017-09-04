@@ -58,23 +58,23 @@ const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAft
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+ .margin({ top: 100, left: 15, bottom: 82, right: 15 })
  .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+ .margin({ top: 100, left: 20, bottom: 86, right: 20 })
  // .title("Put headline here")
  .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    .margin({ top: 100, left: 20, bottom: 86, right: 20 })
     // .title("Put headline here")
     .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+ .margin({ top: 100, left: 20, bottom: 104, right: 20 })
  // .title("Put headline here")
  .height(700)
  .fullYear(true),
@@ -86,7 +86,7 @@ const frame = {
  .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
- .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+ .margin({ top: 140, left: 50, bottom: 138, right: 50 })
  // .title("Put headline here")
  .width(612)
  .height(750),
@@ -150,7 +150,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
       .highlightNames(highlightNames)
       .yDomainL([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
       .yDomainR([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
-      .xDomain(d3.extent([...d3.extent(plotData[0].groupData, d => d.date), ...d3.extent(plotData[1].groupData, d => d.date)]))
+      .xDomain(d3.extent([
+          ...d3.extent(plotData[0].groupData, d => d.date),
+          ...d3.extent(plotData[1].groupData, d => d.date),
+      ]))
       .xDomainBand(plotData.filter(d => seriesTypes[d.name] === 'bar')
           .reduce((col, group) =>
               col.concat(group.groupData.filter(d => d.value).map(d => d.date)), []))
@@ -222,7 +225,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .attr('transform', `translate(${(yAxisL.tickSize() - yAxisL.labelWidth())},0)`)
           .classed('baseline', true);
         yAxisR.yLabel()
-          .attr('transform', `translate(${(currentFrame.dimension().width - currentFrame.rem())},0)`)
+          .attr('transform', `translate(${(currentFrame.dimension().width - (yAxisL.tickSize() - yAxisL.labelWidth()))},0)`)
           .classed('baseline', true);
 
         // axisHighlight.append("rect")
@@ -230,7 +233,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         //   .attr("height",currentFrame.dimension().height)
         //   .attr("fill","#ededee");
 
-        myChart.xRange([0, currentFrame.dimension().width - currentFrame.rem()]);
+        myChart.xRange([0, currentFrame.dimension().width]);
 
         // Set up xAxis for this frame
         myXAxis
