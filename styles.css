@@ -319,6 +319,15 @@ svg {
     fill: #ffffff;
     opacity: 0.2;
 }
+
+.ft-webgraphic-s .timeline-label,
+.ft-webgraphic-m .timeline-label,
+.ft-webgraphic-m-default .timeline-label,
+.ft-webgraphic-l .timeline-label {
+    font-family: metric;
+    fill: #000000;
+}
+
 /* legend */
 .ft-webgraphic-s .legend,
 .ft-webgraphic-m .legend,
@@ -328,33 +337,40 @@ svg {
     fill: #66605C;
 }
 
+.ft-webgraphic-s .timeline-label,
 .ft-webgraphic-s .legend {
     font-size: 14px;
 }
 
+.ft-webgraphic-m .timeline-label,
 .ft-webgraphic-m .legend {
     font-size: 16px;
 }
 
+.ft-webgraphic-m-default .timeline-label,
 .ft-webgraphic-m-default .legend {
     font-size: 20px;
 }
 
+.ft-webgraphic-l .timeline-label,
 .ft-webgraphic-l .legend {
     font-size: 18px;
 }
 
-.ft-printgraphic .legend{
+.ft-printgraphic .timeline-label,{
+.ft-printgraphic .legend
     font-family: metric;
     font-size: 9.6px;
     fill: #000000;
 }
+.ft-socialgraphic .timeline-label,{
 .ft-socialgraphic .legend text{
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;
     font-size: 28px;
 }
+.ft-videographic .timeline-label,{
 .ft-videographic .legend text{
     font-family: metric;
     fill-opacity: 0.5;
@@ -368,6 +384,9 @@ svg text{
     -moz-font-feature-settings: 'tnum';
 }
 
+svg circle {
+    fill-opacity: 0.5;
+}
 
 .saveable button{
   display: block;
