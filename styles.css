@@ -142,6 +142,15 @@ svg {
 
 /* reinstate domain for circle timelines*/
 
+.ft-webgraphic-s .timelineHolder .baseline line,
+.ft-webgraphic-m .timelineHolder .baseline line,
+.ft-webgraphic-m-default .timelineHolder .baseline line,
+.ft-webgraphic-l .timelineHolder .baseline line {
+    stroke: #000000;
+    stroke-width: 1px;
+    stroke-dasharray: 1, 0;
+}
+
 .ft-webgraphic-s .timelineHolder .domain,
 .ft-webgraphic-m .timelineHolder .domain,
 .ft-webgraphic-m-default .timelineHolder .domain,
