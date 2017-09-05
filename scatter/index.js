@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as lollipopChart from './scatter.js';
+import * as scatterplot from './scatter.js';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -14,15 +14,24 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the yAxis
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
 
 // display options
-const xVar = "jsa_rate"// these should be series names
+// these should be series names from your data
+const xVar = "jsa_rate"
+const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
+const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
+
 const yVar = "lev4rate"
+const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
+const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
+
 const sizeVar ="popest"
+const scaleDots = false;
+const colourDots = false;
+
+//extra options to add
+//log scales
+//invert scale
 
 
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
@@ -83,8 +92,8 @@ d3.selectAll('.framed')
 parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
 
 //determin extents for each scale
-let xValRange =[0,0]
-let yValRange =[0,0]
+let xValRange =[xMin,xMax]
+let yValRange =[yMin,yMax]
 let sizeValRange =[0,0]
 
   data.forEach(function(d){
@@ -101,8 +110,9 @@ let sizeValRange =[0,0]
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
 
+
     // define chart
-    const myChart = lollipopChart.draw()
+    const myChart = scatterplot.draw()
       .seriesNames(seriesNames)
       .xDomain(xValRange)
       .yDomain(yValRange)
@@ -169,7 +179,7 @@ let sizeValRange =[0,0]
           .rem(currentFrame.rem())
           .colourPalette((frameName));
 
-          // draw lollipops
+          // draw chart
         currentFrame.plot()
           .append('g')
           .attr('id', 'scatterplot')
