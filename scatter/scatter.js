@@ -7,11 +7,30 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
+    let xVar;
+    let opacity;
+    let yVar;
+    let sizeVar;
 
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
+
+        parent.append("circle")
+            .attr("cx",function(d){
+                return xScale(d[xVar])
+            })
+            .attr("cy",function(d){
+                return yScale(d[yVar])
+            })
+            .attr("r",5)
+            .attr("fill",function(){
+                return colourScale();
+            })
+            .attr("opacity",opacity)
+            //.attr("cy")
+            //.attr("r")
         /*const r = (dotWidth / 2) * xScale.bandwidth();
         if (dots) {
             parent.append('circle')
@@ -52,11 +71,30 @@ export function draw() {
         yScale.domain(d);
         return chart;
     };
+
+    chart.xVar = (d) => {
+        xVar = d;
+        return chart;
+    };
+    chart.yVar = (d) => {
+        yVar = d;
+        return chart;
+    };
+    chart.sizeVar = (d) => {
+        sizeVar = d;
+        return chart;
+    };
+    chart.opacity = (d) => {
+        opacity = d;
+        return chart;
+    };
+
+
     chart.yRange = (d) => {
         yScale.range(d);
         return chart;
     };
- 
+
     chart.seriesNames = (d) => {
         seriesNames = d;
         return chart;

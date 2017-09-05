@@ -29,14 +29,19 @@ const sizeVar ="popest"
 const scaleDots = false;
 const colourDots = false;
 
+const opacity = 0.8;
+
+//opacity
 //extra options to add
 //log scales
 //invert scale
+//click to label dots? - or from 
+
 
 
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the y axis
+const yAxisAlign = 'left';// alignment of the y axis
 const xAxisAlign = 'bottom'
 
 // const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -177,7 +182,11 @@ let sizeValRange =[0,0]
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName));
+          .colourPalette((frameName))
+          .xVar(xVar)
+          .yVar(yVar)
+          .opacity(opacity)
+          .sizeVar(sizeVar);
 
           // draw chart
         currentFrame.plot()
