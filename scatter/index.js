@@ -17,11 +17,11 @@ const sharedConfig = {
 
 // display options
 // these should be series names from your data
-const xVar = "jsa_rate"
+const xVar = "lev4rate"
 const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
 const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
 
-const yVar = "lev4rate"
+const yVar = "jsa_rate"
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
@@ -29,12 +29,13 @@ const sizeVar ="popest"
 const scaleDots = false;
 const colourDots = false;
 
-const opacity = 0.8;
+const opacity = 0.7;
 
-//opacity
-//extra options to add
+
+//remaining to do
 //log scales
 //invert scale
+//colour scheme for groups
 //click to label dots? - or from 
 
 
