@@ -5,6 +5,7 @@ export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
     let seriesNames = [];
+    let groups = []
     let yAxisAlign = 'right';
     let rem = 16;
     let xVar;
@@ -29,32 +30,44 @@ export function draw() {
                 return colourScale();
             })
             .attr("opacity",opacity)
-            //.attr("cy")
-            //.attr("r")
-        /*const r = (dotWidth / 2) * xScale.bandwidth();
-        if (dots) {
-            parent.append('circle')
-            .attr('cx', d => xScale(d.name) + (xScale.bandwidth() / 2))
-            .attr('cy', d => yScale(d[seriesNames[0]]))
-            .attr('r', r)
-            .attr('fill', colourScale(seriesNames[0]));
-        }
+            .attr("stroke",function(d){
+                if (d.label=="yes"){
+                    return "#000000"
+                }
+            })
+            .attr("stroke-width",function(d){
+                if (d.label=="yes"){
+                    return "1px"
+                }
+            })
 
-        if (stalks) {
-            parent.append('line')
-                .attr('x1', d => xScale(d.name) + (xScale.bandwidth() / 2))
-                .attr('x2', d => xScale(d.name) + (xScale.bandwidth() / 2))
-                .attr('y1', () => {
-                    // case negative scales
-                    if (yScale.domain()[0] < 0) {
-                        return yScale(0);
-                    }  // positive scales
-                    return yScale(yScale.domain()[0]);
-                })
-               .attr('y2', d => yScale(d[seriesNames[0]]))
-               .attr('stroke-width', stalkWidth * xScale.bandwidth())
-               .attr('stroke', colourScale(seriesNames[0]));
-        }*/
+        //create text labels required
+        parent.filter(function(d){
+            return d.label=="yes"
+        })
+        .append("text")
+        .attr("class","highlighted-label")
+        .attr("x",function(d){
+                return xScale(d[xVar])
+            })
+        .attr("y",function(d){
+                return yScale(d[yVar])
+            })
+        .attr("dy",-5)
+        .attr("text-anchor","middle")
+        .text(function(d){return d.name})
+
+        //bring labelled objects to front
+        parent.filter(function(d){
+            return d.label=="yes"
+        }).each(function(d){
+            this.parentNode.appendChild(this);
+        })
+
+
+        
+        //.attr('fill', colourScale(seriesNames[0]));
+
     }
 
     chart.yScale = (d) => {
@@ -86,6 +99,10 @@ export function draw() {
     };
     chart.opacity = (d) => {
         opacity = d;
+        return chart;
+    };
+    chart.groups = (d) => {
+        groups = d;
         return chart;
     };
 

@@ -25,19 +25,18 @@ const yVar = "jsa_rate"
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
-const sizeVar ="popest"
+const sizeVar ="popest"//uncomment this and name variable for variable sizing
+
 const scaleDots = false;
 const colourDots = false;
 
 const opacity = 0.7;
 
-
 //remaining to do
+//colour scheme for groups
+//outline labelled dots
 //log scales
 //invert scale
-//colour scheme for groups
-//click to label dots? - or from 
-
 
 
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
@@ -96,6 +95,9 @@ d3.selectAll('.framed')
     });
 
 parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
+
+//identify groups
+const groups = d3.map(data, function(d){return d.group;}).keys();
 
 //determin extents for each scale
 let xValRange =[xMin,xMax]
@@ -186,6 +188,7 @@ let sizeValRange =[0,0]
           .colourPalette((frameName))
           .xVar(xVar)
           .yVar(yVar)
+          .groups(groups)
           .opacity(opacity)
           .sizeVar(sizeVar);
 
