@@ -89,8 +89,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
     const countCategories = plotData.length;
 
-        console.log(valueExtent[1])
-
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -109,7 +107,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
         //calculate the size of the max circle - here using height
         const maxCircle = (chartHeight / 100) * countCategories;
-        console.log(frameName,h,)
 
         //set radius scale
         const rScale = d3.scalePow().exponent(0.5)
@@ -131,7 +128,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .domain(dateDomain)
             .range([0, currentFrame.dimension().width])
             .frameName(frameName);
-        console.log(dateStructure)
         myChart
             .rScale(rScale)
             .maxCircle(maxCircle)

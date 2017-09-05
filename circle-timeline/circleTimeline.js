@@ -47,8 +47,8 @@ export function draw() {
             .attr("x", d =>  xScale(d.date))
             .attr("y", d =>  0 - rScale(d.value) -12)
             .text( d => {
-                console.log()
-                return `${d.name} (${parseDate(d.date)})`})
+                return `${d.name} (${parseDate(d.date)})`
+            })
             .attr("text-anchor", "middle")
             .attr("fill", "black");
 

@@ -44,8 +44,7 @@ export function fromCSV(url, dateStructure) {
 
                 //establish range of dates
                 dates.sort(dataSorter);
-                const dateDomain=[dates[0],dates[dates.length-1]];
-
+                const dateDomain = d3.extent(dates);
                 //roll up the data by category
 
                 let dataCategories = data.map((dataObj, index) => { return dataObj.category})
@@ -58,7 +57,6 @@ export function fromCSV(url, dateStructure) {
                                                             item.values = allCategoryData;
                                                             return item;
                                                          });
-                console.log(plotData)
                 resolve({
                     valueExtent,
                     columnNames,
