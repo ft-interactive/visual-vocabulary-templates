@@ -1,5 +1,5 @@
 /**
- * Bootstrapping code for lollipop chart
+ * Bootstrapping code for scatterplot
  */
 
 import * as d3 from 'd3';
@@ -20,6 +20,9 @@ const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the yAxis
 
 // display options
+const xVar = "jsa_rate"// these should be series names
+const yVar = "lev4rate"
+const sizeVar ="popest"
 
 
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
@@ -79,8 +82,20 @@ d3.selectAll('.framed')
 
 parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
 
+//determin extents for each scale
+let xValRange =[0,0]
+let yValRange =[0,0]
+let sizeValRange =[0,0]
 
-  console.log(seriesNames)
+  data.forEach(function(d){
+    xValRange[0] = Math.min(xValRange[0],d[xVar]);
+    xValRange[1] = Math.max(xValRange[1],d[xVar]);
+    yValRange[0] = Math.min(yValRange[0],d[yVar]);
+    yValRange[1] = Math.max(yValRange[1],d[yVar]);
+    sizeValRange[0] = Math.min(sizeValRange[0],d[sizeVar]);
+    sizeValRange[1] = Math.max(sizeValRange[1],d[sizeVar]);
+  })
+
 
     // set up axes
     const myYAxis = gAxis.yLinear();
@@ -89,8 +104,8 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
     // define chart
     const myChart = lollipopChart.draw()
       .seriesNames(seriesNames)
-      .xDomain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
-      .yDomain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+      .xDomain(xValRange)
+      .yDomain(yValRange)
       .yAxisAlign(yAxisAlign);
 
     // draw, for each frame
@@ -100,16 +115,11 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
-        /*myChart.stalks(stalks);
-        myChart.dots(dots);*/
-
         myYAxis
-          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-          .range([currentFrame.dimension().height, 0])
-          .numTicks(numTicksy)
-          .tickSize(tickSize)
-          .yAxisHighlight(yAxisHighlight)
+          .domain(yValRange)
+          .range([currentFrame.dimension().height,0])
           .align(yAxisAlign)
+          .tickSize(tickSize)
           .frameName(frameName);
 
         currentFrame.plot()
@@ -129,21 +139,21 @@ parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
             myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
         }
 
-
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
         // should be able to set domain from myChart??
         myXAxis
-          .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+          .domain(xValRange)
+          .tickSize(currentFrame.rem()* 0.75)
           .range([0, currentFrame.dimension().width])
           .align(xAxisAlign)
           .frameName(frameName);
-          // .domain(data.map(function(d){return d.name}))
 
         // call axes
         currentFrame.plot()
           .call(myXAxis);
+
 
         if (xAxisAlign == 'bottom' ){
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
