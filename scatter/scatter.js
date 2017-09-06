@@ -52,9 +52,9 @@ export function draw() {
             .attr("stroke-width",function(d){
                 if (hollowDots){
                     if (d.label=="yes"){
-                        return rem/10;
+                        return rem/6;
                     }   else{
-                        return rem/20;
+                        return rem/15;
                     }
                 } else {
                     if (d.label=="yes"){
