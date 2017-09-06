@@ -12,6 +12,8 @@ export function draw() {
     let opacity;
     let yVar;
     let sizeVar;
+    let hollowDots;
+    let dotOutline;
 
     const colourScale = d3.scaleOrdinal();
 
@@ -28,17 +30,38 @@ export function draw() {
             })
             .attr("r",rem/2.5)
             .attr("fill",function(d){
-                return colourScale(d.group);
+                if (hollowDots){
+                    return "none";
+                }
+                else    {
+                    return colourScale(d.group);
+                }
             })
             .attr("fill-opacity",opacity)
             .attr("stroke",function(d){
-                if (d.label=="yes"){
-                    return "#000000"
+                if (hollowDots){
+                    return colourScale(d.group);
+                } else {
+                    if (d.label=="yes"){
+                        return dotOutline;
+                    }   else    {
+                        return "none"
+                    }
                 }
             })
             .attr("stroke-width",function(d){
-                if (d.label=="yes"){
-                    return "1px"
+                if (hollowDots){
+                    if (d.label=="yes"){
+                        return rem/10;
+                    }   else{
+                        return rem/20;
+                    }
+                } else {
+                    if (d.label=="yes"){
+                        return rem/10;
+                    }   else{
+                        return 0;
+                    }
                 }
             })
 
@@ -103,7 +126,10 @@ export function draw() {
         groups = d;
         return chart;
     };
-
+    chart.hollowDots = (d) => {
+        hollowDots = d;
+        return chart;
+    };
 
     chart.yRange = (d) => {
         yScale.range(d);
@@ -141,9 +167,12 @@ export function draw() {
             colourScale.domain(groups);
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
+            dotOutline = "#ffffff"
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
+            dotOutline = "#000000"
         } else if (d === 'print') {
+            dotOutline = "#000000"
             colourScale.range(gChartcolour.linePrint);
         }
         return chart;

@@ -27,22 +27,16 @@ const yVar = "var b"
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
-const sizeVar ="var c"//uncomment this and name series (column) for variable sizing
-
-const scaleDots = false;
-const colourDots = false;
+const hollowDots = false;//you can set dots to be hollow (will need to adjust key in illustrator)
 
 const opacity = 0.7;
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'circ';// rect, line or circ, geometry of legend marker
 
-//remaining to do
-
-
-//outline labelled dots
+//remaining options to implement
 //log scales
 //invert scales
-//proper proportional circles
+//proportional circles (bubble chart)
 
 
 const myLegend = gLegend.legend();// sets up the legend
@@ -115,15 +109,12 @@ const groups = d3.map(data, function(d){return d.group;}).keys();
 //determin extents for each scale
 let xValRange =[xMin,xMax]
 let yValRange =[yMin,yMax]
-let sizeValRange =[0,0]
 
   data.forEach(function(d){
     xValRange[0] = Math.min(xValRange[0],d[xVar]);
     xValRange[1] = Math.max(xValRange[1],d[xVar]);
     yValRange[0] = Math.min(yValRange[0],d[yVar]);
     yValRange[1] = Math.max(yValRange[1],d[yVar]);
-    sizeValRange[0] = Math.min(sizeValRange[0],d[sizeVar]);
-    sizeValRange[1] = Math.max(sizeValRange[1],d[sizeVar]);
   })
 
 
@@ -202,9 +193,9 @@ let sizeValRange =[0,0]
           .colourPalette((frameName))
           .xVar(xVar)
           .yVar(yVar)
+          .hollowDots(hollowDots)
           .groups(groups)
           .opacity(opacity)
-          .sizeVar(sizeVar);
 
 
           // draw chart
@@ -232,7 +223,6 @@ let sizeValRange =[0,0]
           .geometry(legendType)
           .alignment(legendAlign);
 
-          console.log(myLegend.colourPalette())
 
         // Draw the Legend
         currentFrame.plot()
