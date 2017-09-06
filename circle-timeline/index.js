@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
-import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as circleTimeline from './circleTimeline.js';
@@ -15,6 +14,8 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
+
+/* eslint-disable */
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
@@ -23,46 +24,47 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+/* eslint-enable */
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 60 })
-   // .title("Put headline here") //use this if you need to override the defaults
-   // .subtitle("Put headline |here") //use this if you need to override the defaults
-   .height(700),
+        .margin({ top: 100, left: 15, bottom: 82, right: 60 })
+    // .title("Put headline here") //use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(700),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 60 })
-   // .title("Put headline here")
-   .height(800),
+        .margin({ top: 100, left: 20, bottom: 86, right: 60 })
+    // .title("Put headline here")
+        .height(800),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 60 })
+        .margin({ top: 100, left: 20, bottom: 86, right: 60 })
     // .title("Put headline here")
-    .height(800),
+        .height(800),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 60 })
-   // .title("Put headline here")
-   .height(1000)
-   .fullYear(true),
+        .margin({ top: 100, left: 20, bottom: 104, right: 60 })
+    // .title("Put headline here")
+        .height(1000)
+        .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 7, bottom: 40, right: 25 })
-   // .title("Put headline here")
-   .height(150)
-   .width(55),
+        .margin({ top: 40, left: 7, bottom: 40, right: 25 })
+    // .title("Put headline here")
+        .height(150)
+        .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 100, left: 50, bottom: 100, right: 80 })
-   // .title("Put headline here")
-   .width(612)
-   .height(612),
+        .margin({ top: 100, left: 50, bottom: 100, right: 80 })
+    // .title("Put headline here")
+        .width(612)
+        .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
-   .margin({ left: 150, right: 207, bottom:150, top: 233 }),
-   // .title("Put headline here")
+        .margin({ left: 150, right: 207, bottom: 150, top: 233 }),
+    // .title("Put headline here")
 };
 
 
@@ -74,7 +76,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, seriesNames, plotData, dateDomain }) => {
+parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plotData, dateDomain }) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
@@ -85,7 +87,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
     // define chart
     const myChart = circleTimeline.draw() // eslint-disable-line
-          .seriesNames(seriesNames)
+        .seriesNames(seriesNames);
 
     const countCategories = plotData.length;
 
@@ -94,21 +96,22 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
 
         const myXAxis = gAxis.xDate();// sets up yAxis
         const myChart = circleTimeline.draw(); // eslint-disable-line
-        const myLegend = gLegend.legend();
 
         // define other functions to be called
-        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
-         //Get the size of the container to set scales for each box
+        // Used when drawing the yAxis ticks
+        const tickSize = currentFrame.dimension().width; // eslint-disable-line
+
+        // Get the size of the container to set scales for each box
         const h = currentFrame.dimension().height;
         const w = currentFrame.dimension().width;
-        const chartWidth = w - currentFrame.margin().left - currentFrame.margin().right;
+        const chartWidth = w - currentFrame.margin().left - currentFrame.margin().right; // eslint-disable-line
         const chartHeight = h - currentFrame.margin().bottom;
 
-        //calculate the size of the max circle - here using height
+        // calculate the size of the max circle - here using height
         const maxCircle = (chartHeight / 100) * countCategories;
 
-        //set radius scale
+        // set radius scale
         const rScale = d3.scalePow().exponent(0.5)
             .domain([0, valueExtent[1]])
             .range([0, maxCircle]);
@@ -132,27 +135,15 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .rScale(rScale)
             .maxCircle(maxCircle)
             .xScale(myXAxis.scale())
-            .setDateFormat(dateStructure)
-            // .yScale(myYAxis.yScale())
-
-        // currentFrame.plot()
-        //   .call(myXAxis);
-
-        // if (xAxisAlign == 'bottom' ){
-        //     myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        // }
-        // if (xAxisAlign == 'top' ){
-        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        // }
-
+            .setDateFormat(dateStructure);
 
         currentFrame.plot()
             .selectAll('.timelineHolder')
             .data(plotData)
             .enter()
             .append('g')
-                .attr('transform', (d,i) => `translate(${currentFrame.margin().left}, ${(i*maxCircle*2.75)})`)
-                .attr('class', 'timelineHolder')
+            .attr('transform', (d, i) => `translate(${currentFrame.margin().left}, ${(i * maxCircle * 2.75)})`)
+            .attr('class', 'timelineHolder')
             .call(myChart)
             .call(myXAxis);
     });

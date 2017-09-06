@@ -27,42 +27,40 @@ export function fromCSV(url, dateStructure) {
 
                 const columnNames = data.map(d => d.name); // create an array of the column names
 
-                //sort data
-                const dataSorter = function(a,b){
-                    return a-b;
+                // sort data
+                const dataSorter = function dataSorter(a, b) {
+                    return a - b;
                 };
 
-                //parse the data
+                // parse the data
                 const dates = [];
                 const values = [];
                 data.sort(dataSorter);
-                data.forEach( d => {
+                data.forEach((d) => {
                     dates.push(d.date);
                     values.push(d.value);
                 });
 
 
-                //establish range of dates
+                // establish range of dates
                 dates.sort(dataSorter);
                 const dateDomain = d3.extent(dates);
-                //roll up the data by category
+                // roll up the data by category
 
-                let dataCategories = data.map((dataObj, index) => { return dataObj.category})
-                let dataCategoriesDeDuped = dataCategories.filter((category, position) => { return dataCategories.indexOf(category) == position; })
-                let dataCategoriesAsObjects = dataCategoriesDeDuped.map((category) => { return {key: category, values: [] } } );
+                const dataCategories = data.map(dataObj => dataObj.category);
+                const dataCategoriesDeDuped = dataCategories.filter((category, position) => dataCategories.indexOf(category) === position);
+                const dataCategoriesAsObjects = dataCategoriesDeDuped.map(category => ({ key: category, values: [] }));
                 const plotData = dataCategoriesAsObjects.map((item) => {
-                                                            let allCategoryData = data.filter( (d) => {
-                                                                return d.category === item.key;
-                                                            } );
-                                                            item.values = allCategoryData;
-                                                            return item;
-                                                         });
+                    const allCategoryData = data.filter(d => d.category === item.key);
+                    item.values = allCategoryData;
+                    return item;
+                });
                 resolve({
                     valueExtent,
                     columnNames,
                     seriesNames,
                     plotData,
-                    dateDomain
+                    dateDomain,
                 });
             }
         });
