@@ -38,11 +38,12 @@ const legendType = 'circ';// rect, line or circ, geometry of legend marker
 
 //remaining to do
 
-//proportional dot size for each frame
+
 //outline labelled dots
 //log scales
 //invert scales
 //proper proportional circles
+
 
 const myLegend = gLegend.legend();// sets up the legend
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
@@ -55,23 +56,23 @@ const xAxisAlign = 'bottom'
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+   .margin({ top: 100, left: 15, bottom: 82, right: 20 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 25})
    // .title("Put headline here")
    .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    .margin({ top: 100, left: 20, bottom: 86, right: 25})
     // .title("Put headline here")
     .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 104, right: 25 })
    // .title("Put headline here")
    .height(700),
 
@@ -205,7 +206,6 @@ let sizeValRange =[0,0]
           .opacity(opacity)
           .sizeVar(sizeVar);
 
-    
 
           // draw chart
         currentFrame.plot()
@@ -223,8 +223,7 @@ let sizeValRange =[0,0]
           .call(currentFrame);
 
 
-
-          // Set up legend for this frame
+        // Set up legend for this frame
         myLegend
           .frameName(frameName)
           .seriesNames(groups)
