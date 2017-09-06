@@ -26,7 +26,10 @@ export function draw() {
             .attr("cy",function(d){
                 return yScale(d[yVar])
             })
-            .attr("r",5)
+            .attr("r",function(d){
+                console.log(rem)
+                return rem/2.5
+            })
             .attr("fill",function(d){
                 return colourScale(d.group);
             })

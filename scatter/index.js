@@ -9,16 +9,17 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
 
+//dataset and titles
+const dataURL = "anscombe.csv"
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
 
-const dataURL = "anscombe.csv"
+
 // display options
-// these should be series names from your data
-const xVar = "var a"
+const xVar = "var a"// these should be series (column) names from your data
 const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
 const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
 
@@ -26,7 +27,7 @@ const yVar = "var b"
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
-const sizeVar ="var c"//uncomment this and name variable for variable sizing
+const sizeVar ="var c"//uncomment this and name series (column) for variable sizing
 
 const scaleDots = false;
 const colourDots = false;
@@ -41,6 +42,7 @@ const legendType = 'circ';// rect, line or circ, geometry of legend marker
 //outline labelled dots
 //log scales
 //invert scales
+//proper proportional circles
 
 const myLegend = gLegend.legend();// sets up the legend
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
@@ -73,11 +75,17 @@ const frame = {
    // .title("Put headline here")
    .height(700),
 
+   //print column widths are:
+   /*
+
+
+   */
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
    // .title("Put headline here")
-   .height(68)
-   .width(55),
+   .width(55)
+   .height(68),
+   
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -184,7 +192,6 @@ let sizeValRange =[0,0]
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
-        console.log(groups)
 
         myChart
           .yRange([currentFrame.dimension().height, 0])
@@ -197,6 +204,8 @@ let sizeValRange =[0,0]
           .groups(groups)
           .opacity(opacity)
           .sizeVar(sizeVar);
+
+    
 
           // draw chart
         currentFrame.plot()
