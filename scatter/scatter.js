@@ -4,14 +4,14 @@ import gChartcolour from 'g-chartcolour';
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
-    let seriesNames = [];
+    let seriesNames  = []; // eslint-disable-line
     let groups = [];
     let yAxisAlign = 'right';
     let rem = 16;
     let xVar;
     let opacity;
     let yVar;
-    let sizeVar;
+    let sizeVar; // eslint-disable-line
     let hollowDots;
     let dotOutline;
 
@@ -19,76 +19,52 @@ export function draw() {
 
 
     function chart(parent) {
-
-
-        parent.append("circle")
-            .attr("cx",function(d){
-                return xScale(d[xVar])
-            })
-            .attr("cy",function(d){
-                return yScale(d[yVar])
-            })
-            .attr("r",rem/2.5)
-            .attr("fill",function(d){
-                if (hollowDots){
-                    return "none";
+        parent.append('circle')
+            .attr('cx', d => xScale(d[xVar]))
+            .attr('cy', d => yScale(d[yVar]))
+            .attr('r', rem / 2.5)
+            .attr('fill', (d) => {
+                if (hollowDots) {
+                    return 'none';
                 }
-                else    {
+                return colourScale(d.group);
+            })
+            .attr('fill-opacity', opacity)
+            .attr('stroke', (d) => {
+                if (hollowDots) {
                     return colourScale(d.group);
+                } else if (d.label === 'yes') {
+                    return dotOutline;
                 }
+                return 'none';
             })
-            .attr("fill-opacity",opacity)
-            .attr("stroke",function(d){
-                if (hollowDots){
-                    return colourScale(d.group);
-                } else {
-                    if (d.label=="yes"){
-                        return dotOutline;
-                    }   else    {
-                        return "none"
+            .attr('stroke-width', (d) => {
+                if (hollowDots) {
+                    if (d.label === 'yes') {
+                        return rem / 6;
                     }
+                    return rem / 15;
+                } else if (d.label === 'yes') {
+                    return rem / 10;
                 }
-            })
-            .attr("stroke-width",function(d){
-                if (hollowDots){
-                    if (d.label=="yes"){
-                        return rem/6;
-                    }   else{
-                        return rem/15;
-                    }
-                } else {
-                    if (d.label=="yes"){
-                        return rem/10;
-                    }   else{
-                        return 0;
-                    }
-                }
-            })
+                return 0;
+            });
 
 
-        //create text labels required
-        parent.filter(function(d){
-            return d.label=="yes"
-        })
-        .append("text")
-        .attr("class","highlighted-label")
-        .attr("x",function(d){
-                return xScale(d[xVar])
-            })
-        .attr("y",function(d){
-                return yScale(d[yVar])
-            })
-        .attr("dy",-(rem/2))
-        .attr("text-anchor","middle")
-        .text(function(d){return d.name})
+        // create text labels required
+        parent.filter(d => d.label === 'yes')
+            .append('text')
+            .attr('class', 'highlighted-label')
+            .attr('x', d => xScale(d[xVar]))
+            .attr('y', d => yScale(d[yVar]))
+            .attr('dy', -(rem / 2))
+            .attr('text-anchor', 'middle')
+            .text(d => d.name);
 
-        //bring labelled objects to front
-        parent.filter(function(d){
-            return d.label=="yes"
-        }).each(function(d){
+        // bring labelled objects to front
+        parent.filter(d => d.label === 'yes').each(function bringLabelledObjectsToFront() {
             this.parentNode.appendChild(this);
-        })
-
+        });
     }
 
     chart.yScale = (d) => {
@@ -164,15 +140,15 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
-            colourScale.domain(groups);
+        colourScale.domain(groups);
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-            dotOutline = "#ffffff"
+            dotOutline = '#ffffff';
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
-            dotOutline = "#000000"
+            dotOutline = '#000000';
         } else if (d === 'print') {
-            dotOutline = "#000000"
+            dotOutline = '#000000';
             colourScale.range(gChartcolour.linePrint);
         }
         return chart;
