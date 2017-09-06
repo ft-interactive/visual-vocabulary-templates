@@ -1,0 +1,15 @@
+name,group,jsa_rate,lev4rate,popest,label
+Hartlepool,North East,1.7,17.6,92817,yes
+Middlesbrough,North East,3.2,18.5,140398,
+Redcar and Cleveland,North East,2.5,18.9,135404,
+Stockton-on-Tees,North East,2.1,22.8,195681,
+Darlington,North East,2.3,23.7,105646,
+Halton,North West,0.4,17.6,126903,
+Warrington,North West,0.4,27.4,208809,
+Blackburn with Darwen,North West,1.5,19.8,147049,
+Blackpool,North West,1.8,15.5,139195,yes
+"Kingston upon Hull, City of",Yorkshire and The Humber,2.6,15.2,260240,
+East Riding of Yorkshire,Yorkshire and The Humber,0.9,25.9,337696,
+North East Lincolnshire,Yorkshire and The Humber,2,16.2,159144,
+North Lincolnshire,Yorkshire and The Humber,1.3,19.5,170786,
+York,Yorkshire and The Humber,0.4,32.4,208367,yes

@@ -5,7 +5,7 @@ export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
     let seriesNames = [];
-    let groups = []
+    let groups = [];
     let yAxisAlign = 'right';
     let rem = 16;
     let xVar;
@@ -13,10 +13,11 @@ export function draw() {
     let yVar;
     let sizeVar;
 
-    const colourScale = d3.scaleOrdinal()
-        .domain(seriesNames);
+    const colourScale = d3.scaleOrdinal();
+
 
     function chart(parent) {
+
 
         parent.append("circle")
             .attr("cx",function(d){
@@ -26,10 +27,10 @@ export function draw() {
                 return yScale(d[yVar])
             })
             .attr("r",5)
-            .attr("fill",function(){
-                return colourScale();
+            .attr("fill",function(d){
+                return colourScale(d.group);
             })
-            .attr("opacity",opacity)
+            .attr("fill-opacity",opacity)
             .attr("stroke",function(d){
                 if (d.label=="yes"){
                     return "#000000"
@@ -40,6 +41,7 @@ export function draw() {
                     return "1px"
                 }
             })
+
 
         //create text labels required
         parent.filter(function(d){
@@ -63,10 +65,6 @@ export function draw() {
         }).each(function(d){
             this.parentNode.appendChild(this);
         })
-
-
-        
-        //.attr('fill', colourScale(seriesNames[0]));
 
     }
 
@@ -140,9 +138,10 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
+            colourScale.domain(groups);
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webL') {
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);

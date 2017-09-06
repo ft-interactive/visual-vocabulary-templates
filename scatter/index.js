@@ -4,6 +4,7 @@
 
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
+import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
@@ -17,11 +18,11 @@ const sharedConfig = {
 
 // display options
 // these should be series names from your data
-const xVar = "lev4rate"
+const xVar = "jsa_rate"
 const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
 const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
 
-const yVar = "jsa_rate"
+const yVar = "lev4rate"
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
@@ -31,14 +32,17 @@ const scaleDots = false;
 const colourDots = false;
 
 const opacity = 0.7;
+const legendAlign = 'vert';// hori or vert, alignment of the legend
+const legendType = 'circ';// rect, line or circ, geometry of legend marker
 
 //remaining to do
-//colour scheme for groups
+
+//proportional dot size for each frame
 //outline labelled dots
 //log scales
-//invert scale
+//invert scales
 
-
+const myLegend = gLegend.legend();// sets up the legend
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the y axis
@@ -94,7 +98,7 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
+parseData.fromCSV('data-short.csv').then(({ seriesNames, valueExtent, data }) => {
 
 //identify groups
 const groups = d3.map(data, function(d){return d.group;}).keys();
@@ -180,6 +184,8 @@ let sizeValRange =[0,0]
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
+        console.log(groups)
+
         myChart
           .yRange([currentFrame.dimension().height, 0])
           .xScale(myXAxis.scale())
@@ -206,6 +212,36 @@ let sizeValRange =[0,0]
 
         d3.select(currentFrame.plot().node().parentNode)
           .call(currentFrame);
+
+
+
+          // Set up legend for this frame
+        myLegend
+          .frameName(frameName)
+          .seriesNames(groups)
+          .colourPalette((frameName))
+          .rem(myChart.rem())
+          .geometry(legendType)
+          .alignment(legendAlign);
+
+          console.log(myLegend.colourPalette())
+
+        // Draw the Legend
+        currentFrame.plot()
+          .append('g')
+          .attr('id', 'legend')
+          .selectAll('.legend')
+            .data(groups)
+            .enter()
+            .append('g')
+            .classed('legend', true)
+            .call(myLegend);
+
+        const legendSelection = currentFrame.plot().select('#legend');
+        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+
+
+
     });
     // addSVGSavers('figure.saveable');
 });
