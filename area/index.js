@@ -30,6 +30,7 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
+/* eslint-disable */
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
@@ -43,69 +44,69 @@ const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
 const minorAxis = false;// turns on or off the minor axis
 const logScale = false;
+/* eslint-enable */
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 5 })
- .title('Put headline here') // use this if you need to override the defaults
- // .subtitle("Put headline |here") //use this if you need to override the defaults
- .height(400),
+        .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+        .title('Put headline here') // use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
- // .title("Put headline here")
- .height(500),
+        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    // .title("Put headline here")
+        .height(500),
 
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 104, right: 5 })
- // .title("Put headline here")
- .height(700)
- .fullYear(true),
+        .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+    // .title("Put headline here")
+        .height(700)
+        .fullYear(true),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
- // .title("Put headline here")
- .height(500),
+        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    // .title("Put headline here")
+        .height(500),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 7 })
- // .title("Put headline here")
- .height(68)
- .width(55),
+        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+    // .title("Put headline here")
+        .height(68)
+        .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
- .margin({ top: 140, left: 50, bottom: 138, right: 40 })
- // .title("Put headline here")
- .width(612)
- .height(612), // 700 is ideal height for Instagram
+        .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+    // .title("Put headline here")
+        .width(612)
+        .height(612), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
- .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
- // .title("Put headline here")
+        .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+    // .title("Put headline here")
 };
 
 
 // add the frames to the page...
 d3.selectAll('.framed')
-  .each(function addFrames() {
-      const figure = d3.select(this);
-      figure.select('svg')
-          .call(frame[figure.node().dataset.frame]);
-  });
+    .each(function addFrames() {
+        const figure = d3.select(this);
+        figure.select('svg')
+            .call(frame[figure.node().dataset.frame]);
+    });
 
 parseData.fromCSV(dataFile, dateStructure).then((data) => {
     // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames = parseData.getSeriesNames(data.columns);
 
     // create stack data object
-    const plotData = d3.stack()
-        plotData.keys(seriesNames)
+    const plotData = d3.stack();
+    plotData.keys(seriesNames);
 
     plotData.order(d3.stackOrderNone);
     plotData.offset(d3.stackOffsetNone);
-
 
     // Filter data for annotations
     const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
@@ -115,7 +116,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
-
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -128,8 +128,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = areaChart.draw()
-          .seriesNames(seriesNames)
-          .annotate(annotate)
+            .seriesNames(seriesNames)
+            .annotate(annotate);
 
         const myLegend = gLegend.legend();// sets up the legend
 
@@ -137,30 +137,30 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         myYAxis
-          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-          .range([currentFrame.dimension().height, 0])
-          .numTicks(numTicksy)
-          .tickSize(tickSize)
-          .yAxisHighlight(yAxisHighlight)
-          .align(myChart.yAxisAlign())
-          .frameName(frameName)
+            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+            .range([currentFrame.dimension().height, 0])
+            .numTicks(numTicksy)
+            .tickSize(tickSize)
+            .yAxisHighlight(yAxisHighlight)
+            .align(myChart.yAxisAlign())
+            .frameName(frameName);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
         currentFrame.plot()
-          .call(myYAxis);
+            .call(myYAxis);
 
-        //return the value in the variable newMargin
-        if (yAxisAlign == 'right' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({right:newMargin});
-            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        // return the value in the variable newMargin
+        if (yAxisAlign === 'right') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({left:newMargin});
+        if (yAxisAlign === 'left') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
             // myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
         }
 
@@ -169,76 +169,75 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up xAxis for this frame
         myXAxis
-          .domain (d3.extent(data, d => d.date))
-          .range([0, currentFrame.dimension().width - currentFrame.rem()])
-          .align(xAxisAlign)
-          .fullYear(false)
-          .interval(interval)
-          .tickSize(currentFrame.rem()* 0.75)
-          .minorAxis(minorAxis)
-          .minorTickSize(currentFrame.rem()* 0.3)
-          .fullYear(false)
-          .frameName(frameName);
+            .domain(d3.extent(data, d => d.date))
+            .range([0, currentFrame.dimension().width - currentFrame.rem()])
+            .align(xAxisAlign)
+            .fullYear(false)
+            .interval(interval)
+            .tickSize(currentFrame.rem() * 0.75)
+            .minorAxis(minorAxis)
+            .minorTickSize(currentFrame.rem() * 0.3)
+            .fullYear(false)
+            .frameName(frameName);
 
         // Draw the xAxis
         currentFrame.plot()
-          .call(myXAxis);
+            .call(myXAxis);
 
-        if (xAxisAlign == 'bottom' ){
+        if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            if(minorAxis) {
+            if (minorAxis) {
                 myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-
             }
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
         myChart
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette((frameName));
 
-        //Draw the lines
+        // Draw the lines
         currentFrame.plot()
-          .selectAll('areas')
-          .data(plotData(data))
-          .enter()
-          .append('g')
-          .attr('class', 'areas')
-          .call(myChart);
+            .selectAll('areas')
+            .data(plotData(data))
+            .enter()
+            .append('g')
+            .attr('class', 'areas')
+            .call(myChart);
 
         // Set up annotations for this frame
         myAnnotations
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .rem(currentFrame.rem());
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .rem(currentFrame.rem());
 
         // Draw the annotations before the areas
         plotAnnotation
-          .selectAll('.annotation')
-          .data(annos)
-          .enter()
-          .append('g')
-          .call(myAnnotations);
+            .selectAll('.annotation')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations);
 
         // Set up legend for this frame
         myLegend
-          .frameName(frameName)
-          .geometry(legendType)
-          .seriesNames(seriesNames)
-          .colourPalette((frameName))
-          .rem(myChart.rem())
-          .alignment(legendAlign);
+            .frameName(frameName)
+            .geometry(legendType)
+            .seriesNames(seriesNames)
+            .colourPalette((frameName))
+            .rem(myChart.rem())
+            .alignment(legendAlign);
 
         // Draw the Legend
         currentFrame.plot()
-          .append('g')
-          .attr('id', 'legend')
-          .selectAll('.legend')
+            .append('g')
+            .attr('id', 'legend')
+            .selectAll('.legend')
             .data(seriesNames)
             .enter()
             .append('g')
@@ -247,7 +246,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
-
     });
     // addSVGSavers('figure.saveable');
 });

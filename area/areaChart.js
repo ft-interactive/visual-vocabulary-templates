@@ -6,23 +6,26 @@ let rem = 10;
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let xDomain;
+    let yDomain;
+    let xRange;
+    let yRange;
     let seriesNames = [];
     let yAxisAlign = 'right';
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
-    // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
+        .domain(seriesNames);
 
     function chart(parent) {
         const area = d3.area()
-        .x(d => xScale(d.data.date))
-        .y0(d => yScale(d[0]))
-        .y1(d => yScale(d[1]));
+            .x(d => xScale(d.data.date))
+            .y0(d => yScale(d[0]))
+            .y1(d => yScale(d[1]));
 
         parent.append('path')
-          .attr('d', area)
-          .style('fill', d => colourScale(d.key))
+            .attr('d', area)
+            .style('fill', d => colourScale(d.key));
     }
 
     chart.yScale = (d) => {
@@ -81,7 +84,7 @@ export function draw() {
         return chart;
     };
 
-   chart.colourPalette = (d) => {
+    chart.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
@@ -102,18 +105,18 @@ export function drawAnnotations() {
 
     function annotations(parent) {
         parent.append('line')
-      .attr('class', 'annotation')
-      .attr('x1', d => xScale(d.date))
-      .attr('x2', d => xScale(d.date))
-      .attr('y1', yScale.range()[0])
-      .attr('y2', yScale.range()[1] - 5);
+            .attr('class', 'annotation')
+            .attr('x1', d => xScale(d.date))
+            .attr('x2', d => xScale(d.date))
+            .attr('y1', yScale.range()[0])
+            .attr('y2', yScale.range()[1] - 5);
 
         parent.append('text')
-      .attr('class', 'annotation')
-      .attr('text-anchor', 'middle')
-      .attr('x', d => xScale(d.date))
-      .attr('y', yScale.range()[1] - (rem / 2))
-      .text(d => d.annotate);
+            .attr('class', 'annotation')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.date))
+            .attr('y', yScale.range()[1] - (rem / 2))
+            .text(d => d.annotate);
     }
 
     annotations.yScale = (d) => {
