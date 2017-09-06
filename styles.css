@@ -391,20 +391,20 @@ svg {
     font-size: 18px;
 }
 
-.ft-printgraphic .timeline-label,{
-.ft-printgraphic .legend
+.ft-printgraphic .timeline-label,
+.ft-printgraphic .legend {
     font-family: metric;
     font-size: 9.6px;
     fill: #000000;
 }
-.ft-socialgraphic .timeline-label,{
-.ft-socialgraphic .legend text{
+.ft-socialgraphic .timeline-label,
+.ft-socialgraphic .legend text {
     font-family: metric;
     fill-opacity: 0.5;
     fill: #FFFFFF;
     font-size: 28px;
 }
-.ft-videographic .timeline-label,{
+.ft-videographic .timeline-label,
 .ft-videographic .legend text{
     font-family: metric;
     fill-opacity: 0.5;
