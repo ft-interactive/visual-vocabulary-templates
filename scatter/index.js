@@ -15,18 +15,18 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-
+const dataURL = "anscombe.csv"
 // display options
 // these should be series names from your data
-const xVar = "jsa_rate"
+const xVar = "var a"
 const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
 const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
 
-const yVar = "lev4rate"
+const yVar = "var b"
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
-const sizeVar ="popest"//uncomment this and name variable for variable sizing
+const sizeVar ="var c"//uncomment this and name variable for variable sizing
 
 const scaleDots = false;
 const colourDots = false;
@@ -98,7 +98,7 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('data-short.csv').then(({ seriesNames, valueExtent, data }) => {
+parseData.fromCSV(dataURL).then(({ seriesNames, valueExtent, data }) => {
 
 //identify groups
 const groups = d3.map(data, function(d){return d.group;}).keys();
