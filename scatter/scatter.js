@@ -26,10 +26,7 @@ export function draw() {
             .attr("cy",function(d){
                 return yScale(d[yVar])
             })
-            .attr("r",function(d){
-                console.log(rem)
-                return rem/2.5
-            })
+            .attr("r",rem/2.5)
             .attr("fill",function(d){
                 return colourScale(d.group);
             })
@@ -58,7 +55,7 @@ export function draw() {
         .attr("y",function(d){
                 return yScale(d[yVar])
             })
-        .attr("dy",-5)
+        .attr("dy",-(rem/2))
         .attr("text-anchor","middle")
         .text(function(d){return d.name})
 
