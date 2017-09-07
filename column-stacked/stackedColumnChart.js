@@ -24,7 +24,7 @@ export function draw() {
             .attr('width', xScale.bandwidth())
             .attr('x', d => xScale(d.name))
             .attr('y', d => yScale(Math.max(d.y, d.y1)))
-            .attr('height',  d => Math.abs(yScale(0)-yScale(d.value)))
+            .attr('height', d => Math.abs(yScale(0) - yScale(d.value)))
             .attr('fill', d => colourScale(d.name));
     }
 
@@ -33,6 +33,7 @@ export function draw() {
         yScale = d;
         return chart;
     };
+
     chart.yDomain = (d) => {
         yScale.domain(d);
         return chart;
@@ -53,15 +54,18 @@ export function draw() {
         seriesNames = d;
         return chart;
     };
+
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
         return chart;
     };
+
     chart.xDomain = (d) => {
         xScale.domain(d);
         return chart;
     };
+
     chart.xRange = (d) => {
         xScale.rangeRound(d);
         return chart;
@@ -72,24 +76,29 @@ export function draw() {
         window.plotDim = d;
         return chart;
     };
+
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
         return chart;
     };
+
     chart.includeMarker = (d) => {
         includeMarker = d;
         return chart;
     };
+
     chart.markers = (d) => {
         markers = d;
         return chart;
     };
+
     chart.interpolation = (d) => {
         if (!d) return interpolation;
         interpolation = d;
         return chart;
     };
+
     chart.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);

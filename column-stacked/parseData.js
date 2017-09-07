@@ -26,59 +26,53 @@ export function fromCSV(url, dateStructure, options) {
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames);
 
+                // function that calculates the position of each rectangle in the stack
+                const getStacks = function getStacks(el) {
+                    let posCumulative = 0;
+                    let negCumulative = 0;
+                    let baseY = 0;
+                    let baseY1 = 0;
+                    const stacks = seriesNames.map((name, i) => {
+                        if (el[name] > 0) {
+                            baseY1 = posCumulative;
+                            posCumulative += (+el[name]);
+                            baseY = posCumulative;
+                        }
+                        if (el[name] < 0) {
+                            baseY1 = negCumulative;
+                            negCumulative += (+el[name]);
+                            baseY = negCumulative;
+                            if (i < 1) { baseY = 0; baseY1 = negCumulative; }
+                        }
+                        return {
+                            name,
+                            y: +baseY,
+                            y1: +baseY1,
+                            value: +el[name],
+                        };
+                    });
+                    return stacks;
+                };
+
                 const plotData = data.map(d => ({
                     name: d.name,
                     bands: getStacks(d),
-                    total: d3.sum(getStacks(d), (d) => { return d.value;} )
+                    total: d3.sum(getStacks(d), stack => stack.value),
                 }));
 
-                // function that calculates the position of each rectangle in the stack
-                function getStacks(el) {
-                    let posCumulative = 0;
-                    let negCumulative = 0;
-                    let baseY = 0
-                    let baseY1 = 0
-                    var stacks = seriesNames.map(function(name, i) {
-                        if (el[name] > 0) {
-                            baseY1 = posCumulative
-                            posCumulative = posCumulative + (+el[name]);
-                            baseY = posCumulative;
-                        }
-                        if (el[name] < 0){
-                            baseY1 = negCumulative
-                            negCumulative = negCumulative + (+el[name]);
-                            baseY = negCumulative;
-                            if (i < 1) {baseY = 0; baseY1 = negCumulative;}
-                        }
-                        return {
-                            name: name,
-                            y: +baseY,
-                            y1: +baseY1,
-                            value: +el[name]
-                        }
-                    });
-                   return stacks
-                }
-
                 switch (sort) {
-                    case 'descending':
-                        plotData.sort(function (a, b) {
-                            return b.total - a.total;
-                        })//Sorts biggest rects to the left
-                        break;
-                    case 'ascending':
-                        plotData.sort(function (a, b) {
-                            return a.total - b.total;
-                        })//Sorts biggest rects to the right
-                        break;
+                case 'descending':
+                    plotData.sort((a, b) => b.total - a.total);// Sorts biggest rects to the left
+                    break;
+                case 'ascending':
+                    plotData.sort((a, b) => a.total - b.total);// Sorts biggest rects to the right
+                    break;
 
-                    case 'alphabetical':
-                        plotData.sort(function (a, b) {
-                           return a.name.localeCompare(b.name);
-                        });
-                        break;
-                    default:
-                       break;
+                case 'alphabetical':
+                    plotData.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                default:
+                    break;
                 }
 
                 const columnNames = data.map(d => d.name); // create an array of the column names
@@ -102,11 +96,11 @@ function getSeriesNames(columns) {
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
-// a function that calculates the cumulative ma min values of the dataset
+// a function that calculates the cumulative max/min values of the dataset
 function getMaxMin(values) {
-    let cumulativeMax = d3.sum(values.filter(d => (d > 0)));
-    let cumulativeMin = d3.sum(values.filter(d => (d < 0)));
-   return [cumulativeMin,cumulativeMax]
+    const cumulativeMax = d3.sum(values.filter(d => (d > 0)));
+    const cumulativeMin = d3.sum(values.filter(d => (d < 0)));
+    return [cumulativeMin, cumulativeMax];
 }
 
 // a function to work out the extent of values in an array accross multiple properties...
