@@ -20,21 +20,47 @@ export function draw() {
                     .outerRadius(radius)
                     .innerRadius(0);
 
-        const label = d3.arc()
-            .outerRadius(radius -20)
-            .innerRadius(radius - 20);
+        const valueLabel = d3.arc()
+            .outerRadius(radius -rem)
+            .innerRadius(radius - rem);
+
+        const nameLabel = d3.arc()
+            .outerRadius(radius + rem)
+            .innerRadius(radius + rem);
 
         parent.append('path')
-              .attr('d', path)
-              .attr('fill', d => colourScale(d.data.name));
+            .attr('d', path)
+            .on('mouseover', pointer)
+            .on('click',function(d){
+                    let elClass = d3.select(this)
+                    if (elClass.attr('class') === null) {
+                        d3.select(this).attr('class','highlight');
+                        d3.select(this).style('fill',colourScale.range()[1])
+                    }
+                    else{
+                        let el = d3.select(this)
+                        el.attr('class', '');
+                        d3.select(this).style('fill',colourScale.range()[0])
+                    }
+                })
+              .attr('fill', d => colourScale());
 
         parent.append('text')
-              .attr('transform', function(d) { return 'translate(' + label.centroid(d) + ')'; })
+              .attr('transform', function(d) { return 'translate(' + valueLabel.centroid(d) + ')'; })
               .attr('dy', '0.35em')
               .attr('class', 'pie-value')
               .text(d => d.data.value)
+        
+        parent.append('text')
+              .attr('transform', function(d) { return 'translate(' + nameLabel.centroid(d) + ')'; })
+              .attr('dy', '0.35em')
+              .attr('class', 'pie-name')
+              .text(d => d.data.name)
     }
 
+     function pointer() {
+        this.style.cursor='pointer'
+    }
 
     chart.seriesNames = (d) => {
         seriesNames = d;

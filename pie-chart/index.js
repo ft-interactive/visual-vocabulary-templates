@@ -20,7 +20,7 @@ const sharedConfig = {
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 80, bottom: 62, right: 80 })
+   .margin({ top: 100, left: 50, bottom: 62, right: 50 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(400)
@@ -46,7 +46,7 @@ const frame = {
    .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 40, bottom: 35, right: 40 })
+   .margin({ top: 40, left: 20, bottom: 35, right: 20 })
    // .title("Put headline here")
    .height(90)
    .width(55),

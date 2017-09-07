@@ -1,31 +1,101 @@
-/* .overall pie-value .styles on axis*/
+.ft-webgraphic-s .arc path,
+.ft-webgraphic-m .arc path,
+.ft-webgraphic-m-default .arc path,
+.ft-webgraphic-l .arc path {
+	stroke-width: 1px;
+	stroke: #fff1e0;
+}
+
+.ft-printgraphic .arc path {
+	stroke-width: 1px;
+	stroke: #ffffff;
+}
+
+.ft-socialgraphic .arc path {
+	stroke-width: 2px;
+	stroke: #212121;
+}
+
+.ft-videographic .arc path {
+	stroke-width: 4px;
+	stroke: #212121;
+}
+
+
 .ft-webgraphic-s .pie-value,
 .ft-webgraphic-m .pie-value,
 .ft-webgraphic-m-default .pie-value,
 .ft-webgraphic-l .pie-value {
-  font-family: metric;
-  fill: #ffffff;
-  text-anchor: middle;
+	font-family: metric;
+	fill: #ffffff;
+	text-anchor: middle;
+}
+
+.ft-printgraphic .pie-value {
+	font-family: metric;
+	font-size: 9.6px;
+	font-weight: 600px;
+	fill: #ffffff;
 }
 
 .ft-socialgraphic .pie-value,
 .ft-videographic .pie-value {
-    fill-opacity: 0.5;
-    pie-value-.anchor: middle;
+ 	font-family: metric;
+    text-anchor: middle;
+    fill: #ffffff;
 }
 
-.ft-webgraphic-s .pie-value {
+.ft-webgraphic-s .pie-value,
+.ft-webgraphic-s .pie-name {
 	font-size: 14px;
 }
 
-.ft-webgraphic-m .pie-value {
+.ft-webgraphic-m .pie-value,
+.ft-webgraphic-m .pie-name {
 	font-size: 16px;
 }
 
-.ft-webgraphic-m-default .pie-value {
+.ft-webgraphic-m-default .pie-value,
+.ft-webgraphic-m-default .pie-name {
 	font-size: 20px;
 }
 
-.ft-webgraphic-l .pie-value {
+.ft-webgraphic-l .pie-value,
+.ft-webgraphic-l .pie-name {
 	font-size: 18px;
+}
+
+.ft-socialgraphic .pie-value,
+.ft-socialgraphic .pie-name {
+	font-size: 28px;
+}
+
+.ft-videographic .pie-value,
+.ft-videographic .pie-name {
+	font-size: 48px;
+}
+
+
+.ft-webgraphic-s .pie-name,
+.ft-webgraphic-m .pie-name,
+.ft-webgraphic-m-default .pie-name,
+.ft-webgraphic-l .pie-name {
+	font-family: metric;
+	fill: #66605C;
+	text-anchor: middle;
+}
+
+.ft-printgraphic .pie-name {
+ 	font-family: metric;
+	fill: #000000;
+    text-anchor: middle;
+	font-size: 9.6px
+}
+
+.ft-socialgraphic .pie-name,
+.ft-videographic .pie-name {
+ 	font-family: metric;
+    text-anchor: middle;
+    fill: #ffffff;
+    fill-opacity: 0.7;
 }
