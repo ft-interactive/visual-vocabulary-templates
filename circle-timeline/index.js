@@ -15,16 +15,7 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-/* eslint-disable */
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
-const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
-const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const legendAlign = 'hori';// hori or vert, alignment of the legend
-const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-/* eslint-enable */
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -105,9 +96,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
         // Get the size of the container to set scales for each box
         const h = currentFrame.dimension().height;
         const w = currentFrame.dimension().width;
-        // const chartWidth = w - currentFrame.margin().left - currentFrame.margin().right; // eslint-disable-line
-        // const chartHeight = h - currentFrame.margin().bottom - currentFrame.margin().top;
-        // console.log(countCategories, chartHeight, h);
+
         // calculate the size of the max circle - here using height
         const maxCircle = (h / 2 / countCategories);
         // const timelineSpacer = h - (maxCircle / 2);
