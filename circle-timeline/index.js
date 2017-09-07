@@ -37,17 +37,17 @@ const frame = {
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 86, right: 60 })
     // .title("Put headline here")
-        .height(800),
+        .height(700),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 86, right: 60 })
     // .title("Put headline here")
-        .height(800),
+        .height(700),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 104, right: 60 })
     // .title("Put headline here")
-        .height(1000)
+        .height(700)
         .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
@@ -105,11 +105,12 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
         // Get the size of the container to set scales for each box
         const h = currentFrame.dimension().height;
         const w = currentFrame.dimension().width;
-        const chartWidth = w - currentFrame.margin().left - currentFrame.margin().right; // eslint-disable-line
-        const chartHeight = h - currentFrame.margin().bottom;
-
+        // const chartWidth = w - currentFrame.margin().left - currentFrame.margin().right; // eslint-disable-line
+        // const chartHeight = h - currentFrame.margin().bottom - currentFrame.margin().top;
+        // console.log(countCategories, chartHeight, h);
         // calculate the size of the max circle - here using height
-        const maxCircle = (chartHeight / 100) * countCategories;
+        const maxCircle = (h / 2 / countCategories);
+        // const timelineSpacer = h - (maxCircle / 2);
 
         // set radius scale
         const rScale = d3.scalePow().exponent(0.5)
@@ -142,7 +143,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
             .data(plotData)
             .enter()
             .append('g')
-            .attr('transform', (d, i) => `translate(${currentFrame.margin().left}, ${(i * maxCircle * 2.75)})`)
+            .attr('transform', (d, i) => `translate(${currentFrame.margin().left}, ${((i * (h / countCategories)) * 1.1) + (maxCircle / 2)})`)
             .attr('class', 'timelineHolder')
             .call(myChart)
             .call(myXAxis);
