@@ -14,7 +14,7 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
+        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`);
 
         parent.selectAll('rect')
             .data(d => d.bands)
@@ -23,7 +23,7 @@ export function draw() {
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(d.name))
             .attr('x', d => xScale(Math.min(d.x, d.x1)))
-            .attr('width',  d => Math.abs(xScale(d.value) - xScale(0)))
+            .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
             .attr('fill', d => colourScale(d.name));
     }
 

@@ -23,47 +23,47 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = '';//specify 'ascending', 'descending', 'alphabetical'
+const sort = '';// specify 'ascending', 'descending', 'alphabetical'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 20 })
-   // .title("Put headline here") //use this if you need to override the defaults
-   // .subtitle("Put headline |here") //use this if you need to override the defaults
-   .height(400),
+        .margin({ top: 100, left: 15, bottom: 82, right: 20 })
+    // .title("Put headline here") //use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 24 })
-   // .title("Put headline here")
-   .height(500),
+        .margin({ top: 100, left: 20, bottom: 86, right: 24 })
+    // .title("Put headline here")
+        .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 24 })
+        .margin({ top: 100, left: 20, bottom: 86, right: 24 })
     // .title("Put headline here")
-    .height(500),
+        .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right:24 })
-   // .title("Put headline here")
-   .height(700)
-   .fullYear(true),
+        .margin({ top: 100, left: 20, bottom: 104, right: 24 })
+    // .title("Put headline here")
+        .height(700)
+        .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-   // .title("Put headline here")
-   .height(69.85)
-   .width(55),
+        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+    // .title("Put headline here")
+        .height(69.85)
+        .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 140, left: 50, bottom: 138, right: 40 })
-   // .title("Put headline here")
-   .width(612)
-   .height(612),
+        .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+    // .title("Put headline here")
+        .width(612)
+        .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
-   .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
-   // .title("Put headline here")
+        .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+    // .title("Put headline here")
 };
 
 
@@ -75,7 +75,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure, {sort}).then(({ valueExtent, columnNames, plotData, seriesNames, data }) => {
+parseData.fromCSV(dataFile, dateStructure, { sort }).then(({ valueExtent, plotData, seriesNames }) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
@@ -101,8 +101,8 @@ parseData.fromCSV(dataFile, dateStructure, {sort}).then(({ valueExtent, columnNa
 
         myYAxis
             .align(yAxisAlign)
-            .domain(plotData.map(function(d) { return d.name;}))
-            .rangeRound([0, tickSize] , 10)
+            .domain(plotData.map(d => d.name))
+            .rangeRound([0, tickSize], 10)
             .frameName(frameName);
 
         myXAxis
@@ -115,19 +115,19 @@ parseData.fromCSV(dataFile, dateStructure, {sort}).then(({ valueExtent, columnNa
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
         currentFrame.plot()
-          .call(myYAxis);
+            .call(myYAxis);
 
-        //return the value in the variable newMargin
-        if (yAxisAlign == 'right' ){
-            const newMargin = myYAxis.labelWidth()+currentFrame.margin().right
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({right:newMargin});
-            yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        // return the value in the variable newMargin
+        if (yAxisAlign === 'right') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            myYAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left' ){
-            const newMargin = myYAxis.labelWidth()+currentFrame.margin().left
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({left:newMargin});
+        if (yAxisAlign === 'left') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
             // myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
         }
 
@@ -136,15 +136,15 @@ parseData.fromCSV(dataFile, dateStructure, {sort}).then(({ valueExtent, columnNa
 
         myXAxis
             .range([0, currentFrame.dimension().width])
-            .tickSize(tickSize)
+            .tickSize(tickSize);
 
         currentFrame.plot()
-          .call(myXAxis);
+            .call(myXAxis);
 
-        if (xAxisAlign == 'bottom' ){
+        if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
@@ -157,12 +157,12 @@ parseData.fromCSV(dataFile, dateStructure, {sort}).then(({ valueExtent, columnNa
             .yScale(myYAxis.scale());
 
         currentFrame.plot()
-          .selectAll('.columnHolder')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', function(d) { return d.name + '_columnHolder'; })
-          .call(myChart);
+            .selectAll('.columnHolder')
+            .data(plotData)
+            .enter()
+            .append('g')
+            .attr('class', d => `${d.name}_columnHolder`)
+            .call(myChart);
 
 
         // Set up legend for this frame
@@ -178,11 +178,11 @@ parseData.fromCSV(dataFile, dateStructure, {sort}).then(({ valueExtent, columnNa
         currentFrame.plot()
             .append('g')
             .attr('id', 'legend')
-                .selectAll('.legend')
-                .data(seriesNames)
-                .enter()
-                .append('g')
-                .classed('legend', true)
+            .selectAll('.legend')
+            .data(seriesNames)
+            .enter()
+            .append('g')
+            .classed('legend', true)
             .call(myLegend);
     });
     // addSVGSavers('figure.saveable');
