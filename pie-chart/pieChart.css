@@ -1,9 +1,14 @@
+.arc {
+	cursor: pointer;
+}
+
 .ft-webgraphic-s .arc path,
 .ft-webgraphic-m .arc path,
 .ft-webgraphic-m-default .arc path,
 .ft-webgraphic-l .arc path {
 	stroke-width: 1px;
 	stroke: #fff1e0;
+	cursor: pointer;
 }
 
 .ft-printgraphic .arc path {
@@ -83,13 +88,27 @@
 	font-family: metric;
 	fill: #66605C;
 	text-anchor: middle;
+	font-weight: 400;
+}
+
+.ft-webgraphic-s .pie-name.highlight,
+.ft-webgraphic-m .pie-name.highlight,
+.ft-webgraphic-m-default .pie-name.highlight,
+.ft-webgraphic-l .pie-name.highlight {
+	font-weight: 500;
+	fill: #000000;
 }
 
 .ft-printgraphic .pie-name {
  	font-family: metric;
 	fill: #000000;
     text-anchor: middle;
-	font-size: 9.6px
+	font-size: 9.6px;
+	font-weight: 400;
+}
+
+.ft-printgraphic .pie-name.highlight {
+	font-weight: 600;
 }
 
 .ft-socialgraphic .pie-name,
@@ -98,4 +117,10 @@
     text-anchor: middle;
     fill: #ffffff;
     fill-opacity: 0.7;
+	font-weight: 400;
+}
+.ft-socialgraphic .pie-name.highlight,
+.ft-videographic .pie-name.highlight {
+	font-weight: 600;
+	fill-opacity: 1;
 }

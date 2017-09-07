@@ -15,14 +15,14 @@ export function draw() {
 
 
     function chart(parent) {
-        const currentFame = frameName 
+        const currentFame = frameName;
 
         const path = d3.arc()
                     .outerRadius(radius)
                     .innerRadius(0);
 
         const valueLabel = d3.arc()
-            .outerRadius(radius -rem)
+            .outerRadius(radius - rem)
             .innerRadius(radius - rem);
 
         const nameLabel = d3.arc()
@@ -30,18 +30,25 @@ export function draw() {
             .innerRadius(radius + rem);
 
         parent.append('path')
-            .on('mouseover', pointer)
             .on('click',function(d){
-                    chart.colourPalette(currentFame)
-                    let pieClass = d3.select(this)
+                    chart.colourPalette(currentFame);
+                    let pieClass = d3.select(this);
+                    let segment = d3.select(this.parentNode);
+                    
                     if (pieClass.attr('class') === '') {
-                        d3.select(this).attr('class','highlight');
-                        d3.select(this).attr('fill', d => colourScale(0));
+                        pieClass.attr('class','highlight')
+                        .attr('fill', d => colourScale(1));
+
+                        segment.select('.pie-name')
+                        .attr('class', 'pie-name highlight');
                     }
                     else{
                         let el = d3.select(this)
-                        el.attr('class', '');
-                        d3.select(this).attr('fill', d => colourScale(1));
+                        el.attr('class', '')
+                        .attr('fill', d => colourScale(0));
+
+                        segment.select('.pie-name')
+                        .attr('class', 'pie-name');
                     }
                 })
             .attr('d', path)
@@ -58,10 +65,6 @@ export function draw() {
               .attr('dy', '0.35em')
               .attr('class', 'pie-name')
               .text(d => d.data.name);
-    }
-
-     function pointer() {
-        this.style.cursor='pointer'
     }
 
     chart.seriesNames = (d) => {
@@ -84,7 +87,6 @@ export function draw() {
         }
         return chart;
     };
-    console.log(chart.colourPalette('webS'));
 
     chart.colourRange = (x) => {
         colourScale.range(x);
