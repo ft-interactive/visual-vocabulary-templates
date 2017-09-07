@@ -5,7 +5,7 @@ import 'd3-selection-multi';
 export function draw() {
     let rem = 10;
     const colourScale = d3.scaleOrdinal()
-        // .range('gChartcolour.basicLineWeb');
+        .range('gChartcolour.categorical_bar');
         // .domain(['group']);
     let colourProperty = 'group';
     let setPalette = false;
@@ -29,33 +29,33 @@ export function draw() {
             .innerRadius(radius + rem);
 
         parent.append('path')
-            .attr('d', path)
             .on('mouseover', pointer)
             .on('click',function(d){
-                    let elClass = d3.select(this)
-                    if (elClass.attr('class') === null) {
+                    let pieClass = d3.select(this)
+                    if (pieClass.attr('class') === '') {
                         d3.select(this).attr('class','highlight');
-                        d3.select(this).style('fill',colourScale.range()[1])
+                        d3.select(this).style('fill',colourScale.range()[1]);
                     }
                     else{
                         let el = d3.select(this)
                         el.attr('class', '');
-                        d3.select(this).style('fill',colourScale.range()[0])
+                        d3.select(this).style('fill',colourScale.range()[0]);
                     }
                 })
-              .attr('fill', d => colourScale());
+            .attr('d', path)
+            .attr('fill', d => colourScale());
 
         parent.append('text')
               .attr('transform', function(d) { return 'translate(' + valueLabel.centroid(d) + ')'; })
               .attr('dy', '0.35em')
               .attr('class', 'pie-value')
-              .text(d => d.data.value)
+              .text(d => d.data.value);
         
         parent.append('text')
               .attr('transform', function(d) { return 'translate(' + nameLabel.centroid(d) + ')'; })
               .attr('dy', '0.35em')
               .attr('class', 'pie-name')
-              .text(d => d.data.name)
+              .text(d => d.data.name);
     }
 
      function pointer() {
@@ -82,6 +82,7 @@ export function draw() {
         }
         return chart;
     };
+    console.log(chart.colourPalette('webS'));
 
     chart.colourRange = (x) => {
         colourScale.range(x);
