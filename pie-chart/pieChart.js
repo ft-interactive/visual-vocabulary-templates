@@ -12,6 +12,7 @@ export function draw() {
     let seriesNames = [];
     let radius;
     let frameName;
+    let setHighlight;
 
 
     function chart(parent) {
@@ -32,12 +33,13 @@ export function draw() {
         parent.append('path')
             .on('click',function(d){
                     chart.colourPalette(currentFame);
+                    chart.colourPicker(currentFame);
                     let pieClass = d3.select(this);
                     let segment = d3.select(this.parentNode);
                     
                     if (pieClass.attr('class') === '') {
                         pieClass.attr('class','highlight')
-                        .attr('fill', d => colourScale(1));
+                        .attr('fill', d => colourScale.range()[setHighlight]);
 
                         segment.select('.pie-name')
                         .attr('class', 'pie-name highlight');
@@ -45,14 +47,14 @@ export function draw() {
                     else{
                         let el = d3.select(this)
                         el.attr('class', '')
-                        .attr('fill', d => colourScale(0));
+                        .attr('fill', d => colourScale.range()[0]);
 
                         segment.select('.pie-name')
                         .attr('class', 'pie-name');
                     }
                 })
             .attr('d', path)
-            .attr('fill', d => colourScale(0));
+            .attr('fill', d => colourScale.range()[0]);
 
         parent.append('text')
               .attr('transform', function(d) { return 'translate(' + valueLabel.centroid(d) + ')'; })
@@ -85,6 +87,15 @@ export function draw() {
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
         }
+        return chart;
+    };
+    
+    chart.colourPicker = (d) => {
+        if (d === 'social' || d === 'video' || d === 'print') {
+            setHighlight  = 1;
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+            setHighlight = 4;
+        } 
         return chart;
     };
 
