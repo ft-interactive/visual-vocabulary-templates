@@ -76,7 +76,9 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, data }) => {
 
 
     const valueFormat = d => d3.format(',')(d);
-    const pie = d3.pie();
+    const pie = d3.pie()
+                .value(d => d.value);
+
 
     // define chart
     const myChart = pieChart.draw()
@@ -89,24 +91,25 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, data }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-        myChart
-          .rem(currentFrame.rem());
+        const radius = Math.min(currentFrame.dimension().width, currentFrame.dimension().height) / 2;
 
-        myChart.colourPalette(frameName); // set colour palette
+        myChart
+          .rem(currentFrame.rem())
+          .radius(radius)
+          .colourPalette(frameName); // set colour palette
 
 
         currentFrame.plot()
           .selectAll('g.arc')
-          .data(data)
+          .data(pie(data))
           .enter()
           .append('g')
               .attr('class', 'arc')
+              .attr('transform', `translate(${currentFrame.dimension().width / 2},${currentFrame.dimension().height / 2} )`)
           .call(myChart);
 
 
-        // override chartframe margin.top to allow room for axis labels
-        currentFrame.plot()
-          .attr('transform', `translate(${currentFrame.margin().left},${currentFrame.margin().top + (currentFrame.rem() * 1.2)} )`);
+          
     });
     // addSVGSavers('figure.saveable');
 });

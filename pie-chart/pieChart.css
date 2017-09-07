@@ -1,0 +1,31 @@
+/* .overall pie-value .styles on axis*/
+.ft-webgraphic-s .pie-value,
+.ft-webgraphic-m .pie-value,
+.ft-webgraphic-m-default .pie-value,
+.ft-webgraphic-l .pie-value {
+  font-family: metric;
+  fill: #ffffff;
+  text-anchor: middle;
+}
+
+.ft-socialgraphic .pie-value,
+.ft-videographic .pie-value {
+    fill-opacity: 0.5;
+    pie-value-.anchor: middle;
+}
+
+.ft-webgraphic-s .pie-value {
+	font-size: 14px;
+}
+
+.ft-webgraphic-m .pie-value {
+	font-size: 16px;
+}
+
+.ft-webgraphic-m-default .pie-value {
+	font-size: 20px;
+}
+
+.ft-webgraphic-l .pie-value {
+	font-size: 18px;
+}
