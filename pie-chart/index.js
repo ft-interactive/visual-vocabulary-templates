@@ -96,7 +96,8 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, data }) => {
         myChart
           .rem(currentFrame.rem())
           .radius(radius)
-          .colourPalette(frameName); // set colour palette
+          .colourPalette(frameName)
+          .frameName(frameName); // set colour palette
 
 
         currentFrame.plot()

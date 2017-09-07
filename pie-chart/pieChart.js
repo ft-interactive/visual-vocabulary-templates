@@ -4,17 +4,18 @@ import 'd3-selection-multi';
 
 export function draw() {
     let rem = 10;
-    const colourScale = d3.scaleOrdinal()
-        .range('gChartcolour.categorical_bar');
+    const colourScale = d3.scaleOrdinal();
         // .domain(['group']);
     let colourProperty = 'group';
     let setPalette = false;
     let includeLabel = true;
     let seriesNames = [];
     let radius;
+    let frameName;
 
 
     function chart(parent) {
+        const currentFame = frameName 
 
         const path = d3.arc()
                     .outerRadius(radius)
@@ -31,19 +32,20 @@ export function draw() {
         parent.append('path')
             .on('mouseover', pointer)
             .on('click',function(d){
+                    chart.colourPalette(currentFame)
                     let pieClass = d3.select(this)
                     if (pieClass.attr('class') === '') {
                         d3.select(this).attr('class','highlight');
-                        d3.select(this).style('fill',colourScale.range()[1]);
+                        d3.select(this).attr('fill', d => colourScale(0));
                     }
                     else{
                         let el = d3.select(this)
                         el.attr('class', '');
-                        d3.select(this).style('fill',colourScale.range()[0]);
+                        d3.select(this).attr('fill', d => colourScale(1));
                     }
                 })
             .attr('d', path)
-            .attr('fill', d => colourScale());
+            .attr('fill', d => colourScale(0));
 
         parent.append('text')
               .attr('transform', function(d) { return 'translate(' + valueLabel.centroid(d) + ')'; })
@@ -108,6 +110,11 @@ export function draw() {
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
+        return chart;
+    };
+    chart.frameName = (d) => {
+        if (!d) return frameName;
+        frameName = d;
         return chart;
     };
 
