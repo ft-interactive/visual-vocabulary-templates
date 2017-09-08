@@ -168,11 +168,11 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         console.log(highlights)
 
         currentFrame.plot()
-            .selectAll('.annotations-holder')
+            .selectAll('.dotholder')
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', 'annotations-holder')
+            .attr('class', 'dotholder annotations-holder')
             .call(myChart);
 
         if (quantiles) {
