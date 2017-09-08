@@ -1,0 +1,30 @@
+
+.ft-webgraphic-s .dotHighlight,
+.ft-webgraphic-m .dotHighlight,
+.ft-webgraphic-m-default .dotHighlight,
+.ft-webgraphic-l .dotHighlight {
+	font-family: metric;
+	fill: #66605C;
+	text-anchor: middle;
+	font-weight: 400;
+}
+
+.ft-webgraphic-s .dotHighlight,
+.ft-webgraphic-m .dotHighlight,
+.ft-webgraphic-m-default .dotHighlight,
+.ft-webgraphic-l .dotHighlight {
+	stroke-width: 1;
+	stroke: #000000;
+}
+
+.ft-printgraphic .dotHighlight {
+ 	stroke-width: 1;
+	stroke: #000000;
+}
+
+.ft-socialgraphic .dotHighlight,
+.ft-videographic .dotHighlight {
+ 	stroke-width: 2;
+	stroke: #FFFFFF;
+}
+
