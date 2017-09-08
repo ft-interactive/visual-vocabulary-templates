@@ -35,11 +35,10 @@ export function draw() {
             .data(d => {return d.values.filter(el => el.highlight === 'yes')})
             .enter()
             .append('text')
-                .attr('class', 'annotations-holder')
+                .attr('class', 'xAxis text')
                 .attr('text-anchor', 'middle')
                 .attr('x', d => xScale(d.value))
-                .attr('y', d => yScale(d.group))
-                .attr('fill-opacity', 1.0)
+                .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
                 .text(d => d.name);
     }
 
@@ -123,14 +122,14 @@ export function drawQuartiles() {
                 .attr('stroke', '#000000')
                 .style('fill-opacity', 1.0);       
         
-        parent.selectAll('.annotation')
+        parent.selectAll('.text')
             .data(d => d.quantiles)
             .enter()
                 .append('text')
-                .attr('class', 'annotation')
+                .attr('class', 'xAxis text')
                 .attr('text-anchor', 'middle')
                 .attr('x', d => xScale(d.value))
-                .attr('y', d => yScale(d.group))
+                .attr('y', d => yScale(d.group)+ (yScale.bandwidth() * 0.15))
                 .text(d => d.name);
     }
     quants.quantiles = (d) => {

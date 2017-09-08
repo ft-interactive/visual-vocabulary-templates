@@ -21,7 +21,7 @@ const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
-const quantiles = false;
+const quantiles = true;
 
 const sort = '';
 const sortOn = 0;
@@ -106,7 +106,6 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .frameName(frameName);
 
         // console.log(xMin,xMax,valueExtent, xAxis.domain)
-        console.log(plotData)
 
         const base = currentFrame.plot().append('g');
 
@@ -192,11 +191,11 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         
         //Then draw highlighted circles so that they are on top
         currentFrame.plot()
-            .selectAll('.highlights')
+            .selectAll('.dotHighlights')
             .data(highlights)
             .enter()
             .append('g')
-            .attr('class', 'highlights annotations-holder')
+            .attr('class', 'dotHighlights axis xAxis')
             .call(myChart);
 
         if (quantiles) {
@@ -205,7 +204,7 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', 'quartHolder annotations-holder')
+            .attr('class', 'quartHolder axis xAxis')
             .call(myQuartiles);
         }
     });
