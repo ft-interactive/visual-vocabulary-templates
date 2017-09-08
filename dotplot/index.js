@@ -161,11 +161,13 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .rem(currentFrame.rem())
             .quantiles(quantiles);
 
-        const highlights = plotData.map(d => {
-            return d.values.filter(el => el.highlight === 'yes');
-        });
+            const highlights = plotData.map(d => {
+                d.values = d.values.filter(el => el.highlight === 'yes');
+                return d;
+            });
 
-        console.log(highlights)
+        console.log('plotData', plotData);
+        console.log('highlights', highlights);
 
         currentFrame.plot()
             .selectAll('.dotholder')
