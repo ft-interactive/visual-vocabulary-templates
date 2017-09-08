@@ -37,11 +37,11 @@ export function draw() {
             .attr('stroke', '#000000')
             .attr('fill', d => colourScale(d.group));
 
-        parent.selectAll('annotation')
+        parent.selectAll('text')
             .data(d => {return d.values.filter(el => el.highlight === 'yes')})
             .enter()
             .append('text')
-                .attr('class', 'annotation')
+                .attr('class', 'annotations-holder')
                 .attr('text-anchor', 'middle')
                 .attr('x', d => xScale(d.value))
                 .attr('y', d => yScale(d.group))

@@ -168,11 +168,11 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         console.log(highlights)
 
         currentFrame.plot()
-            .selectAll('.dotholder')
+            .selectAll('.annotations-holder')
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', 'dotholder baseline')
+            .attr('class', 'annotations-holder')
             .call(myChart);
 
         if (quantiles) {
@@ -181,7 +181,7 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', 'quartHolder annotation')
+            .attr('class', 'quartHolder annotations-holder')
             .call(myQuartiles);
 
         }
