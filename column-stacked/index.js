@@ -3,7 +3,7 @@ import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as columnGroupedChart from './columnGroupedChart.js';
+import * as stackedColumnChart from './stackedColumnChart.js';
 
 // User defined constants similar to version 2
 const dateStructure = '%d/%m/%Y';
@@ -23,46 +23,47 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const sort = '';// specify 'ascending', 'descending', 'alphabetical'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 5 })
-   // .title("Put headline here") //use this if you need to override the defaults
-   // .subtitle("Put headline |here") //use this if you need to override the defaults
-   .height(400),
+        .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+    // .title("Put headline here") //use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
-   // .title("Put headline here")
-   .height(500),
+        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    // .title("Put headline here")
+        .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
     // .title("Put headline here")
-    .height(500),
+        .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 5 })
-   // .title("Put headline here")
-   .height(700)
-   .fullYear(true),
+        .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+    // .title("Put headline here")
+        .height(700)
+        .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-   // .title("Put headline here")
-   .height(69.85)
-   .width(55),
+        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+    // .title("Put headline here")
+        .height(69.85)
+        .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 140, left: 50, bottom: 138, right: 40 })
-   // .title("Put headline here")
-   .width(612)
-   .height(612),
+        .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+    // .title("Put headline here")
+        .width(612)
+        .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
-   .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
-   // .title("Put headline here")
+        .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+    // .title("Put headline here")
 };
 
 
@@ -74,7 +75,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, seriesNames, data }) => {
+parseData.fromCSV(dataFile, dateStructure, { sort }).then(({ valueExtent, seriesNames, plotData }) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
@@ -82,34 +83,17 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
     //         });
 
     // automatically calculate the seriesnames excluding the "name" column
-
     // define chart
-    const myChart = columnGroupedChart.draw() // eslint-disable-line
-          .seriesNames(seriesNames)
-          .yAxisAlign(yAxisAlign);
-
-    // Buid the dataset for plotting
-    const plotData = data.map(d => ({
-        name: d.name,
-        groups: getGroups(d),
-    }));
-
-    function getGroups(el) {
-        const groups = seriesNames.map(name => ({
-            name,
-            value: +el[name],
-        }));
-        return groups;
-    }
-
+    const myChart = stackedColumnChart.draw() // eslint-disable-line
+        .seriesNames(seriesNames)
+        .yAxisAlign(yAxisAlign);
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-        const myXAxis0 = gAxis.xOrdinal();// sets up yAxis
-        const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
+        const myXAxis = gAxis.xOrdinal();// sets up yAxis
         const myYAxis = gAxis.yLinear();
-        const myChart = columnGroupedChart.draw(); // eslint-disable-line
+        const myChart = stackedColumnChart.draw(); // eslint-disable-line
         const myLegend = gLegend.legend();
 
         // define other functions to be called
@@ -126,7 +110,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
-            .align(myChart.yAxisAlign())
+            .align(myChart.yAxisAlign());
 
         myYAxis
             .align(yAxisAlign)
@@ -137,58 +121,51 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
         currentFrame.plot()
-          .call(myYAxis);
+            .call(myYAxis);
 
-        //return the value in the variable newMargin
-        if (yAxisAlign == 'right' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({right:newMargin});
-            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        // return the value in the variable newMargin
+        if (yAxisAlign === 'right') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({left:newMargin});
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+        if (yAxisAlign === 'left') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         }
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        myXAxis0
+        myXAxis
             .align(xAxisAlign)
-            .domain(columnNames)
+            .domain(plotData.map(d => d.name))
             .rangeRound([0, currentFrame.dimension().width], 10)
             .frameName(frameName);
 
-        myXAxis1
-            .align(xAxisAlign)
-            .domain(seriesNames)
-            .rangeRound([0, myXAxis0.bandwidth()]);
-
         myChart
-            .xScale0(myXAxis0.scale())
-            .xScale1(myXAxis1.scale());
-            // .yScale(myYAxis.yScale())
+            .xScale(myXAxis.scale());
 
         currentFrame.plot()
-          .call(myXAxis0);
+            .call(myXAxis);
 
-        if (xAxisAlign == 'bottom' ){
-            myXAxis0.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        if (xAxisAlign === 'bottom') {
+            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
-        if (xAxisAlign == 'top' ){
-            myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+        if (xAxisAlign === 'top') {
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
 
         currentFrame.plot()
-          .selectAll('.columnHolder')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', 'columnHolder')
-          .call(myChart);
+            .selectAll('.columnHolder')
+            .data(plotData)
+            .enter()
+            .append('g')
+            .attr('class', d => `${d.name}_columnHolder`)
+            .call(myChart);
 
 
         // Set up legend for this frame
@@ -204,11 +181,11 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, columnNames, ser
         currentFrame.plot()
             .append('g')
             .attr('id', 'legend')
-                .selectAll('.legend')
-                .data(seriesNames)
-                .enter()
-                .append('g')
-                .classed('legend', true)
+            .selectAll('.legend')
+            .data(seriesNames)
+            .enter()
+            .append('g')
+            .classed('legend', true)
             .call(myLegend);
     });
     // addSVGSavers('figure.saveable');
