@@ -191,20 +191,20 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         
         //Then draw highlighted circles so that they are on top
         currentFrame.plot()
-            .selectAll('.dotHighlights')
+            .selectAll('.dotHighlight')
             .data(highlights)
             .enter()
             .append('g')
-            .attr('class', 'dotHighlights axis xAxis')
+            .attr('class', 'dotHighlight')
             .call(myChart);
 
         if (quantiles) {
           currentFrame.plot()
-            .selectAll('.quartHolder')
+            .selectAll('.quantiles')
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', 'quartHolder axis xAxis')
+            .attr('class', 'quantiles dotHighlight axis xAxis')
             .call(myQuartiles);
         }
     });

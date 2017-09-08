@@ -113,14 +113,10 @@ export function drawQuartiles() {
             .data(d => d.quantiles)
                 .enter()
                 .append('circle')
-                .attr('class','circle')
                 .attr('cy', d => yScale(d.group) + (yScale.bandwidth()*.5))
                 .attr('cx', d => xScale(d.value))
                 .attr('r', d => rem * 0.5)
-                .attr('fill', d => colourScale(d.group))
-                .attr('stroke-width', 1)
-                .attr('stroke', '#000000')
-                .style('fill-opacity', 1.0);       
+                .attr('fill', d => colourScale(d.group))     
         
         parent.selectAll('.text')
             .data(d => d.quantiles)
