@@ -15,10 +15,12 @@
 .ft-socialgraphic .dotHighlight circle{
  	stroke-width: 2;
 	stroke: #FFFFFF;
+	stroke-opacity: 0.5;
 }
 
 .ft-videographic .dotHighlight circle {
  	stroke-width: 4;
 	stroke: #FFFFFF;
+	stroke-opacity: 0.5
 }
 

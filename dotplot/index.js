@@ -21,7 +21,7 @@ const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
-const quantiles = true;
+const quantiles = false;
 
 const sort = '';
 const sortOn = 0;
@@ -195,7 +195,7 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .data(highlights)
             .enter()
             .append('g')
-            .attr('class', 'dotHighlight')
+            .attr('class', 'dotHighlight axis xAxis')
             .call(myChart);
 
         if (quantiles) {
