@@ -55,9 +55,6 @@ export function fromCSV(url, dateStructure, options) {
                         quantiles: quantiles,
                         min: d3.min(dotValues),
                         max: d3.max(dotValues),
-                        q1: d3.quantile(dotValues, .25),
-                        median: d3.quantile(dotValues, .5),
-                        q3: d3.quantile(dotValues, .75)
                     };
                 });      
 

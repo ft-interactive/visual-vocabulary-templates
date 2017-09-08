@@ -26,15 +26,9 @@ export function draw() {
             .data(d => d.values)
             .enter()
             .append('circle')
-            .attr('class', 'circle')
             .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
             .attr('cx', d => xScale(d.value))
             .attr('r', rem * 0.5)
-            .attr('stroke-width', d => {
-                if(d.highlight === 'yes') {return 1}
-                else {return 0}
-            })
-            .attr('stroke', '#000000')
             .attr('fill', d => colourScale(d.group));
 
         parent.selectAll('text')
@@ -45,6 +39,7 @@ export function draw() {
                 .attr('text-anchor', 'middle')
                 .attr('x', d => xScale(d.value))
                 .attr('y', d => yScale(d.group))
+                .attr('fill-opacity', 1.0)
                 .text(d => d.name);
     }
 

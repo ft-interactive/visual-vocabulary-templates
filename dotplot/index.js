@@ -161,20 +161,42 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .rem(currentFrame.rem())
             .quantiles(quantiles);
 
+            const dots = plotData.map(d => {
+                return {
+                    group: d.group,
+                    min: d.min,
+                    max: d.max,
+                    values:d.values.filter(el => el.highlight === '')
+                }
+            });
             const highlights = plotData.map(d => {
-                d.values = d.values.filter(el => el.highlight === 'yes');
-                return d;
+                return {
+                    group: d.group,
+                    values: d.values.filter(el => el.highlight === 'yes'),
+                }
+                // d.values = d.values.filter(el => el.highlight === 'yes');
+                // return d;
             });
 
-        console.log('plotData', plotData);
-        console.log('highlights', highlights);
-
+        //Draw unhighlighted circles first
         currentFrame.plot()
             .selectAll('.dotholder')
-            .data(plotData)
+            .data(dots)
             .enter()
             .append('g')
-            .attr('class', 'dotholder annotations-holder')
+            .attr('class', 'dotholder baseline')
+            .call(myChart);
+        
+        //Ensure that the linking lines are not drawn a second time 
+        myChart.lines(false)
+        
+        //Then draw highlighted circles so that they are on top
+        currentFrame.plot()
+            .selectAll('.highlights')
+            .data(highlights)
+            .enter()
+            .append('g')
+            .attr('class', 'highlights annotations-holder')
             .call(myChart);
 
         if (quantiles) {
@@ -185,7 +207,6 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .append('g')
             .attr('class', 'quartHolder annotations-holder')
             .call(myQuartiles);
-
         }
     });
     // addSVGSavers('figure.saveable');
