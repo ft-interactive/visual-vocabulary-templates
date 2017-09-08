@@ -418,10 +418,6 @@ svg text{
     -moz-font-feature-settings: 'tnum';
 }
 
-svg circle {
-    fill-opacity: 0.5;
-}
-
 .saveable button{
   display: block;
 }
