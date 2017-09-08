@@ -10,9 +10,11 @@ export function draw() {
         .domain(groupNames);
     let rem = 10;
     let lines = false;
+    let frameName;
 
 
     function dots(parent) {
+        const currentFrame = frameName;
 
         if (lines) {
             parent.append('line')
@@ -35,13 +37,19 @@ export function draw() {
             .data(d => {return d.values.filter(el => el.highlight === 'yes')})
             .enter()
             .append('text')
+                .attr('id', d=> currentFrame +d.name)
                 .attr('class', 'xAxis text')
                 .attr('text-anchor', 'middle')
                 .attr('x', d => xScale(d.value))
                 .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
-                .text(d => d.name);
+                .text(d => d.name + ' ' + d.value);
     }
 
+    dots.frameName = (d) => {
+        if (!d) return frameName;
+        frameName = d;
+        return dots;
+    };
     dots.lines = (d) => {
         if (d === undefined) return lines;
         lines = d;
@@ -107,6 +115,7 @@ export function drawQuartiles() {
         .domain(groupNames);
     let rem = 10;
     let quantiles = false;
+    let frameName;
 
     function quants(parent) {
         parent.selectAll('circle')
@@ -128,6 +137,11 @@ export function drawQuartiles() {
                 .attr('y', d => yScale(d.group)+ (yScale.bandwidth() * 0.15))
                 .text(d => d.name);
     }
+    quants.frameName = (d) => {
+        if (!d) return frameName;
+        frameName = d;
+        return quants;
+    };
     quants.quantiles = (d) => {
         if (d === undefined) return quantiles;
         quantiles = d;

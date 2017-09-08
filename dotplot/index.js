@@ -148,7 +148,8 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .yScale(yAxis.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .lines(lines);
+            .lines(lines)
+            .frameName(frameName);
         
         myQuartiles
             // .paddingInner(0.06)
@@ -158,7 +159,8 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .yScale(yAxis.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .quantiles(quantiles);
+            .quantiles(quantiles)
+            .frameName(frameName);
 
             const dots = plotData.map(d => {
                 return {
