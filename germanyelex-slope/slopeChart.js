@@ -7,9 +7,8 @@ export function draw() {
     let xScale = d3.scaleOrdinal();
     let yAxisAlign = 'right';
     let rem = 10;
-    const colourScale = d3.scaleOrdinal()
-        .range(['#000000','#b80000', '#f5bb00','#73008a', '#52c0ff', '#00aa5b', '#CEC6B9'])
-        .domain(['CDU', 'SPD', 'FDP', 'Linke', 'AfD', 'Grune', 'Other']);
+    let colourScale;
+
     let colourProperty = 'group';
     let setPalette = false;
     let includeLabel = true;
@@ -26,6 +25,7 @@ export function draw() {
         return 'background-line';
     };
 
+        console.log(colourScale)
     function chart(parent) {
         parent.append('line')
             .attrs({
@@ -33,11 +33,10 @@ export function draw() {
                 x2: xScale(xScale.domain()[1]),
                 y1: d => yScale(d[xScale.domain()[0]]),
                 y2: d => yScale(d[xScale.domain()[1]]),
-                stroke: d => colourScale(d.name),
+                stroke: d => colourScale[d.name],
                 class: lineClasser,
                 opacity: (d) => {
                     if ((groupNames.length > 0 && d[colourProperty]) || groupNames.length === 0) {
-                        console.log(colourScale.range())
                         return 1;
                     }
                     return 0.2;
@@ -45,14 +44,13 @@ export function draw() {
             });
 
         const labeled = parent.filter(includeLabel);
-
 // start circle...
         parent.append('circle')
             .attrs({
                 cx: xScale(xScale.domain()[0]),
                 cy: d => yScale(d[xScale.domain()[0]]),
                 r: dotRadius,
-                fill: d => colourScale(d[colourProperty]),
+                fill: d => colourScale[d.name],
                 stroke: 'none',
                 opacity: (d) => {
                     if ((groupNames.length > 0 && d[colourProperty]) || groupNames.length === 0) {
@@ -79,7 +77,7 @@ export function draw() {
                 cx: xScale(xScale.domain()[1]),
                 cy: d => yScale(d[xScale.domain()[1]]),
                 r: dotRadius,
-                fill: d => colourScale(d[colourProperty]),
+                fill: d => colourScale[d.name],
                 stroke: 'none',
                 opacity: (d) => {
                     if ((groupNames.length > 0 && d[colourProperty]) || groupNames.length === 0) {
@@ -153,24 +151,18 @@ export function draw() {
         return chart;
     };
 
-    // chart.colourPalette = (d, groups, setPalette) => {
-    //     if (groups.length > 0 && setPalette === false) {
-    //         if (d === 'social' || d === 'video') {
-    //             colourScale.range(gChartcolour.mutedFirstLineSocial);
-    //         } else if (d === 'webS' || d === 'webM' || d === 'webL') {
-    //             colourScale.range(gChartcolour.mutedFirstLineWeb);
-    //         } else if (d === 'print') {
-    //             colourScale.range(gChartcolour.mutedFirstLinePrint);
-    //         }
-    //     } else if (d === 'social' || d === 'video') {
-    //         colourScale.range(gChartcolour.lineSocial);
-    //     } else if (d === 'webS' || d === 'webM' || d === 'webL') {
-    //         colourScale.range(gChartcolour.lineWeb);
-    //     } else if (d === 'print') {
-    //         colourScale.range(gChartcolour.linePrint);
-    //     }
-    //     return chart;
-    // };
+    chart.colourPalette = (d, groups) => {
+
+            if (d === 'social' || d === 'video') {
+                colourScale = gChartcolour.germanPoliticalParties_line;
+            } else if (d === 'webS' || d === 'webM' || d === 'webL') {
+               colourScale = gChartcolour.germanPoliticalParties_line;
+            } else if (d === 'print') {
+                colourScale = gChartcolour.germanPoliticalParties_line;
+            }
+
+        return chart;
+    };
 
     chart.colourRange = (x) => {
         colourScale.range(x);

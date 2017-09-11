@@ -13,7 +13,6 @@ export function draw() {
     let rem = 10;
     let numbers = false;
 
-    console.log(gChartcolour.germanPoliticalParties_bar)
     function bars(parent) {
         parent.attr('transform', d => `translate(0,${yScale0(d.name)})`)
                 .attr('fill', d => colourScale[d.name]);

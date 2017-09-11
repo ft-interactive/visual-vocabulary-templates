@@ -91,7 +91,6 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
-        console.log(plotData)
         yAxis0
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))

@@ -132,7 +132,7 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPal
         myChart.dotRadius(currentFrame.rem() * 0.3);
 
         // specifics based on frame type
-        // myChart.colourPalette(frameName, groupNames); // set colour palette
+        myChart.colourPalette(frameName, groupNames); // set colour palette
         myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
 
         const axisHighlight = currentFrame.plot().append('g');

@@ -54,7 +54,7 @@ export function fromCSV(url, dateStructure, options) {
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['name','change'];
+    const exclude = ['name','2017'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
