@@ -8,8 +8,8 @@ export function draw() {
     let yAxisAlign = 'right';
     let rem = 10;
     const colourScale = d3.scaleOrdinal()
-        // .range('gChartcolour.basicLineWeb');
-        // .domain(['group']);
+        .range(['#000000','#b80000', '#f5bb00','#73008a', '#52c0ff', '#00aa5b', '#CEC6B9'])
+        .domain(['CDU', 'SPD', 'FDP', 'Linke', 'AfD', 'Grune', 'Other']);
     let colourProperty = 'group';
     let setPalette = false;
     let includeLabel = true;
@@ -33,10 +33,11 @@ export function draw() {
                 x2: xScale(xScale.domain()[1]),
                 y1: d => yScale(d[xScale.domain()[0]]),
                 y2: d => yScale(d[xScale.domain()[1]]),
-                stroke: d => colourScale(d[colourProperty]),
+                stroke: d => colourScale(d.name),
                 class: lineClasser,
                 opacity: (d) => {
                     if ((groupNames.length > 0 && d[colourProperty]) || groupNames.length === 0) {
+                        console.log(colourScale.range())
                         return 1;
                     }
                     return 0.2;
@@ -152,24 +153,24 @@ export function draw() {
         return chart;
     };
 
-    chart.colourPalette = (d, groups, setPalette) => {
-        if (groups.length > 0 && setPalette === false) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            }
-        } else if (d === 'social' || d === 'video') {
-            colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webL') {
-            colourScale.range(gChartcolour.lineWeb);
-        } else if (d === 'print') {
-            colourScale.range(gChartcolour.linePrint);
-        }
-        return chart;
-    };
+    // chart.colourPalette = (d, groups, setPalette) => {
+    //     if (groups.length > 0 && setPalette === false) {
+    //         if (d === 'social' || d === 'video') {
+    //             colourScale.range(gChartcolour.mutedFirstLineSocial);
+    //         } else if (d === 'webS' || d === 'webM' || d === 'webL') {
+    //             colourScale.range(gChartcolour.mutedFirstLineWeb);
+    //         } else if (d === 'print') {
+    //             colourScale.range(gChartcolour.mutedFirstLinePrint);
+    //         }
+    //     } else if (d === 'social' || d === 'video') {
+    //         colourScale.range(gChartcolour.lineSocial);
+    //     } else if (d === 'webS' || d === 'webM' || d === 'webL') {
+    //         colourScale.range(gChartcolour.lineWeb);
+    //     } else if (d === 'print') {
+    //         colourScale.range(gChartcolour.linePrint);
+    //     }
+    //     return chart;
+    // };
 
     chart.colourRange = (x) => {
         colourScale.range(x);
@@ -347,3 +348,4 @@ export function drawAxes() {
 
     return axes;
 }
+

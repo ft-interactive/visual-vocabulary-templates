@@ -1,7 +1,7 @@
-name,2000,2016,group,label
-"CDU",60000,90743,CDU,
-"AfD",53824,65498,AfD,
-"FDP",58787,65774,FDP,
-"Grune",73015,80966,Grune,
-"Linke",56802,61743,Linke,
-"SPD",70212,76074,SPD,
+name,2013,2017,group,label
+"AfD",4.7,10,AfD,yes
+"FDP",4.8,9,FDP,yes
+"Grune",8.5,36,Grune,yes
+"CDU",41.5,20,CDU,yes
+"Linke",8.6,10,Linke,yes
+"SPD",25.7,24,SPD,yes

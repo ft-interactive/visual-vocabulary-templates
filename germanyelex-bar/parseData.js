@@ -9,28 +9,42 @@ import * as d3 from 'd3';
  * @param  {String} url Path to CSV file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
+export function fromCSV(url, dateStructure, options) {
     return new Promise((resolve, reject) => {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
+                const { sort, sortOn } = options;
                 // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
-
+                // const parseDate = d3.timeParse(dateStructure);
+                // data.forEach((d) => {
+                //     d.date = parseDate(d.date);
+                // });
+                // automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
-
+                const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames);
+                // Buid the dataset for plotting
+                const plotData = data.map(d => ({
+                    name: d.name,
+                    groups: getGroups(seriesNames, d),
+                }));
 
-                const columnNames = data.map(d => d.name); // create an array of the column names
+                if (sort === 'descending') {
+                    plotData.sort((a, b) =>
+                    // console.log("sortON=",sortOn)
+                    // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
+                        b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
+                } else if (sort === 'ascending') {
+                    plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
+                } // Sorts biggest rects to the left
 
                 resolve({
+                    groupNames,
                     valueExtent,
-                    columnNames,
                     seriesNames,
+                    plotData,
                     data,
                 });
             }
@@ -38,10 +52,9 @@ export function fromCSV(url, dateStructure) {
     });
 }
 
-
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['name']; // adjust column headings to match your dataset
+    const exclude = ['name'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
@@ -60,4 +73,11 @@ function extentMulti(data, columns) {
         return acc;
     }, {});
     return [ext.min, ext.max];
+}
+
+function getGroups(seriesNames, el) {
+    return seriesNames.map(name => ({
+        name,
+        value: +el[name],
+    }));
 }

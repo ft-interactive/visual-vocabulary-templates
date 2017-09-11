@@ -16,7 +16,7 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the xAxis
+const yMax = 50;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 // const numTicksy = 5; // Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -26,33 +26,33 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 80, bottom: 62, right: 80 })
+   .margin({ top: 100, left: 10, bottom: 62, right: 80 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(400)
    .sourcePlotYOffset(24),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 100, bottom: 62, right: 100 })
+   .margin({ top: 100, left: 10, bottom: 62, right: 350 })
    // .title("Put headline here")
    .height(500)
    .sourcePlotYOffset(28),
 
    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-   .margin({ top: 100, left: 150, bottom: 86, right: 150 })
+   .margin({ top: 100, left: 10, bottom: 86, right: 350 })
     // .title("Put headline here")
    .height(500),
 
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 150, bottom: 76, right: 150 })
+   .margin({ top: 100, left: 10, bottom: 76, right: 150 })
    // .title("Put headline here")
    .height(700)
    .sourcePlotYOffset(32)
    .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 40, bottom: 35, right: 40 })
+   .margin({ top: 40, left: 10, bottom: 35, right: 40 })
    // .title("Put headline here")
    .height(90)
    .width(55),
@@ -132,8 +132,17 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPal
         myChart.dotRadius(currentFrame.rem() * 0.3);
 
         // specifics based on frame type
-        myChart.colourPalette(frameName, groupNames, setColourPalette); // set colour palette
+        // myChart.colourPalette(frameName, groupNames); // set colour palette
         myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
+
+        const axisHighlight = currentFrame.plot().append('g');
+
+        axisHighlight.selectAll('rect')
+            .data([5])
+            .enter()
+            .append('rect')
+            .attr('width', currentFrame.plot().width)
+            .attr('height', currentFrame.plot().height);
 
 
         currentFrame.plot().call(myAxes);
@@ -147,36 +156,36 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPal
               .attr('id', d => d.name)
           .call(myChart);
 
-          // Set up legend for this frame
-        myLegend
-            .seriesNames(groupNames)
-            .colourPalette(frameName)
-            .frameName(frameName)
-            .rem(myChart.rem())
-            .alignment(legendAlign)
-            .geometry(legendType);
+       //    // Set up legend for this frame
+       //  myLegend
+       //      .seriesNames(groupNames)
+       //      .colourPalette(frameName)
+       //      .frameName(frameName)
+       //      .rem(myChart.rem())
+       //      .alignment(legendAlign)
+       //      .geometry(legendType);
 
-            //extract unique group names
-            const nest = d3.nest()
-              .key(function(d) { return d; })
-              .entries(groupNames);
+       //      //extract unique group names
+       //      const nest = d3.nest()
+       //        .key(function(d) { return d; })
+       //        .entries(groupNames);
 
-            let uniqueGroupNames = [];
+       //      let uniqueGroupNames = [];
 
-            nest.forEach(function(d,i){
-                uniqueGroupNames.push(d.key)
-            })
+       //      nest.forEach(function(d,i){
+       //          uniqueGroupNames.push(d.key)
+       //      })
 
-       // Draw the Legend
-        currentFrame.plot()
-            .append('g')
-            .attr('id', 'legend')
-                .selectAll('.legend')
-                .data(uniqueGroupNames)
-                .enter()
-                .append('g')
-                .classed('legend', true)
-            .call(myLegend);
+       // // Draw the Legend
+       //  currentFrame.plot()
+       //      .append('g')
+       //      .attr('id', 'legend')
+       //          .selectAll('.legend')
+       //          .data(uniqueGroupNames)
+       //          .enter()
+       //          .append('g')
+       //          .classed('legend', true)
+       //      .call(myLegend);
 
         // override chartframe margin.top to allow room for axis labels
         currentFrame.plot()
