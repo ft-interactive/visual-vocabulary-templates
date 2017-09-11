@@ -7,7 +7,7 @@ export function draw() {
     let xScale = d3.scaleLinear();
     let seriesNames = [];
     let colourProperty = 'name'; // eslint-disable-line
-    const colourScale = gChartcolour.germanPoliticalParties_bar;
+    let colourScale;
         //  .range(['#000000','#b80000', '#f5bb00','#73008a', '#52c0ff', '#00aa5b', '#CEC6B9'])
         // .domain(['CDU', 'SPD', 'FDP', 'Linke', 'AfD', 'Grune', 'Other']);
     let rem = 10;
@@ -101,14 +101,14 @@ export function draw() {
         return bars;
     };
     bars.colourPalette = (d) => {
-        // if (d === 'social' || d === 'video') {
-        //     colourScale.range(gChartcolour.lineSocial);
-        // } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-        //     colourScale.range(gChartcolour.categorical_bar);
-        // } else if (d === 'print') {
-        //     colourScale.range(gChartcolour.linePrint);
-        // }
-        // return bars;
+        if (d === 'social' || d === 'video') {
+            colourScale = gChartcolour.germanPoliticalParties_bar;
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+            colourScale = gChartcolour.germanPoliticalParties_bar;
+        } else if (d === 'print') {
+            colourScale = gChartcolour.germanPoliticalParties_bar;
+        }
+        return bars;
     };
     bars.seriesNames = (d) => {
         seriesNames = d;

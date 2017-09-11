@@ -13,14 +13,14 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 45;// sets the maximum value on the xAxis
+const xMin = -5;// sets the minimum value on the yAxis
+const xMax = 5;// sets the maximum value on the xAxis
 const xAxisHighlight = -200; // sets which tick to highlight on the yAxis
 const numTicks = 7;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
-const sort = 'descending';
+const sort = '';
 const sortOn = 0;
 const numbers = true;
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
@@ -149,7 +149,7 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         myChart
             // .paddingInner(0.06)
             .colourProperty(colourProperty)
-            // .colourPalette((frameName))
+            .colourPalette((frameName))
             .seriesNames(seriesNames)
             .yScale0(yAxis0.scale())
             .yScale1(yAxis1.scale())
@@ -172,28 +172,28 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         // Set up legend for this frame
         console.log('frameName',(frameName))
 
-        myLegend
-            .seriesNames(seriesNames)
-            .geometry(legendType)
-            .frameName(frameName)
-            .rem(currentFrame.rem())
-            .alignment(legendAlign)
-            .colourPalette((frameName));
+        // myLegend
+        //     .seriesNames(seriesNames)
+        //     .geometry(legendType)
+        //     .frameName(frameName)
+        //     .rem(currentFrame.rem())
+        //     .alignment(legendAlign)
+        //     .colourPalette((frameName));
 
-        // Draw the Legend
-        currentFrame.plot()
-            .append('g')
-            .attr('id', 'legend')
-                .selectAll('.legend')
-                .data(seriesNames)
-                .enter()
-                .append('g')
-                .classed('legend', true)
-            .call(myLegend);
+        // // Draw the Legend
+        // currentFrame.plot()
+        //     .append('g')
+        //     .attr('id', 'legend')
+        //         .selectAll('.legend')
+        //         .data(seriesNames)
+        //         .enter()
+        //         .append('g')
+        //         .classed('legend', true)
+        //     .call(myLegend);
 
-        const legendSelection = currentFrame.plot().select('#legend');
-        const legheight = (legendSelection.node().getBBox().height);
-        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+        // const legendSelection = currentFrame.plot().select('#legend');
+        // const legheight = (legendSelection.node().getBBox().height);
+        // legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
     });
     // addSVGSavers('figure.saveable');
