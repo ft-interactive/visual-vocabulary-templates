@@ -1,0 +1,4 @@
+.hemicycle__seat--empty {
+    stroke: grey;
+    fill: transparent;
+}
