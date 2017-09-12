@@ -13,10 +13,10 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const xMin = -200;// sets the minimum value on the yAxis
-const xMax = 200;// sets the maximum value on the xAxis
+const xMin = 0;// sets the minimum value on the yAxis
+const xMax = 0;// sets the maximum value on the xAxis
 const xAxisHighlight = -200; // sets which tick to highlight on the yAxis
-const numTicks = 7;// Number of tick on the uAxis
+const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -41,7 +41,7 @@ const frame = {
    .height(500),
 
    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 20 })
     // .title("Put headline here")
    .height(500),
 
