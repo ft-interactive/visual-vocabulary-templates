@@ -5,17 +5,18 @@ import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as barChart from './barChart.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
-const dataFile = './example2.csv';
+
+const dataFile = 'example2.csv';
+
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
+
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
-const xAxisHighlight = -200; // sets which tick to highlight on the yAxis
+const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
@@ -53,8 +54,10 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
    // .title("Put headline here")
-   .height(68)
-   .width(55),
+   //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+   .width(112.25)
+   .height(68),
+
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -76,7 +79,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
+parseData.fromCSV(dataFile, { sort, sortOn })
 .then(({ seriesNames, plotData, valueExtent, data }) => {
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
@@ -110,8 +113,6 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
-
-        // console.log(xMin,xMax,valueExtent, xAxis.domain)
 
         const base = currentFrame.plot().append('g');
 
@@ -170,8 +171,6 @@ parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
         }
 
         // Set up legend for this frame
-        console.log('frameName',(frameName))
-
         myLegend
             .seriesNames(seriesNames)
             .geometry(legendType)
