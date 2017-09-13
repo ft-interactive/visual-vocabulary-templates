@@ -48,8 +48,9 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 20, bottom: 35, right: 20 })
    // .title("Put headline here")
-   .height(90)
-   .width(55),
+ 	//Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+ 	.width(112.25)
+ 	.height(68),
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 150, bottom: 138, right: 150 })
