@@ -8,17 +8,17 @@ import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as slopeChart from './slopeChart.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
+const dataURL = "data.csv"
+
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
+
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-// const numTicksy = 5; // Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
@@ -43,7 +43,6 @@ const frame = {
     // .title("Put headline here")
    .height(500),
 
-
     webL: gChartframe.webFrameL(sharedConfig)
    .margin({ top: 100, left: 150, bottom: 76, right: 150 })
    // .title("Put headline here")
@@ -54,8 +53,9 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 40, bottom: 35, right: 40 })
    // .title("Put headline here")
-   .height(90)
-   .width(55),
+   //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+   .width(112.25)
+   .height(68),
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 150, bottom: 138, right: 150 })
@@ -77,7 +77,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPalette, groupNames, dataSorter, data }) => {
+parseData.fromCSV(dataURL).then(({ seriesNames, setColourPalette, groupNames, dataSorter, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = parseData.extentMulti(data, seriesNames);
     data.sort(dataSorter);
@@ -96,10 +96,6 @@ parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, setColourPal
           .labelTextStart(row => (`${row.name} ${valueFormat(row[seriesNames[0]])}`))
           .labelTextEnd(row => (`${row.name} ${valueFormat(row[seriesNames[1]])}`));
 
-
-          // .plotDim(currentFrame.dimension())
-          // .rem(currentFrame.rem())
-          // .colourPalette((frameName));
 
     // general axes configuration
     const myAxes = slopeChart.drawAxes()
