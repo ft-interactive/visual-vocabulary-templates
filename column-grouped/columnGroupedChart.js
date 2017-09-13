@@ -29,6 +29,27 @@ export function draw() {
             .attr('y', d => yScale(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
             .attr('fill', d => colourScale(d.name));
+
+        if (numbers) {
+            parent.selectAll('text')
+            .data(d => d.groups)
+            .enter()
+            .append('text')
+            .html(d => d.value)
+            .attr('class', 'label')
+            .style('text-anchor', 'end')
+            .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
+            .attr('y', d => yScale(d.value))
+            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -4}})
+            .attr('fill', '#000')
+            .style('font-size', rem)
+            .style('text-anchor', 'middle');
+        }
+
+        function positionText(item, labelWidth) {
+            const object = d3.select(item);
+            object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
+        }
     }
 
     chart.yScale = (d) => {
