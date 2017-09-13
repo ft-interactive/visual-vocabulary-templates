@@ -10,7 +10,8 @@ import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
 
 // dataset and titles
-const dataURL = 'anscombe.csv';
+const dataURL = 'data.csv';
+
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
@@ -27,9 +28,9 @@ const yVar = 'var b';
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
-const hollowDots = false;// you can set dots to be hollow (will need to adjust key in illustrator)
+const opacity = 0.7;//sets the fill opacity of the dots...
+const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
 
-const opacity = 0.7;
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'circ';// rect, line or circ, geometry of legend marker
 
@@ -46,8 +47,6 @@ const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the y axis
 const xAxisAlign = 'bottom';
 /* eslint-enable */
-
-// const legendAlign = 'vert';// hori or vert, alignment of the legend
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -72,15 +71,11 @@ const frame = {
     // .title("Put headline here")
         .height(700),
 
-    // print column widths are:
-    /*
-
-
-   */
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 17 })
     // .title("Put headline here")
-        .width(55)
+        //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+        .width(112.25)
         .height(68),
 
 
