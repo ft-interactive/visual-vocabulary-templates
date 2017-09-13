@@ -5,14 +5,15 @@ import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as dotPlot from './dotplot.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
+
 const dataURL = 'data.csv';
+
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
+
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 200;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
@@ -77,7 +78,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataURL, dateStructure, { sort, sortOn })
+parseData.fromCSV(dataURL, { sort, sortOn })
 .then(({ groupNames, plotData, valueExtent, data }) => {
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {

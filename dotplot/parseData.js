@@ -9,17 +9,13 @@ import * as d3 from 'd3';
  * @param  {String} url Path to CSV file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure, options) {
+export function fromCSV(url, options) {
     return new Promise((resolve, reject) => {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
                 const { sort, sortOn } = options;
-                // make sure all the dates in the date column are a date object
-                // const parseDate = d3.timeParse(dateStructure);
-                // data.forEach((d) => {
-                //     d.date = parseDate(d.date);
-                // });
+                
                 // automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
                 const allGroups = data.map(d => d.group);
