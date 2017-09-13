@@ -9,7 +9,8 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 
-const dataFile = 'coal1.csv';
+const dataFile = 'data.csv';
+
 const dateStructure = '%d/%m/%Y';
 /*
   some common formatting parsers....
@@ -30,10 +31,10 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMinL = 20;// sets the minimum value on the yAxisL
-const yMaxL = 80;// sets the maximum value on the xAxisL
+const yMinL = 0;// sets the minimum value on the yAxisL
+const yMaxL = 0;// sets the maximum value on the xAxisL
 const yMinR = 0;// sets the minimum value on the yAxisR
-const yMaxR = 10;// sets the maximum value on the xAxisR
+const yMaxR = 0;// sets the maximum value on the xAxisR
 const doubleScale = 1;
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 6;// Number of tick on the uAxis
@@ -51,32 +52,33 @@ const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAft
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+ .margin({ top: 100, left: 15, bottom: 82, right: 15 })
  .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+ .margin({ top: 100, left: 20, bottom: 86, right: 25 })
  // .title("Put headline here")
  .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    .margin({ top: 100, left: 20, bottom: 86, right: 25 })
     // .title("Put headline here")
     .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+ .margin({ top: 100, left: 20, bottom: 104, right: 25 })
  // .title("Put headline here")
  .height(700)
  .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+ .margin({ top: 40, left: 7, bottom: 35, right: 12 })
  // .title("Put headline here")
- .height(68)
- .width(55),
+ //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+ .width(112.25)
+ .height(68),
 
     social: gChartframe.socialFrame(sharedConfig)
  .margin({ top: 140, left: 50, bottom: 138, right: 40 })
