@@ -4,10 +4,22 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as circleTimeline from './circleTimeline.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%Y';
 
 const dataFile = 'data.csv';
+
+const dateStructure = '%Y';
+/*
+  some common formatting parsers....
+  '%m/%d/%Y'        01/28/1986
+  '%d-%b-%y'        28-Jan-86
+  '%Y %b'           1986 Jan
+  '%Y-%m-%d'        1986-01-28
+  '%B %d'           January 28
+  '%d %b'           28 Jan
+  '%H:%M'           11:39
+  '%H:%M %p'        11:39 AM
+  '%d/%m/%Y %H:%M'  28/01/2016 11:39
+*/
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -44,8 +56,9 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 40, right: 25 })
     // .title("Put headline here")
-        .height(150)
-        .width(55),
+        //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+        .width(112.25)
+        .height(68),
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 100, left: 50, bottom: 100, right: 80 })

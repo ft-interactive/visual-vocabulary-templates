@@ -9,16 +9,11 @@ import * as d3 from 'd3';
  * @param  {String} url Path to CSV file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
+export function fromCSV(url) {
     return new Promise((resolve, reject) => {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
 
                 const seriesNames = getSeriesNames(data.columns);
 
