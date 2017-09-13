@@ -10,6 +10,7 @@ import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 
 const dataFile = 'data.csv';
+
 const dateStructure = '%d/%m/%Y';
 /*
   some common formatting parsers....
@@ -75,8 +76,8 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
  // .title("Put headline here")
- .width(112.25)
  //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+ .width(112.25)
  .height(68),
  
     social: gChartframe.socialFrame(sharedConfig)
