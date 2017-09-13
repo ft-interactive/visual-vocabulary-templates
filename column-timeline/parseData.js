@@ -50,6 +50,7 @@ export function fromCSV(url, dateStructure) {
                     valueExtent,
                     plotData,
                     data,
+                    highlights
                 });
             }
         });

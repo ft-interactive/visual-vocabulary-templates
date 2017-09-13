@@ -89,7 +89,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, valueExtent, plotData, data }) => {
+parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, valueExtent, plotData, data, highlights }) => {
     // define chart
     const myChart = columnTimelineChart.draw()
           .seriesNames(seriesNames)
@@ -183,13 +183,14 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
             .xScale2(myXAxis2.scale());
             // .yScale(myYAxis.yScale())
 
-
+        console.log(highlights)
         // Draw the highlights before the lines and xAxis
         axisHighlight
             .selectAll('.highlights')
             .data(highlights)
             .enter()
             .append('g')
+            .attr('class', 'highlights')
             .call(myHighlights);
 
 
