@@ -36,13 +36,11 @@ export function draw() {
             .enter()
             .append('text')
             .html(d => d.value)
-            .attr('class', 'label')
-            .style('text-anchor', 'end')
+            .attr('class', 'highlight-label')
             .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
             .attr('y', d => yScale(d.value))
-            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -4}})
-            .attr('fill', '#000')
-            .style('font-size', rem)
+            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
+            .attr('font-size', rem)
             .style('text-anchor', 'middle');
         }
 
