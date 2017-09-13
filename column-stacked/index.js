@@ -5,9 +5,6 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as stackedColumnChart from './stackedColumnChart.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
-
 const dataFile = 'data.csv';
 
 const sharedConfig = {
@@ -52,8 +49,9 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-        .height(69.85)
-        .width(55),
+        //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+        .width(112.25)
+        .height(68),
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -75,7 +73,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure, { sort }).then(({ valueExtent, seriesNames, plotData }) => {
+parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, seriesNames, plotData }) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
