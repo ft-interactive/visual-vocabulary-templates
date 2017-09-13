@@ -104,7 +104,7 @@ parseData.fromCSV(dataFile).then(({ data, plotData }) => {
             .attr('class', 'hemicycle')
             .attr('transform', arcTransform)
             .attr('id', d => d.name)
-            .call(myChart);
+            .call(myChart, frameName);
     });
     // addSVGSavers('figure.saveable');
 });

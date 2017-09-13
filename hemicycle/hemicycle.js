@@ -14,36 +14,65 @@ export function draw() {
     const rainbow = false; // lay the parties out like bands of a rainbow or not
     let data;
     let partyOrder;
+    let innerRadiusCoefficient = 0.4;
 
     const colourScale = d3.scaleOrdinal()
         .unknown(undefined);
 
-    function chart(parent) {
-        if (parent.data()) {
-            data = parent.data().reduce((col, cur) => col.concat(cur), []);
+    function chart(parent, frameName) {
+        if (['webS', 'print'].indexOf(frameName) > -1) {
+            if (parent.data()) {
+                data = parent.data().map(d => d[0]);
+            }
+            const wedge = d3.arc()
+                .outerRadius(distanceScale.range()[1] / 2)
+                .innerRadius(0); // @TODO
+
+            const pie = d3.pie()
+                .value(d => d.seats);
+                // .startAngle(Math.PI * -0.5)
+                // .endAngle(Math.PI * 0.5);
+
+            parent.selectAll('path.seats')
+                .data(pie(data))
+                .enter()
+                .append('path')
+                .attr('d', wedge)
+                .attrs({
+                    class(d) {
+                        const partyNames = colourScale.domain();
+                        return `hemicycle__seat hemicycle__seats--${partyNames.indexOf(d.party) > -1 ? d.party : 'empty'}`;
+                    },
+                    fill(d) {
+                        return colourScale(d.party);
+                    },
+                });
+        } else {
+            if (parent.data()) {
+                data = parent.data().reduce((col, cur) => col.concat(cur), []);
+            }
+
+            datasize = data.length;
+            data.sort((a, b) => partyOrder[a.party] - partyOrder[b.party]);
+            const join = parent.selectAll('circle.seat').data(data);
+
+            join.enter()
+                .append('circle')
+                .attrs({
+                    class(d) {
+                        const partyNames = colourScale.domain();
+                        return `hemicycle__seat hemicycle__seat--${partyNames.indexOf(d.party) > -1 ? d.party : 'empty'}`;
+                    },
+                    fill(d) {
+                        return colourScale(d.party);
+                    },
+                    r: dotsize,
+                    transform(d, i) {
+                        const { column, row } = getLayoutPos(i, rainbow);
+                        return `rotate(${angleScale(column)}) translate(${distanceScale(row)},0)`;
+                    },
+                });
         }
-
-        datasize = data.length;
-        data.sort((a, b) => partyOrder[a.party] - partyOrder[b.party]);
-
-        const join = parent.selectAll('circle.seat').data(data);
-
-        join.enter()
-            .append('circle')
-            .attrs({
-                class(d) {
-                    const partyNames = colourScale.domain();
-                    return `hemicycle__seat hemicycle__seat--${partyNames.indexOf(d.party) > -1 ? d.party : 'empty'}`;
-                },
-                fill(d) {
-                    return colourScale(d.party);
-                },
-                r: dotsize,
-                transform(d, i) {
-                    const { column, row } = getLayoutPos(i, rainbow);
-                    return `rotate(${angleScale(column)}) translate(${distanceScale(row)},0)`;
-                },
-            });
     }
 
     chart.distanceScale = (d) => {
@@ -125,6 +154,12 @@ export function draw() {
     chart.partyOrder = (d) => {
         if (!d) return partyOrder;
         partyOrder = d;
+        return chart;
+    };
+
+    chart.innerRadiusCoefficient = (d) => {
+        if (!d) return innerRadiusCoefficient;
+        innerRadiusCoefficient = d;
         return chart;
     };
 
