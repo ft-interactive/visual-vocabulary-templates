@@ -11,6 +11,7 @@ export function draw() {
     let markers = false; // eslint-disable-line
     let includeMarker = undefined; // eslint-disable-line
     let interpolation = d3.curveLinear;
+    let numbers = true;
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -113,6 +114,10 @@ export function draw() {
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
         }
+        return chart;
+    };
+    chart.numbers = (d) => {
+        numbers = d;
         return chart;
     };
 
