@@ -33,11 +33,13 @@ export function draw() {
             .enter()
             .append('text')
             .html(d => d.value)
-            .attr('class', 'label')
+            .attr('class', 'highlight-label')
             .style('text-anchor', 'end')
             .attr('y', d => yScale1(d.name) + (yScale1.bandwidth() / 2) + (rem / 2.5))
             .attr('x', () => xScale(0))
-            .attr('fill', '#ffffff');
+            .attr('dx', function(d) { if(d.value < 0) {return rem/4;} else {return -(rem/4)}})
+            .attr('font-size', rem)
+            .style('text-anchor', function(d) { if(d.value < 0) {return 'start';} else {return 'end'}});
 
             let labelWidth = 0;
             parent.selectAll('.label').each(function calcLabels() {
