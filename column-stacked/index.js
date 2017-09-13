@@ -74,13 +74,7 @@ d3.selectAll('.framed')
     });
 
 parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, seriesNames, plotData }) => {
-    // make sure all the dates in the date column are a date object
-    // var parseDate = d3.timeParse("%d/%m/%Y")
-    // data.forEach(function(d) {
-    //             d.date=parseDate(d.date);
-    //         });
-
-    // automatically calculate the seriesnames excluding the "name" column
+    
     // define chart
     const myChart = stackedColumnChart.draw() // eslint-disable-line
         .seriesNames(seriesNames)

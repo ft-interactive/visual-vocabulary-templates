@@ -10,6 +10,7 @@ import * as parseData from './parseData.js';
 import * as areaChart from './areaChart.js';
 
 const dataFile = 'data.csv';
+
 const dateStructure = '%d/%m/%y';
 /*
   some common formatting parsers....
