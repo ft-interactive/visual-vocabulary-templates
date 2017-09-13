@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import * as gChartcolour from 'g-chartcolour';
 import 'd3-selection-multi';
+import { computeSeats } from './parseData.js';
 
 export function draw() {
     let distanceScale = d3.scaleLinear();
@@ -9,70 +10,34 @@ export function draw() {
     let interpolation = false;
     let rows = 10;
     let arc = 180;
-    const dotsize = 5;
     let datasize;
-    const rainbow = false; // lay the parties out like bands of a rainbow or not
-    let data;
+    // let data;
     let partyOrder;
     let innerRadiusCoefficient = 0.4;
 
     const colourScale = d3.scaleOrdinal()
         .unknown(undefined);
 
-    function chart(parent, frameName) {
-        if (['webS', 'print'].indexOf(frameName) > -1) {
-            if (parent.data()) {
-                data = parent.data().map(d => d[0]);
+    function chart(parent) {
+        const { data, width, height } = parent.datum();
+        const { seats, rowWidth } = computeSeats(data, width, height, innerRadiusCoefficient);
+        const seatRadius = (d) => {
+            let r = 0.4 * rowWidth;
+            if (d.data && typeof d.data.size === 'number') {
+                r *= d.data.size;
             }
-            const wedge = d3.arc()
-                .outerRadius(distanceScale.range()[1] / 2)
-                .innerRadius(0); // @TODO
+            return r;
+        };
 
-            const pie = d3.pie()
-                .value(d => d.seats);
-                // .startAngle(Math.PI * -0.5)
-                // .endAngle(Math.PI * 0.5);
-
-            parent.selectAll('path.seats')
-                .data(pie(data))
-                .enter()
-                .append('path')
-                .attr('d', wedge)
-                .attrs({
-                    class(d) {
-                        const partyNames = colourScale.domain();
-                        return `hemicycle__seat hemicycle__seats--${partyNames.indexOf(d.party) > -1 ? d.party : 'empty'}`;
-                    },
-                    fill(d) {
-                        return colourScale(d.party);
-                    },
-                });
-        } else {
-            if (parent.data()) {
-                data = parent.data().reduce((col, cur) => col.concat(cur), []);
-            }
-
-            datasize = data.length;
-            data.sort((a, b) => partyOrder[a.party] - partyOrder[b.party]);
-            const join = parent.selectAll('circle.seat').data(data);
-
-            join.enter()
-                .append('circle')
-                .attrs({
-                    class(d) {
-                        const partyNames = colourScale.domain();
-                        return `hemicycle__seat hemicycle__seat--${partyNames.indexOf(d.party) > -1 ? d.party : 'empty'}`;
-                    },
-                    fill(d) {
-                        return colourScale(d.party);
-                    },
-                    r: dotsize,
-                    transform(d, i) {
-                        const { column, row } = getLayoutPos(i, rainbow);
-                        return `rotate(${angleScale(column)}) translate(${distanceScale(row)},0)`;
-                    },
-                });
-        }
+        parent.selectAll('.seat')
+            .data(seats)
+            .enter()
+            .append('circle')
+            .attr('class', d => `hemicycle__seat hemicycle__seat--${d.party.party.toLowerCase()}`)
+            .attr('cx', d => d.cartesian.x)
+            .attr('cy', d => d.cartesian.y)
+            .attr('fill', d => colourScale(d.party.party))
+            .attr('r', seatRadius);
     }
 
     chart.distanceScale = (d) => {
@@ -120,7 +85,9 @@ export function draw() {
     };
 
     chart.colourPalette = (d) => {
-        if (d === 'social' || d === 'video') {
+        if (!d) {
+            return colourScale;
+        } else if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
@@ -162,25 +129,6 @@ export function draw() {
         innerRadiusCoefficient = d;
         return chart;
     };
-
-    function getLayoutPos(i, newRows) {
-        const maxColumns = Math.ceil(datasize / rows);
-        let row;
-        let column;
-
-        if (newRows) {
-            row = Math.floor(i / maxColumns);
-            column = i % maxColumns;
-        } else {
-            row = i % rows;
-            column = Math.floor(i / rows);
-        }
-        // console.log(row, column)
-        return {
-            row,
-            column,
-        };
-    }
 
     return chart;
 }

@@ -1,10 +1,14 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
-// import * as gChartcolour from 'g-chartcolour';
+import * as gChartcolour from 'g-chartcolour';
+import * as gLegend from 'g-legend';
 import * as hemicycle from './hemicycle.js';
 import * as parseData from './parseData.js';
 
-const dataFile = 'data.csv';
+const dataFile = 'bundestag2013.csv';
+
+const legendAlign = 'vert';// hori or vert, alignment of the legend
+const legendType = 'line';// rect, line or circ, geometry of legend marker
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -81,7 +85,7 @@ parseData.fromCSV(dataFile).then(({ data, plotData }) => {
         const currentFrame = frame[frameName];
         const { width, height } = currentFrame.dimension();
         const widthMargin = currentFrame.margin().left + currentFrame.margin().right;
-        const arcTransform = `translate(${width / 2},${height}) rotate(180)`;
+        const myLegend = gLegend.legend();// sets up the legend
 
         myChart.angleScaleDomain([0, (myChart.datasize() / myChart.rows()) - 1]);
         myChart.angleScaleRange([0, myChart.arc()]);
@@ -91,20 +95,46 @@ parseData.fromCSV(dataFile).then(({ data, plotData }) => {
 
         myChart.partyOrder(partyOrder);
 
-        myChart.colourPalette(parties); // or gChartcolour.germanPoliticalParties_bar etc.
+        // myChart.colourPalette(parties);
+        myChart.colourPalette(gChartcolour.germanPoliticalParties_bar);
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
         currentFrame.plot()
-            .selectAll('.hemicycle')
-            .data(plotData)
-            .enter()
             .append('g')
             .attr('class', 'hemicycle')
-            .attr('transform', arcTransform)
+            .attr('transform', `translate(${width / 2}, ${height})`)
             .attr('id', d => d.name)
-            .call(myChart, frameName);
+            .datum({
+                data: plotData,
+                width,
+                height,
+            })
+            .call(myChart);
+
+        // Set up legend for this frame
+        myLegend
+            .frameName(frameName)
+            .seriesNames(myChart.colourPalette().domain())
+            .colourPalette(frameName)
+            .rem(myChart.rem())
+            .geometry(legendType)
+            .alignment(legendAlign);
+
+        // Draw the Legend
+        currentFrame.plot()
+            .append('g')
+            .attr('id', 'legend')
+            .selectAll('.legend')
+            .data(myChart.colourPalette().domain())
+            .enter()
+            .append('g')
+            .classed('legend', true)
+            .call(myLegend);
+
+        const legendSelection = currentFrame.plot().select('#legend');
+        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
     // addSVGSavers('figure.saveable');
 });
