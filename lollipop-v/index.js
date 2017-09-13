@@ -8,6 +8,8 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lollipopChart from './lollipopChart.js';
 
+const dataURL = "data.csv"
+
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
@@ -18,7 +20,7 @@ const yMax = 0;// sets the maximum value on the yAxis
 
 // display options
 const dotWidth = 0.3;// 0 = no display, 0.5 = half the width of the column, 1 = full width
-const stalkWidth = 0.1;// 0 = no display 0.5 = half the width of the column, 1 = full width
+const stalkWidth = 0.08;// 0 = no display 0.5 = half the width of the column, 1 = full width
 
 let dots;
 let stalks;
@@ -68,8 +70,9 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
    // .title("Put headline here")
-   .height(68)
-   .width(55),
+   //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+   .width(112.25)
+   .height(68),
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -90,7 +93,7 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('data.csv').then(({ seriesNames, valueExtent, data }) => {
+parseData.fromCSV(dataURL).then(({ seriesNames, valueExtent, data }) => {
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xOrdinal();
