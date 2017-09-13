@@ -6,7 +6,7 @@ import * as parseData from './parseData.js';
 import * as barChart from './barChart.js';
 
 
-const dataFile = 'example2.csv';
+const dataFile = 'data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -21,8 +21,8 @@ const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
-const sort = '';
-const sortOn = 0;
+const sort = '';// specify 'ascending', 'descending'
+const sortOn = 0;// specify column number to sort on (ignore name column)
 const numbers = false;
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker

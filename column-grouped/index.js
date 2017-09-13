@@ -18,6 +18,8 @@ const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
+const sort = 'ascending';// specify 'ascending', 'descending', 'alphabetical'
+const sortOn = 0;// specify column number to sort on (ignore name column)
 const numbers = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -73,27 +75,13 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile).then(({ valueExtent, columnNames, seriesNames, data }) => {
+parseData.fromCSV(dataFile, { sort, sortOn })
+.then(({ seriesNames, plotData, valueExtent, data }) => {
 
     // define chart
     const myChart = columnGroupedChart.draw() // eslint-disable-line
           .seriesNames(seriesNames)
           .yAxisAlign(yAxisAlign);
-
-    // Buid the dataset for plotting
-    const plotData = data.map(d => ({
-        name: d.name,
-        groups: getGroups(d),
-    }));
-
-    function getGroups(el) {
-        const groups = seriesNames.map(name => ({
-            name,
-            value: +el[name],
-        }));
-        return groups;
-    }
-
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -149,7 +137,7 @@ parseData.fromCSV(dataFile).then(({ valueExtent, columnNames, seriesNames, data 
 
         myXAxis0
             .align(xAxisAlign)
-            .domain(columnNames)
+            .domain(plotData.map(d => d.name))
             .rangeRound([0, currentFrame.dimension().width], 10)
             .frameName(frameName);
 

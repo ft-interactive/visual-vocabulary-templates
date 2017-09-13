@@ -17,12 +17,12 @@ export function fromCSV(url, options) {
                 const { sort, sortOn } = options;
                 // automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
-                const groupNames = data.map(d => d.group).filter(d => d); // create an array of the group names
+                const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames);
                 // Buid the dataset for plotting
                 const plotData = data.map(d => ({
-                    name: d.group,
+                    name: d.name,
                     groups: getGroups(seriesNames, d),
                 }));
 
@@ -49,7 +49,7 @@ export function fromCSV(url, options) {
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['group'];
+    const exclude = ['name'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
