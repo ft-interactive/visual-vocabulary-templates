@@ -70,7 +70,7 @@ export function extentMulti(d, columns, yMin) {
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
  */
-export function getlines(d, group) {
+export function getlines(d, group, joinPoints) {
     let lineData=[]
     d.forEach(function(el,i){
         //console.log(el,i)
@@ -83,7 +83,10 @@ export function getlines(d, group) {
         if(el[group]) {
             lineData.push(column)  
         }
-        if(el[group] == false) {
+        // if(el[group] == false) {
+        //     lineData.push(null)  
+        // }
+        if(el[group] == false && joinPoints == false) {
             lineData.push(null)  
         }
 

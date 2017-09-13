@@ -47,6 +47,7 @@ const highlightNames = []; // create an array names you want to highlight eg. ['
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
+const joinPoints = true;//Joints gaps in lines where there are no data points
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -100,14 +101,14 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 
-parseData.fromCSV(dataFile, dateStructure).then((data) => {
+parseData.fromCSV(dataFile, dateStructure,).then((data) => {
     // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames = parseData.getSeriesNames(data.columns);
 
     // Format the dataset that is used to draw the lines
     const plotData = seriesNames.map(d => ({
         name: d,
-        lineData: parseData.getlines(data, d),
+        lineData: parseData.getlines(data, d, joinPoints),
     }));
 
     console.log(plotData)
