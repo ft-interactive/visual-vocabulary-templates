@@ -7,7 +7,7 @@ import * as dotPlot from './dotplot.js';
 
 // User defined constants similar to version 2
 const dateStructure = '%d/%m/%Y';
-const dataFile = './example.csv';
+const dataURL = 'data.csv';
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
@@ -77,7 +77,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure, { sort, sortOn })
+parseData.fromCSV(dataURL, dateStructure, { sort, sortOn })
 .then(({ groupNames, plotData, valueExtent, data }) => {
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
