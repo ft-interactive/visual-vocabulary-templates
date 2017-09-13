@@ -8,8 +8,8 @@ import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as pieChart from './pieChart.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
+const dataURL="data.csv"
+
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
@@ -71,7 +71,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV('./data.csv', dateStructure).then(({ seriesNames, data }) => {
+parseData.fromCSV(dataURL).then(({ seriesNames, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
 
 
