@@ -36,11 +36,12 @@ export function draw() {
             .enter()
             .append('text')
             .html(d => d.value)
-            .attr('class', 'highlight-label')
+            .attr('class', 'column-label')
             .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
-            .attr('y', d => yScale(d.value))
+            .attr('y', d => yScale(0))
             .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
             .attr('font-size', rem)
+            .attr('fill', '#ffffff')
             .style('text-anchor', 'middle');
         }
 
