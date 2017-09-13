@@ -45,10 +45,6 @@ export function draw() {
             .style('text-anchor', 'middle');
         }
 
-        function positionText(item, labelWidth) {
-            const object = d3.select(item);
-            object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
-        }
     }
 
     chart.yScale = (d) => {

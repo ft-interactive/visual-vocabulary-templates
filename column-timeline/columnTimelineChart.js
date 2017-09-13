@@ -9,9 +9,8 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
-    let markers = false; //eslint-disable-line
     let interpolation = d3.curveLinear;
-    let includeMarker = false; // eslint-disable-line
+    let numbers = true;
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -30,6 +29,20 @@ export function draw() {
             .attr('y', d => yScale(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
             .attr('fill', d => colourScale(d.name));
+        if (numbers) {
+            parent.selectAll('text')
+            .data(d => d.columnData)
+            .enter()
+            .append('text')
+            .html(d => d.value)
+            .attr('class', 'column-label')
+            .attr('x', d => xScale1(d.date) + (xScale1.bandwidth() / 2))
+            .attr('y', d => yScale(0))
+            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
+            .attr('font-size', rem)
+            .attr('fill', '#ffffff')
+            .style('text-anchor', 'middle');
+        }
     }
 
     chart.yScale = (d) => {
@@ -112,10 +125,6 @@ export function draw() {
         includeMarker = d;
         return chart;
     };
-    chart.markers = (d) => {
-        markers = d;
-        return chart;
-    };
     chart.interpolation = (d) => {
         if (!d) return interpolation;
         interpolation = d;
@@ -129,6 +138,10 @@ export function draw() {
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
         }
+        return chart;
+    };
+    chart.numbers = (d) => {
+        numbers = d;
         return chart;
     };
 
