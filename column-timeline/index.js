@@ -183,7 +183,6 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
             .xScale2(myXAxis2.scale());
             // .yScale(myYAxis.yScale())
 
-        console.log(highlights)
         // Draw the highlights before the lines and xAxis
         axisHighlight
             .selectAll('.highlights')
