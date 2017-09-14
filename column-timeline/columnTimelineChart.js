@@ -36,7 +36,7 @@ export function draw() {
             .append('text')
             .html(d => d.value)
             .attr('class', 'column-label')
-            .attr('x', d => xScale1(d.date) + (xScale1.bandwidth() / 2))
+            .attr('x', d => xScale0(d.date) + (xScale2.bandwidth() / 2))
             .attr('y', d => yScale(0))
             .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
             .attr('font-size', rem)

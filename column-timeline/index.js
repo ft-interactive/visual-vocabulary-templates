@@ -26,7 +26,7 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const yMin = -1;// sets the minimum value on the yAxis
+const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = -1; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
@@ -34,10 +34,9 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const minorAxis = false;// turns on or off the minor axis
-const numbers = true;// show numbers on end of bars
+const numbers = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
-const highlights = [];
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
