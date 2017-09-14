@@ -79,7 +79,7 @@ const frame = {
  //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
  .width(112.25)
  .height(68),
- 
+
     social: gChartframe.socialFrame(sharedConfig)
  .margin({ top: 140, left: 50, bottom: 138, right: 40 })
  // .title("Put headline here")
@@ -142,7 +142,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
-  
+
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -248,6 +248,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .enter()
           .append('g')
           .attr('class', 'lines')
+          .attr('id', d => d.name)
           .call(myChart);
 
         // Set up highlights for this frame
