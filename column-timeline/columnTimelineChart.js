@@ -10,7 +10,7 @@ export function draw() {
     let yAxisAlign = 'right';
     let rem = 16;
     let interpolation = d3.curveLinear;
-    let showNumberLabels = true;// show numbers on end of bars
+    let showNumberLabels = false;// show numbers on end of bars
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
