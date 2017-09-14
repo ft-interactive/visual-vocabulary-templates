@@ -10,7 +10,7 @@ export function draw() {
     let yAxisAlign = 'right';
     let rem = 16;
     let interpolation = d3.curveLinear;
-    let numbers = true;
+    let showNumberLabels = true;// show numbers on end of bars
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -29,7 +29,7 @@ export function draw() {
             .attr('y', d => yScale(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
             .attr('fill', d => colourScale(d.name));
-        if (numbers) {
+        if (showNumberLabels) {
             parent.selectAll('text')
             .data(d => d.columnData)
             .enter()
@@ -140,8 +140,9 @@ export function draw() {
         }
         return chart;
     };
-    chart.numbers = (d) => {
-        numbers = d;
+    chart.showNumberLabels = (d) => {
+        if (!d) return showNumberLabels;
+        showNumberLabels = d;
         return chart;
     };
 

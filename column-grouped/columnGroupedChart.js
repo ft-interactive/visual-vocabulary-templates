@@ -11,7 +11,7 @@ export function draw() {
     let markers = false; // eslint-disable-line
     let includeMarker = undefined; // eslint-disable-line
     let interpolation = d3.curveLinear;
-    let numbers = true;
+    let showNumberLabels = false; // show numbers on end of bars
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -30,7 +30,7 @@ export function draw() {
             .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
             .attr('fill', d => colourScale(d.name));
 
-        if (numbers) {
+        if (showNumberLabels) {
             parent.selectAll('text')
             .data(d => d.groups)
             .enter()
@@ -132,8 +132,9 @@ export function draw() {
         }
         return chart;
     };
-    chart.numbers = (d) => {
-        numbers = d;
+    chart.showNumberLabels = (d) => {
+        if (!d) return showNumberLabels;
+        showNumberLabels = d;
         return chart;
     };
 

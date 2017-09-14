@@ -34,7 +34,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const minorAxis = false;// turns on or off the minor axis
-const numbers = false;// show numbers on end of bars
+const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
 
@@ -181,7 +181,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
         myChart
             .xScale1(myXAxis1.scale())
             .xScale2(myXAxis2.scale())
-            .numbers(numbers);
+            .showNumberLabels(showNumberLabels);
             // .yScale(myYAxis.yScale())
 
         // Draw the highlights before the lines and xAxis
@@ -218,7 +218,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
           .call(myChart);
 
         // remove ticks if numbers are added to vars
-        if (numbers) {
+        if (showNumberLabels) {
             const clear = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
             clear.remove();
         }

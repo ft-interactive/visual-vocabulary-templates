@@ -10,7 +10,7 @@ export function draw() {
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
     let rem = 10;
-    let numbers = false;
+    let showNumberLabels = false;// show numbers on end of bars
 
 
     function bars(parent) {
@@ -27,7 +27,7 @@ export function draw() {
             .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
             .attr('fill', d => colourScale(d.name));
 
-        if (numbers) {
+        if (showNumberLabels) {
             parent.selectAll('text')
             .data(d => d.groups)
             .enter()
@@ -120,8 +120,9 @@ export function draw() {
         rem = d;
         return bars;
     };
-    bars.numbers = (d) => {
-        numbers = d;
+    bars.showNumberLabels = (d) => {
+        if (!d) return showNumberLabels;
+        showNumberLabels = d;
         return bars;
     };
 

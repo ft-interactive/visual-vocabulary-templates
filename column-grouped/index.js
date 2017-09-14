@@ -20,7 +20,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const sort = '';// specify 'ascending', 'descending', 'alphabetical'
 const sortOn = 0;// specify column number to sort on (ignore name column)
-const numbers = false;// show numbers on end of bars
+const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
@@ -149,7 +149,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
         myChart
             .xScale0(myXAxis0.scale())
             .xScale1(myXAxis1.scale())
-            .numbers(numbers);
+            .showNumberLabels(showNumberLabels);
             // .yScale(myYAxis.yScale())
 
         currentFrame.plot()
@@ -172,7 +172,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
           .call(myChart);
 
         // remove ticks if numbers are added to vars
-        if (numbers) {
+        if (showNumberLabels) {
             const clear = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
             clear.remove();
         }
