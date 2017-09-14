@@ -8,6 +8,7 @@ import * as circleTimeline from './circleTimeline.js';
 const dataFile = 'data.csv';
 
 const dateStructure = '%Y';
+const circleSize = 1;
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -111,7 +112,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
         const w = currentFrame.dimension().width;
 
         // calculate the size of the max circle - here using height
-        const maxCircle = (h / 2 / countCategories);
+        const maxCircle = (h / 2 / countCategories) * circleSize;
         // const timelineSpacer = h - (maxCircle / 2);
 
         // set radius scale
