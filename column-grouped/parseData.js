@@ -18,7 +18,6 @@ export function fromCSV(url, options) {
                 const seriesNames = getSeriesNames(data.columns);
 
                 const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames);
@@ -31,8 +30,6 @@ export function fromCSV(url, options) {
 
                 if (sort === 'descending') {
                     plotData.sort((a, b) =>
-                    // console.log("sortON=",sortOn)
-                    // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
                         b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
                 } else if (sort === 'ascending') {
                     plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);

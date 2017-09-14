@@ -28,8 +28,6 @@ export function fromCSV(url, options) {
 
                 if (sort === 'descending') {
                     plotData.sort((a, b) =>
-                    // console.log("sortON=",sortOn)
-                    // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
                         b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
                 } else if (sort === 'ascending') {
                     plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
