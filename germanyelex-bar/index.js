@@ -9,7 +9,7 @@ import * as barChart from './barChart.js';
 const dateStructure = '%d/%m/%Y';
 const dataFile = './data.csv';
 const sharedConfig = {
-    title: 'Title not yet added',
+    title: 'Which coalitions could work?',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
