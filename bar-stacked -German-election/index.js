@@ -3,45 +3,55 @@ import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as stackedColumnChart from './stackedColumnChart.js';
+import * as stackedBarChart from './stackedBarChart.js';
+import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Vote share',
+    subtitle: '%',
     source: 'Source not yet added',
 };
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
-const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
+const xMin = 0;// sets the minimum value on the yAxis
+const xMax = 0;// sets the maximum value on the yAxis
+const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
+const numTicks = 5;// Number of tick on the uAxis
+const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = '';// specify 'ascending', 'descending', 'alphabetical'
+const sort = '';// specify 'ascending', 'descending', 'alphabetical' - default is order of input file
+
+//const data = loadsheet(key, data)
+//get spreadsheet info
+
+// const url = 'https://bertha.ig.ft.com/republish/publish/dsv/1UlBBMV8lrmwqTMtyiyaQBr_Qz7Ffrr6qFr1ERsKEtTs/coalitions.csv';
+// const text = await fetch(url).then(response => response.ok ? response.text() : Promise.reject(response.status));
+// const data = d3.csvParse(text);
+
+// console.log(data)
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-        .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+        .margin({ top: 40, left: 15, bottom: 100, right: 20 })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+        .margin({ top: 200, left: 20, bottom: 120, right: 24 })
     // .title("Put headline here")
         .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+        .margin({ top: 0, left: 20, bottom: 100, right: 24 })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+        .margin({ top: 80, left: 20, bottom: 104, right: 24 })
     // .title("Put headline here")
         .height(700)
         .fullYear(true),
@@ -49,14 +59,10 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-        //.width(53.71)// 1 col 
-        .width(112.25)// 2 col 
-        //.width(170.8)// 3 col
-        //.width(229.34)// 4 col
-        //.width(287.88)// 5 col 
-        //.width(346.43)// 6 col
-        //.width(74)// markets std print 
-        .height(58.21),//markets std print
+        //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+        .width(112.25)
+        .height(69.85),
+        
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -78,41 +84,32 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, seriesNames, plotData }) => {
-    
-    // define chart
-    const myChart = stackedColumnChart.draw() // eslint-disable-line
-        .seriesNames(seriesNames)
-        .yAxisAlign(yAxisAlign);
-
+parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, plotData, seriesNames }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
+        const partyColours = d3.scaleOrdinal()
+                .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
+                .range(Object.values(gChartcolour.germanPoliticalParties_bar));
 
-        const myXAxis = gAxis.xOrdinal();// sets up yAxis
-        const myYAxis = gAxis.yLinear();
-        const myChart = stackedColumnChart.draw(); // eslint-disable-line
+        const myXAxis = gAxis.xLinear();// sets up yAxis
+        const myYAxis = gAxis.yOrdinal();
+        const myChart = stackedBarChart.draw(); // eslint-disable-line
         const myLegend = gLegend.legend();
 
         // define other functions to be called
-        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-
-        myChart
-            .yRange([currentFrame.dimension().height, 0])
-            .plotDim(currentFrame.dimension())
-            .rem(currentFrame.rem())
-            .colourPalette((frameName));
-
-        myYAxis
-            .scale(myChart.yScale())
-            .numTicks(numTicksy)
-            .tickSize(tickSize)
-            .yAxisHighlight(yAxisHighlight)
-            .align(myChart.yAxisAlign());
+        const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 1.4);// Used when drawing the xAxis ticks
 
         myYAxis
             .align(yAxisAlign)
-            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-            .numTicks(numTicksy)
+            .domain(plotData.map(d => d.name))
+            .rangeRound([0, tickSize], 10)
+            .frameName(frameName);
+
+        myXAxis
+            .align(xAxisAlign)
+            .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+            .numTicks(numTicks)
+            .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
@@ -125,36 +122,38 @@ parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, seriesNames, plotData
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
-            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+            myYAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
         if (yAxisAlign === 'left') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            // myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
         }
+
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
         myXAxis
-            .align(xAxisAlign)
-            .domain(plotData.map(d => d.name))
-            .rangeRound([0, currentFrame.dimension().width], 10)
-            .frameName(frameName);
-
-        myChart
-            .xScale(myXAxis.scale());
+            .range([0, currentFrame.dimension().width])
+            .tickSize(tickSize);
 
         currentFrame.plot()
             .call(myXAxis);
 
-        if (xAxisAlign === 'bottom') {
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        }
+        
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
+        myChart
+            .xRange([0, currentFrame.dimension().width])
+            .plotDim(currentFrame.dimension())
+            .seriesNames(seriesNames)
+            .rem(currentFrame.rem())
+            .colourPalette(partyColours)
+            .xScale(myXAxis.scale())
+            .yScale(myYAxis.scale());
 
         currentFrame.plot()
             .selectAll('.columnHolder')
@@ -164,7 +163,6 @@ parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, seriesNames, plotData
             .attr('class', d => `${d.name}_columnHolder`)
             .call(myChart);
 
-
         // Set up legend for this frame
         myLegend
             .seriesNames(seriesNames)
@@ -172,7 +170,7 @@ parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, seriesNames, plotData
             .frameName(frameName)
             .rem(myChart.rem())
             .alignment(legendAlign)
-            .colourPalette((frameName));
+            .colourPalette(partyColours);
 
         // Draw the Legend
         currentFrame.plot()

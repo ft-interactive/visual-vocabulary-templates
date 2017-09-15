@@ -3,10 +3,10 @@ import * as gAxis from 'g-axis';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
-import * as barChart from './barChart.js';
+import * as dotPlot from './dotplot.js';
 
 
-const dataFile = 'data.csv';
+const dataURL = 'data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -15,17 +15,18 @@ const sharedConfig = {
 };
 
 const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the xAxis
+const xMax = 200;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 5;// Number of tick on the uAxis
+const numTicks = 7;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
-const sort = '';// specify 'ascending', 'descending'
-const sortOn = 0;// specify column number to sort on (ignore name column)
-const showNumberLabels = false;// show numbers on end of bars
-const legendAlign = 'hori'; // hori or vert, alignment of the legend
-const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const lines = true;
+const quantiles = false;
+
+const sort = '';
+const sortOn = 0;
+
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -37,24 +38,23 @@ const frame = {
    .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 24 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 35 })
    // .title("Put headline here")
    .height(500),
 
    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 20 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 38 })
     // .title("Put headline here")
    .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 24 })
+   .margin({ top: 100, left: 20, bottom: 104, right: 35 })
    // .title("Put headline here")
    .height(700),
 
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-   // .title("Put headline here")
-   /* Print column widths */
+    //.title("Put headline here")
     //.width(53.71)// 1 col 
     .width(112.25)// 2 col 
     //.width(170.8)// 3 col
@@ -63,7 +63,6 @@ const frame = {
     //.width(346.43)// 6 col
     //.width(74)// markets std print 
     .height(58.21),//markets std print
-
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -85,33 +84,26 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, { sort, sortOn })
-.then(({ seriesNames, plotData, valueExtent, data }) => {
+parseData.fromCSV(dataURL, { sort, sortOn })
+.then(({ groupNames, plotData, valueExtent, data }) => {
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         // define other functions to be called
-
-        const yAxis0 = gAxis.yOrdinal();// sets up yAxis
-        const yAxis1 = gAxis.yOrdinal();// sets up yAxis
+        const yAxis = gAxis.yOrdinal();// sets up yAxis
         const xAxis = gAxis.xLinear();
-        const myChart = barChart.draw();
+        const myChart = dotPlot.draw();
+        const myQuartiles = dotPlot.drawQuartiles();
         const myLegend = gLegend.legend();
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
 
-        yAxis0
+        yAxis
             .align(yAxisAlign)
-            .domain(plotData.map(d => d.name))
+            .domain(plotData.map(d => d.group))
             .rangeRound([0, currentFrame.dimension().height])
             .frameName(frameName);
-
-        yAxis1
-            .paddingInner(0.06)
-            .align(yAxisAlign)
-            .domain(seriesNames)
-            .rangeRound([0, yAxis0.bandwidth()]);
 
         xAxis
             .align(xAxisAlign)
@@ -120,21 +112,23 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
 
+        // console.log(xMin,xMax,valueExtent, xAxis.domain)
+
         const base = currentFrame.plot().append('g');
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
-            .call(yAxis0);
+            .call(yAxis);
 
         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().right;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
-            yAxis0.yLabel()
-                .attr('transform', `translate(${currentFrame.dimension().width + yAxis0.labelWidth()},${0})`);
+            yAxis.yLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width + yAxis.labelWidth()},${0})`);
         } else {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().left;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
         }
@@ -157,49 +151,71 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             // .paddingInner(0.06)
             .colourProperty(colourProperty)
             .colourPalette((frameName))
-            .seriesNames(seriesNames)
-            .yScale0(yAxis0.scale())
-            .yScale1(yAxis1.scale())
+            .groupNames(groupNames)
+            .yScale(yAxis.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .showNumberLabels(showNumberLabels);
+            .lines(lines)
+            .frameName(frameName);
+        
+        myQuartiles
+            // .paddingInner(0.06)
+            .colourProperty(colourProperty)
+            .colourPalette((frameName))
+            .groupNames(groupNames)
+            .yScale(yAxis.scale())
+            .xScale(xAxis.scale())
+            .rem(currentFrame.rem())
+            .quantiles(quantiles)
+            .frameName(frameName);
 
+            const dots = plotData.map(d => {
+                return {
+                    group: d.group,
+                    min: d.min,
+                    max: d.max,
+                    values:d.values.filter(el => el.highlight === '')
+                }
+            });
+            const highlights = plotData.map(d => {
+                return {
+                    group: d.group,
+                    values: d.values.filter(el => el.highlight === 'yes'),
+                }
+                // d.values = d.values.filter(el => el.highlight === 'yes');
+                // return d;
+            });
+
+        //Draw unhighlighted circles first
         currentFrame.plot()
-            .selectAll('.barHolder')
+            .selectAll('.dotholder')
+            .data(dots)
+            .enter()
+            .append('g')
+            .attr('class', 'dotholder baseline')
+            .call(myChart);
+        
+        //Ensure that the linking lines are not drawn a second time 
+        myChart.lines(false)
+        
+        //Then draw highlighted circles so that they are on top
+        currentFrame.plot()
+            .selectAll('.dotHighlight')
+            .data(highlights)
+            .enter()
+            .append('g')
+            .attr('class', 'dotHighlight axis xAxis')
+            .call(myChart);
+
+        if (quantiles) {
+          currentFrame.plot()
+            .selectAll('.quantiles')
             .data(plotData)
             .enter()
             .append('g')
-            .call(myChart);
-        // remove ticks if numbers are added to vars
-        if (showNumberLabels) {
-            const clear = xAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
-            clear.remove();
+            .attr('class', 'quantiles dotHighlight axis xAxis')
+            .call(myQuartiles);
         }
-
-        // Set up legend for this frame
-        myLegend
-            .seriesNames(seriesNames)
-            .geometry(legendType)
-            .frameName(frameName)
-            .rem(currentFrame.rem())
-            .alignment(legendAlign)
-            .colourPalette((frameName));
-
-        // Draw the Legend
-        currentFrame.plot()
-            .append('g')
-            .attr('id', 'legend')
-                .selectAll('.legend')
-                .data(seriesNames)
-                .enter()
-                .append('g')
-                .classed('legend', true)
-            .call(myLegend);
-
-        const legendSelection = currentFrame.plot().select('#legend');
-        const legheight = (legendSelection.node().getBBox().height);
-        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
-
     });
     // addSVGSavers('figure.saveable');
 });
