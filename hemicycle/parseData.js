@@ -18,11 +18,12 @@ export function fromCSV(url) {
                 const valueExtent = d3.extent(data, d => d.seats);
                 // const plotData = data.map(d => d3.range(d.seats).map(() => d));
                 const plotData = data.map(d => (d.seats = Number(d.seats), d)); // eslint-disable-line
-
+                const seriesNames = d3.map(data, d => d.party).keys();
                 resolve({
                     valueExtent,
                     plotData,
                     data,
+                    seriesNames,
                 });
             }
         });

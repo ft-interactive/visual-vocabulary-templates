@@ -8,7 +8,7 @@ import * as parseData from './parseData.js';
 const dataFile = 'bundestag2013.csv';
 
 const legendAlign = 'vert';// hori or vert, alignment of the legend
-const legendType = 'line';// rect, line or circ, geometry of legend marker
+const legendType = 'circ';// rect, line or circ, geometry of legend marker
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -76,7 +76,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile).then(({ data, plotData }) => {
+parseData.fromCSV(dataFile).then(({ data, plotData, seriesNames }) => {
     // define chart
     const myChart = hemicycle.draw()
         .datasize(data.reduce((col, d) => col + Number(d.seats), 0));
@@ -116,8 +116,8 @@ parseData.fromCSV(dataFile).then(({ data, plotData }) => {
         // Set up legend for this frame
         myLegend
             .frameName(frameName)
-            .seriesNames(myChart.colourPalette().domain())
-            .colourPalette(frameName)
+            .seriesNames(seriesNames)
+            .colourPalette(myChart.colourPalette())
             .rem(myChart.rem())
             .geometry(legendType)
             .alignment(legendAlign);
@@ -127,7 +127,7 @@ parseData.fromCSV(dataFile).then(({ data, plotData }) => {
             .append('g')
             .attr('id', 'legend')
             .selectAll('.legend')
-            .data(myChart.colourPalette().domain())
+            .data(seriesNames)
             .enter()
             .append('g')
             .classed('legend', true)
