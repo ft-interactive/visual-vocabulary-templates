@@ -50,7 +50,7 @@ const logScale = false;
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({ top: 100, left: 15, bottom: 82, right: 5 })
-        .title('Put headline here') // use this if you need to override the defaults
+        //.title('Put headline here') // use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
 
@@ -74,14 +74,15 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-        .height(68)
-        .width(55),
+        .width(112.25)
+    //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+    .height(68),
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
     // .title("Put headline here")
         .width(612)
-        .height(612), // 700 is ideal height for Instagram
+        .height(612), 
 
     video: gChartframe.videoFrame(sharedConfig)
         .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
