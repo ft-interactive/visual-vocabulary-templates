@@ -1,82 +1,39 @@
 import * as d3 from 'd3';
 import * as gChartcolour from 'g-chartcolour';
+import topojson from 'topojson-client';
 
-export function draw() {
-    let yScale;
-    let xScale;
-    let seriesNames = [];
-    let yAxisAlign = 'right';
-    let rem = 16;
-    let markers = false; // eslint-disable-line
-    let includeMarker = false; // eslint-disable-line
-    let interpolation = false;
-
+export function draw(geography, party) {
     // let interpolation =d3.curveLinear
-    const colourScale = d3.scaleOrdinal()
-        .domain(seriesNames);
+    let colourScale = d3.scaleOrdinal().domain();
+    let projection = d3.geoMercator();
+    let rem = 16;
+    const path = d3.geoPath().projection(projection);
 
-    function chart(parent) { /** Main rendering function here **/ } // eslint-disable-line
+    function chart(parent, useCanvas = false) {
+        const { data } = parent.datum();
+        if (useCanvas) {} // eslint-disable-line
+        else { // SVG rendering here (default)
+            parent.selectAll('path.region')
+                .data(topojson.feature(geography, geography.objects.wahlkreise).features)
+                .enter().append('path')
+                .attr('d', d => path(d))
+                .attr('fill', d => colourScale(party(data.find(item => d.id === Number(item.number)).winner)));
+        }
+    } // eslint-disable-line
 
-    chart.yScale = (d) => {
-        if (!d) return yScale;
-        yScale = d;
-        return chart;
-    };
-    chart.yAxisAlign = (d) => {
-        if (!d) return yAxisAlign;
-        yAxisAlign = d;
-        return chart;
-    };
-    chart.yDomain = (d) => {
-        yScale.domain(d);
-        return chart;
-    };
-
-    chart.yRange = (d) => {
-        yScale.range(d);
+    chart.projection = (d) => {
+        if (!d) return projection;
+        projection = d;
+        path.projection(projection);
         return chart;
     };
 
-    chart.seriesNames = (d) => {
-        seriesNames = d;
-        return chart;
-    };
-    chart.xScale = (d) => {
-        if (!d) return xScale;
-        xScale = d;
-        return chart;
-    };
-    chart.xDomain = (d) => {
-        xScale.domain(d);
-        return chart;
-    };
-    chart.xRange = (d) => {
-        xScale.range(d);
-        return chart;
-    };
-    chart.plotDim = (d) => {
-        if (!d) return window.plotDim;
-        window.plotDim = d;
-        return chart;
-    };
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
         return chart;
     };
-    chart.includeMarker = (d) => {
-        includeMarker = d;
-        return chart;
-    };
-    chart.markers = (d) => {
-        markers = d;
-        return chart;
-    };
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
+
     chart.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
@@ -84,6 +41,8 @@ export function draw() {
             colourScale.range(gChartcolour.lineWeb);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };

@@ -1,64 +1,100 @@
 import * as d3 from 'd3';
+import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
-import * as CHANGETHISTOYOURCHARTNAME from './chartNameHere.js';
+import germanyTopojson from 'germany-wahlkreise'; // Custom added to d3-bootloader; see index.html.
+import { germanPoliticalParties_bar } from 'g-chartcolour'; //eslint-disable-line
+import * as choropleth from './choropleth.js';
 import * as parseData from './parseData.js';
 
-// User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
-
-const dataFile = 'data.csv';
+const dataFile = 'germany_2.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-// let yMin = 0;//sets the minimum value on the yAxis
-// let yMax = 1500;//sets the maximum value on the xAxis
-// const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-// const numTicksy = 3;//Number of tick on the uAxis
-// const yAxisAlign = "right";//alignment of the axis
-// const interval = "years";//date interval on xAxis "decade", "lustrum", "years","months","days"
-// let annotate = true; // show annotations, defined in the 'annotate' column
-// let markers = false;//show dots on lines
-// let legendAlign = "vert";//hori or vert, alignment of the legend
-// let legendType = "line";//rect, line or circ, geometry of legend marker
-// let interpolation=d3.curveLinear//curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-// let minorAxis = true//turns on or off the minor axis
+
+const legendAlign = 'vert';// hori or vert, alignment of the legend
+const legendType = 'circ'; // rect, line or circ, geometry of legend marker
+
+const partyScale = d3.scaleOrdinal()
+    .domain([
+        'cducsu',
+        'green',
+        'left',
+        'spd',
+        'afd',
+        'fdp',
+        'other',
+    ])
+    .range([
+        'CDU/CSU',
+        'Grune',
+        'Linke',
+        'SPD',
+        'AfD',
+        'FDP',
+        'Other',
+    ]);
+
+const frameScale = d3.scaleOrdinal()
+    .domain([
+        'webMDefault',
+        'webS',
+        'webM',
+        'webL',
+        'print',
+        'social',
+        'video',
+    ])
+    .range([
+        1700,
+        1100,
+        1700,
+        2200,
+        650,
+        2200,
+        3100,
+    ]);
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
+    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+        // .title("Put headline here")
+        .height(500),
+
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 5 })
-   // .title("Put headline here") //use this if you need to override the defaults
-   // .subtitle("Put headline |here") //use this if you need to override the defaults
-   .height(400),
+        .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+    // .title("Put headline here") //use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
-   // .title("Put headline here")
-   .height(500),
+        .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    // .title("Put headline here")
+        .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 5 })
-   // .title("Put headline here")
-   .height(700)
-   .fullYear(true),
+        .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+    // .title("Put headline here")
+        .height(700)
+        .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-   .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-   // .title("Put headline here")
-   .height(68)
-   .width(55),
+        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+    // .title("Put headline here")
+        .height(68)
+        .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 140, left: 50, bottom: 138, right: 40 })
-   // .title("Put headline here")
-   .height(750), // 700 is ideal height for Instagram
+        .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+    // .title("Put headline here")
+        .height(750), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
-   .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
-   // .title("Put headline here")
+        .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+    // .title("Put headline here")
 };
 
 // add the frames to the page...
@@ -69,19 +105,54 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then((data) => {
+parseData.fromCSV(dataFile).then((data) => {
     // define chart
-    const myChart = CHANGETHISTOYOURCHARTNAME.draw() // eslint-disable-line
-        .seriesNames(data.seriesNames);
+    const colorScale = d3.scaleOrdinal()
+        .domain(partyScale.range())
+        .range(Object.values(germanPoliticalParties_bar));
+
+    const myChart = choropleth.draw(germanyTopojson, partyScale);
+    myChart.colourPalette(colorScale);
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
+        const myLegend = gLegend.legend();
+        const projection = d3.geoMercator()
+            .center([10.411293, 51.5]) // Middle of Germany
+            .scale(frameScale(frameName))
+            .translate([currentFrame.dimension().width / 2, currentFrame.dimension().height / 2]);
 
         // define other functions to be called
-        // const tickSize=currentFrame.dimension().width; //Used when drawing the yAxis ticks
+        myChart.projection(projection);
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
+        currentFrame.plot()
+            .append('g')
+            .attr('class', 'choropleth')
+            .datum(data)
+            .call(myChart);
+
+        // Set up legend for this frame
+        myLegend
+            .seriesNames(partyScale.range())
+            .geometry(legendType)
+            .frameName(frameName)
+            .rem(myChart.rem())
+            .alignment(legendAlign)
+            .colourPalette(colorScale);
+
+        // Draw the Legend
+        currentFrame.plot()
+            .append('g')
+            .attr('id', 'legend')
+            .selectAll('.legend')
+            .data(partyScale.range())
+            .enter()
+            .append('g')
+            .classed('legend', true)
+            .call(myLegend);
     });
     // addSVGSavers('figure.saveable');
 });
