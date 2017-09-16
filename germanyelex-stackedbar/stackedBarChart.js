@@ -10,12 +10,10 @@ export function draw() {
     let markers = false; // eslint-disable-line
     let includeMarker = undefined; // eslint-disable-line
     let interpolation = d3.curveLinear;
-    const colourScale = d3.scaleOrdinal()
-        .domain(seriesNames);
+    let colourScale = d3.scaleOrdinal();
 
     function chart(parent) {
         parent.attr('transform', d => `translate(0, ${yScale(d.name)})`);
-
         parent.selectAll('rect')
             .data(d => d.bands)
             .enter()
@@ -49,7 +47,9 @@ export function draw() {
     };
 
     chart.seriesNames = (d) => {
+        if (d === undefined) return seriesNames;
         seriesNames = d;
+
         return chart;
     };
     chart.xScale = (d) => {
@@ -96,6 +96,8 @@ export function draw() {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };
