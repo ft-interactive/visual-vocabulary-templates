@@ -28,6 +28,7 @@ export function draw() {
             .data(d => d.values)
             .enter()
             .append('circle')
+            .attr('id',d => d.name)
             .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
             .attr('cx', d => xScale(d.value))
             .attr('r', rem * 0.5)
