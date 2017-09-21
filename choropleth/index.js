@@ -37,63 +37,50 @@ const partyScale = d3.scaleOrdinal()
         'Other',
     ]);
 
-const frameScale = d3.scaleOrdinal()
-    .domain([
-        'webMDefault',
-        'webS',
-        'webM',
-        'webL',
-        'print',
-        'social',
-        'video',
-    ])
-    .range([
-        1700,
-        1100,
-        1700,
-        2200,
-        650,
-        2200,
-        3100,
-    ]);
-
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 86, right: 5 })
         // .title("Put headline here")
-        .height(500),
+        .height(500)
+        .extend('scale', 1700),
 
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({ top: 100, left: 15, bottom: 82, right: 5 })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
-        .height(400),
+        .height(400)
+        .extend('scale', 1100),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 86, right: 5 })
     // .title("Put headline here")
-        .height(500),
+        .height(500)
+        .extend('scale', 1700),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 104, right: 5 })
     // .title("Put headline here")
         .height(700)
-        .fullYear(true),
+        .fullYear(true)
+        .extend('scale', 2200),
 
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
         .height(68)
-        .width(55),
+        .width(55)
+        .extend('scale', 650),
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
     // .title("Put headline here")
-        .height(750), // 700 is ideal height for Instagram
+        .height(750) // 700 is ideal height for Instagram
+        .extend('scale', 2200),
 
     video: gChartframe.videoFrame(sharedConfig)
-        .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+        .margin({ left: 207, right: 207, bottom: 210, top: 233 })
+        .extend('scale', 3100),
     // .title("Put headline here")
 };
 
@@ -101,6 +88,8 @@ const frame = {
 d3.selectAll('.framed')
     .each(function addFrames() {
         const figure = d3.select(this);
+        console.dir(frame);
+        console.dir(frame[figure.node().dataset.frame]);
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
@@ -119,7 +108,7 @@ parseData.fromCSV(dataFile).then((data) => {
         const myLegend = gLegend.legend();
         const projection = d3.geoMercator()
             .center([10.411293, 51.5]) // Middle of Germany
-            .scale(frameScale(frameName))
+            .scale(currentFrame.scale())
             .translate([currentFrame.dimension().width / 2, currentFrame.dimension().height / 2]);
 
         // define other functions to be called
