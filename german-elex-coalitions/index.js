@@ -6,7 +6,7 @@ import * as parseData from './parseData.js';
 import * as stackedBarChart from './stackedBarChart.js';
 import gChartcolour from 'g-chartcolour';
 
-const dataFile = 'https://bertha.ig.ft.com/republish/publish/dsv/1hUv5D02RI10nvFpNIIIRcejPFauLxWWEshLulpIVFOA/data.csv';
+const dataFile = 'https://bertha.ig.ft.com/republish/publish/dsv/1UlBBMV8lrmwqTMtyiyaQBr_Qz7Ffrr6qFr1ERsKEtTs/coalitions.csv';
 //https://docs.google.com/a/ft.com/spreadsheets/d/e/2PACX-1vQ04R6rNcTxQLVrEagI2kBH21LZLnhKZaVamvYAnkKI92TZF26zC9I5GdLX_FaKLM7AjbWBuZjqM5us/pubhtml
 const sharedConfig = {
     title: 'Test test Vote share',
