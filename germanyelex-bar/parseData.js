@@ -54,7 +54,8 @@ export function fromCSV(url, dateStructure, options) {
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['label','value', 'color'];
+    // const exclude = ['label','value', 'color']; // use this one to draw the % difference from 2013
+    const exclude = ['label','change', 'color']; // use this one to draw the % votes won 2017
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
