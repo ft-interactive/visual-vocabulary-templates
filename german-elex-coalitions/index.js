@@ -14,11 +14,11 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the yAxis
-const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
+const xMax = 60;// sets the maximum value on the yAxis
+const xAxisHighlight = 50; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
-const xAxisAlign = 'bottom';// alignment of the axis
+const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const sort = '';// specify 'ascending', 'descending', 'alphabetical' - default is order of input file
@@ -62,7 +62,7 @@ const frame = {
         //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
         .width(112.25)
         .height(69.85),
-        
+
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -144,7 +144,7 @@ parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, plotData, seriesNames
         currentFrame.plot()
             .call(myXAxis);
 
-        
+
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
