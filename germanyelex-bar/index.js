@@ -7,11 +7,11 @@ import * as barChart from './barChart.js';
 
 // User defined constants similar to version 2
 const dateStructure = '%d/%m/%Y';
-const dataFile = './data.csv';
+const dataFile = 'https://bertha.ig.ft.com/republish/publish/dsv/1UlBBMV8lrmwqTMtyiyaQBr_Qz7Ffrr6qFr1ERsKEtTs/homepage.csv';
 const sharedConfig = {
     title: 'Which coalitions could work?',
-    subtitle: 'Subtitle not yet added',
-    source: 'Source not yet added',
+    subtitle: '% of votes won. Change since 2013 (% points)',
+    source: 'Source: xxx exit poll',
 };
 const xMin = -5;// sets the minimum value on the yAxis
 const xMax = 5;// sets the maximum value on the xAxis

@@ -91,7 +91,7 @@ parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, plotData, seriesNames
         const partyColours = d3.scaleOrdinal()
                 // .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
                 // .range(Object.values(gChartcolour.germanPoliticalParties_bar));
-                .domain(['cducsu','spd','fdp','linke','afd','grüne','other'])
+                .domain(['cducsu','spd','fdp','left','afd','green','other'])
                 .range(['#33302E','#F34D5B','#fcc83c','#B3325D','#1E8FCC','#AECC70','#CEC6B9']);
 
         const myXAxis = gAxis.xLinear();// sets up yAxis
