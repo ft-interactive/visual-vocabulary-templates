@@ -48,6 +48,7 @@ const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAft
 const invertScale = false;
 const logScale = false;
 const joinPoints = true;//Joints gaps in lines where there are no data points
+const intraday = false;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -209,11 +210,15 @@ parseData.fromCSV(dataFile, dateStructure,).then((data) => {
         //   .attr("width", currentFrame.dimension().width)
         //   .attr("height",currentFrame.dimension().height)
         //   .attr("fill","#ededee");
-
+        let xDomain;
+        if (intraday) {
+             xDomain = data.map(function(d) { return d.date;})  
+            }
+        else {xDomain = d3.extent(data, d => d.date)}
 
         // Set up xAxis for this frame
         myXAxis
-          .domain (d3.extent(data, d => d.date))
+          .domain (xDomain)
           .range([0, currentFrame.dimension().width])
           .align(xAxisAlign)
           .fullYear(false)
@@ -222,7 +227,8 @@ parseData.fromCSV(dataFile, dateStructure,).then((data) => {
           .minorAxis(minorAxis)
           .minorTickSize(currentFrame.rem()* 0.3)
           .fullYear(false)
-          .frameName(frameName);
+          .frameName(frameName)
+          .intraday(intraday);
 
         // Draw the xAxis
         currentFrame.plot()
