@@ -9,7 +9,7 @@ import * as d3 from 'd3';
  * @param  {String} url Path to CSV file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure, options) {
+export function fromCSV(url, dateStructure, yMin, options) {
     return new Promise((resolve, reject) => {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
@@ -25,7 +25,7 @@ export function fromCSV(url, dateStructure, options) {
                 const seriesNames = getSeriesNames(data.columns);
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames);
+                const valueExtent = extentMulti(data, seriesNames, yMin);
 
                 // Format the dataset that is used to draw the lines
                 const plotData = seriesNames.map(d => ({

@@ -105,7 +105,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { highlightNames }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
+parseData.fromCSV(dataFile, dateStructure, yMin, { highlightNames }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
