@@ -154,8 +154,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     const myChart = lineChart.draw()
       .seriesNames(seriesNames)
       .highlightNames(highlightNames)
-      .yDomainL([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
-      .yDomainR([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
       .xDomain(d3.extent(data, d => d.date))
       .markers(markers)
       .annotate(annotate)
@@ -182,16 +180,9 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
-
-        myChart
-          .yRangeL([currentFrame.dimension().height, 0])
-          .yRangeR([currentFrame.dimension().height, 0])
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
-
         yAxisL
-          .scale(myChart.yScaleL())
+          .domain([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
+          .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksL)
           .tickSize(currentFrame.rem()*2)
           .align('left')
@@ -203,7 +194,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .call(yAxisL);
 
         yAxisR
-          .scale(myChart.yScaleR())
+          .domain([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
+          .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksR)
           .tickSize(currentFrame.rem()*2)
           .align('right')
@@ -211,6 +203,13 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         currentFrame.plot()
           .call(yAxisR);
+
+        myChart
+          .yScaleL(yAxisL.scale())
+          .yScaleR(yAxisR.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
         console.log(yAxisL.labelWidth(),yAxisR.labelWidth())
 
