@@ -26,7 +26,7 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const yMin = -1;// sets the minimum value on the yAxis
+const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = -1; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
@@ -34,9 +34,9 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const minorAxis = false;// turns on or off the minor axis
+const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
-const highlights = [];
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -94,7 +94,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, valueExtent, plotData, data }) => {
+parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, valueExtent, plotData, data, highlights }) => {
     // define chart
     const myChart = columnTimelineChart.draw()
           .seriesNames(seriesNames)
@@ -185,9 +185,9 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
 
         myChart
             .xScale1(myXAxis1.scale())
-            .xScale2(myXAxis2.scale());
+            .xScale2(myXAxis2.scale())
+            .showNumberLabels(showNumberLabels);
             // .yScale(myYAxis.yScale())
-
 
         // Draw the highlights before the lines and xAxis
         axisHighlight
@@ -195,6 +195,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
             .data(highlights)
             .enter()
             .append('g')
+            .attr('class', 'highlights')
             .call(myHighlights);
 
 
@@ -221,6 +222,11 @@ parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, val
           .attr('id', d => d.name)
           .call(myChart);
 
+        // remove ticks if numbers are added to vars
+        if (showNumberLabels) {
+            const clear = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
+            clear.remove();
+        }
 
         // Set up legend for this frame
         myLegend

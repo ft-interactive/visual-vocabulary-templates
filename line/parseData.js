@@ -9,18 +9,62 @@ import * as d3 from 'd3';
  * @param  {String} url Path to CSV file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
+export function fromCSV(url, dateStructure, options) {
     return new Promise((resolve, reject) => {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
+                const { highlightNames } = options;
                 // make sure all the dates in the date column are a date object
                 const parseDate = d3.timeParse(dateStructure);
                 data.forEach((d) => {
                     d.date = parseDate(d.date);
                 });
 
-                resolve(data);
+                // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+                const seriesNames = getSeriesNames(data.columns);
+
+                // Use the seriesNames array to calculate the minimum and max values in the dataset
+                const valueExtent = extentMulti(data, seriesNames);
+
+                // Format the dataset that is used to draw the lines
+                const plotData = seriesNames.map(d => ({
+                    name: d,
+                    lineData: getlines(data, d),
+                }));
+
+                // Sort the data so that the labeled items are drawn on top
+                const dataSorter = function dataSorter(a, b) {
+                    if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
+                        return 1;
+                    } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
+                        return 0;
+                    }
+                    return -1;
+                };
+                if (highlightNames) { plotData.sort(dataSorter); }
+
+                 // Filter data for annotations
+                const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+
+                // Format the data that is used to draw highlight tonal bands
+                const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+                const highlights = [];
+
+                boundaries.forEach((d, i) => {
+                    if (d.highlight === 'begin') {
+                        highlights.push({ begin: d.date, end: boundaries[i + 1].date });
+                    }
+                });
+
+                resolve({
+                    seriesNames,
+                    plotData,
+                    data,
+                    valueExtent,
+                    highlights,
+                    annos
+                });
             }
         });
     });
@@ -81,8 +125,9 @@ export function getlines(d, group, joinPoints) {
         column.highlight = el.highlight
         column.annotate = el.annotate
         if(el[group]) {
-            lineData.push(column)  
+            lineData.push(column)
         }
+
         // if(el[group] == false) {
         //     lineData.push(null)  
         // }

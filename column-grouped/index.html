@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Column chart - Visual Vocabulary</title>
+    <title>Column and grouped column chart - Visual Vocabulary</title>
 
     <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
     <link rel="stylesheet" href="//rawgit.com/ft-interactive/visual-vocabulary-templates/master/styles.css"/>
@@ -12,8 +12,19 @@
 </head>
 <body>
 
-    <h1>Column chart</h1>
-    <p>A suggested starting point for creating cross-platform artisinal charts with default FT styling</p>
+    <h1>Column and grouped column chart</h1>
+    <p>Standard column charts display the ranks of values much more easily when sorted into order</p>
+    <p><b>Some useful settings in the index.js</b>
+        <ul>
+            <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
+            <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
+            <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
+            <li><b>sort</b> – use this to sort the columns into order, your options are – 'ascending', 'descending', 'alphabetical'</li>
+            <li><b>sortOn</b> – use this to sort the column groups into order – specify the column number to sort on (ignore name column)</li>
+            <li><b>numbers</b> – set to <b>true</b> to show values at the end of the columns and remove y-axis</li>
+
+        </ul>
+    </p>
     <hr>
     <p class="section-heading">Non-responsive chart</p>
     <figure class="framed saveable" data-frame="webMDefault"><svg></svg></figure>

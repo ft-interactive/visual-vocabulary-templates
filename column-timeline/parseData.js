@@ -27,7 +27,7 @@ export function fromCSV(url, dateStructure) {
                 const valueExtent = extentMulti(data, seriesNames);
 
                 const columnNames = data.map(d => d.date); // create an array of the column names
-                console.dir(columnNames);
+
                 // format the data that is used to draw highlight tonal bands
                 const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
                 const highlights = [];
@@ -50,6 +50,7 @@ export function fromCSV(url, dateStructure) {
                     valueExtent,
                     plotData,
                     data,
+                    highlights
                 });
             }
         });

@@ -11,6 +11,7 @@ export function draw() {
     let markers = false; // eslint-disable-line
     let includeMarker = undefined; // eslint-disable-line
     let interpolation = d3.curveLinear;
+    let showNumberLabels = false; // show numbers on end of bars
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -28,6 +29,22 @@ export function draw() {
             .attr('y', d => yScale(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
             .attr('fill', d => colourScale(d.name));
+
+        if (showNumberLabels) {
+            parent.selectAll('text')
+            .data(d => d.groups)
+            .enter()
+            .append('text')
+            .html(d => d.value)
+            .attr('class', 'column-label')
+            .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
+            .attr('y', d => yScale(0))
+            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
+            .attr('font-size', rem)
+            .attr('fill', '#ffffff')
+            .style('text-anchor', 'middle');
+        }
+
     }
 
     chart.yScale = (d) => {
@@ -113,6 +130,11 @@ export function draw() {
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
         }
+        return chart;
+    };
+    chart.showNumberLabels = (d) => {
+        if (!d) return showNumberLabels;
+        showNumberLabels = d;
         return chart;
     };
 

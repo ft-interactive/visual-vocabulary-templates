@@ -6,7 +6,7 @@ import * as parseData from './parseData.js';
 import * as barChart from './barChart.js';
 
 
-const dataFile = 'example2.csv';
+const dataFile = 'data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -21,9 +21,9 @@ const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
-const sort = '';
-const sortOn = 0;
-const numbers = false;
+const sort = '';// specify 'ascending', 'descending'
+const sortOn = 0;// specify column number to sort on (ignore name column)
+const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
@@ -162,7 +162,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .yScale1(yAxis1.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .numbers(numbers);
+            .showNumberLabels(showNumberLabels);
 
         currentFrame.plot()
             .selectAll('.barHolder')
@@ -171,7 +171,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .append('g')
             .call(myChart);
         // remove ticks if numbers are added to vars
-        if (numbers) {
+        if (showNumberLabels) {
             const clear = xAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
             clear.remove();
         }

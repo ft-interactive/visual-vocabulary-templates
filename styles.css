@@ -312,6 +312,7 @@ svg {
 
 .ft-webgraphic-s .annotations-holder text,
 .ft-webgraphic-m .annotations-holder text,
+.ft-webgraphic-m-default .annotations-holder text,
 .ft-webgraphic-l .annotations-holder text {
     fill: #66605C;
 }

@@ -105,50 +105,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-
-parseData.fromCSV(dataFile, dateStructure,).then((data) => {
-    // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-    const seriesNames = parseData.getSeriesNames(data.columns);
-
-    // Format the dataset that is used to draw the lines
-    const plotData = seriesNames.map(d => ({
-        name: d,
-        lineData: parseData.getlines(data, d, joinPoints),
-    }));
-
-    console.log(plotData)
-
-    // Sort the data so that the labeled items are drawn on top
-    const dataSorter = function dataSorter(a, b) {
-        if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-            return 1;
-        } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-            return 0;
-        }
-        return -1;
-    };
-
-    if (highlightNames) { plotData.sort(dataSorter); }
-
-    // Filter data for annotations
-    const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
-
-    // Format the data that is used to draw highlight tonal bands
-    const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-    const highlights = [];
-
-    boundaries.forEach((d, i) => {
-        if (d.highlight === 'begin') {
-            highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-        }
-    });
-
-    // Use the seriesNames array to calculate the minimum and max values in the dataset
-    const valueExtent = parseData.extentMulti(data, seriesNames, yMin);
-
-    // Define the chart x and x domains.
-    // yDomain will automatically overwrite the user defined min and max if the domain is too small
-  
+parseData.fromCSV(dataFile, dateStructure, { highlightNames }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -259,6 +216,7 @@ parseData.fromCSV(dataFile, dateStructure,).then((data) => {
           .enter()
           .append('g')
           .attr('class', 'lines')
+          .attr('id', d => d.name)
           .call(myChart);
 
         // Set up highlights for this frame
