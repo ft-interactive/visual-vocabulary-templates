@@ -90,13 +90,7 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => row[key])
-        columns.map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
+        let values = columns.map(key => row[key]);
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
