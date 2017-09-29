@@ -274,10 +274,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up highlights for this frame
         myAnnotations
-          .yScaleL(myChart.yScaleL())
-          .yRange([currentFrame.dimension().height, 0])
-          .xScale(myChart.xScale())
-          .xRange([0, currentFrame.dimension().width])
+          .yScaleL(yAxisL.scale())
+          .xScale(myXAxis.scale())
           .rem(currentFrame.rem());
 
         // Draw the annotations before the lines
