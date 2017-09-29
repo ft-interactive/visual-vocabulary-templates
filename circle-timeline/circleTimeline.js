@@ -42,7 +42,7 @@ export function draw() {
             .append('text')
             .attr('x', d => xScale(d.date))
             .attr('y', d => 0 - rScale(d.value) - 12)
-            .text(d => `${d.name} (${parseDate(d.date)})`)
+            .text(d => `${d.name}, ${d.value} (${parseDate(d.date)})`)
             .attr('text-anchor', 'middle')
             .attr('fill', 'black');
 
