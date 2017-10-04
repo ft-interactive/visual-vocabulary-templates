@@ -154,9 +154,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
     const myChart = lineChart.draw()
       .seriesNames(seriesNames)
       .highlightNames(highlightNames)
-      .yDomainL([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
-      .yDomainR([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
-      .xDomain(d3.extent(data, d => d.date))
       .markers(markers)
       .annotate(annotate)
       .doubleScale(doubleScale)
@@ -182,16 +179,9 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
-
-        myChart
-          .yRangeL([currentFrame.dimension().height, 0])
-          .yRangeR([currentFrame.dimension().height, 0])
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
-
         yAxisL
-          .scale(myChart.yScaleL())
+          .domain([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
+          .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksL)
           .tickSize(currentFrame.rem()*2)
           .align('left')
@@ -203,7 +193,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .call(yAxisL);
 
         yAxisR
-          .scale(myChart.yScaleR())
+          .domain([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
+          .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksR)
           .tickSize(currentFrame.rem()*2)
           .align('right')
@@ -211,8 +202,6 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         currentFrame.plot()
           .call(yAxisR);
-
-        console.log(yAxisL.labelWidth(),yAxisR.labelWidth())
 
         let newMarginL = yAxisL.labelWidth()+currentFrame.margin().left
         let newMarginR = yAxisR.labelWidth()+currentFrame.margin().right
@@ -237,21 +226,28 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up xAxis for this frame
         myXAxis
+          .domain(d3.extent(data, d => d.date))
+          .range([0, currentFrame.dimension().width])
           .align(xAxisAlign)
           .fullYear(false)
-          .scale(myChart.xScale())
           .interval(interval)
           .tickSize(myChart.rem())
           .minorAxis(minorAxis)
           .fullYear(false)
           .frameName(frameName);
 
+        myChart
+          .yScaleL(yAxisL.scale())
+          .yScaleR(yAxisR.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
+
         // // Set up highlights for this frame
         myHighlights
-          .yScaleL(myChart.yScaleL())
-          .yRange([currentFrame.dimension().height, 0])
-          .xScale(myChart.xScale())
-          .xRange([0, currentFrame.dimension().width]);
+          .yScaleL(yAxisL.scale())
+          .xScale(myXAxis.scale());
 
         // Draw the highlights before the lines and xAxis
         axisHighlight
@@ -278,10 +274,8 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
 
         // Set up highlights for this frame
         myAnnotations
-          .yScaleL(myChart.yScaleL())
-          .yRange([currentFrame.dimension().height, 0])
-          .xScale(myChart.xScale())
-          .xRange([0, currentFrame.dimension().width])
+          .yScaleL(yAxisL.scale())
+          .xScale(myXAxis.scale())
           .rem(currentFrame.rem());
 
         // Draw the annotations before the lines
