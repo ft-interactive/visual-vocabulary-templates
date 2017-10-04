@@ -31,6 +31,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
+const graphsPerRow = 4;//how many columns of graphs
+const numberOfRows = 3;//how many rows of graphs
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
@@ -70,22 +72,22 @@ const frame = {
  .fullYear(true),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+ .margin({ top: 10, left: 20, bottom: 10, right: 5 })
  // .title("Put headline here")
- .height(500),
+ .height(800),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
-  //.width(53.71)// 1 col 
-  .width(112.25)// 2 col 
+  //.width(53.71)// 1 col
+  .width(112.25)// 2 col
   //.width(170.8)// 3 col
   //.width(229.34)// 4 col
-  //.width(287.88)// 5 col 
+  //.width(287.88)// 5 col
   //.width(346.43)// 6 col
-  //.width(74)// markets std print 
+  //.width(74)// markets std print
   .height(58.21),//markets std print
- 
+
     social: gChartframe.socialFrame(sharedConfig)
  .margin({ top: 140, left: 50, bottom: 138, right: 40 })
  // .title("Put headline here")
@@ -117,7 +119,29 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         const myAnnotations = lineChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+
+        //Create the plot widths, but for each individual graph
+        const widthOfSmallCharts = (currentFrame.dimension().width/graphsPerRow) - (currentFrame.margin().left + currentFrame.margin().right);
+        const heightOfSmallCharts = (currentFrame.dimension().height/numberOfRows) - (currentFrame.margin().top + currentFrame.margin().bottom);
+
+        const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
+
+
+
+        //draw the chart holders
+        let chart = currentFrame.plot()
+        .selectAll('g')
+        .data(seriesNames)
+            .enter()
+        .append('g')
+        .attr('id', d => d)
+        .attr('transform', function(d, i) {
+            console.log(currentFrame.margin().top)
+            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts + currentFrame.margin().top + currentFrame.margin().bottom)));
+            let xPos = i % graphsPerRow;
+            return 'translate(' + ((widthOfSmallCharts + currentFrame.margin().left) * xPos + currentFrame.margin().left) + ',' + yPos + ')'
+            })
+
         const myChart = lineChart.draw()
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
@@ -134,7 +158,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
 
         myYAxis
           .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-          .range([currentFrame.dimension().height, 0])
+          .range([heightOfSmallCharts, 0])
           .numTicks(numTicksy)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
@@ -144,7 +168,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
-        currentFrame.plot()
+        chart
           .call(myYAxis);
 
         //return the value in the variable newMargin
@@ -169,14 +193,14 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         //   .attr("fill","#ededee");
         let xDomain;
         if (intraday) {
-             xDomain = data.map(function(d) { return d.date;})  
+             xDomain = data.map(function(d) { return d.date;})
             }
         else {xDomain = d3.extent(data, d => d.date)}
 
         // Set up xAxis for this frame
         myXAxis
           .domain (xDomain)
-          .range([0, currentFrame.dimension().width])
+          .range([0, widthOfSmallCharts])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)
@@ -188,36 +212,38 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
           .intraday(intraday);
 
         // Draw the xAxis
-        currentFrame.plot()
-          .call(myXAxis);
+        // currentFrame.plot()
+        //   .call(myXAxis);
 
-        if (xAxisAlign == 'bottom' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            if(minorAxis) {
-                myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        // if (xAxisAlign == 'bottom' ){
+        //     myXAxis.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
+        //     if(minorAxis) {
+        //         myXAxis.xLabelMinor().attr('transform', `translate(0,${heightOfSmallCharts})`);
 
-            }
-        }
-        if (xAxisAlign == 'top' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        }
+        //     }
+        // }
+        // if (xAxisAlign == 'top' ){
+        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        // }
 
-        myChart
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
+        // myChart
+        //   .yScale(myYAxis.scale())
+        //   .xScale(myXAxis.scale())
+        //   .plotDim(currentFrame.dimension())
+        //   .rem(currentFrame.rem())
+        //   .colourPalette((frameName));
 
-        //Draw the lines
-        currentFrame.plot()
-          .selectAll('lines')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', 'lines')
-          .attr('id', d => d.name)
-          .call(myChart);
+
+
+        // //Draw the lines
+        // chart
+        //   .selectAll('lines')
+        //   .data(plotData)
+        //   .enter()
+        //   .append('g')
+        //   .attr('class', 'lines')
+        //   .attr('id', d => d.name)
+        //   .call(myChart);
 
         // Set up highlights for this frame
         myHighlights
@@ -249,13 +275,13 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
 
 
         // Set up legend for this frame
-        myLegend
-          .frameName(frameName)
-          .seriesNames(seriesNames)
-          .colourPalette((frameName))
-          .rem(myChart.rem())
-          .geometry(legendType)
-          .alignment(legendAlign);
+        // myLegend
+        //   .frameName(frameName)
+        //   .seriesNames(seriesNames)
+        //   .colourPalette((frameName))
+        //   .rem(myChart.rem())
+        //   .geometry(legendType)
+        //   .alignment(legendAlign);
 
         // Draw the Legend
         currentFrame.plot()

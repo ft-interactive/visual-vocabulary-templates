@@ -25,8 +25,9 @@ export function draw() {
         .x(d => xScale(d.date))
         .y(d => yScale(d.value));
 
+
         parent.append('path')
-      .attr('stroke', (d) => {
+          .attr('stroke', (d) => {
           if (highlightNames.length > 0) {
               if (highlightNames.indexOf(d.name) !== -1) {
                   return colourScale(d.name);
