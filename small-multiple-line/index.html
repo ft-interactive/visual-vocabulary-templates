@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Line chart - Visual Vocabulary</title>
+    <title>Small multiples line chart - Visual Vocabulary</title>
 
     <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
     <link rel="stylesheet" href="//rawgit.com/ft-interactive/visual-vocabulary-templates/master/styles.css"/>
@@ -14,10 +14,11 @@
     <p>The standard way to show a changing time series. If data are irregular, consider markers to represent data points</p>
     <p><b>Some useful settings in the index.js</b>
         <ul>
+            <li><b>numberOfColumns</b> – set the number of columns</li>
+            <li><b>numberOfRows</b> – set the number of rows</li>
             <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
             <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
             <li><b>annotate</b> – set to 'true' will display annotations in your dataset's 'annotate' column</li>
-            <li><b>highlightNames</b> – put the column names of the data you want to highlight, all other series will be muted</li>
             <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
         </ul>
     </p>
@@ -57,8 +58,8 @@
     <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
     <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
     <figure class="framed saveable" data-frame="print"><svg></svg></figure>
-    <figure class="framed saveable" data-frame="social"><svg></svg></figure>
     <figure class="framed saveable" data-frame="video"><svg></svg></figure>
+    <!-- <figure class="framed saveable" data-frame="social"><svg></svg></figure> -->
 
 </body>
 </html>

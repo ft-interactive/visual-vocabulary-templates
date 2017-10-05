@@ -31,10 +31,10 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const graphsPerRow = 3;//how many columns of graphs
-const numberOfRows = 4;//how many rows of graphs
-const yMin = 6000;// sets the minimum value on the yAxis
-const yMax = 12000;// sets the maximum value on the xAxis
+const numberOfColumns = 3;//how many columns of graphs
+const numberOfRows = 3;//how many rows of graphs
+const yMin = 0;// sets the minimum value on the yAxis
+const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -47,7 +47,6 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const invertScale = false;
 const logScale = false;
 const joinPoints = true;//Joints gaps in lines where there are no data points
 const intraday = false;
@@ -88,11 +87,11 @@ const frame = {
   //.width(74)// markets std print
   .height(150),//markets std print
 
-    social: gChartframe.socialFrame(sharedConfig)
- .margin({ top: 140, left: 50, bottom: 138, right: 40 })
- // .title("Put headline here")
- .width(612)
- .height(612), // 700 is ideal height for Instagram
+ //    social: gChartframe.socialFrame(sharedConfig)
+ // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+ // // .title("Put headline here")
+ // .width(612)
+ // .height(612), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
  .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
@@ -121,7 +120,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
         //Create the plot widths, but for each individual graph
-        const widthOfSmallCharts = (currentFrame.dimension().width/graphsPerRow - currentFrame.rem());
+        const widthOfSmallCharts = (currentFrame.dimension().width/numberOfColumns - currentFrame.rem());
         const heightOfSmallCharts = (currentFrame.dimension().height/numberOfRows  - (currentFrame.rem() * 3.5));
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
@@ -136,8 +135,8 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         .attr('id', d => d.name)
         .attr('class', 'lines')
         .attr('transform', function(d, i) {
-            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
-            let xPos = i % graphsPerRow;
+            let yPos = Number((Math.floor( i / numberOfColumns) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
+            let xPos = i % numberOfColumns;
             return 'translate(' + ((widthOfSmallCharts + currentFrame.margin().left) * xPos + currentFrame.margin().left) + ',' + yPos + ')'
             })
 
@@ -150,10 +149,10 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
-        const axisHighlight = currentFrame.plot().append('g');
+        const axisHighlight = chart.append('g');
 
         // create a 'g' element behind the chart and in front of the highlights
-        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+        const plotAnnotation = chart.append('g').attr('class', 'annotations-holder');
 
         myYAxis
           .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
@@ -163,7 +162,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
           .yAxisHighlight(yAxisHighlight)
           .align(yAxisAlign)
           .frameName(frameName)
-          .invert(invertScale);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
@@ -241,7 +239,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         myHighlights
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
-          .invertScale(invertScale);
 
         //Draw the highlights before the lines and xAxis
         axisHighlight
