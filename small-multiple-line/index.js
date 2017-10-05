@@ -7,7 +7,7 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as lineChart from './lineChart.js';
+import * as lineChart from './smallMultiLineChart.js';
 
 const dataFile = 'data.csv';
 
