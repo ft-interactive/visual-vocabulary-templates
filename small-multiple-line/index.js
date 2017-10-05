@@ -44,7 +44,7 @@ const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
-const minorAxis = true;// turns on or off the minor axis
+const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
@@ -55,24 +55,24 @@ const intraday = false;
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 10, left: 15, bottom: 8, right: 5 })
+ .margin({ top: 10, left: 10, bottom: 88, right: 5 })
  //.title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(1000),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 10, left: 20, bottom: 8, right: 5 })
+ .margin({ top: 10, left: 10, bottom: 88, right: 5 })
  // .title("Put headline here")
  .height(1000),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 10, left: 20, bottom: 10, right: 5 })
+ .margin({ top: 10, left: 10, bottom: 80, right: 5 })
  // .title("Put headline here")
  .height(1600)
  .fullYear(true),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 10, left: 20, bottom: 10, right: 5 })
+ .margin({ top: 10, left: 10, bottom: 80, right: 5 })
  // .title("Put headline here")
  .height(1000),
 
@@ -121,13 +121,12 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
         //Create the plot widths, but for each individual graph
-        const widthOfSmallCharts = (currentFrame.dimension().width/graphsPerRow) - (currentFrame.margin().left + currentFrame.margin().right);
-        const heightOfSmallCharts = (currentFrame.dimension().height/numberOfRows) - (currentFrame.margin().top + currentFrame.margin().bottom);
+        const widthOfSmallCharts = (currentFrame.dimension().width/graphsPerRow - currentFrame.rem());
+        const heightOfSmallCharts = (currentFrame.dimension().height/numberOfRows  - (currentFrame.rem()*3));
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
-
-        console.log(currentFrame.plot())
+        console.log(currentFrame.dimension().height, heightOfSmallCharts)
         //draw the chart holders
         let chart = currentFrame.plot()
         .selectAll('g')
@@ -137,7 +136,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         .attr('id', d => d.name)
         .attr('class', 'lines')
         .attr('transform', function(d, i) {
-            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts + currentFrame.margin().top)));
+            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts)));
             let xPos = i % graphsPerRow;
             return 'translate(' + ((widthOfSmallCharts + currentFrame.margin().left) * xPos + currentFrame.margin().left) + ',' + yPos + ')'
             })
@@ -200,7 +199,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         // Set up xAxis for this frame
         myXAxis
           .domain (xDomain)
-          .range([0, widthOfSmallCharts])
+          .range([0, widthOfSmallCharts-myYAxis.labelWidth()])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)

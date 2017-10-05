@@ -129,10 +129,10 @@ export function getlines(d, group, joinPoints) {
         }
 
         // if(el[group] == false) {
-        //     lineData.push(null)  
+        //     lineData.push(null)
         // }
         if(el[group] == false && joinPoints == false) {
-            lineData.push(null)  
+            lineData.push(null)
         }
 
     });
