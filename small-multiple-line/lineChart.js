@@ -52,7 +52,7 @@ export function draw() {
         //add titles for each chart
         parent.append('text')
             .attr("class", "chart-label")
-            .attr("dy", -15)
+            .attr("dy", -5)
             .text((d) => d.name.toUpperCase());
     }
 

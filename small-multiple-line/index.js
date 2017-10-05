@@ -39,7 +39,7 @@ const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'lustrum';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -122,7 +122,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
 
         //Create the plot widths, but for each individual graph
         const widthOfSmallCharts = (currentFrame.dimension().width/graphsPerRow - currentFrame.rem());
-        const heightOfSmallCharts = (currentFrame.dimension().height/numberOfRows  - (currentFrame.rem()*3));
+        const heightOfSmallCharts = (currentFrame.dimension().height/numberOfRows  - (currentFrame.rem() * 3.5));
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
@@ -136,7 +136,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         .attr('id', d => d.name)
         .attr('class', 'lines')
         .attr('transform', function(d, i) {
-            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts)));
+            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
             let xPos = i % graphsPerRow;
             return 'translate(' + ((widthOfSmallCharts + currentFrame.margin().left) * xPos + currentFrame.margin().left) + ',' + yPos + ')'
             })
