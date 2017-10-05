@@ -29,6 +29,8 @@ const sharedConfig = {
 };
 
 const xAxisAlign = 'bottom';// alignment of the axis
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const minorAxis = false;// turns on or off the minor axis
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -57,13 +59,13 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 40, right: 25 })
     // .title("Put headline here")
-        //.width(53.71)// 1 col 
-        .width(112.25)// 2 col 
+        //.width(53.71)// 1 col
+        .width(112.25)// 2 col
         //.width(170.8)// 3 col
         //.width(229.34)// 4 col
-        //.width(287.88)// 5 col 
+        //.width(287.88)// 5 col
         //.width(346.43)// 6 col
-        //.width(74)// markets std print 
+        //.width(74)// markets std print
         .height(58.21),//markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -139,7 +141,8 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
             .align(xAxisAlign)
             .domain(dateDomain)
             .range([0, currentFrame.dimension().width])
-            .frameName(frameName);
+            .frameName(frameName)
+            .interval(interval);
         myChart
             .rScale(rScale)
             .maxCircle(maxCircle)
