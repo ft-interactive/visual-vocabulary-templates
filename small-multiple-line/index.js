@@ -31,15 +31,15 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const graphsPerRow = 4;//how many columns of graphs
-const numberOfRows = 3;//how many rows of graphs
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the xAxis
+const graphsPerRow = 3;//how many columns of graphs
+const numberOfRows = 4;//how many rows of graphs
+const yMin = 6000;// sets the minimum value on the yAxis
+const yMax = 12000;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'lustrum';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -55,26 +55,26 @@ const intraday = false;
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+ .margin({ top: 10, left: 15, bottom: 8, right: 5 })
  //.title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
- .height(400),
+ .height(1000),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+ .margin({ top: 10, left: 20, bottom: 8, right: 5 })
  // .title("Put headline here")
- .height(500),
+ .height(1000),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+ .margin({ top: 10, left: 20, bottom: 10, right: 5 })
  // .title("Put headline here")
- .height(700)
+ .height(1600)
  .fullYear(true),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
  .margin({ top: 10, left: 20, bottom: 10, right: 5 })
  // .title("Put headline here")
- .height(800),
+ .height(1000),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
@@ -86,7 +86,7 @@ const frame = {
   //.width(287.88)// 5 col
   //.width(346.43)// 6 col
   //.width(74)// markets std print
-  .height(58.21),//markets std print
+  .height(150),//markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
  .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -127,17 +127,17 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
 
-
+        console.log(currentFrame.plot())
         //draw the chart holders
         let chart = currentFrame.plot()
         .selectAll('g')
-        .data(seriesNames)
+        .data(plotData)
             .enter()
         .append('g')
-        .attr('id', d => d)
+        .attr('id', d => d.name)
+        .attr('class', 'lines')
         .attr('transform', function(d, i) {
-            console.log(currentFrame.margin().top)
-            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts + currentFrame.margin().top + currentFrame.margin().bottom)));
+            let yPos = Number((Math.floor( i / graphsPerRow) * (heightOfSmallCharts + currentFrame.margin().top)));
             let xPos = i % graphsPerRow;
             return 'translate(' + ((widthOfSmallCharts + currentFrame.margin().left) * xPos + currentFrame.margin().left) + ',' + yPos + ')'
             })
@@ -207,43 +207,36 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
           .tickSize(currentFrame.rem()* 0.75)
           .minorAxis(minorAxis)
           .minorTickSize(currentFrame.rem()* 0.3)
+          // .numticks(2)
           .fullYear(false)
           .frameName(frameName)
           .intraday(intraday);
 
         // Draw the xAxis
-        // currentFrame.plot()
-        //   .call(myXAxis);
+        chart
+          .call(myXAxis);
 
-        // if (xAxisAlign == 'bottom' ){
-        //     myXAxis.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
-        //     if(minorAxis) {
-        //         myXAxis.xLabelMinor().attr('transform', `translate(0,${heightOfSmallCharts})`);
+        if (xAxisAlign == 'bottom' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
+            if(minorAxis) {
+                myXAxis.xLabelMinor().attr('transform', `translate(0,${heightOfSmallCharts})`);
 
-        //     }
-        // }
-        // if (xAxisAlign == 'top' ){
-        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        // }
+            }
+        }
+        if (xAxisAlign == 'top' ){
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        }
 
-        // myChart
-        //   .yScale(myYAxis.scale())
-        //   .xScale(myXAxis.scale())
-        //   .plotDim(currentFrame.dimension())
-        //   .rem(currentFrame.rem())
-        //   .colourPalette((frameName));
-
-
+        myChart
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
         // //Draw the lines
-        // chart
-        //   .selectAll('lines')
-        //   .data(plotData)
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'lines')
-        //   .attr('id', d => d.name)
-        //   .call(myChart);
+        chart
+          .call(myChart)
 
         // Set up highlights for this frame
         myHighlights

@@ -27,26 +27,8 @@ export function draw() {
 
 
         parent.append('path')
-          .attr('stroke', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return colourScale(d.name);
-              }
-              d.name = '';
-              return colourScale(d.name);
-          }
-          return colourScale(d.name);
-      })
-      .attr('opacity', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return 1;
-              }
-              return 0.5;
-          }
-          return 1;
-      })
-      .attr('d', d => lineData(d.lineData));
+          .attr('stroke', (d) => colourScale.range()[0])
+          .attr('d', d => lineData(d.lineData));
 
         if (markers) {
             parent.selectAll('.markers')
@@ -66,6 +48,12 @@ export function draw() {
         .attr('r', rem * 0.25)
         .attr('fill', d => colourScale(d.name));
         }
+
+        //add titles for each chart
+        parent.append('text')
+            .attr("class", "chart-label")
+            .attr("dy", -15)
+            .text((d) => d.name.toUpperCase());
     }
 
     chart.yScale = (d) => {
