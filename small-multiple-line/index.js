@@ -31,8 +31,6 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const numberOfColumns = 3;//how many columns of graphs
-const numberOfRows = 3;//how many rows of graphs
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
@@ -57,23 +55,31 @@ const frame = {
  .margin({ top: 10, left: 10, bottom: 88, right: 5 })
  //.title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
- .height(1000),
+ .height(1000)
+ .extend('numberOfColumns', 2)
+ .extend('numberOfRows', 4),
 
     webM: gChartframe.webFrameM(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 88, right: 5 })
  // .title("Put headline here")
- .height(1000),
+ .height(1000)
+ .extend('numberOfColumns', 3)
+ .extend('numberOfRows', 3),
 
     webL: gChartframe.webFrameL(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 80, right: 5 })
  // .title("Put headline here")
- .height(1600)
- .fullYear(true),
+ .height(500)
+ .fullYear(true)
+ .extend('numberOfColumns', 8)
+ .extend('numberOfRows', 1),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 80, right: 5 })
  // .title("Put headline here")
- .height(1000),
+ .height(800)
+ .extend('numberOfColumns', 3)
+ .extend('numberOfRows', 3),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
@@ -85,7 +91,9 @@ const frame = {
   //.width(287.88)// 5 col
   //.width(346.43)// 6 col
   //.width(74)// markets std print
-  .height(150),//markets std print
+  .height(150)//markets std print
+  .extend('numberOfColumns', 3)
+  .extend('numberOfRows', 3),
 
  //    social: gChartframe.socialFrame(sharedConfig)
  // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -94,8 +102,10 @@ const frame = {
  // .height(612), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
- .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+ .margin({ left: 207, right: 207, bottom: 210, top: 233 })
  // .title("Put headline here")
+     .extend('numberOfColumns', 4)
+     .extend('numberOfRows', 2),
 };
 
 
@@ -120,12 +130,11 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
         //Create the plot widths, but for each individual graph
-        const widthOfSmallCharts = (currentFrame.dimension().width/numberOfColumns - currentFrame.rem());
-        const heightOfSmallCharts = (currentFrame.dimension().height/numberOfRows  - (currentFrame.rem() * 3.5));
+        const widthOfSmallCharts = (currentFrame.dimension().width/currentFrame.numberOfColumns() - currentFrame.rem());
+        const heightOfSmallCharts = (currentFrame.dimension().height/currentFrame.numberOfRows()  - (currentFrame.rem() * 3.5));
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
-        console.log(currentFrame.dimension().height, heightOfSmallCharts)
         //draw the chart holders
         let chart = currentFrame.plot()
         .selectAll('g')
@@ -135,9 +144,9 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         .attr('id', d => d.name)
         .attr('class', 'lines')
         .attr('transform', function(d, i) {
-            let yPos = Number((Math.floor( i / numberOfColumns) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
-            let xPos = i % numberOfColumns;
-            return 'translate(' + ((widthOfSmallCharts + currentFrame.margin().left) * xPos + currentFrame.margin().left) + ',' + yPos + ')'
+            let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
+            let xPos = i % currentFrame.numberOfColumns();
+            return 'translate(' + ((widthOfSmallCharts + currentFrame.rem()) * xPos + currentFrame.rem()) + ',' + yPos + ')'
             })
 
         const myChart = lineChart.draw()
