@@ -40,10 +40,7 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
-const legendAlign = 'vert';// hori or vert, alignment of the legend
-const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = false;// turns on or off the minor axis
-const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const logScale = false;
 const joinPoints = true;//Joints gaps in lines where there are no data points
@@ -116,7 +113,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -151,7 +148,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
 
         const myChart = lineChart.draw()
           .seriesNames(seriesNames)
-          .highlightNames(highlightNames)
           .markers(markers)
           .annotate(annotate)
           .interpolation(interpolation);
@@ -270,35 +266,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
           .enter()
           .append('g')
           .call(myAnnotations);
-
-
-        // Set up legend for this frame
-        // myLegend
-        //   .frameName(frameName)
-        //   .seriesNames(seriesNames)
-        //   .colourPalette((frameName))
-        //   .rem(myChart.rem())
-        //   .geometry(legendType)
-        //   .alignment(legendAlign);
-
-        // Draw the Legend
-        currentFrame.plot()
-          .append('g')
-          .attr('id', 'legend')
-          .selectAll('.legend')
-            .data(() => {
-                if (highlightNames.length > 0) {
-                    return highlightNames;
-                }
-                return seriesNames;
-            })
-            .enter()
-            .append('g')
-            .classed('legend', true)
-            .call(myLegend);
-
-        const legendSelection = currentFrame.plot().select('#legend');
-        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
     });
     // addSVGSavers('figure.saveable');

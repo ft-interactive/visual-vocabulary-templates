@@ -7,7 +7,6 @@ export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
     let seriesNames = [];
-    let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
   const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
@@ -125,16 +124,6 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            }
-            return chart;
-        }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {

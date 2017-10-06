@@ -33,17 +33,6 @@ export function fromCSV(url, dateStructure, options) {
                     lineData: getlines(data, d),
                 }));
 
-                // Sort the data so that the labeled items are drawn on top
-                const dataSorter = function dataSorter(a, b) {
-                    if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-                        return 1;
-                    } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-                        return 0;
-                    }
-                    return -1;
-                };
-                if (highlightNames) { plotData.sort(dataSorter); }
-
                  // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
