@@ -18,14 +18,43 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
+        console.log('length', xScale.domain().length)
+        const offset = ((xScale.range()[1]-xScale.range()[0])/xScale.domain().length)/4
+
 
         parent.append('line')
-            .attr('y1', d => 200)
+            .attr('y1', d =>yScale(+d.high))
             .attr('x1', d => xScale(d.date))
-            .attr('y2', d => 400)
+            .attr('y2', (d) => {
+                if(d.open>d.close) {
+                    return yScale(+d.open)}
+                return yScale(+d.close)})
             .attr('x2', d => xScale(d.date))
             .attr('stroke',d => colourScale(d.name))
-            .attr('')
+
+        parent.append('line')
+            .attr('y1', d =>yScale(+d.low))
+            .attr('x1', d => xScale(d.date))
+            .attr('y2', (d) => {
+                if(d.open>d.close) {
+                    return yScale(+d.close)}
+                return yScale(+d.open)})
+            .attr('x2', d => xScale(d.date))
+            .attr('stroke',d => colourScale(d.name))
+
+        parent.append('line')
+            .attr('y1', d =>yScale(+d.high))
+            .attr('x1', d => xScale(d.date)-offset)
+            .attr('y2', d =>yScale(+d.high))
+            .attr('x2', d => xScale(d.date)+offset)
+            .attr('stroke',d => colourScale(d.name))
+
+        parent.append('line')
+            .attr('y1', d =>yScale(+d.low))
+            .attr('x1', d => xScale(d.date)-offset)
+            .attr('y2', d =>yScale(+d.low))
+            .attr('x2', d => xScale(d.date)+offset)
+            .attr('stroke',d => colourScale(d.name))
       
     }
 
