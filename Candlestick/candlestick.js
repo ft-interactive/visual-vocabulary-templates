@@ -8,6 +8,7 @@ export function draw() {
     let xScale = d3.scaleTime();
     let seriesNames = [];
     let highlightNames = [];
+    let intraday;
     let yAxisAlign = 'right';
     let markers = false;
   const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
@@ -18,8 +19,14 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-        console.log('length', xScale.domain().length)
-        const offset = ((xScale.range()[1]-xScale.range()[0])/xScale.domain().length)/4
+        let offset;
+
+        if(intraday) {
+            console.log('intraday',intraday)
+            offset = ((xScale.range()[1]-xScale.range()[0])/xScale.domain().length)/4
+        }
+        else {offset = ((xScale.range()[1]-xScale.range()[0])/(xScale.ticks().length))/4
+        }
 
 
         parent.append('line')
@@ -82,6 +89,11 @@ export function draw() {
 
     chart.highlightNames = (d) => {
         highlightNames = d;
+        return chart;
+    };
+    chart.intraday = (d) => {
+        if (d === undefined) return intraday;
+        intraday = d;
         return chart;
     };
     chart.seriesNames = (d) => {
