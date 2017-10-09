@@ -29,30 +29,15 @@ export function fromCSV(url, dateStructure, options) {
                 const valueExtent = extentMulti(data, seriesNames, yMin);
 
                 // Format the dataset that is used to draw the lines
-                const plotData = data.map(d => ({
-                    date: d.date,
-                    high: +d.high,
-                    low: +d.low,
-                    open: +d.open,
-                    close: +d.close
-                }));
-                const last = plotData[(Number(plotData.length)-1)].date
+                const plotData = data.map(d => d);
+                const last = data[(Number(plotData.length)-1)].date
                 const newLast = new Date();
                 newLast.setDate(last.getDate()+1);
                 plotData.push({date: newLast})
                 console.log(plotData)
 
 
-                // Sort the data so that the labeled items are drawn on top
-                const dataSorter = function dataSorter(a, b) {
-                    if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-                        return 1;
-                    } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-                        return 0;
-                    }
-                    return -1;
-                };
-                if (highlightNames) { plotData.sort(dataSorter); }
+                
 
                  // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));

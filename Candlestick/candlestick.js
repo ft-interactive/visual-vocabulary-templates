@@ -19,52 +19,14 @@ export function draw() {
 
     function chart(parent) {
 
-        const lineData = d3.line()
-        .defined(function(d) { return d; })
-        .curve(interpolation)
-        .x(d => xScale(d.date))
-        .y(d => yScale(d.value));
-
-        parent.append('path')
-      .attr('stroke', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return colourScale(d.name);
-              }
-              d.name = '';
-              return colourScale(d.name);
-          }
-          return colourScale(d.name);
-      })
-      .attr('opacity', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return 1;
-              }
-              return 0.5;
-          }
-          return 1;
-      })
-      .attr('d', d => lineData(d.lineData));
-
-        if (markers) {
-            parent.selectAll('.markers')
-        .data((d) => {
-            if (markers) {
-                return d.lineData;
-            }
-
-            return undefined;
-        })
-        .enter()
-        .append('circle')
-        .classed('markers', true)
-        .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        .attr('cx', d => xScale(d.date))
-        .attr('cy', d => yScale(d.value))
-        .attr('r', rem * 0.25)
-        .attr('fill', d => colourScale(d.name));
-        }
+        parent.append('line')
+            .attr('y1', d => 200)
+            .attr('x1', d => xScale(d.date))
+            .attr('y2', d => 400)
+            .attr('x2', d => xScale(d.date))
+            .attr('stroke',d => colourScale(d.name))
+            .attr('')
+      
     }
 
     chart.yScale = (d) => {

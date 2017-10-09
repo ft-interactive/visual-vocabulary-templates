@@ -114,8 +114,8 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = candlestick.draw()
-          .seriesNames(seriesNames)
-          .highlightNames(highlightNames)
+          // .seriesNames(seriesNames)
+          // .highlightNames(highlightNames)
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
@@ -161,13 +161,13 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         //   .attr("fill","#ededee");
         let xDomain;
         if (intraday) {
-             xDomain = data.map(function(d) { return d.date;})  
+             xDomain = plotData.map(function(d) { return d.date;})  
             }
         else {xDomain = d3.extent(data, d => d.date)}
 
         // Set up xAxis for this frame
         myXAxis
-          .domain (xDomain)
+          .domain(xDomain)
           .range([0, currentFrame.dimension().width])
           .align(xAxisAlign)
           .fullYear(false)
@@ -200,6 +200,15 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
+
+        currentFrame.plot()
+          .selectAll('lines')
+          .data(plotData)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .attr('id', d => d.name)
+          .call(myChart);
 
     });
     // addSVGSavers('figure.saveable');
