@@ -8,6 +8,7 @@ export function draw() {
     let xScale = d3.scaleTime();
     let seriesNames = [];
     let highlightNames = [];
+    let intraday;
     let yAxisAlign = 'right';
     let markers = false;
   const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
@@ -20,12 +21,34 @@ export function draw() {
     function chart(parent) {
 
         parent.append('line')
-            .attr('y1', d => 200)
+            .attr('y1', d => yScale(+d.high))
             .attr('x1', d => xScale(d.date))
-            .attr('y2', d => 400)
+            .attr('y2', (d) => {
+                if(d.open > d.close) {return +yScale(d.open)}
+                else {return +yScale(d.close)}
+            })
             .attr('x2', d => xScale(d.date))
-            .attr('stroke',d => colourScale(d.name))
-            .attr('')
+            .attr('stroke',d => colourScale(d.name));
+        
+        parent.append('line')
+            .attr('y1', d => yScale(+d.low))
+            .attr('x1', d => xScale(d.date))
+            .attr('y2', (d) => {
+                if(d.open < d.close) {return +yScale(d.open)}
+                else {return +yScale(d.close)}
+            })
+            .attr('x2', d => xScale(d.date))
+            .attr('stroke',d => colourScale(d.name));
+
+        parent.append('line')
+            .attr('y1', d => yScale(+d.low))
+            .attr('x1', d => xScale(d.date))
+            .attr('y2', (d) => {
+                if(d.open < d.close) {return +yScale(d.open)}
+                else {return +yScale(d.close)}
+            })
+            .attr('x2', d => xScale(d.date))
+            .attr('stroke',d => colourScale(d.name));
       
     }
 
@@ -53,6 +76,11 @@ export function draw() {
 
     chart.highlightNames = (d) => {
         highlightNames = d;
+        return chart;
+    };
+    chart.intraday = (d) => {
+        if (d === undefined) return intraday;
+        intraday = d;
         return chart;
     };
     chart.seriesNames = (d) => {
