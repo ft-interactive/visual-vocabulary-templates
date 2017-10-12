@@ -140,7 +140,8 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
           .yAxisHighlight(yAxisHighlight)
           .align(yAxisAlign)
           .frameName(frameName)
-          .invert(invertScale);
+          .invert(invertScale)
+          .logScale(logScale);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
