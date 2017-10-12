@@ -42,7 +42,7 @@ export function fromCSV(url, dateStructure, options) {
                     }
                     return -1;
                 };
-                if (highlightNames) { plotData.sort(dataSorter); }
+                if (highlightNames.length > 0) { plotData.sort(dataSorter); }
 
                  // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
