@@ -19,6 +19,13 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
+        let offset;
+        if (intraday) {
+            offset = scale.domain().length
+        }
+        else {offset = yScale.ticks().length}
+
+        console.log('offset', offset)
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
