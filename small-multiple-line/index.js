@@ -38,6 +38,8 @@ const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const endTicks = true;
+const fullYear = true;
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const minorAxis = false;// turns on or off the minor axis
@@ -204,13 +206,12 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints }).then(({seriesNa
           .domain (xDomain)
           .range([0, widthOfSmallCharts-myYAxis.labelWidth()])
           .align(xAxisAlign)
-          .fullYear(false)
           .interval(interval)
+          .fullYear(fullYear)
+          .endTicks(endTicks)
           .tickSize(currentFrame.rem()* 0.75)
           .minorAxis(minorAxis)
           .minorTickSize(currentFrame.rem()* 0.3)
-          // .numticks(2)
-          .fullYear(false)
           .frameName(frameName)
           .intraday(intraday);
 
