@@ -38,9 +38,10 @@ const numTicksy = 4;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
-const endTicks = true;
-const fullYear = true;
-const dataDivisor = 1000;
+const endTicks = true;// show just first and last date on x-Axis
+const fullYear = true; //show full years for dates on x-Axis
+const dataDivisor = 1000; // divides data values to more manageable numbers
+const hideAxisLabels = false; // hide axis labels on middle columns of charts to avoid duplication
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const minorAxis = false;// turns on or off the minor axis
@@ -78,8 +79,8 @@ const frame = {
  .margin({ top: 10, left: 10, bottom: 80, right: 5 })
  // .title("Put headline here")
  .height(800)
- .extend('numberOfColumns', 3)
- .extend('numberOfRows', 3),
+ .extend('numberOfColumns', 4)
+ .extend('numberOfRows', 2),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
@@ -143,6 +144,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         .append('g')
         .attr('id', d => d.name)
         .attr('class', 'lines')
+        .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns() )
         .attr('transform', function(d, i) {
             let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
             let xPos = i % currentFrame.numberOfColumns();
@@ -192,10 +194,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        // axisHighlight.append("rect")
-        //   .attr("width", currentFrame.dimension().width)
-        //   .attr("height",currentFrame.dimension().height)
-        //   .attr("fill","#ededee");
         let xDomain;
         if (intraday) {
              xDomain = data.map(function(d) { return d.date;})
@@ -219,6 +217,17 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         // Draw the xAxis
         chart
             .call(myXAxis);
+
+        if (hideAxisLabels)
+            chart
+                .each(function(d, i) {
+                    let xPosAttr = Number(d3.select(this).attr('xPosition'));
+
+                    if (xPosAttr > 0 && xPosAttr < (currentFrame.numberOfColumns() - 1)) {
+                        d3.select(this).selectAll('.xAxis .tick text').style('visibility', 'hidden');
+                        d3.select(this).selectAll('.yAxis .tick text').style('visibility', 'hidden');
+                    }
+                })
 
         if (xAxisAlign == 'bottom' ){
             myXAxis.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
