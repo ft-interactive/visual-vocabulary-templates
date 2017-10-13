@@ -14,7 +14,7 @@ export function fromCSV(url, dateStructure, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const {yMin, joinPoints, highlightNames } = options;
+                const {yMin, joinPoints, highlightNames, dataDivisor } = options;
                 // make sure all the dates in the date column are a date object
                 const parseDate = d3.timeParse(dateStructure);
                 data.forEach((d) => {
@@ -24,14 +24,18 @@ export function fromCSV(url, dateStructure, options) {
                 // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
 
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames, yMin);
 
                 // Format the dataset that is used to draw the lines
                 const plotData = seriesNames.map(d => ({
                     name: d,
-                    lineData: getlines(data, d),
+                    lineData: getlines(data, d, joinPoints, dataDivisor),
                 }));
+
+                console.log(data)
+                console.log(plotData)
+
+                // Use the seriesNames array to calculate the minimum and max values in the dataset
+                const valueExtent = extentMulti(data, seriesNames, yMin);
 
                  // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
@@ -103,16 +107,16 @@ export function extentMulti(d, columns, yMin) {
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
  */
-export function getlines(d, group, joinPoints) {
+export function getlines(d, group, joinPoints, dataDivisor) {
     let lineData=[]
     d.forEach(function(el,i){
-        //console.log(el,i)
         let column=new Object();
         column.name = group
         column.date = el.date
-        column.value = +el[group]
+        column.value = +(el[group]/dataDivisor)
         column.highlight = el.highlight
         column.annotate = el.annotate
+        console.log(dataDivisor)
         if(el[group]) {
             lineData.push(column)
         }

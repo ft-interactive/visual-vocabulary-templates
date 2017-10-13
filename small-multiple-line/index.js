@@ -34,12 +34,13 @@ const sharedConfig = {
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
+const numTicksy = 4;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const endTicks = true;
 const fullYear = true;
+const dataDivisor = 1000;
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const minorAxis = false;// turns on or off the minor axis
@@ -115,7 +116,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -162,7 +163,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints }).then(({seriesNa
         const plotAnnotation = chart.append('g').attr('class', 'annotations-holder');
 
         myYAxis
-          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+          .domain([Math.min(yMin/dataDivisor, valueExtent[0]/dataDivisor), Math.max(yMax/dataDivisor, valueExtent[1]/dataDivisor)])
           .range([heightOfSmallCharts, 0])
           .numTicks(numTicksy)
           .tickSize(tickSize)
@@ -217,7 +218,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints }).then(({seriesNa
 
         // Draw the xAxis
         chart
-          .call(myXAxis);
+            .call(myXAxis);
 
         if (xAxisAlign == 'bottom' ){
             myXAxis.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
