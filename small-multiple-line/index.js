@@ -131,8 +131,8 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
         // Create the plot widths, but for each individual graph
-        const widthOfSmallCharts = (currentFrame.dimension().width / currentFrame.numberOfColumns() - currentFrame.rem());
-        const heightOfSmallCharts = (currentFrame.dimension().height / currentFrame.numberOfRows() - (currentFrame.rem() * 3.5));
+        const widthOfSmallCharts = ((currentFrame.dimension().width / currentFrame.numberOfColumns()) - currentFrame.rem());
+        const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows()) - (currentFrame.rem() * 3.5));
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
@@ -148,7 +148,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         .attr('transform', (d, i) => {
             const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
             const xPos = i % currentFrame.numberOfColumns();
-            return `translate(${(widthOfSmallCharts + currentFrame.rem()) * xPos + currentFrame.rem()},${yPos})`;
+            return `translate(${((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem()},${yPos})`;
         });
 
         const myChart = lineChart.draw()

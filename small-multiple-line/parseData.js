@@ -14,7 +14,7 @@ export function fromCSV(url, dateStructure, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const { yMin, joinPoints, highlightNames, dataDivisor } = options;
+                const { yMin, joinPoints, dataDivisor } = options;
                 // make sure all the dates in the date column are a date object
                 const parseDate = d3.timeParse(dateStructure);
                 data.forEach((d) => {
@@ -30,9 +30,6 @@ export function fromCSV(url, dateStructure, options) {
                     name: d,
                     lineData: getlines(data, d, joinPoints, dataDivisor),
                 }));
-
-                console.log(data);
-                console.log(plotData);
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames, yMin);

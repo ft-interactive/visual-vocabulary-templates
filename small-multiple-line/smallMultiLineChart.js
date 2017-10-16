@@ -75,11 +75,6 @@ export function draw() {
         yScale.range(d);
         return chart;
     };
-
-    chart.highlightNames = (d) => {
-        highlightNames = d;
-        return chart;
-    };
     chart.seriesNames = (d) => {
         seriesNames = d;
         return chart;
