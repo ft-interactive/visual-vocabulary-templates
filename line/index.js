@@ -77,15 +77,15 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
-  //.width(53.71)// 1 col 
-  .width(112.25)// 2 col 
+  //.width(53.71)// 1 col
+  .width(112.25)// 2 col
   //.width(170.8)// 3 col
   //.width(229.34)// 4 col
-  //.width(287.88)// 5 col 
+  //.width(287.88)// 5 col
   //.width(346.43)// 6 col
-  //.width(74)// markets std print 
+  //.width(74)// markets std print
   .height(58.21),//markets std print
- 
+
     social: gChartframe.socialFrame(sharedConfig)
  .margin({ top: 140, left: 50, bottom: 138, right: 40 })
  // .title("Put headline here")
@@ -169,7 +169,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
         //   .attr("fill","#ededee");
         let xDomain;
         if (intraday) {
-             xDomain = data.map(function(d) { return d.date;})  
+             xDomain = data.map(function(d) { return d.date;})
             }
         else {xDomain = d3.extent(data, d => d.date)}
 
