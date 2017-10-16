@@ -37,7 +37,7 @@ const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -140,7 +140,8 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
           .yAxisHighlight(yAxisHighlight)
           .align(yAxisAlign)
           .frameName(frameName)
-          .invert(invertScale);
+          .invert(invertScale)
+          .logScale(logScale);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
