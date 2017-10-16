@@ -47,17 +47,6 @@ export function draw() {
         yAxisAlign = d;
         return chart;
     };
-    chart.yDomain = (d) => {
-        if (!d) return yDomain;
-        yScale.domain(d);
-        return chart;
-    };
-
-    chart.yRange = (d) => {
-        if (!d) return yRange;
-        yScale.range(d);
-        return chart;
-    };
 
     chart.highlightNames = (d) => {
         highlightNames = d;
@@ -185,10 +174,6 @@ export function drawAnnotations() {
     };
     annotations.yRange = (d) => {
         yScale.range(d);
-        return annotations;
-    };
-    annotations.xRange = (d) => {
-        xScale0.range(d);
         return annotations;
     };
     annotations.rem = (d) => {
