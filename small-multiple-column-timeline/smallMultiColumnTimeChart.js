@@ -72,28 +72,10 @@ export function draw() {
         xScale0 = d;
         return chart;
     };
-    chart.xDomain0 = (d) => {
-        if (!d) return xDomain0;
-        xScale0.domain(d);
-        return chart;
-    };
-    chart.xRange0 = (d) => {
-        if (!d) return xRange0;
-        xScale0.range(d);
-        return chart;
-    };
 
     chart.xScale1 = (d) => {
         if (!d) return xScale1;
         xScale1 = d;
-        return chart;
-    };
-    chart.xDomain1 = (d) => {
-        xScale1.domain(d);
-        return chart;
-    };
-    chart.xRange1 = (d) => {
-        xScale1.rangeRound(d);
         return chart;
     };
     chart.plotDim = (d) => {

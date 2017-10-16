@@ -48,8 +48,6 @@ export function fromCSV(url, dateStructure, options) {
                     columnData: getColumns(data, d, dataDivisor),
                 }));
 
-                console.log(plotData);
-
                 resolve({
                     columnNames,
                     seriesNames,
