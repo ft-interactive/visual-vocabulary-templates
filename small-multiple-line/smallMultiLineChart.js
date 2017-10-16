@@ -9,24 +9,23 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let markers = false;
-  const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
-  let annotate = false; // eslint-disable-line
+    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
+    let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
     const colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
 
     function chart(parent) {
-
         const lineData = d3.line()
-        .defined(function(d) { return d; })
+        .defined(d => d)
         .curve(interpolation)
         .x(d => xScale(d.date))
         .y(d => yScale(d.value));
 
 
         parent.append('path')
-          .attr('stroke', (d) => colourScale.range()[0])
+          .attr('stroke', () => colourScale.range()[0])
           .attr('d', d => lineData(d.lineData));
 
         if (markers) {
@@ -48,11 +47,11 @@ export function draw() {
         .attr('fill', d => colourScale(d.name));
         }
 
-        //add titles for each chart
+        // add titles for each chart
         parent.append('text')
-            .attr("class", "chart-label")
-            .attr("dy", -5)
-            .text((d) => d.name.toUpperCase());
+            .attr('class', 'chart-label')
+            .attr('dy', -5)
+            .text(d => d.name.toUpperCase());
     }
 
     chart.yScale = (d) => {
@@ -140,19 +139,15 @@ export function draw() {
 export function drawHighlights() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
-    let invertScale = false
+    let invertScale = false; // eslint-disable-line
 
     function highlights(parent) {
-        let highlights = parent.append('rect')
+        const highlights = parent.append('rect') // eslint-disable-line
         .attr('class', 'highlights')
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', function(d) {
-              return yScale.range()[1]
-            })
-        .attr('height', function (d) {
-            return yScale.range()[0]
-        })
+        .attr('y', () => yScale.range()[1])
+        .attr('height', d => yScale.range()[0])
         .attr('fill', '#fff1e0');
     }
 
