@@ -208,7 +208,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         .domain(columnNames)
         .rangeRound([0, widthOfSmallCharts - myYAxis.labelWidth()])
         .frameName(frameName)
-        .paddingInner(0.3);
+        .paddingInner(0.2);
 
         let bandWidth = myXAxis1.bandwidth();
 
