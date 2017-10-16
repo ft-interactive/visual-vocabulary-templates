@@ -45,8 +45,10 @@ export function fromCSV(url, dateStructure, options) {
                 // format the dataset that is used to draw the lines
                 const plotData = seriesNames.map(d => ({
                     name: d,
-                    columnData: getColumns(data, d),
+                    columnData: getColumns(data, d, dataDivisor),
                 }));
+
+                console.log(plotData);
 
                 resolve({
                     columnNames,
@@ -106,14 +108,14 @@ export function extentMulti(d, columns, yMin) {
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
  */
-function getColumns(data, group) {
+function getColumns(data, group, dataDivisor) {
     const columnData = [];
     data.forEach((el) => {
         // console.log(el,i)
         const column = {
             name: group,
             date: el.date,
-            value: +el[group],
+            value: +(el[group]/dataDivisor),
             highlight: el.highlight,
             annotate: el.annotate,
         };

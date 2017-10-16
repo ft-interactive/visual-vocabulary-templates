@@ -17,7 +17,18 @@ export function draw() {
 
     function chart(parent) {
 
-
+        parent.selectAll('rect')
+            .data(d => d.columnData)
+            .enter()
+            .append('rect')
+            .attr('class', 'columns')
+            .attr('id', d => `date: ${d.date} value: ${d.value}`)
+            .attr('x', d => xScale0(d.date))
+            .attr('transform', d => `translate(${-xScale1.bandwidth()/2},0)`)
+            .attr('width', () => xScale1.bandwidth())
+            .attr('y', d => yScale(Math.max(0, d.value)))
+            .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
+            .attr('fill', d => colourScale());
 
         //add titles for each chart
         parent.append('text')
@@ -117,13 +128,14 @@ export function draw() {
 export function drawHighlights() {
     let yScale = d3.scaleLinear();
     let xScale0 = d3.scaleTime();
+    let xScale1 = d3.scaleBand();
     let invertScale = false
 
     function highlights(parent) {
         let highlights = parent.append('rect')
         .attr('class', 'highlights')
-        .attr('x', d => xScale0(d.begin))
-        .attr('width', d => xScale0(d.end) - xScale0(d.begin))
+        .attr('x', d => xScale0(d.begin) - xScale1.bandwidth() / 2)
+        .attr('width', d => (xScale0(d.end) - xScale0(d.begin) + xScale1.bandwidth()))
         .attr('y', function(d) {
               return yScale.range()[1]
             })
@@ -139,6 +151,10 @@ export function drawHighlights() {
     };
     highlights.xScale0 = (d) => {
         xScale0 = d;
+        return highlights;
+    };
+    highlights.xScale1 = (d) => {
+        xScale1 = d;
         return highlights;
     };
     highlights.yRange = (d) => {

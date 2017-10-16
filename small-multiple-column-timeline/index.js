@@ -53,21 +53,21 @@ const frame = {
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(1000)
  .extend('numberOfColumns', 2)
- .extend('numberOfRows', 4),
+ .extend('numberOfRows', 6),
 
     webM: gChartframe.webFrameM(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 88, right: 5 })
  // .title("Put headline here")
  .height(1000)
  .extend('numberOfColumns', 3)
- .extend('numberOfRows', 3),
+ .extend('numberOfRows', 4),
 
     webL: gChartframe.webFrameL(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 80, right: 5 })
  // .title("Put headline here")
  .height(500)
  .fullYear(true)
- .extend('numberOfColumns', 8)
+ .extend('numberOfColumns', 11)
  .extend('numberOfRows', 1),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
@@ -75,7 +75,7 @@ const frame = {
  // .title("Put headline here")
  .height(800)
  .extend('numberOfColumns', 4)
- .extend('numberOfRows', 2),
+ .extend('numberOfRows', 3),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
@@ -89,7 +89,7 @@ const frame = {
   //.width(74)// markets std print
   .height(150)//markets std print
   .extend('numberOfColumns', 3)
-  .extend('numberOfRows', 3),
+  .extend('numberOfRows', 4),
 
  //    social: gChartframe.socialFrame(sharedConfig)
  // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -100,7 +100,7 @@ const frame = {
     video: gChartframe.videoFrame(sharedConfig)
  .margin({ left: 207, right: 207, bottom: 210, top: 233 })
  // .title("Put headline here")
-     .extend('numberOfColumns', 4)
+     .extend('numberOfColumns', 6)
      .extend('numberOfRows', 2),
 };
 
@@ -112,7 +112,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesNames, columnNames, data, plotData, valueExtent, highlights, annos}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -121,6 +121,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis0 = gAxis.xDate();// sets up date xAxis
         const myXAxis1 = gAxis.xOrdinal();// sets up date xAxis
+        const xDomain = d3.extent(data, d => d.date); // sets up domain for xAxis
         const myHighlights = columnChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = columnChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
@@ -139,7 +140,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
             .enter()
         .append('g')
         .attr('id', d => d.name)
-        .attr('class', 'lines')
+        .attr('class', 'columnHolder')
         .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns() )
         .attr('transform', function(d, i) {
             let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
@@ -150,6 +151,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         const myChart = columnChart.draw()
           .seriesNames(seriesNames)
           .annotate(annotate)
+
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
@@ -188,12 +190,10 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        const xDomain0 = d3.extent(data, d => d.date);
-
         // Set up xAxis for this frame
         myXAxis0
-          .domain (xDomain0)
-          .range([0, widthOfSmallCharts-myYAxis.labelWidth()])
+          .domain(xDomain)
+          .range([0, widthOfSmallCharts - myYAxis.labelWidth()])
           .align(xAxisAlign)
           .interval(interval)
           .fullYear(fullYear)
@@ -202,6 +202,18 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
           .minorAxis(minorAxis)
           .minorTickSize(currentFrame.rem()* 0.3)
           .frameName(frameName)
+
+        myXAxis1
+        .align(xAxisAlign)
+        .domain(columnNames)
+        .rangeRound([0, widthOfSmallCharts - myYAxis.labelWidth()])
+        .frameName(frameName)
+        .paddingInner(0.3);
+
+        let bandWidth = myXAxis1.bandwidth();
+
+         myXAxis0
+            .range([bandWidth, ((widthOfSmallCharts - myYAxis.labelWidth()) -(bandWidth))])
 
         // Draw the xAxis
         chart
@@ -232,6 +244,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         myChart
           .yScale(myYAxis.scale())
           .xScale0(myXAxis0.scale())
+          .xScale1(myXAxis1.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
@@ -244,6 +257,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         myHighlights
           .yScale(myYAxis.scale())
           .xScale0(myXAxis0.scale())
+          .xScale1(myXAxis1.scale())
 
         //Draw the highlights before the lines and xAxis
         axisHighlight
