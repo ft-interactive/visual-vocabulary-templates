@@ -7,7 +7,7 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as lineChart from './smallMultiLineChart.js';
+import * as columnChart from './smallMultiColumnTimeChart.js';
 
 const dataFile = 'data.csv';
 
@@ -43,12 +43,7 @@ const fullYear = true; //show full years for dates on x-Axis
 const dataDivisor = 1000; // divides data values to more manageable numbers
 const hideAxisLabels = false; // hide axis labels on middle columns of charts to avoid duplication
 const annotate = true; // show annotations, defined in the 'annotate' column
-const markers = false;// show dots on lines
 const minorAxis = false;// turns on or off the minor axis
-const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const logScale = false;
-const joinPoints = true;//Joints gaps in lines where there are no data points
-const intraday = false;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -117,16 +112,17 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
         const myYAxis = gAxis.yLinear();// sets up yAxis
-        const myXAxis = gAxis.xDate();// sets up xAxis
-        const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-        const myAnnotations = lineChart.drawAnnotations();// sets up annotations
+        const myXAxis0 = gAxis.xDate();// sets up date xAxis
+        const myXAxis1 = gAxis.xOrdinal();// sets up date xAxis
+        const myHighlights = columnChart.drawHighlights();// sets up highlight tonal bands
+        const myAnnotations = columnChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
@@ -151,11 +147,9 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
             return 'translate(' + ((widthOfSmallCharts + currentFrame.rem()) * xPos + currentFrame.rem()) + ',' + yPos + ')'
             })
 
-        const myChart = lineChart.draw()
+        const myChart = columnChart.draw()
           .seriesNames(seriesNames)
-          .markers(markers)
           .annotate(annotate)
-          .interpolation(interpolation);
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
@@ -194,15 +188,11 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        let xDomain;
-        if (intraday) {
-             xDomain = data.map(function(d) { return d.date;})
-            }
-        else {xDomain = d3.extent(data, d => d.date)}
+        const xDomain0 = d3.extent(data, d => d.date);
 
         // Set up xAxis for this frame
-        myXAxis
-          .domain (xDomain)
+        myXAxis0
+          .domain (xDomain0)
           .range([0, widthOfSmallCharts-myYAxis.labelWidth()])
           .align(xAxisAlign)
           .interval(interval)
@@ -212,11 +202,10 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
           .minorAxis(minorAxis)
           .minorTickSize(currentFrame.rem()* 0.3)
           .frameName(frameName)
-          .intraday(intraday);
 
         // Draw the xAxis
         chart
-            .call(myXAxis);
+            .call(myXAxis0);
 
         if (hideAxisLabels)
             chart
@@ -230,19 +219,19 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
                 })
 
         if (xAxisAlign == 'bottom' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
+            myXAxis0.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
             if(minorAxis) {
-                myXAxis.xLabelMinor().attr('transform', `translate(0,${heightOfSmallCharts})`);
+                myXAxis0.xLabelMinor().attr('transform', `translate(0,${heightOfSmallCharts})`);
 
             }
         }
         if (xAxisAlign == 'top' ){
-            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+            myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
         }
 
         myChart
           .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
+          .xScale0(myXAxis0.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
@@ -254,7 +243,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         // Set up highlights for this frame
         myHighlights
           .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
+          .xScale0(myXAxis0.scale())
 
         //Draw the highlights before the lines and xAxis
         axisHighlight
@@ -267,7 +256,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         // Set up highlights for this frame
         myAnnotations
           .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
+          .xScale0(myXAxis0.scale())
           .rem(currentFrame.rem());
 
         // Draw the annotations before the lines

@@ -24,15 +24,7 @@ export function fromCSV(url, dateStructure, options) {
                 // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
 
-
-                // Format the dataset that is used to draw the lines
-                const plotData = seriesNames.map(d => ({
-                    name: d,
-                    lineData: getlines(data, d, joinPoints, dataDivisor),
-                }));
-
-                console.log(data)
-                console.log(plotData)
+                const columnNames = data.map(d => d.date); // create an array of the column names
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames, yMin);
@@ -50,7 +42,14 @@ export function fromCSV(url, dateStructure, options) {
                     }
                 });
 
+                // format the dataset that is used to draw the lines
+                const plotData = seriesNames.map(d => ({
+                    name: d,
+                    columnData: getColumns(data, d),
+                }));
+
                 resolve({
+                    columnNames,
                     seriesNames,
                     plotData,
                     data,
@@ -107,40 +106,21 @@ export function extentMulti(d, columns, yMin) {
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
  */
-export function getlines(d, group, joinPoints, dataDivisor) {
-    let lineData=[]
-    d.forEach(function(el,i){
-        let column=new Object();
-        column.name = group
-        column.date = el.date
-        column.value = +(el[group]/dataDivisor)
-        column.highlight = el.highlight
-        column.annotate = el.annotate
-        console.log(dataDivisor)
-        if(el[group]) {
-            lineData.push(column)
-        }
+function getColumns(data, group) {
+    const columnData = [];
+    data.forEach((el) => {
+        // console.log(el,i)
+        const column = {
+            name: group,
+            date: el.date,
+            value: +el[group],
+            highlight: el.highlight,
+            annotate: el.annotate,
+        };
 
-        // if(el[group] == false) {
-        //     lineData.push(null)
-        // }
-        if(el[group] == false && joinPoints == false) {
-            lineData.push(null)
+        if (el[group]) {
+            columnData.push(column);
         }
-
     });
-    return lineData
-    // return d.map((el) => {
-    //     if (el[group]) {
-    //         return {
-    //             name: group,
-    //             date: el.date,
-    //             value: +el[group],
-    //             highlight: el.highlight,
-    //             annotate: el.annotate,
-    //         };
-    //     }
-
-    //     return null;
-    // }).filter(i => i);
+    return columnData;
 }
