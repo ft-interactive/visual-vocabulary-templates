@@ -128,8 +128,8 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
         //Create the plot widths, but for each individual graph
-        const widthOfSmallCharts = (currentFrame.dimension().width/currentFrame.numberOfColumns() - currentFrame.rem());
-        const heightOfSmallCharts = (currentFrame.dimension().height/currentFrame.numberOfRows()  - (currentFrame.rem() * 3.5));
+        const widthOfSmallCharts = ((currentFrame.dimension().width / currentFrame.numberOfColumns()) - currentFrame.rem());
+        const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows())  - (currentFrame.rem() * 3.5));
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
@@ -145,7 +145,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         .attr('transform', function(d, i) {
             let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
             let xPos = i % currentFrame.numberOfColumns();
-            return 'translate(' + ((widthOfSmallCharts + currentFrame.rem()) * xPos + currentFrame.rem()) + ',' + yPos + ')'
+            return `translate(${((widthOfSmallCharts + currentFrame.rem()) * xPos + currentFrame.rem())}, ${yPos})`
             })
 
         const myChart = columnChart.draw()
@@ -176,16 +176,16 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
 
         //return the value in the variable newMargin
         if (yAxisAlign == 'right' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
+            let newMargin = myYAxis.labelWidth() + currentFrame.margin().right
             //Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({right:newMargin});
             //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
         if (yAxisAlign == 'left' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
+            let newMargin = myYAxis.labelWidth() + currentFrame.margin().left
             //Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({left:newMargin});
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         }
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
@@ -198,9 +198,9 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
           .interval(interval)
           .fullYear(fullYear)
           .endTicks(endTicks)
-          .tickSize(currentFrame.rem()* 0.75)
+          .tickSize(currentFrame.rem() * 0.75)
           .minorAxis(minorAxis)
-          .minorTickSize(currentFrame.rem()* 0.3)
+          .minorTickSize(currentFrame.rem() * 0.3)
           .frameName(frameName)
 
         myXAxis1
@@ -231,14 +231,14 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
                 })
 
         if (xAxisAlign == 'bottom' ){
-            myXAxis0.xLabel().attr('transform', `translate(0,${heightOfSmallCharts})`);
+            myXAxis0.xLabel().attr('transform', `translate(0, ${heightOfSmallCharts})`);
             if(minorAxis) {
-                myXAxis0.xLabelMinor().attr('transform', `translate(0,${heightOfSmallCharts})`);
+                myXAxis0.xLabelMinor().attr('transform', `translate(0, ${heightOfSmallCharts})`);
 
             }
         }
         if (xAxisAlign == 'top' ){
-            myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+            myXAxis0.xLabel().attr('transform', `translate(0, ${myXAxis0.tickSize()})`);
         }
 
         myChart
