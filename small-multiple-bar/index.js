@@ -34,7 +34,7 @@ const sharedConfig = {
 const xMin = -100;// sets the minimum value on the yAxis
 const xMax = 100;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 5;// Number of tick on the uAxis
+const numTicks = 2;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
@@ -47,7 +47,7 @@ const minorAxis = false;// turns on or off the minor axis
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+ .margin({ top: 10, left: 0, bottom: 88, right: 5 })
  //.title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(1000)
@@ -55,14 +55,14 @@ const frame = {
  .extend('numberOfRows', 5),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 88, right: 7 })
+ .margin({ top: 10, left: 0, bottom: 88, right: 7 })
  // .title("Put headline here")
  .height(1000)
  .extend('numberOfColumns', 3)
  .extend('numberOfRows', 4),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 80, right: 7 })
+ .margin({ top: 10, left: 0, bottom: 80, right: 7 })
  // .title("Put headline here")
  .height(500)
  .fullYear(true)
@@ -70,9 +70,9 @@ const frame = {
  .extend('numberOfRows', 2),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 80, right: 10 })
+ .margin({ top: 10, left: 0, bottom: 80, right: 10 })
  // .title("Put headline here")
- .height(800)
+ .height(900)
  .extend('numberOfColumns', 3)
  .extend('numberOfRows', 4),
 
@@ -143,11 +143,9 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
         .append('g')
         .attr('class', 'tint')
 
+        const myTints = barChart.drawTints()
         const myChart = barChart.draw()
 
-        // create a 'g' element at the back of the chart to add time period
-        // highlights after axis have been created
-        const axisHighlight = chart.append('g');
 
         myYAxis
         .align(yAxisAlign)
@@ -156,14 +154,10 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
         .frameName(frameName)
         .paddingInner(0.2);
 
-        let bandWidth = myYAxis.bandwidth();
-
-         // myYAxis
-         //    .range([bandWidth, ((heightOfSmallCharts - currentFrame.rem()) -(bandWidth))])
-
         // Draw the yAxis
         chart
             .call(myYAxis);
+
 
         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
@@ -173,11 +167,11 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
             myYAxis.yLabel()
                 .attr('transform', `translate(${currentFrame.dimension().width + myYAxis.labelWidth()},${0})`);
         } else {
-            const newMargin = myYAxis.labelWidth() - (currentFrame.rem() * 0.7);
+            const newMargin = myYAxis.labelWidth() - (currentFrame.rem() * 0.7) + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
-            myYAxis.yLabel()
-                .attr('transform', `translate(${0},${currentFrame.rem()})`);
+            myYAxis.yLabel().selectAll('text')
+                .attr('dy', currentFrame.rem() );
         }
 
         d3.select(currentFrame.plot().node().parentNode)
@@ -191,6 +185,16 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
                 let xPos = i % currentFrame.numberOfColumns();
                 return `translate(${(((widthOfSmallCharts + (currentFrame.rem() * 2.5)) * xPos) + currentFrame.rem())}, ${yPos})`
             })
+
+         myTints
+          .yScale(myYAxis.scale())
+          .plotDim(plotDim)
+          .rem(currentFrame.rem())
+          .yLabelWidth(myYAxis.labelWidth())
+
+        chart
+        .call(myTints)
+
 
         myXAxis
           .range([widthOfSmallCharts, 0])
@@ -214,8 +218,9 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
                     let xPosAttr = Number(d3.select(this).attr('xPosition'));
 
                     if (xPosAttr > 0) {
-                        // d3.select(this).selectAll('.xAxis .tick text').style('visibility', 'hidden');
                         d3.select(this).selectAll('.yAxis .tick text').style('visibility', 'hidden');
+                    }
+                    if (xPosAttr > 0 && xPosAttr < (currentFrame.numberOfColumns() - 1)) {
                     }
                 })
 
@@ -227,7 +232,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
             }
         }
         if (xAxisAlign == 'top' ){
-            myXAxis.xLabel().attr('transform', `translate(0, ${myXAxis.tickSize() + currentFrame.rem()})`);
+            myXAxis.xLabel().attr('transform', `translate(0, ${myXAxis.tickSize() + (currentFrame.rem() * 0.7)})`);
         }
 
         myChart

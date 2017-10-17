@@ -45,5 +45,15 @@
 .ft-webgraphic-m .tint,
 .ft-webgraphic-m-default .tint,
 .ft-webgraphic-l .tint {
-  fill: #E6D9CE;
+  fill: #F2E5DA;
+}
+
+.ft-printgraphic .tint {
+    fill: #d9e7ef;
+}
+
+.ft-socialgraphic .tint,
+.ft-videographic .tint {
+    fill: #ffffff;
+    opacity: 0.2;
 }

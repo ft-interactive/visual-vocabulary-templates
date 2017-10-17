@@ -15,21 +15,6 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-        parent
-        .each(function(d,i){
-            if ( d3.select(this).attr('xPosition') === '0') {
-                var tints = d3.select(this).select('.tint').selectAll('rect')
-                .data(d => d.columnData)
-                .enter()
-                .append('rect')
-                .attr('x', 0)
-                .attr('y', (d,i) => ((yScale.bandwidth() + (yScale.bandwidth() * yScale.paddingInner())) * i) + rem)
-                .attr('width', plotDim.width)
-                .attr('height', yScale.bandwidth())
-            }
-        });
-
-
         parent.selectAll('.columns')
             .data(d => d.columnData)
             .enter()
@@ -46,7 +31,7 @@ export function draw() {
         //add titles for each chart
         parent.append('text')
             .attr("class", "chart-label")
-            .attr("dy", -5)
+            .attr("dy", -(rem / 2))
             .text((d) => d.name.toUpperCase());
     }
 
@@ -95,4 +80,53 @@ export function draw() {
     return chart;
 }
 
+export function drawTints() {
+    let yScale = d3.scaleBand();
+    let yLabelWidth;
+
+    function tints(parent) {
+        parent
+        .each(function(d,i){
+            if ( d3.select(this).attr('xPosition') === '0') {
+                var tints = d3.select(this).select('.tint').selectAll('rect')
+                .data(d => d.columnData)
+                .enter()
+                .append('rect')
+                .attr('x', -yLabelWidth - (rem * 0.3))
+                .attr('y', (d,i) => ((yScale.bandwidth() + (yScale.bandwidth() * yScale.paddingInner())) * i) + rem)
+                .attr('width', plotDim.width - (rem * 0.4) )
+                .attr('height', yScale.bandwidth())
+            }
+        });
+    }
+
+    tints.yScale = (d) => {
+        yScale = d;
+        return tints;
+    };
+
+    tints.yRange = (d) => {
+        yScale.range(d);
+        return tints;
+    };
+
+    tints.plotDim = (d) => {
+        if (!d) return window.plotDim;
+        window.plotDim = d;
+        return tints;
+    };
+
+    tints.rem = (d) => {
+        if (!d) return rem;
+        rem = d;
+        return tints;
+    };
+
+    tints.yLabelWidth = (d) => {
+        yLabelWidth = d;
+        return tints;
+    };
+
+    return tints;
+}
 
