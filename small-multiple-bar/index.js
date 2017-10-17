@@ -31,13 +31,12 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = -100;// sets the minimum value on the yAxis
-const xMax = 100;// sets the maximum value on the xAxis
+const xMin = 0;// sets the minimum value on the yAxis
+const xMax = 0;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 2;// Number of tick on the uAxis
+const numTicks = 4;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
-const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const endTicks = true;// show just first and last date on x-Axis
 const fullYear = true; //show full years for dates on x-Axis
 const dataDivisor = 1; // divides data values to more manageable numbers
@@ -210,8 +209,6 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
         chart
           .call(myXAxis);
 
-
-
         if (hideAxisLabels)
             chart
                 .each(function(d, i) {
@@ -221,6 +218,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
                         d3.select(this).selectAll('.yAxis .tick text').style('visibility', 'hidden');
                     }
                     if (xPosAttr > 0 && xPosAttr < (currentFrame.numberOfColumns() - 1)) {
+                        d3.select(this).selectAll('.xAxis .tick text').style('visibility', 'hidden');
                     }
                 })
 
