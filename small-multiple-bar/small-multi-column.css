@@ -40,3 +40,10 @@
 .ft-videographic .chart-label {
     font-size: 36px;
 }
+
+.ft-webgraphic-s .tint,
+.ft-webgraphic-m .tint,
+.ft-webgraphic-m-default .tint,
+.ft-webgraphic-l .tint {
+  fill: #E6D9CE;
+}

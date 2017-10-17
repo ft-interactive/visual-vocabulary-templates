@@ -55,14 +55,14 @@ const frame = {
  .extend('numberOfRows', 5),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+ .margin({ top: 10, left: 10, bottom: 88, right: 7 })
  // .title("Put headline here")
  .height(1000)
  .extend('numberOfColumns', 3)
  .extend('numberOfRows', 4),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 80, right: 5 })
+ .margin({ top: 10, left: 10, bottom: 80, right: 7 })
  // .title("Put headline here")
  .height(500)
  .fullYear(true)
@@ -70,7 +70,7 @@ const frame = {
  .extend('numberOfRows', 2),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 80, right: 5 })
+ .margin({ top: 10, left: 10, bottom: 80, right: 10 })
  // .title("Put headline here")
  .height(800)
  .extend('numberOfColumns', 3)
@@ -111,7 +111,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({seriesNames, columnNames, data, plotData, valueExtent}) => {
+parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnNames, data, plotData, valueExtent}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -120,12 +120,13 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({seriesN
         const myXAxis = gAxis.xLinear();// sets up yAxis
         const myYAxis = gAxis.yOrdinal();// sets up date xAxis
         const myLegend = gLegend.legend();// sets up the legend
-        // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
+        const plotDim = currentFrame.dimension()//useful variable to carry the current frame dimensions
 
         //Create the plot widths, but for each individual graph
         const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows())  - (currentFrame.rem() * 2.5));
 
         const tickSize = heightOfSmallCharts;// Used when drawing the yAxis ticks
+
 
         //draw the chart holders
         let chart = currentFrame.plot()
@@ -137,6 +138,10 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({seriesN
         .attr('class', 'columnHolder')
         .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns() )
 
+        // draw tint highlight holders
+        let tints = chart
+        .append('g')
+        .attr('class', 'tint')
 
         const myChart = barChart.draw()
 
@@ -178,7 +183,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({seriesN
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        const widthOfSmallCharts = (((currentFrame.dimension().width) / currentFrame.numberOfColumns()) - (currentFrame.rem() * 2.5));
+        const widthOfSmallCharts = (((currentFrame.dimension().width + currentFrame.rem()) / currentFrame.numberOfColumns()) - (currentFrame.rem() * 2.5));
 
         chart
             .attr('transform', function(d, i) {
@@ -228,7 +233,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({seriesN
         myChart
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
+          .plotDim(plotDim)
           .rem(currentFrame.rem())
           .colourPalette((frameName));
 
