@@ -39,6 +39,7 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const endTicks = true;// show just first and last date on x-Axis
 const fullYear = true; //show full years for dates on x-Axis
+const showTints = true; // show tint bands behind charts
 const dataDivisor = 1; // divides data values to more manageable numbers
 const hideAxisLabels = true; // hide axis labels on middle columns of charts to avoid duplication
 const minorAxis = false;// turns on or off the minor axis
@@ -191,8 +192,10 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
           .rem(currentFrame.rem())
           .yLabelWidth(myYAxis.labelWidth())
 
-        chart
-        .call(myTints)
+        if (showTints) {
+            chart
+            .call(myTints)
+        }
 
 
         myXAxis
