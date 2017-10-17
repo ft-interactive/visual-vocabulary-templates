@@ -52,7 +52,7 @@ const frame = {
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(1000)
  .extend('numberOfColumns', 2)
- .extend('numberOfRows', 6),
+ .extend('numberOfRows', 5),
 
     webM: gChartframe.webFrameM(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 88, right: 5 })
@@ -66,8 +66,8 @@ const frame = {
  // .title("Put headline here")
  .height(500)
  .fullYear(true)
- .extend('numberOfColumns', 11)
- .extend('numberOfRows', 1),
+ .extend('numberOfColumns', 6)
+ .extend('numberOfRows', 2),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 80, right: 5 })
@@ -123,7 +123,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({seriesN
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
         //Create the plot widths, but for each individual graph
-        const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows())  - (currentFrame.rem() * currentFrame.numberOfRows()));
+        const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows())  - (currentFrame.rem() * 2.5));
 
         const tickSize = heightOfSmallCharts;// Used when drawing the yAxis ticks
 
@@ -182,7 +182,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({seriesN
 
         chart
             .attr('transform', function(d, i) {
-                let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
+                let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 3.5))));
                 let xPos = i % currentFrame.numberOfColumns();
                 return `translate(${(((widthOfSmallCharts + (currentFrame.rem() * 2.5)) * xPos) + currentFrame.rem())}, ${yPos})`
             })
