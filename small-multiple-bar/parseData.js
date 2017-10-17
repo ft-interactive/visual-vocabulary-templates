@@ -14,7 +14,7 @@ export function fromCSV(url, dateStructure, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const {yMin, joinPoints, highlightNames, dataDivisor } = options;
+                const {xMin, joinPoints, highlightNames, dataDivisor } = options;
                 // make sure all the dates in the date column are a date object
                 const parseDate = d3.timeParse(dateStructure);
                 data.forEach((d) => {
@@ -27,7 +27,7 @@ export function fromCSV(url, dateStructure, options) {
                 const columnNames = data.map(d => d.date); // create an array of the column names
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames, yMin);
+                const valueExtent = extentMulti(data, seriesNames, xMin);
 
                  // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
@@ -69,7 +69,7 @@ export function fromCSV(url, dateStructure, options) {
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight'];
+    const exclude = ['name'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
@@ -80,12 +80,12 @@ export function getSeriesNames(columns) {
  * @param  {[type]} yMin    [description]
  * @return {[type]}         [description]
  */
-export function extentMulti(d, columns, yMin) {
+export function extentMulti(d, columns, xMin) {
     const ext = d.reduce((acc, row) => {
         let values = columns.map(key => row[key])
         .map((item) => {
             if (!item || item === '*') {
-                return yMin;
+                return xMin;
             }
             return Number(item);
         });
