@@ -19,17 +19,13 @@ export function draw() {
     let intraday;
 
     function chart(parent) {
-        let offset = 10
-        console.log('intraday',intraday)
+        let bandwidth = 10
         if(intraday) {
-            console.log('intraday TRUE')
-            offset = ((xScale.range()[1]-xScale.range()[0])/xScale.domain().length)*0.25
-            console.log('offset',offset)
+            bandwidth = ((xScale.range()[1]-xScale.range()[0])/xScale.domain().length)*0.25
         }
          else{
-            console.log('intraday FALSE')
             let ticks = xScale.ticks().length
-            offset = ((xScale.range()[1]-xScale.range()[0])/(ticks))*0.25
+            bandwidth = ((xScale.range()[1]-xScale.range()[0])/(ticks))*0.25
         }
 
         parent.append('line')
@@ -54,21 +50,21 @@ export function draw() {
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
-            .attr('x1', d => xScale(d.date)-offset/2)
+            .attr('x1', d => xScale(d.date)-bandwidth/2)
             .attr('y2', d => yScale(+d.high))
-            .attr('x2', d => xScale(d.date)+offset/2)
+            .attr('x2', d => xScale(d.date)+bandwidth/2)
             .attr('stroke',d => colourScale(d.name));
 
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
-            .attr('x1', d => xScale(d.date)-offset/2)
+            .attr('x1', d => xScale(d.date)-bandwidth/2)
             .attr('y2', d => yScale(+d.low))
-            .attr('x2', d => xScale(d.date)+offset/2)
+            .attr('x2', d => xScale(d.date)+bandwidth/2)
             .attr('stroke',d => colourScale(d.name));
 
         parent.append('rect')
-            .attr('x', d => xScale(d.date)-offset/2)
-            .attr('width', offset)
+            .attr('x', d => xScale(d.date)-bandwidth/2)
+            .attr('width', bandwidth)
             .attr('y', d => yScale(d.y))
             .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
             .attr('fill', '#000000')
