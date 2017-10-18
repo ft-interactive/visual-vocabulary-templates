@@ -11,41 +11,20 @@ export function draw() {
     let markers = false;
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
-    let interpolation = d3.curveLinear;
     const colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
 
     function chart(parent) {
-        const lineData = d3.line()
-        .defined(d => d)
-        .curve(interpolation)
-        .x(d => xScale(d.date))
-        .y(d => yScale(d.value));
 
+        const area = d3.area()
+            .x(d => xScale(d.lineData.date))
+            .y0(d => yScale(d.lineData.value[0]))
+            .y1(d => yScale(d.lineData.value[1]));
 
         parent.append('path')
-          .attr('stroke', () => colourScale.range()[0])
-          .attr('d', d => lineData(d.lineData));
-
-        if (markers) {
-            parent.selectAll('.markers')
-        .data((d) => {
-            if (markers) {
-                return d.lineData;
-            }
-
-            return undefined;
-        })
-        .enter()
-        .append('circle')
-        .classed('markers', true)
-        .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        .attr('cx', d => xScale(d.date))
-        .attr('cy', d => yScale(d.value))
-        .attr('r', rem * 0.25)
-        .attr('fill', d => colourScale(d.name));
-        }
+            .attr('d', area)
+            .style('fill', d => colourScale(d.key));
 
         // add titles for each chart
         parent.append('text')

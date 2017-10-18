@@ -7,7 +7,7 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as lineChart from './smallMultiLineChart.js';
+import * as areaChart from './smallMultiAreaChart.js';
 
 const dataFile = 'data.csv';
 
@@ -43,11 +43,7 @@ const fullYear = true; // show full years for dates on x-Axis
 const dataDivisor = 1000; // divides data values to more manageable numbers
 const hideAxisLabels = false; // hide axis labels on middle columns of charts to avoid duplication
 const annotate = true; // show annotations, defined in the 'annotate' column
-const markers = false;// show dots on lines
 const minorAxis = false;// turns on or off the minor axis
-const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const logScale = false; // eslint-disable-line
-const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
@@ -117,15 +113,14 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin,  dataDivisor }).then(({ seriesNames, data, plotData, valueExtent, annos }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
-        const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-        const myAnnotations = lineChart.drawAnnotations();// sets up annotations
+        const myAnnotations = areaChart.drawAnnotations();// sets up annotations
         // sets up the legend
         const myLegend = gLegend.legend(); // eslint-disable-line
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
@@ -136,6 +131,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
+        console.log(plotData)
         // draw the chart holders
         const chart = currentFrame.plot()
         .selectAll('g')
@@ -143,7 +139,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
             .enter()
         .append('g')
         .attr('id', d => d.name)
-        .attr('class', 'lines')
+        .attr('class', 'areas')
         .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns())
         .attr('transform', (d, i) => {
             const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
@@ -151,15 +147,9 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
             return `translate(${((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem()},${yPos})`;
         });
 
-        const myChart = lineChart.draw()
+        const myChart = areaChart.draw()
           .seriesNames(seriesNames)
-          .markers(markers)
           .annotate(annotate)
-          .interpolation(interpolation);
-
-        // create a 'g' element at the back of the chart to add time period
-        // highlights after axis have been created
-        const axisHighlight = chart.append('g');
 
         // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = chart.append('g').attr('class', 'annotations-holder');
@@ -249,19 +239,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).th
         // //Draw the lines
         chart
           .call(myChart);
-
-        // Set up highlights for this frame
-        myHighlights
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale());
-
-        // Draw the highlights before the lines and xAxis
-        axisHighlight
-          .selectAll('.highlights')
-          .data(highlights)
-          .enter()
-          .append('g')
-          .call(myHighlights);
 
         // Set up highlights for this frame
         myAnnotations
