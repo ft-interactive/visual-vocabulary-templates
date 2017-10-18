@@ -31,13 +31,18 @@ export function fromCSV(url, dateStructure, options) {
                 // Format the dataset that is used to draw the lines
                 const plotData = data.map((d) => {
                     return {
-                        date: d.date,
-                        open: d.open,
-                        close: d. close,
-                        high: d.high,
-                        low: d.low
+                        date: +d.date,
+                        open: +d.open,
+                        close: +d. close,
+                        high: +d.high,
+                        low: +d.low,
+                        y: +Math.max(d.open, d.close),
+                        height: +Math.max(d.open,d.close) - Math.min(d.open, d.close)
                     }
                 });
+
+                console.log('plotDate', plotData)
+
                 const last = data[(Number(plotData.length)-1)].date
                 const newLast = new Date();
                 newLast.setDate(last.getDate()+1);

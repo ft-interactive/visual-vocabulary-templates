@@ -25,6 +25,7 @@ export function draw() {
         }
         else {offset = ((xScale.range()[1]-xScale.range()[0])/(xScale.ticks().length))/4
         }
+        offset=offset*.7
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
@@ -59,6 +60,13 @@ export function draw() {
             .attr('y2', d => yScale(+d.low))
             .attr('x2', d => xScale(d.date)+offset/2)
             .attr('stroke',d => colourScale(d.name));
+
+        parent.append('rect')
+            .attr('x', d => xScale(d.date)-offset/2)
+            .attr('width', offset)
+            .attr('y', d => yScale(d.y))
+            .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
+            .attr('fill', '#000000')
       
     }
 
