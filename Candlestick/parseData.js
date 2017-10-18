@@ -31,7 +31,7 @@ export function fromCSV(url, dateStructure, options) {
                 // Format the dataset that is used to draw the lines
                 const plotData = data.map((d) => {
                     return {
-                        date: +d.date,
+                        date: d.date,
                         open: +d.open,
                         close: +d. close,
                         high: +d.high,

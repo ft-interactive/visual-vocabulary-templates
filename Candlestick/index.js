@@ -46,7 +46,7 @@ const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const invertScale = false;
 const logScale = false;
-const intraday = false;
+const intraday = true;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -200,6 +200,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
+;
 
         currentFrame.plot()
           .selectAll('lines')
