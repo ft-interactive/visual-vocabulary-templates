@@ -145,7 +145,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesN
         .attr('transform', function(d, i) {
             let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
             let xPos = i % currentFrame.numberOfColumns();
-            return `translate(${((widthOfSmallCharts + currentFrame.rem()) * xPos + currentFrame.rem())}, ${yPos})`
+            return `translate(${(((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem())}, ${yPos})`
             })
 
         const myChart = columnChart.draw()

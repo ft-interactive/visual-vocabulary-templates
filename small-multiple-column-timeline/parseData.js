@@ -14,7 +14,7 @@ export function fromCSV(url, dateStructure, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const {yMin, joinPoints, highlightNames, dataDivisor } = options;
+                const {yMin, dataDivisor } = options;
                 // make sure all the dates in the date column are a date object
                 const parseDate = d3.timeParse(dateStructure);
                 data.forEach((d) => {

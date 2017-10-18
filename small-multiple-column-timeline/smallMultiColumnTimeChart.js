@@ -48,10 +48,6 @@ export function draw() {
         return chart;
     };
 
-    chart.highlightNames = (d) => {
-        highlightNames = d;
-        return chart;
-    };
     chart.seriesNames = (d) => {
         seriesNames = d;
         return chart;
@@ -103,9 +99,9 @@ export function drawHighlights() {
     let invertScale = false
 
     function highlights(parent) {
-        let highlights = parent.append('rect')
+        parent.append('rect')
         .attr('class', 'highlights')
-        .attr('x', d => xScale0(d.begin) - xScale1.bandwidth() / 2)
+        .attr('x', d => xScale0(d.begin) - (xScale1.bandwidth() / 2))
         .attr('width', d => (xScale0(d.end) - xScale0(d.begin) + xScale1.bandwidth()))
         .attr('y', function(d) {
               return yScale.range()[1]
