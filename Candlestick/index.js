@@ -46,7 +46,7 @@ const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const invertScale = false;
 const logScale = false;
-const intraday = true;
+const intraday = false;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -163,7 +163,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         if (intraday) {
              xDomain = plotData.map(function(d) { return d.date;})  
             }
-        else {xDomain = d3.extent(data, d => d.date)}
+        else {xDomain = d3.extent(plotData, d => d.date)}
 
         // Set up xAxis for this frame
         myXAxis
@@ -203,7 +203,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
 
         currentFrame.plot()
           .selectAll('lines')
-          .data(plotData)
+          .data(plotData.slice(0,-1))
           .enter()
           .append('g')
           .attr('class', 'lines')

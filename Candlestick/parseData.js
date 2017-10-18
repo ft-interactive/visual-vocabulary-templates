@@ -29,7 +29,15 @@ export function fromCSV(url, dateStructure, options) {
                 const valueExtent = extentMulti(data, seriesNames, yMin);
 
                 // Format the dataset that is used to draw the lines
-                const plotData = data.map(d => d);
+                const plotData = data.map((d) => {
+                    return {
+                        date: d.date,
+                        open: d.open,
+                        close: d. close,
+                        high: d.high,
+                        low: d.low
+                    }
+                });
                 const last = data[(Number(plotData.length)-1)].date
                 const newLast = new Date();
                 newLast.setDate(last.getDate()+1);

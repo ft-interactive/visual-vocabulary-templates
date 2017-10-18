@@ -20,12 +20,11 @@ export function draw() {
 
     function chart(parent) {
         let offset;
-        if (intraday) {
-            offset = scale.domain().length
+        if(intraday) {
+            offset = ((xScale.range()[1]-xScale.range()[0])/xScale.domain().length)/4
         }
-        else {offset = yScale.ticks().length}
-
-        console.log('offset', offset)
+        else {offset = ((xScale.range()[1]-xScale.range()[0])/(xScale.ticks().length))/4
+        }
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
@@ -48,13 +47,17 @@ export function draw() {
             .attr('stroke',d => colourScale(d.name));
 
         parent.append('line')
+            .attr('y1', d => yScale(+d.high))
+            .attr('x1', d => xScale(d.date)-offset/2)
+            .attr('y2', d => yScale(+d.high))
+            .attr('x2', d => xScale(d.date)+offset/2)
+            .attr('stroke',d => colourScale(d.name));
+
+        parent.append('line')
             .attr('y1', d => yScale(+d.low))
-            .attr('x1', d => xScale(d.date))
-            .attr('y2', (d) => {
-                if(d.open < d.close) {return +yScale(d.open)}
-                else {return +yScale(d.close)}
-            })
-            .attr('x2', d => xScale(d.date))
+            .attr('x1', d => xScale(d.date)-offset/2)
+            .attr('y2', d => yScale(+d.low))
+            .attr('x2', d => xScale(d.date)+offset/2)
             .attr('stroke',d => colourScale(d.name));
       
     }
