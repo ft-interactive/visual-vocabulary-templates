@@ -9,14 +9,13 @@ export function draw() {
     let xScale1 = d3.scaleBand();
     let seriesNames = [];
     let yAxisAlign = 'right';
-  const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
-  let annotate = false; // eslint-disable-line
+    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
+    let annotate = false; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
-    // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
+        // .range(gChartcolour.lineWeb)
+        .domain(seriesNames);
 
     function chart(parent) {
-
         parent.selectAll('rect')
             .data(d => d.columnData)
             .enter()
@@ -24,17 +23,17 @@ export function draw() {
             .attr('class', 'columns')
             .attr('id', d => `date: ${d.date} value: ${d.value}`)
             .attr('x', d => xScale0(d.date))
-            .attr('transform', d => `translate(${-xScale1.bandwidth()/2},0)`)
+            .attr('transform', () => `translate(${-xScale1.bandwidth() / 2},0)`)
             .attr('width', () => xScale1.bandwidth())
             .attr('y', d => yScale(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
-            .attr('fill', d => colourScale());
+            .attr('fill', () => colourScale());
 
-        //add titles for each chart
+        // add titles for each chart
         parent.append('text')
-            .attr("class", "chart-label")
-            .attr("dy", -5)
-            .text((d) => d.name.toUpperCase());
+            .attr('class', 'chart-label')
+            .attr('dy', -5)
+            .text(d => d.name.toUpperCase());
     }
 
     chart.yScale = (d) => {
@@ -100,19 +99,15 @@ export function drawHighlights() {
     let yScale = d3.scaleLinear();
     let xScale0 = d3.scaleTime();
     let xScale1 = d3.scaleBand();
-    let invertScale = false
+    let invertScale = false; // eslint-disable-line
 
     function highlights(parent) {
-        let highlights = parent.append('rect')
+        const highlights = parent.append('rect')
         .attr('class', 'highlights')
         .attr('x', d => xScale0(d.begin) - xScale1.bandwidth() / 2)
         .attr('width', d => (xScale0(d.end) - xScale0(d.begin) + xScale1.bandwidth()))
-        .attr('y', function(d) {
-              return yScale.range()[1]
-            })
-        .attr('height', function (d) {
-            return yScale.range()[0]
-        })
+        .attr('y', () => yScale.range()[1])
+        .attr('height', () => yScale.range()[0])
         .attr('fill', '#fff1e0');
     }
 
@@ -150,18 +145,18 @@ export function drawAnnotations() {
 
     function annotations(parent) {
         parent.append('line')
-      .attr('class', 'annotation')
-      .attr('x1', d => xScale0(d.date))
-      .attr('x2', d => xScale0(d.date))
-      .attr('y1', yScale.range()[0])
-      .attr('y2', yScale.range()[1] - 5);
+            .attr('class', 'annotation')
+            .attr('x1', d => xScale0(d.date))
+            .attr('x2', d => xScale0(d.date))
+            .attr('y1', yScale.range()[0])
+            .attr('y2', yScale.range()[1] - 5);
 
         parent.append('text')
-      .attr('class', 'annotation')
-      .attr('text-anchor', 'middle')
-      .attr('x', d => xScale0(d.date))
-      .attr('y', yScale.range()[1] - (rem / 2))
-      .text(d => d.annotate);
+            .attr('class', 'annotation')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale0(d.date))
+            .attr('y', yScale.range()[1] - (rem / 2))
+            .text(d => d.annotate);
     }
 
     annotations.yScale = (d) => {
