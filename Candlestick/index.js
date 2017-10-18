@@ -208,7 +208,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .data(plotData.slice(0,-1))
           .enter()
           .append('g')
-          .attr('class', 'lines')
+          .attr('class', 'whisker')
           .attr('id', d => d.name)
           .call(myChart);
 
