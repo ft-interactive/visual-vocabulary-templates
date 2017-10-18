@@ -14,7 +14,7 @@ export function fromCSV(url, dateStructure, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const {xMin, joinPoints, highlightNames, dataDivisor } = options;
+                const { xMin, dataDivisor } = options;
                 // make sure all the dates in the date column are a date object
                 const parseDate = d3.timeParse(dateStructure);
                 data.forEach((d) => {
@@ -55,7 +55,7 @@ export function fromCSV(url, dateStructure, options) {
                     data,
                     valueExtent,
                     highlights,
-                    annos
+                    annos,
                 });
             }
         });
@@ -82,7 +82,7 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, xMin) {
     const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => row[key])
+        const values = columns.map(key => row[key])
         .map((item) => {
             if (!item || item === '*') {
                 return xMin;
@@ -113,7 +113,7 @@ function getColumns(data, group, dataDivisor) {
         const column = {
             name: group,
             date: el.date,
-            value: +(el[group]/dataDivisor),
+            value: +(el[group] / dataDivisor),
             highlight: el.highlight,
             annotate: el.annotate,
         };

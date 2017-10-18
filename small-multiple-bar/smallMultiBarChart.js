@@ -6,7 +6,7 @@ let rem = 10;
 export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleLinear();
-    const colourScale = d3.scaleOrdinal()
+    const colourScale = d3.scaleOrdinal();
     // .range(gChartcolour.lineWeb)
     // .domain(seriesNames);
 
@@ -17,18 +17,18 @@ export function draw() {
             .append('rect')
             .attr('class', 'columns')
             .attr('id', d => `date: ${d.name} value: ${d.value}`)
-            .attr('x', d => xScale(Math.min(d.value,0)))
+            .attr('x', d => xScale(Math.min(d.value, 0)))
             // .attr('transform', d => `translate(0, ${yScale.bandwidth()})`)
             .attr('height', () => yScale.bandwidth())
-            .attr('y', (d,i) => ((yScale.bandwidth() + (yScale.bandwidth() * yScale.paddingInner())) * i) + rem)
+            .attr('y', (d, i) => ((yScale.bandwidth() + (yScale.bandwidth() * yScale.paddingInner())) * i) + rem)
             .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
-            .attr('fill', d => colourScale());
+            .attr('fill', () => colourScale());
 
-        //add titles for each chart
+        // add titles for each chart
         parent.append('text')
-            .attr("class", "chart-label")
-            .attr("dy", -(rem / 2))
-            .text((d) => d.name.toUpperCase());
+            .attr('class', 'chart-label')
+            .attr('dy', -(rem / 2))
+            .text(d => d.name.toUpperCase());
     }
 
     chart.yScale = (d) => {
@@ -73,16 +73,16 @@ export function drawTints() {
 
     function tints(parent) {
         parent
-        .each(function(d,i){
-            if ( d3.select(this).attr('xPosition') === '0') {
-                var tints = d3.select(this).select('.tint').selectAll('rect')
-                .data(d => d.columnData)
-                .enter()
-                .append('rect')
-                .attr('x', -yLabelWidth - (rem * 0.3))
-                .attr('y', (d,i) => ((yScale.bandwidth() + (yScale.bandwidth() * yScale.paddingInner())) * i) + rem)
-                .attr('width', plotDim.width - (rem * 0.4) )
-                .attr('height', yScale.bandwidth())
+        .each(function addTints() {
+            if (d3.select(this).attr('xPosition') === '0') {
+                d3.select(this).select('.tint').selectAll('rect')
+                    .data(d => d.columnData)
+                    .enter()
+                    .append('rect')
+                    .attr('x', -yLabelWidth - (rem * 0.3))
+                    .attr('y', (d, i) => ((yScale.bandwidth() + (yScale.bandwidth() * yScale.paddingInner())) * i) + rem)
+                    .attr('width', window.plotDim.width - (rem * 0.4))
+                    .attr('height', yScale.bandwidth());
             }
         });
     }
@@ -116,4 +116,3 @@ export function drawTints() {
 
     return tints;
 }
-

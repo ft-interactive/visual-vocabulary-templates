@@ -37,8 +37,8 @@ const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 4;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
-const endTicks = true;// show just first and last date on x-Axis
-const fullYear = true; //show full years for dates on x-Axis
+const endTicks = true; /* show just first and last date on x-Axis */ // eslint-disable-line
+const fullYear = true; /* show full years for dates on x-Axis */ // eslint-disable-line
 const showTints = true; // show tint bands behind charts
 const dataDivisor = 1; // divides data values to more manageable numbers
 const hideAxisLabels = true; // hide axis labels on middle columns of charts to avoid duplication
@@ -48,7 +48,7 @@ const minorAxis = false;// turns on or off the minor axis
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
  .margin({ top: 10, left: 0, bottom: 88, right: 5 })
- //.title('Put headline here') // use this if you need to override the defaults
+ // .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(1000)
  .extend('numberOfColumns', 2)
@@ -79,14 +79,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
-  //.width(53.71)// 1 col
+  // .width(53.71)// 1 col
   .width(112.25)// 2 col
-  //.width(170.8)// 3 col
-  //.width(229.34)// 4 col
-  //.width(287.88)// 5 col
-  //.width(346.43)// 6 col
-  //.width(74)// markets std print
-  .height(150)//markets std print
+  // .width(170.8)// 3 col
+  // .width(229.34)// 4 col
+  // .width(287.88)// 5 col
+  // .width(346.43)// 6 col
+  // .width(74)// markets std print
+  .height(150)// markets std print
   .extend('numberOfColumns', 3)
   .extend('numberOfRows', 4),
 
@@ -111,40 +111,39 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnNames, data, plotData, valueExtent}) => {
-
+parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, plotData, valueExtent }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
         const myXAxis = gAxis.xLinear();// sets up yAxis
         const myYAxis = gAxis.yOrdinal();// sets up date xAxis
-        const myLegend = gLegend.legend();// sets up the legend
-        const plotDim = currentFrame.dimension()//useful variable to carry the current frame dimensions
+        const myLegend = gLegend.legend(); /* sets up the legend */ // eslint-disable-line
+        const plotDim = currentFrame.dimension();// useful variable to carry the current frame dimensions
 
-        //Create the plot widths, but for each individual graph
-        const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows())  - (currentFrame.rem() * 2.5));
+        // Create the plot widths, but for each individual graph
+        const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows()) - (currentFrame.rem() * 2.5));
 
         const tickSize = heightOfSmallCharts;// Used when drawing the yAxis ticks
 
 
-        //draw the chart holders
-        let chart = currentFrame.plot()
+        // draw the chart holders
+        const chart = currentFrame.plot()
         .selectAll('g')
         .data(plotData)
             .enter()
         .append('g')
         .attr('id', d => d.name)
         .attr('class', 'columnHolder')
-        .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns() )
+        .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns());
 
         // draw tint highlight holders
-        let tints = chart
-        .append('g')
-        .attr('class', 'tint')
+        const tints = chart // eslint-disable-line
+            .append('g')
+            .attr('class', 'tint');
 
-        const myTints = barChart.drawTints()
-        const myChart = barChart.draw()
+        const myTints = barChart.drawTints();
+        const myChart = barChart.draw();
 
 
         myYAxis
@@ -171,7 +170,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
             myYAxis.yLabel().selectAll('text')
-                .attr('dy', currentFrame.rem() );
+                .attr('dy', currentFrame.rem());
         }
 
         d3.select(currentFrame.plot().node().parentNode)
@@ -180,42 +179,42 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
         const widthOfSmallCharts = (((currentFrame.dimension().width + currentFrame.rem()) / currentFrame.numberOfColumns()) - (currentFrame.rem() * 2.5));
 
         chart
-            .attr('transform', function(d, i) {
-                let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 3.5))));
-                let xPos = i % currentFrame.numberOfColumns();
-                return `translate(${(((widthOfSmallCharts + (currentFrame.rem() * 2.5)) * xPos) + currentFrame.rem())}, ${yPos})`
-            })
+            .attr('transform', (d, i) => {
+                const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 3.5))));
+                const xPos = i % currentFrame.numberOfColumns();
+                return `translate(${(((widthOfSmallCharts + (currentFrame.rem() * 2.5)) * xPos) + currentFrame.rem())}, ${yPos})`;
+            });
 
-         myTints
+        myTints
           .yScale(myYAxis.scale())
           .plotDim(plotDim)
           .rem(currentFrame.rem())
-          .yLabelWidth(myYAxis.labelWidth())
+          .yLabelWidth(myYAxis.labelWidth());
 
         if (showTints) {
             chart
-            .call(myTints)
+            .call(myTints);
         }
 
 
         myXAxis
           .range([widthOfSmallCharts, 0])
-          .domain([Math.max(xMax/dataDivisor, valueExtent[1]/dataDivisor), Math.min(xMin/dataDivisor, valueExtent[0]/dataDivisor)])
+          .domain([Math.max(xMax / dataDivisor, valueExtent[1] / dataDivisor), Math.min(xMin / dataDivisor, valueExtent[0] / dataDivisor)])
           .numTicks(numTicks)
           .tickSize(tickSize)
           .xAxisHighlight(xAxisHighlight)
           .align(xAxisAlign)
-          .frameName(frameName)
+          .frameName(frameName);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
         chart
           .call(myXAxis);
 
-        if (hideAxisLabels)
+        if (hideAxisLabels) {
             chart
-                .each(function(d, i) {
-                    let xPosAttr = Number(d3.select(this).attr('xPosition'));
+                .each(function hideLabels() {
+                    const xPosAttr = Number(d3.select(this).attr('xPosition'));
 
                     if (xPosAttr > 0) {
                         d3.select(this).selectAll('.yAxis .tick text').style('visibility', 'hidden');
@@ -223,16 +222,16 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
                     if (xPosAttr > 0 && xPosAttr < (currentFrame.numberOfColumns() - 1)) {
                         d3.select(this).selectAll('.xAxis .tick text').style('visibility', 'hidden');
                     }
-                })
+                });
+        }
 
-        if (xAxisAlign == 'bottom' ){
+        if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0, ${heightOfSmallCharts})`);
-            if(minorAxis) {
+            if (minorAxis) {
                 myXAxis.xLabelMinor().attr('transform', `translate(0, ${heightOfSmallCharts})`);
-
             }
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0, ${myXAxis.tickSize() + (currentFrame.rem() * 0.7)})`);
         }
 
@@ -245,8 +244,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({columnN
 
         // //Draw the lines
         chart
-          .call(myChart)
-
+          .call(myChart);
     });
     // addSVGSavers('figure.saveable');
 });
