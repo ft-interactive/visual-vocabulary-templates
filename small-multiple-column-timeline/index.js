@@ -140,12 +140,12 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({ series
         .append('g')
         .attr('id', d => d.name)
         .attr('class', 'columnHolder')
-        .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns() )
-        .attr('transform', function(d, i) {
-            let yPos = Number((Math.floor( i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
-            let xPos = i % currentFrame.numberOfColumns();
-            return `translate(${(((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem())}, ${yPos})`
-            })
+        .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns())
+        .attr('transform', (d, i) => {
+            const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
+            const xPos = i % currentFrame.numberOfColumns();
+            return `translate(${(((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem())}, ${yPos})`;
+        });
 
         const myChart = columnChart.draw()
           .seriesNames(seriesNames)

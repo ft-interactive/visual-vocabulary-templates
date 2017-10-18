@@ -101,7 +101,7 @@ export function drawHighlights() {
         parent.append('rect')
         .attr('class', 'highlights')
         .attr('x', d => xScale0(d.begin) - (xScale1.bandwidth() / 2))
-        .attr('width', d => (xScale0(d.end) - xScale0(d.begin) + xScale1.bandwidth()))
+        .attr('width', d => (xScale0(d.end) - xScale0(d.begin)) + xScale1.bandwidth())
         .attr('y', () => yScale.range()[1])
         .attr('height', () => yScale.range()[0])
         .attr('fill', '#fff1e0');
