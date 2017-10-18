@@ -199,7 +199,8 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName));
+          .colourPalette((frameName))
+          .intraday(intraday);
 ;
 
         currentFrame.plot()
