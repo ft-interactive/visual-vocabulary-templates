@@ -17,13 +17,14 @@ export function draw() {
 
     function chart(parent) {
 
+
         const area = d3.area()
-            .x(d => xScale(d.lineData.date))
-            .y0(d => yScale(d.lineData.value[0]))
-            .y1(d => yScale(d.lineData.value[1]));
+            .x(d =>  xScale(d.date) )
+            .y0(d => yScale(0))
+            .y1(d => yScale(d.value));
 
         parent.append('path')
-            .attr('d', area)
+            .attr('d', d => area(d.lineData))
             .style('fill', d => colourScale(d.key));
 
         // add titles for each chart
@@ -79,7 +80,7 @@ export function draw() {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.lineWeb);
+            colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
         }
