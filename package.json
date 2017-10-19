@@ -16,7 +16,7 @@
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-plugin-html": "^3.0.0",
+    "eslint-plugin-html": "^3.2.2",
     "eslint-plugin-import": "^2.6.0"
   },
   "eslintConfig": {
@@ -34,10 +34,16 @@
           "functions": false
         }
       ],
-      "max-len": ["error", {
-        "ignoreTrailingComments": true
-      }],
-      "indent": ["error", 2]
+      "max-len": [
+        "error",
+        {
+          "ignoreTrailingComments": true
+        }
+      ],
+      "indent": [
+        "error",
+        2
+      ]
     },
     "env": {
       "browser": true
