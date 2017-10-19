@@ -19,11 +19,11 @@ export function draw() {
     function chart(parent) {
         let bandwidth = 10;
         if(intraday) {
-            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / xScale.domain().length) * 0.25;
+            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / xScale.domain().length) * 0.3;
         }
          else{
             let ticks = xScale.ticks().length;
-            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / (ticks)) * 0.25;
+            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / (ticks)) * 0.3;
         }
 
         parent.append('line')
