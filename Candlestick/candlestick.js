@@ -154,9 +154,7 @@ export function drawHighlights() {
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
         .attr('y', d => yScale.range()[1])
-        .attr('height', d => yScale.range()[0])
-        .attr('fill', '#fff1e0');
-        
+        .attr('height', d => yScale.range()[0]);        
     }
 
     highlights.yScale = (d) => {
@@ -167,19 +165,6 @@ export function drawHighlights() {
         xScale = d;
         return highlights;
     };
-    highlights.yRange = (d) => {
-        yScale.range(d);
-        return highlights;
-    };
-    highlights.xRange = (d) => {
-        xScale.range(d);
-        return highlights;
-    };
-    highlights.invertScale = (d) => {
-        invertScale = d;
-        return highlights;
-    };
-
     return highlights;
 
 }
