@@ -119,7 +119,9 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = candlestick.draw();
-                const myHighlights = candlestick.drawHighlights();// sets up highlight tonal bands
+        const myHighlights = candlestick.drawHighlights();// sets up highlight tonal bands
+        const myAnnotations = candlestick.drawAnnotations();// sets up annotations
+
 
           // .seriesNames(seriesNames)
           // .highlightNames(highlightNames)
@@ -230,6 +232,21 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .enter()
           .append('g')
           .call(myHighlights);
+
+        // Set up highlights for this frame
+        myAnnotations
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .rem(currentFrame.rem());
+
+        // Draw the annotations before the lines
+        plotAnnotation
+          .selectAll('.annotation')
+          .data(annos)
+          .enter()
+          .append('g')
+          .call(myAnnotations);
+
 
     });
     // addSVGSavers('figure.saveable');
