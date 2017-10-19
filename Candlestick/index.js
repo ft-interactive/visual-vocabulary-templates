@@ -28,7 +28,7 @@ const dateStructure = '%d/%m/%Y';
 
 const sharedConfig = {
     title: 'Candlestick chart',
-    subtitle: 'Intraday false',
+    subtitle: 'Intraday true',
     source: 'Source not yet added',
 };
 
@@ -216,7 +216,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
 
         currentFrame.plot()
           .selectAll('lines') 
-          .data(plotData)
+          .data(plotData.slice(0,-1))
           .enter()
           .append('g')
           .attr('class', 'whisker')

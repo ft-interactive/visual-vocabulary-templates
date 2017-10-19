@@ -40,16 +40,16 @@ export function fromCSV(url, dateStructure, options) {
                     }
                 });
 
-                console.log('plotDate', plotData);
+                //Adds extra date to plotData so there is space at the end of the chart
+                const last = data[(Number(plotData.length) - 1)].date;
+                console.log("last",last)
+                let newLast = new Date();
+                console.log('newLast', newLast)
+                newLast.setDate(last.getDate() + 1);
+                console.log('newLast', newLast)
+                plotData.push({date: newLast});
 
-                // const last = data[(Number(plotData.length) - 1)].date;
-                // const newLast = new Date();
-                // newLast.setDate(last.getDate() + 1);
-                // plotData.push({date: newLast});
-                // console.log('plotData after', plotData);
-
-
-                
+                console.log(plotData)
 
                  // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));

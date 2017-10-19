@@ -65,7 +65,6 @@ export function draw() {
         boxWidth = d;
         return chart;
     };
-
     chart.yScale = (d) => {
         if (!d) return yScale;
         yScale = d;
@@ -76,18 +75,6 @@ export function draw() {
         yAxisAlign = d;
         return chart;
     };
-    chart.yDomain = (d) => {
-        if (!d) return yDomain;
-        yScale.domain(d);
-        return chart;
-    };
-
-    chart.yRange = (d) => {
-        if (!d) return yRange;
-        yScale.range(d);
-        return chart;
-    };
-
     chart.highlightNames = (d) => {
         highlightNames = d;
         return chart;
@@ -104,16 +91,6 @@ export function draw() {
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
-        return chart;
-    };
-    chart.xDomain = (d) => {
-        if (!d) return xDomain;
-        xScale.domain(d);
-        return chart;
-    };
-    chart.xRange = (d) => {
-        if (!d) return xRange;
-        xScale.range(d);
         return chart;
     };
     chart.plotDim = (d) => {
