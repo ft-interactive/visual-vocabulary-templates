@@ -15,9 +15,10 @@ export function draw() {
     let interpolation = d3.curveLinear;
     let colourScale = d3.scaleOrdinal();
     let intraday;
+    let boxWidth = 7;
 
     function chart(parent) {
-        let bandwidth = rem * 0.7;
+        boxWidth = boxWidth * 0.5;
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
@@ -39,19 +40,19 @@ export function draw() {
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
-            .attr('x1', d => xScale(d.date) - (bandwidth / 2))
+            .attr('x1', d => xScale(d.date) - (boxWidth / 2))
             .attr('y2', d => yScale(+d.high))
-            .attr('x2', d => xScale(d.date) + (bandwidth / 2));
+            .attr('x2', d => xScale(d.date) + (boxWidth / 2));
 
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
-            .attr('x1', d => xScale(d.date) - (bandwidth / 2))
+            .attr('x1', d => xScale(d.date) - (boxWidth / 2))
             .attr('y2', d => yScale(+d.low))
-            .attr('x2', d => xScale(d.date) + (bandwidth / 2));
+            .attr('x2', d => xScale(d.date) + (boxWidth / 2));
 
         parent.append('rect')
-            .attr('x', d => xScale(d.date) - (bandwidth / 2))
-            .attr('width', bandwidth)
+            .attr('x', d => xScale(d.date) - (boxWidth / 2))
+            .attr('width', boxWidth)
             .attr('y', d => yScale(d.y))
             .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
             .attr('fill', (d) => {
@@ -59,6 +60,11 @@ export function draw() {
                 return colourScale(7);
             });
     }
+    chart.boxWidth = (d) => {
+        if (!d) return boxWidth;
+        boxWidth = d;
+        return chart;
+    };
 
     chart.yScale = (d) => {
         if (!d) return yScale;

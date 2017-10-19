@@ -32,9 +32,9 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 14;// sets the minimum value on the yAxis
-const yMax = 20;// sets the maximum value on the xAxis
-const yAxisHighlight = 14; // sets which tick to highlight on the yAxis
+const yMin = 560;// sets the minimum value on the yAxis
+const yMax = 680;// sets the maximum value on the xAxis
+const yAxisHighlight = 560; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
@@ -203,13 +203,16 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
+        const boxWidth = (currentFrame.dimension().width) / (plotData.length-1);
+
         myChart
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette(chartColour)
-          .intraday(intraday);
+          .intraday(intraday)
+          .boxWidth(boxWidth);
 
         currentFrame.plot()
           .selectAll('lines') 
