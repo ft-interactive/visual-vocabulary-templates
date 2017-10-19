@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 import gChartcolour from 'g-chartcolour';
 
-let rem = 10;
 
 export function draw() {
+    let rem = 10;
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
     let seriesNames = [];
@@ -13,7 +13,7 @@ export function draw() {
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
-    const colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
     let intraday;
@@ -63,7 +63,11 @@ export function draw() {
             .attr('width', bandwidth)
             .attr('y', d => yScale(d.y))
             .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
-            .attr('fill', '#000000')
+            .attr('fill', (d) =>{
+                if (d.close > d.open) { return colourScale(6)};
+                return colourScale(7)
+
+            })
       
     }
 
@@ -136,22 +140,14 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            }
-            return chart;
-        }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.lineWeb);
+            colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };

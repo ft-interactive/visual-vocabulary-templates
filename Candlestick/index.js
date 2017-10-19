@@ -8,6 +8,7 @@ import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as candlestick from './candlestick.js';
+import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 
@@ -26,14 +27,14 @@ const dateStructure = '%d/%m/%Y';
 */
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Candlestick chart',
+    subtitle: 'Intraday false',
     source: 'Source not yet added',
 };
 
 const yMin = 560;// sets the minimum value on the yAxis
 const yMax = 620;// sets the maximum value on the xAxis
-const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
+const yAxisHighlight = 560; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
@@ -46,7 +47,11 @@ const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const invertScale = false;
 const logScale = false;
-const intraday = true;
+const intraday = false;
+const chartColour = d3.scaleOrdinal()
+  .domain(Object.keys(gChartcolour.categorical_bar))
+  .range(Object.values(gChartcolour.categorical_bar));
+
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -199,7 +204,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName))
+          .colourPalette(chartColour)
           .intraday(intraday);
 ;
 
