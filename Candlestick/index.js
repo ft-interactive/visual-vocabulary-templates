@@ -118,7 +118,9 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         const myXAxis = gAxis.xDate();// sets up xAxis
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-        const myChart = candlestick.draw()
+        const myChart = candlestick.draw();
+                const myHighlights = candlestick.drawHighlights();// sets up highlight tonal bands
+
           // .seriesNames(seriesNames)
           // .highlightNames(highlightNames)
 
@@ -206,16 +208,28 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .rem(currentFrame.rem())
           .colourPalette(chartColour)
           .intraday(intraday);
-;
 
         currentFrame.plot()
-          .selectAll('lines')
-          .data(plotData.slice(0,-1))
+          .selectAll('lines') 
+          .data(plotData.slice(0, -1))
           .enter()
           .append('g')
           .attr('class', 'whisker')
           .attr('id', d => d.name)
           .call(myChart);
+
+        // Set up highlights for this frame
+        myHighlights
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale());
+
+        //Draw the highlights before the lines and xAxis
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .call(myHighlights);
 
     });
     // addSVGSavers('figure.saveable');

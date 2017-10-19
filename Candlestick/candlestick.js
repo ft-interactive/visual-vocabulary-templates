@@ -149,6 +149,13 @@ export function drawHighlights() {
     let xScale = d3.scaleTime();
 
     function highlights(parent) {
+        parent.append('rect')
+        .attr('class', 'highlights')
+        .attr('x', d => xScale(d.begin))
+        .attr('width', d => xScale(d.end) - xScale(d.begin))
+        .attr('y', d => yScale.range()[1])
+        .attr('height', d => yScale.range()[0])
+        .attr('fill', '#fff1e0');
         
     }
 
