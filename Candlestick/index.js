@@ -179,7 +179,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         // Set up xAxis for this frame
         myXAxis
           .domain(xDomain)
-          .range([0, (currentFrame.dimension().width - boxWidth)])
+          .range([0, (currentFrame.dimension().width - (boxWidth/2))])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)
