@@ -42,13 +42,12 @@ export function fromCSV(url, dateStructure, options) {
                 });
 
                 console.log('plotDate', plotData);
-                console.log('Data after', data)
 
-                // const last = data[(Number(plotData.length)-1)].date
-                // const newLast = new Date();
-                // newLast.setDate(last.getDate()+1);
-                // plotData.push({date: newLast})
-                // console.log('plotData after', plotData)
+                const last = data[(Number(plotData.length) - 1)].date;
+                const newLast = new Date();
+                newLast.setDate(last.getDate() + 1);
+                plotData.push({date: newLast});
+                console.log('plotData after', plotData);
 
 
                 

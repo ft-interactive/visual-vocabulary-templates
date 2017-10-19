@@ -17,14 +17,7 @@ export function draw() {
     let intraday;
 
     function chart(parent) {
-        let bandwidth = 10;
-        if(intraday) {
-            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / xScale.domain().length) * 0.3;
-        }
-         else{
-            let ticks = xScale.ticks().length;
-            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / (ticks)) * 0.3;
-        }
+        let bandwidth = rem * 0.7;
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
