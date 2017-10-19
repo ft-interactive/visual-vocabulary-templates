@@ -13,60 +13,58 @@ export function draw() {
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
-    let colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal();
     let intraday;
 
     function chart(parent) {
-        let bandwidth = 10
+        let bandwidth = 10;
         if(intraday) {
-            bandwidth = ((xScale.range()[1]-xScale.range()[0])/xScale.domain().length)*0.25
+            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / xScale.domain().length) * 0.25;
         }
          else{
-            let ticks = xScale.ticks().length
-            bandwidth = ((xScale.range()[1]-xScale.range()[0])/(ticks))*0.25
+            let ticks = xScale.ticks().length;
+            bandwidth = ((xScale.range()[1] - xScale.range()[0]) / (ticks)) * 0.25;
         }
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
             .attr('x1', d => xScale(d.date))
             .attr('y2', (d) => {
-                if(d.open > d.close) {return +yScale(d.open)}
+                if (d.open > d.close) {return +yScale(d.open)}
                 else {return +yScale(d.close)}
             })
             .attr('x2', d => xScale(d.date));
-        
+
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
             .attr('x1', d => xScale(d.date))
             .attr('y2', (d) => {
-                if(d.open < d.close) {return +yScale(d.open)}
-                else {return +yScale(d.close)}
+                if (d.open < d.close) {return +yScale(d.open)}
+                else {return +yScale(d.close)};
             })
             .attr('x2', d => xScale(d.date));
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
-            .attr('x1', d => xScale(d.date)-bandwidth/2)
+            .attr('x1', d => xScale(d.date) - (bandwidth / 2))
             .attr('y2', d => yScale(+d.high))
-            .attr('x2', d => xScale(d.date)+bandwidth/2);
+            .attr('x2', d => xScale(d.date) + (bandwidth / 2));
 
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
-            .attr('x1', d => xScale(d.date)-bandwidth/2)
+            .attr('x1', d => xScale(d.date) - (bandwidth / 2))
             .attr('y2', d => yScale(+d.low))
-            .attr('x2', d => xScale(d.date)+bandwidth/2);
+            .attr('x2', d => xScale(d.date) + (bandwidth / 2));
 
         parent.append('rect')
-            .attr('x', d => xScale(d.date)-bandwidth/2)
+            .attr('x', d => xScale(d.date) - (bandwidth / 2))
             .attr('width', bandwidth)
             .attr('y', d => yScale(d.y))
             .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
-            .attr('fill', (d) =>{
-                if (d.close > d.open) { return colourScale(6)};
-                return colourScale(7)
-
-            })
-      
+            .attr('fill', (d) => {
+                if (d.close > d.open) { return colourScale(6) };
+                return colourScale(7);
+            });
     }
 
     chart.yScale = (d) => {
