@@ -20,7 +20,6 @@ export function fromCSV(url, dateStructure, options) {
                 data.forEach((d) => {
                     d.date = parseDate(d.date);
                 });
-                console.log(data)
 
                 // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
@@ -43,11 +42,11 @@ export function fromCSV(url, dateStructure, options) {
 
                 console.log('plotDate', plotData);
 
-                const last = data[(Number(plotData.length) - 1)].date;
-                const newLast = new Date();
-                newLast.setDate(last.getDate() + 1);
-                plotData.push({date: newLast});
-                console.log('plotData after', plotData);
+                // const last = data[(Number(plotData.length) - 1)].date;
+                // const newLast = new Date();
+                // newLast.setDate(last.getDate() + 1);
+                // plotData.push({date: newLast});
+                // console.log('plotData after', plotData);
 
 
                 

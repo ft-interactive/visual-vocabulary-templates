@@ -32,9 +32,9 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 560;// sets the minimum value on the yAxis
-const yMax = 620;// sets the maximum value on the xAxis
-const yAxisHighlight = 560; // sets which tick to highlight on the yAxis
+const yMin = 14;// sets the minimum value on the yAxis
+const yMax = 20;// sets the maximum value on the xAxis
+const yAxisHighlight = 14; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
@@ -47,7 +47,7 @@ const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const invertScale = false;
 const logScale = false;
-const intraday = false;
+const intraday = true;
 const chartColour = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.categorical_bar))
   .range(Object.values(gChartcolour.categorical_bar));
@@ -213,7 +213,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
 
         currentFrame.plot()
           .selectAll('lines') 
-          .data(plotData.slice(0, -1))
+          .data(plotData)
           .enter()
           .append('g')
           .attr('class', 'whisker')
