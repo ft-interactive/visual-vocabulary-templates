@@ -14,8 +14,6 @@ export function draw() {
     let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
     let colourScale = d3.scaleOrdinal()
-    // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
     let intraday;
 
     function chart(parent) {
