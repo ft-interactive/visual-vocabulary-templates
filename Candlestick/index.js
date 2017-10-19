@@ -173,11 +173,13 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
              xDomain = plotData.map(function(d) { return d.date;})  
             }
         else {xDomain = d3.extent(plotData, d => d.date)}
+        const boxWidth = (currentFrame.dimension().width) / (plotData.length-1);
+
 
         // Set up xAxis for this frame
         myXAxis
           .domain(xDomain)
-          .range([0, currentFrame.dimension().width])
+          .range([0, (currentFrame.dimension().width - boxWidth)])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)
@@ -203,8 +205,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
-        const boxWidth = (currentFrame.dimension().width) / (plotData.length-1);
-
         myChart
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
@@ -216,7 +216,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
 
         currentFrame.plot()
           .selectAll('lines') 
-          .data(plotData.slice(0,-1))
+          .data(plotData)
           .enter()
           .append('g')
           .attr('class', 'whisker')
