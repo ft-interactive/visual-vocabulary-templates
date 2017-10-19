@@ -150,3 +150,36 @@ export function draw() {
 
     return chart;
 }
+
+export function drawHighlights() {
+    let yScale = d3.scaleLinear();
+    let xScale = d3.scaleTime();
+
+    function highlights(parent) {
+        
+    }
+
+    highlights.yScale = (d) => {
+        yScale = d;
+        return highlights;
+    };
+    highlights.xScale = (d) => {
+        xScale = d;
+        return highlights;
+    };
+    highlights.yRange = (d) => {
+        yScale.range(d);
+        return highlights;
+    };
+    highlights.xRange = (d) => {
+        xScale.range(d);
+        return highlights;
+    };
+    highlights.invertScale = (d) => {
+        invertScale = d;
+        return highlights;
+    };
+
+    return highlights;
+
+}
