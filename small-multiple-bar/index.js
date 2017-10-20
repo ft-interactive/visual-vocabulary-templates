@@ -47,70 +47,82 @@ const minorAxis = false;// turns on or off the minor axis
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 10, left: 0, bottom: 88, right: 5 })
- // .title('Put headline here') // use this if you need to override the defaults
- // .subtitle("Put headline |here") //use this if you need to override the defaults
- .height(1000)
- .extend('numberOfColumns', 2)
- .extend('numberOfRows', 5),
+        .margin({
+            top: 10, left: 0, bottom: 88, right: 5,
+        })
+    // .title('Put headline here') // use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(1000)
+        .extend('numberOfColumns', 2)
+        .extend('numberOfRows', 5),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 10, left: 0, bottom: 88, right: 7 })
- // .title("Put headline here")
- .height(1000)
- .extend('numberOfColumns', 3)
- .extend('numberOfRows', 4),
+        .margin({
+            top: 10, left: 0, bottom: 88, right: 7,
+        })
+    // .title("Put headline here")
+        .height(1000)
+        .extend('numberOfColumns', 3)
+        .extend('numberOfRows', 4),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 10, left: 0, bottom: 80, right: 7 })
- // .title("Put headline here")
- .height(500)
- .fullYear(true)
- .extend('numberOfColumns', 6)
- .extend('numberOfRows', 2),
+        .margin({
+            top: 10, left: 0, bottom: 80, right: 7,
+        })
+    // .title("Put headline here")
+        .height(500)
+        .fullYear(true)
+        .extend('numberOfColumns', 6)
+        .extend('numberOfRows', 2),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 10, left: 0, bottom: 80, right: 10 })
- // .title("Put headline here")
- .height(900)
- .extend('numberOfColumns', 3)
- .extend('numberOfRows', 4),
+        .margin({
+            top: 10, left: 0, bottom: 80, right: 10,
+        })
+    // .title("Put headline here")
+        .height(900)
+        .extend('numberOfColumns', 3)
+        .extend('numberOfRows', 4),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-  // .title("Put headline here")
-  // .width(53.71)// 1 col
-  .width(112.25)// 2 col
-  // .width(170.8)// 3 col
-  // .width(229.34)// 4 col
-  // .width(287.88)// 5 col
-  // .width(346.43)// 6 col
-  // .width(74)// markets std print
-  .height(150)// markets std print
-  .extend('numberOfColumns', 3)
-  .extend('numberOfRows', 4),
+        .margin({
+            top: 40, left: 7, bottom: 35, right: 7,
+        })
+    // .title("Put headline here")
+    // .width(53.71)// 1 col
+        .width(112.25)// 2 col
+    // .width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+        .height(150)// markets std print
+        .extend('numberOfColumns', 3)
+        .extend('numberOfRows', 4),
 
- //    social: gChartframe.socialFrame(sharedConfig)
- // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
- // // .title("Put headline here")
- // .width(612)
- // .height(612), // 700 is ideal height for Instagram
+    //    social: gChartframe.socialFrame(sharedConfig)
+    // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+    // // .title("Put headline here")
+    // .width(612)
+    // .height(612), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
- .margin({ left: 207, right: 207, bottom: 210, top: 233 })
- // .title("Put headline here")
-     .extend('numberOfColumns', 6)
-     .extend('numberOfRows', 2),
+        .margin({
+            left: 207, right: 207, bottom: 210, top: 233,
+        })
+    // .title("Put headline here")
+        .extend('numberOfColumns', 6)
+        .extend('numberOfRows', 2),
 };
 
 
 // add the frames to the page...
 d3.selectAll('.framed')
-  .each(function addFrames() {
-      const figure = d3.select(this);
-      figure.select('svg')
-          .call(frame[figure.node().dataset.frame]);
-  });
+    .each(function addFrames() {
+        const figure = d3.select(this);
+        figure.select('svg')
+            .call(frame[figure.node().dataset.frame]);
+    });
 parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, plotData, valueExtent }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -129,13 +141,13 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, 
 
         // draw the chart holders
         const chart = currentFrame.plot()
-        .selectAll('g')
-        .data(plotData)
+            .selectAll('g')
+            .data(plotData)
             .enter()
-        .append('g')
-        .attr('id', d => d.name)
-        .attr('class', 'columnHolder')
-        .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns());
+            .append('g')
+            .attr('id', d => d.name)
+            .attr('class', 'columnHolder')
+            .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns());
 
         // draw tint highlight holders
         const tints = chart // eslint-disable-line
@@ -147,11 +159,11 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, 
 
 
         myYAxis
-        .align(yAxisAlign)
-        .domain(data.map(d => d.name))
-        .rangeRound([0, heightOfSmallCharts])
-        .frameName(frameName)
-        .paddingInner(0.2);
+            .align(yAxisAlign)
+            .domain(data.map(d => d.name))
+            .rangeRound([0, heightOfSmallCharts])
+            .frameName(frameName)
+            .paddingInner(0.2);
 
         // Draw the yAxis
         chart
@@ -166,7 +178,7 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, 
             myYAxis.yLabel()
                 .attr('transform', `translate(${currentFrame.dimension().width + myYAxis.labelWidth()},${0})`);
         } else {
-            const newMargin = myYAxis.labelWidth() - (currentFrame.rem() * 0.7) + currentFrame.margin().left;
+            const newMargin = (myYAxis.labelWidth() - (currentFrame.rem() * 0.7)) + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
             myYAxis.yLabel().selectAll('text')
@@ -186,30 +198,30 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, 
             });
 
         myTints
-          .yScale(myYAxis.scale())
-          .plotDim(plotDim)
-          .rem(currentFrame.rem())
-          .yLabelWidth(myYAxis.labelWidth());
+            .yScale(myYAxis.scale())
+            .plotDim(plotDim)
+            .rem(currentFrame.rem())
+            .yLabelWidth(myYAxis.labelWidth());
 
         if (showTints) {
             chart
-            .call(myTints);
+                .call(myTints);
         }
 
 
         myXAxis
-          .range([widthOfSmallCharts, 0])
-          .domain([Math.max(xMax / dataDivisor, valueExtent[1] / dataDivisor), Math.min(xMin / dataDivisor, valueExtent[0] / dataDivisor)])
-          .numTicks(numTicks)
-          .tickSize(tickSize)
-          .xAxisHighlight(xAxisHighlight)
-          .align(xAxisAlign)
-          .frameName(frameName);
+            .range([widthOfSmallCharts, 0])
+            .domain([Math.max(xMax / dataDivisor, valueExtent[1] / dataDivisor), Math.min(xMin / dataDivisor, valueExtent[0] / dataDivisor)])
+            .numTicks(numTicks)
+            .tickSize(tickSize)
+            .xAxisHighlight(xAxisHighlight)
+            .align(xAxisAlign)
+            .frameName(frameName);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
         chart
-          .call(myXAxis);
+            .call(myXAxis);
 
         if (hideAxisLabels) {
             chart
@@ -236,15 +248,15 @@ parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, 
         }
 
         myChart
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(plotDim)
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(plotDim)
+            .rem(currentFrame.rem())
+            .colourPalette((frameName));
 
         // //Draw the lines
         chart
-          .call(myChart);
+            .call(myChart);
     });
     // addSVGSavers('figure.saveable');
 });
