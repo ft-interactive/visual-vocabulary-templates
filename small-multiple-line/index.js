@@ -11,7 +11,7 @@ import * as lineChart from './smallMultiLineChart.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%d/%m/%Y';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -117,7 +117,8 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
+parseData.load(dataFile, { dateFormat, yMin, joinPoints, dataDivisor })
+.then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 

@@ -94,7 +94,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile).then((data) => {
+parseData.load(dataFile).then((data) => {
     // define chart
     const colorScale = d3.scaleOrdinal()
         .domain(partyScale.range())

@@ -3,81 +3,70 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, options) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                const { sort, sortOn } = options;
-                
-                // automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
-                const allGroups = data.map(d => d.group);
-                // create an array of the group names
-                const groupNames = allGroups.filter((el, i) => {
-                    return allGroups.indexOf(el) === i;
-                });
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames);
-                // Buid the dataset for plotting
-                const plotData = groupNames.map(d => {
-                    const values = data.filter(el => {
-                        return el.group == d
-                    });
-                    //Create an array of just the values to extract min, max and quartiles
-                    const dotValues = values.map(item => {
-                        return Number(item.value)
-                    });
-                    dotValues.sort(function(a, b) {
-                        return parseFloat(a) - parseFloat(b);
-                    });
-                    const quantiles = [];
-                    for (var i = 1; i < 4; i++) {
-                        let qData=new Object();
-                        qData.name = 'q'+i,
-                        qData.value = d3.quantile(dotValues, (i/4)),
-                        qData.group = d
-                        quantiles.push(qData)
-                    }
-                    return{
-                        group: d,
-                        values: values,
-                        quantiles: quantiles,
-                        min: d3.min(dotValues),
-                        max: d3.max(dotValues),
-                    };
-                });      
+export function load(url, options) { // eslint-disable-line
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        const { sort, sortOn } = options;
 
-                if (sort === 'descending') {
-                    plotData.sort((a, b) =>
-                    // console.log("sortON=",sortOn)
-                    // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
-                        b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
-                } else if (sort === 'ascending') {
-                    plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
-                } // Sorts biggest rects to the left
-
-                resolve({
-                    groupNames,
-                    valueExtent,
-                    seriesNames,
-                    plotData,
-                    data,
-                });
+        // automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
+        const allGroups = data.map(d => d.group);
+        // create an array of the group names
+        const groupNames = allGroups.filter((el, i) => allGroups.indexOf(el) === i);
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
+        // Buid the dataset for plotting
+        const plotData = groupNames.map((d) => {
+            const values = data.filter(el => el.group == d);
+            // Create an array of just the values to extract min, max and quartiles
+            const dotValues = values.map(item => Number(item.value));
+            dotValues.sort((a, b) => parseFloat(a) - parseFloat(b));
+            const quantiles = [];
+            for (let i = 1; i < 4; i++) {
+                const qData = new Object();
+                qData.name = `q${i}`,
+                qData.value = d3.quantile(dotValues, (i / 4)),
+                qData.group = d;
+                quantiles.push(qData);
             }
+            return {
+                group: d,
+                values,
+                quantiles,
+                min: d3.min(dotValues),
+                max: d3.max(dotValues),
+            };
         });
+
+        if (sort === 'descending') {
+            plotData.sort((a, b) =>
+            // console.log("sortON=",sortOn)
+            // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
+                b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
+        } else if (sort === 'ascending') {
+            plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
+        } // Sorts biggest rects to the left
+
+        return {
+            groupNames,
+            valueExtent,
+            seriesNames,
+            plotData,
+            data,
+        };
     });
 }
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['name','size','group','highlight'];
+    const exclude = ['name', 'size', 'group', 'highlight'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
@@ -96,4 +85,4 @@ function extentMulti(data, columns) {
         return acc;
     }, {});
     return [ext.min, ext.max];
-};
+}

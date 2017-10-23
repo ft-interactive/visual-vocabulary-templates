@@ -7,7 +7,7 @@ import * as circleTimeline from './circleTimeline.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%Y';
+const dateFormat = '%Y';
 const circleSize = 1;
 /*
   some common formatting parsers....
@@ -88,7 +88,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plotData, dateDomain }) => {
+parseData.load(dataFile, { dateFormat })
+.then(({ valueExtent, seriesNames, plotData, dateDomain }) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
@@ -147,7 +148,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
             .rScale(rScale)
             .maxCircle(maxCircle)
             .xScale(myXAxis.scale())
-            .setDateFormat(dateStructure);
+            .setDateFormat(dateFormat);
 
         currentFrame.plot()
             .selectAll('.timelineHolder')

@@ -62,7 +62,7 @@ const frame = {
         //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
         .width(112.25)
         .height(69.85),
-        
+
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -84,7 +84,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, plotData, seriesNames }) => {
+parseData.load(dataFile, { sort })
+.then(({ valueExtent, plotData, seriesNames }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         const partyColours = d3.scaleOrdinal()
@@ -141,7 +142,7 @@ parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, plotData, seriesNames
         currentFrame.plot()
             .call(myXAxis);
 
-        
+
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }

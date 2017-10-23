@@ -7,7 +7,7 @@ import * as parseData from './parseData.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%d-%b-%y';
+const dateFormat = '%d-%b-%y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -94,7 +94,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ columnNames, seriesNames, valueExtent, plotData, data, highlights }) => {
+parseData.load(dataFile, { dateFormat })
+.then(({ columnNames, seriesNames, valueExtent, plotData, data, highlights }) => {
     // define chart
     const myChart = columnTimelineChart.draw()
           .seriesNames(seriesNames)
