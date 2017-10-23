@@ -8,6 +8,7 @@ import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as candlestick from './candlestick.js';
+import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 
@@ -26,14 +27,14 @@ const dateStructure = '%d/%m/%Y';
 */
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Candlestick chart',
+    subtitle: 'Intraday true',
     source: 'Source not yet added',
 };
 
 const yMin = 560;// sets the minimum value on the yAxis
-const yMax = 620;// sets the maximum value on the xAxis
-const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
+const yMax = 680;// sets the maximum value on the xAxis
+const yAxisHighlight = 560; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
@@ -47,6 +48,10 @@ const highlightNames = []; // create an array names you want to highlight eg. ['
 const invertScale = false;
 const logScale = false;
 const intraday = true;
+const chartColour = d3.scaleOrdinal()
+  .domain(Object.keys(gChartcolour.categorical_bar))
+  .range(Object.values(gChartcolour.categorical_bar));
+
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -113,7 +118,11 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         const myXAxis = gAxis.xDate();// sets up xAxis
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-        const myChart = candlestick.draw()
+        const myChart = candlestick.draw();
+        const myHighlights = candlestick.drawHighlights();// sets up highlight tonal bands
+        const myAnnotations = candlestick.drawAnnotations();// sets up annotations
+
+
           // .seriesNames(seriesNames)
           // .highlightNames(highlightNames)
 
@@ -163,12 +172,14 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         if (intraday) {
              xDomain = plotData.map(function(d) { return d.date;})  
             }
-        else {xDomain = d3.extent(data, d => d.date)}
+        else {xDomain = d3.extent(plotData, d => d.date)}
+        const boxWidth = (currentFrame.dimension().width) / (plotData.length-1);
+
 
         // Set up xAxis for this frame
         myXAxis
           .domain(xDomain)
-          .range([0, currentFrame.dimension().width])
+          .range([0, (currentFrame.dimension().width - (boxWidth/2))])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)
@@ -199,17 +210,46 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName))
-          .intraday(intraday);
+          .colourPalette(chartColour)
+          .intraday(intraday)
+          .boxWidth(boxWidth);
 
         currentFrame.plot()
-          .selectAll('lines')
+          .selectAll('lines') 
           .data(plotData)
           .enter()
           .append('g')
-          .attr('class', 'lines')
+          .attr('class', 'whisker')
           .attr('id', d => d.name)
           .call(myChart);
+
+        // Set up highlights for this frame
+        myHighlights
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale());
+
+        //Draw the highlights before the lines and xAxis
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .call(myHighlights);
+
+        // Set up highlights for this frame
+        myAnnotations
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .rem(currentFrame.rem());
+
+        // Draw the annotations before the lines
+        plotAnnotation
+          .selectAll('.annotation')
+          .data(annos)
+          .enter()
+          .append('g')
+          .call(myAnnotations);
+
 
     });
     // addSVGSavers('figure.saveable');

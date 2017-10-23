@@ -20,7 +20,6 @@ export function fromCSV(url, dateStructure, options) {
                 data.forEach((d) => {
                     d.date = parseDate(d.date);
                 });
-                console.log(data)
 
                 // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
@@ -29,15 +28,28 @@ export function fromCSV(url, dateStructure, options) {
                 const valueExtent = extentMulti(data, seriesNames, yMin);
 
                 // Format the dataset that is used to draw the lines
-                const plotData = data.map(d => d);
-                const last = data[(Number(plotData.length)-1)].date
-                const newLast = new Date();
-                newLast.setDate(last.getDate()+1);
-                plotData.push({date: newLast})
-                console.log(plotData)
+                const plotData = data.map((d) => {
+                    return {
+                        date: d.date,
+                        open: +d.open,
+                        close: +d. close,
+                        high: +d.high,
+                        low: +d.low,
+                        y: +Math.max(d.open, d.close),
+                        height: +Math.max(d.open,d.close) - Math.min(d.open, d.close)
+                    }
+                });
 
+                //Adds extra date to plotData so there is space at the end of the chart
+                // const last = data[(Number(plotData.length) - 1)].date;
+                // console.log("last",last)
+                // let newLast = new Date();
+                // console.log('newLast', newLast)
+                // newLast.setDate(last.getDate() + 1);
+                // console.log('newLast', newLast)
+                // plotData.push({date: newLast});
 
-                
+                // console.log(plotData)
 
                  // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
