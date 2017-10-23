@@ -104,7 +104,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
         yAxis0
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
-            .rangeRound([0, currentFrame.dimension().height])
+            .rangeRound([0, tickSize], 10)
             .frameName(frameName);
 
         yAxis1
