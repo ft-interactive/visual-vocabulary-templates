@@ -15,7 +15,6 @@ export function draw() {
     let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
     let colourScale = d3.scaleOrdinal();
-    let intraday;
     let boxWidth = 7;
 
     function chart(parent) {
