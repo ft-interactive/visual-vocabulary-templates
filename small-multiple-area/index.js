@@ -49,71 +49,71 @@ const intraday = false;
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 88, right: 5 })
- // .title('Put headline here') // use this if you need to override the defaults
- // .subtitle("Put headline |here") //use this if you need to override the defaults
- .height(1000)
- .extend('numberOfColumns', 2)
- .extend('numberOfRows', 4),
+        .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+        // .title('Put headline here') // use this if you need to override the defaults
+        // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(1000)
+        .extend('numberOfColumns', 2)
+        .extend('numberOfRows', 4),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 88, right: 5 })
- // .title("Put headline here")
- .height(1000)
- .extend('numberOfColumns', 3)
- .extend('numberOfRows', 3),
+        .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+        // .title("Put headline here")
+        .height(1000)
+        .extend('numberOfColumns', 3)
+        .extend('numberOfRows', 3),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 80, right: 5 })
- // .title("Put headline here")
- .height(500)
- .fullYear(true)
- .extend('numberOfColumns', 8)
- .extend('numberOfRows', 1),
+        .margin({ top: 10, left: 10, bottom: 80, right: 5 })
+        // .title("Put headline here")
+        .height(500)
+        .fullYear(true)
+        .extend('numberOfColumns', 8)
+        .extend('numberOfRows', 1),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 80, right: 5 })
- // .title("Put headline here")
- .height(800)
- .extend('numberOfColumns', 4)
- .extend('numberOfRows', 2),
+        .margin({ top: 10, left: 10, bottom: 80, right: 5 })
+        // .title("Put headline here")
+        .height(800)
+        .extend('numberOfColumns', 4)
+        .extend('numberOfRows', 2),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-  // .title("Put headline here")
-  // .width(53.71)// 1 col
-  .width(112.25)// 2 col
-  // .width(170.8)// 3 col
-  // .width(229.34)// 4 col
-  // .width(287.88)// 5 col
-  // .width(346.43)// 6 col
-  // .width(74)// markets std print
-  .height(150)// markets std print
-  .extend('numberOfColumns', 3)
-  .extend('numberOfRows', 3),
+        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+        // .title("Put headline here")
+        // .width(53.71)// 1 col
+        .width(112.25)// 2 col
+        // .width(170.8)// 3 col
+        // .width(229.34)// 4 col
+        // .width(287.88)// 5 col
+        // .width(346.43)// 6 col
+        // .width(74)// markets std print
+        .height(150)// markets std print
+        .extend('numberOfColumns', 3)
+        .extend('numberOfRows', 3),
 
- //    social: gChartframe.socialFrame(sharedConfig)
- // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
- // // .title("Put headline here")
- // .width(612)
- // .height(612), // 700 is ideal height for Instagram
+    //social: gChartframe.socialFrame(sharedConfig)
+        // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+        // // .title("Put headline here")
+        // .width(612)
+        // .height(612), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
- .margin({ left: 207, right: 207, bottom: 210, top: 233 })
- // .title("Put headline here")
-     .extend('numberOfColumns', 4)
-     .extend('numberOfRows', 2),
+        .margin({ left: 207, right: 207, bottom: 210, top: 233 })
+        // .title("Put headline here")
+        .extend('numberOfColumns', 4)
+        .extend('numberOfRows', 2),
 };
 
 
 // add the frames to the page...
 d3.selectAll('.framed')
-  .each(function addFrames() {
-      const figure = d3.select(this);
-      figure.select('svg')
-          .call(frame[figure.node().dataset.frame]);
-  });
-parseData.fromCSV(dataFile, dateStructure, { yMin,  dataDivisor }).then(({ seriesNames, data, plotData, valueExtent, annos }) => {
+    .each(function addFrames() {
+        const figure = d3.select(this);
+        figure.select('svg')
+            .call(frame[figure.node().dataset.frame]);
+    });
+parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({ seriesNames, data, plotData, valueExtent, annos }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -131,42 +131,41 @@ parseData.fromCSV(dataFile, dateStructure, { yMin,  dataDivisor }).then(({ serie
 
         const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
-        console.log(plotData)
         // draw the chart holders
         const chart = currentFrame.plot()
-        .selectAll('g')
-        .data(plotData)
+            .selectAll('g')
+            .data(plotData)
             .enter()
-        .append('g')
-        .attr('id', d => d.name)
-        .attr('class', 'areas')
-        .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns())
-        .attr('transform', (d, i) => {
-            const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
-            const xPos = i % currentFrame.numberOfColumns();
-            return `translate(${((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem()},${yPos})`;
-        });
+            .append('g')
+            .attr('id', d => d.name)
+            .attr('class', 'areas')
+            .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns())
+            .attr('transform', (d, i) => {
+                const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
+                const xPos = i % currentFrame.numberOfColumns();
+                return `translate(${((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem()},${yPos})`;
+            });
 
         const myChart = areaChart.draw()
-          .seriesNames(seriesNames)
-          .annotate(annotate)
+            .seriesNames(seriesNames)
+            .annotate(annotate);
 
         // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = chart.append('g').attr('class', 'annotations-holder');
 
         myYAxis
-          .domain([Math.min(yMin / dataDivisor, valueExtent[0] / dataDivisor), Math.max(yMax / dataDivisor, valueExtent[1] / dataDivisor)])
-          .range([heightOfSmallCharts, 0])
-          .numTicks(numTicksy)
-          .tickSize(tickSize)
-          .yAxisHighlight(yAxisHighlight)
-          .align(yAxisAlign)
-          .frameName(frameName);
+            .domain([Math.min(yMin / dataDivisor, valueExtent[0] / dataDivisor), Math.max(yMax / dataDivisor, valueExtent[1] / dataDivisor)])
+            .range([heightOfSmallCharts, 0])
+            .numTicks(numTicksy)
+            .tickSize(tickSize)
+            .yAxisHighlight(yAxisHighlight)
+            .align(yAxisAlign)
+            .frameName(frameName);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
         chart
-          .call(myYAxis);
+            .call(myYAxis);
 
         // return the value in the variable newMargin
         if (yAxisAlign === 'right') {
@@ -191,17 +190,17 @@ parseData.fromCSV(dataFile, dateStructure, { yMin,  dataDivisor }).then(({ serie
 
         // Set up xAxis for this frame
         myXAxis
-          .domain(xDomain)
-          .range([0, widthOfSmallCharts - myYAxis.labelWidth()])
-          .align(xAxisAlign)
-          .interval(interval)
-          .fullYear(fullYear)
-          .endTicks(endTicks)
-          .tickSize(currentFrame.rem() * 0.75)
-          .minorAxis(minorAxis)
-          .minorTickSize(currentFrame.rem() * 0.3)
-          .frameName(frameName)
-          .intraday(intraday);
+            .domain(xDomain)
+            .range([0, widthOfSmallCharts - myYAxis.labelWidth()])
+            .align(xAxisAlign)
+            .interval(interval)
+            .fullYear(fullYear)
+            .endTicks(endTicks)
+            .tickSize(currentFrame.rem() * 0.75)
+            .minorAxis(minorAxis)
+            .minorTickSize(currentFrame.rem() * 0.3)
+            .frameName(frameName)
+            .intraday(intraday);
 
         // Draw the xAxis
         chart
@@ -230,29 +229,29 @@ parseData.fromCSV(dataFile, dateStructure, { yMin,  dataDivisor }).then(({ serie
         }
 
         myChart
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette((frameName));
 
         // //Draw the lines
         chart
-          .call(myChart);
+            .call(myChart);
 
         // Set up highlights for this frame
         myAnnotations
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .rem(currentFrame.rem());
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .rem(currentFrame.rem());
 
         // Draw the annotations before the lines
         plotAnnotation
-          .selectAll('.annotation')
-          .data(annos)
-          .enter()
-          .append('g')
-          .call(myAnnotations);
+            .selectAll('.annotation')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations);
     });
     // addSVGSavers('figure.saveable');
 });
