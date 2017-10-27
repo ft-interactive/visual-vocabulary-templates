@@ -8,19 +8,16 @@ export function draw() {
     let xScale = d3.scaleTime();
     let seriesNames = [];
     let yAxisAlign = 'right';
-    let markers = false;
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
+        .domain(seriesNames);
 
     function chart(parent) {
-
-
         const area = d3.area()
-            .x(d =>  xScale(d.date) )
-            .y0(d => yScale(0))
+            .x(d => xScale(d.date))
+            .y0(yScale(0))
             .y1(d => yScale(d.value));
 
         parent.append('path')
@@ -67,15 +64,6 @@ export function draw() {
         annotate = d;
         return chart;
     };
-    chart.markers = (d) => {
-        markers = d;
-        return chart;
-    };
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
     chart.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
@@ -97,12 +85,12 @@ export function drawHighlights() {
 
     function highlights(parent) {
         const highlights = parent.append('rect') // eslint-disable-line
-        .attr('class', 'highlights')
-        .attr('x', d => xScale(d.begin))
-        .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', () => yScale.range()[1])
-        .attr('height', d => yScale.range()[0])
-        .attr('fill', '#fff1e0');
+            .attr('class', 'highlights')
+            .attr('x', d => xScale(d.begin))
+            .attr('width', d => xScale(d.end) - xScale(d.begin))
+            .attr('y', () => yScale.range()[1])
+            .attr('height', yScale.range()[0])
+            .attr('fill', '#fff1e0');
     }
 
     highlights.yScale = (d) => {
@@ -135,18 +123,18 @@ export function drawAnnotations() {
 
     function annotations(parent) {
         parent.append('line')
-      .attr('class', 'annotation')
-      .attr('x1', d => xScale(d.date))
-      .attr('x2', d => xScale(d.date))
-      .attr('y1', yScale.range()[0])
-      .attr('y2', yScale.range()[1] - 5);
+            .attr('class', 'annotation')
+            .attr('x1', d => xScale(d.date))
+            .attr('x2', d => xScale(d.date))
+            .attr('y1', yScale.range()[0])
+            .attr('y2', yScale.range()[1] - 5);
 
         parent.append('text')
-      .attr('class', 'annotation')
-      .attr('text-anchor', 'middle')
-      .attr('x', d => xScale(d.date))
-      .attr('y', yScale.range()[1] - (rem / 2))
-      .text(d => d.annotate);
+            .attr('class', 'annotation')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.date))
+            .attr('y', yScale.range()[1] - (rem / 2))
+            .text(d => d.annotate);
     }
 
     annotations.yScale = (d) => {

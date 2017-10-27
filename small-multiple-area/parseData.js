@@ -34,7 +34,7 @@ export function fromCSV(url, dateStructure, options) {
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames, yMin);
 
-                 // Filter data for annotations
+                // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
                 // Format the data that is used to draw highlight tonal bands
@@ -81,12 +81,12 @@ export function getSeriesNames(columns) {
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
         const values = columns.map(key => row[key])
-        .map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
+            .map((item) => {
+                if (!item || item === '*') {
+                    return yMin;
+                }
+                return Number(item);
+            });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
@@ -113,7 +113,6 @@ export function getlines(d, group, joinPoints, dataDivisor) {
         column.value = +(el[group] / dataDivisor);
         column.highlight = el.highlight;
         column.annotate = el.annotate;
-        console.log(dataDivisor);
         if (el[group]) {
             lineData.push(column);
         }
