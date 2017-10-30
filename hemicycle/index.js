@@ -16,18 +16,7 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const parties = {
-    llamas: '#ff0000',
-    avocados: '#00ff00',
-    ducks: '#0000ff',
-};
-
-const partyOrder = {
-    llamas: 1,
-    ducks: 2,
-    avocados: 3,
-    empty: 99,
-};
+const partyOrder = {};
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -76,7 +65,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile).then(({ data, plotData, seriesNames }) => {
+parseData.load(dataFile).then(({ data, plotData, seriesNames }) => {
     // define chart
     const myChart = hemicycle.draw()
         .datasize(data.reduce((col, d) => col + Number(d.seats), 0));

@@ -4,7 +4,7 @@ import * as CHANGETHISTOYOURCHARTNAME from './chartNameHere.js';
 import * as parseData from './parseData.js';
 
 // User defined constants similar to version 2
-const dateStructure = '%d/%m/%Y';
+const dateFormat = '%d/%m/%Y';
 
 const dataFile = 'data.csv';
 
@@ -48,13 +48,13 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-    //.width(53.71)// 1 col 
-    .width(112.25)// 2 col 
+    //.width(53.71)// 1 col
+    .width(112.25)// 2 col
     //.width(170.8)// 3 col
     //.width(229.34)// 4 col
-    //.width(287.88)// 5 col 
+    //.width(287.88)// 5 col
     //.width(346.43)// 6 col
-    //.width(74)// markets std print 
+    //.width(74)// markets std print
     .height(58.21),//markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -75,7 +75,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then((data) => {
+parseData.load(dataFile, { dateFormat }).then((data) => {
     // define chart
     const myChart = CHANGETHISTOYOURCHARTNAME.draw() // eslint-disable-line
         .seriesNames(data.seriesNames);

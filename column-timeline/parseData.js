@@ -3,57 +3,56 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
+export function load(url, options) { // eslint-disable-line
+    const { dateFormat } = options;
 
-                // automatically calculate the seriesnames excluding the "name" column
-                const seriesNames = getSeriesNames(data.columns);
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateFormat);
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
+        });
 
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames);
+        // automatically calculate the seriesnames excluding the "name" column
+        const seriesNames = getSeriesNames(data.columns);
 
-                const columnNames = data.map(d => d.date); // create an array of the column names
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
 
-                // format the data that is used to draw highlight tonal bands
-                const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-                const highlights = [];
+        const columnNames = data.map(d => d.date); // create an array of the column names
 
-                boundaries.forEach((d, i) => {
-                    if (d.highlight === 'begin') {
-                        highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-                    }
-                });
+        // format the data that is used to draw highlight tonal bands
+        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const highlights = [];
 
-                // format the dataset that is used to draw the lines
-                const plotData = seriesNames.map(d => ({
-                    name: d,
-                    columnData: getColumns(data, d),
-                }));
-
-                resolve({
-                    columnNames,
-                    seriesNames,
-                    valueExtent,
-                    plotData,
-                    data,
-                    highlights
-                });
+        boundaries.forEach((d, i) => {
+            if (d.highlight === 'begin') {
+                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+
+        // format the dataset that is used to draw the lines
+        const plotData = seriesNames.map(d => ({
+            name: d,
+            columnData: getColumns(data, d),
+        }));
+
+        return {
+            columnNames,
+            seriesNames,
+            valueExtent,
+            plotData,
+            data,
+            highlights,
+        };
     });
 }
 

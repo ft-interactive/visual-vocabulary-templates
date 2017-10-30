@@ -8,7 +8,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lollipopChart from './lollipopChart.js';
 
-const dataURL = "data.csv"
+const dataURL = 'data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -70,13 +70,13 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-    //.width(53.71)// 1 col 
-    .width(112.25)// 2 col 
+    //.width(53.71)// 1 col
+    .width(112.25)// 2 col
     //.width(170.8)// 3 col
     //.width(229.34)// 4 col
-    //.width(287.88)// 5 col 
+    //.width(287.88)// 5 col
     //.width(346.43)// 6 col
-    //.width(74)// markets std print 
+    //.width(74)// markets std print
     .height(58.21),//markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -98,7 +98,8 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataURL).then(({ seriesNames, valueExtent, data }) => {
+parseData.load(dataURL)
+.then(({ seriesNames, valueExtent, data }) => {
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xOrdinal();

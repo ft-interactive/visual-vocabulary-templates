@@ -3,26 +3,24 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
-
-                resolve(data);
-            }
+export function load(url, options) { // eslint-disable-line
+    const { dateFormat } = options;
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateFormat);
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
         });
+
+        return data;
     });
 }
 

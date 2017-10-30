@@ -8,7 +8,7 @@ import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as pieChart from './pieChart.js';
 
-const dataURL="data.csv"
+const dataURL = 'data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -48,13 +48,13 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 20, bottom: 35, right: 20 })
     // .title("Put headline here")
- 	  //.width(53.71)// 1 col 
-    .width(112.25)// 2 col 
+ 	  //.width(53.71)// 1 col
+    .width(112.25)// 2 col
     //.width(170.8)// 3 col
     //.width(229.34)// 4 col
-    //.width(287.88)// 5 col 
+    //.width(287.88)// 5 col
     //.width(346.43)// 6 col
-    //.width(74)// markets std print 
+    //.width(74)// markets std print
     .height(58.21),//markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -77,9 +77,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataURL).then(({ seriesNames, data }) => {
+parseData.load(dataURL).then(({ seriesNames, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
-
 
     const valueFormat = d => d3.format(',')(d);
     const pie = d3.pie()
@@ -88,7 +87,7 @@ parseData.fromCSV(dataURL).then(({ seriesNames, data }) => {
 
     // define chart
     const myChart = pieChart.draw()
-              .seriesNames(seriesNames)
+              .seriesNames(seriesNames);
           // .plotDim(currentFrame.dimension())
           // .rem(currentFrame.rem())
           // .colourPalette((frameName));
@@ -114,9 +113,6 @@ parseData.fromCSV(dataURL).then(({ seriesNames, data }) => {
               .attr('class', 'arc')
               .attr('transform', `translate(${currentFrame.dimension().width / 2},${currentFrame.dimension().height / 2} )`)
           .call(myChart);
-
-
-          
     });
     // addSVGSavers('figure.saveable');
 });

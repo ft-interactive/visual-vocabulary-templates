@@ -83,7 +83,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataURL).then(({ seriesNames, setColourPalette, groupNames, dataSorter, data }) => {
+parseData.load(dataURL).then(({ seriesNames, setColourPalette, groupNames, dataSorter, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
     const valueExtent = parseData.extentMulti(data, seriesNames);
     data.sort(dataSorter);
