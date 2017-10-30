@@ -24,7 +24,6 @@ export function fromCSV(url, dateStructure, options) {
                 // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
 
-
                 // Format the dataset that is used to draw the lines
                 const plotData = seriesNames.map(d => ({
                     name: d,
@@ -68,7 +67,12 @@ export function fromCSV(url, dateStructure, options) {
  */
 export function getSeriesNames(columns) {
     const exclude = ['date', 'annotate', 'highlight'];
-    return columns.filter(d => (exclude.indexOf(d) === -1));
+    const columnHeadings = columns.filter(d => (exclude.indexOf(d) === -1));// return column headings with excluded column names
+    const columnsToDedupe = [];
+
+    columnHeadings.forEach((el) => { columnsToDedupe.push(el.split('_')[0]); });// split the column names on delimeter
+
+    return Array.from(new Set(columnsToDedupe)); // returns a deduped array
 }
 
 /**
