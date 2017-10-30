@@ -6,16 +6,22 @@ export function draw() {
     let yAxisAlign = 'right';
     let rem = 16;
     let thresholds = 4;
+    let colourScale;
     let markers = false; // eslint-disable-line
     let includeMarker = false; // eslint-disable-line
     let interpolation = false;
+    let barPadding = 2;
 
     function chart(parent) {
-        parent.append('rect')
+        const bins = parent.datum();
+        parent.selectAll('.bar')
+            .data(bins)
+            .enter()
+            .append('rect')
             .attr('class', 'bar')
             .attr('x', d => xScale(d.x0))
             .attr('y', d => yScale(Math.max(0, d.length)))
-            .attr('width', d => 40)
+            .attr('width', xScale(bins[0].x1) - xScale(bins[0].x0) - barPadding)
             .attr('height', d => Math.abs(yScale(d.length) - yScale(0)))
             .attr('fill', 'blue');
     }
@@ -82,6 +88,14 @@ export function draw() {
         interpolation = d;
         return chart;
     };
+    chart.barPadding = (d) => {
+        if (!d) {
+            return barPadding
+        }
+
+        barPadding = d;
+        return chart;
+    }
     chart.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);

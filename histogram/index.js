@@ -4,7 +4,7 @@ import gChartframe from 'g-chartframe';
 import * as histogram from './histogram.js';
 import * as parseData from './parseData.js';
 
-const thresholds = 7;
+const thresholdCount = 7;
 
 const dataFile = 'data.csv';
 
@@ -48,14 +48,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-    //.width(53.71)// 1 col
+    // .width(53.71)// 1 col
     .width(112.25)// 2 col
-    //.width(170.8)// 3 col
-    //.width(229.34)// 4 col
-    //.width(287.88)// 5 col
-    //.width(346.43)// 6 col
-    //.width(74)// markets std print
-    .height(58.21),//markets std print
+    // .width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+    .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -75,44 +75,57 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile).then(({ data }) => {
+parseData.load(dataFile).then(({ data }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
+        const tickSize = currentFrame.dimension().width; // Used when drawing the yAxis ticks
 
+        const [min, max] = d3.extent(data);
+        const histogramGenerator = d3.histogram()
+            .thresholds(d3.range(min, max, (max - min) / thresholdCount));
+
+        const bins = histogramGenerator(data);
+
+        // Set up and draw y-axis
         const yAxis = gAxis.yLinear()
             .range([currentFrame.dimension().height, 0])
             .tickSize(currentFrame.dimension().width)
             .align('left')
+            .tickSize(tickSize)
             .frameName(frameName);
-
-        const xAxis = gAxis.xLinear()
-            .domain(d3.extent(data))
-            .frameName(frameName);
-
-        const histogramGenerator = d3.histogram()
-            .domain(xAxis.scale().domain())
-            .thresholds(xAxis.scale().ticks(thresholds));
-
-        const bins = histogramGenerator(data);
 
         yAxis.domain(d3.extent(bins, d => d.length));
 
-        const myChart = histogram.draw()
-            .yScale(yAxis.scale())
-            .xScale(xAxis.scale())
-            .xRange([0, currentFrame.dimension().width])
-            .thresholds(thresholds)
-            .rem(currentFrame.rem());
+        currentFrame.plot().call(yAxis);
+        const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
+        currentFrame.margin({ left: newMargin }); // Use newMargin redefine the new margin and range of xAxis
+        yAxis.yLabel().attr('transform', `translate(${(yAxis.tickSize() - yAxis.labelWidth())}, 0)`);
 
+        // Set up rest of frame...
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
+        // Set up and draw x-axis
+        const xAxis = gAxis.xLinear()
+            .domain([d3.min(bins, d => d.x0), d3.max(bins, d => d.x1)])
+            .range([0, currentFrame.dimension().width])
+            .tickSize(currentFrame.rem() * 0.75)
+            .frameName(frameName);
+
+        currentFrame.plot().call(xAxis);
+        xAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+
+        // Draw rest of chart
+        const myChart = histogram.draw()
+            .yScale(yAxis.scale())
+            .xScale(xAxis.scale())
+            .thresholds(thresholdCount)
+            .rem(currentFrame.rem());
+
         currentFrame.plot()
-            .selectAll('lines')
-            .data(bins)
-            .enter()
             .append('g')
             .attr('class', 'bins')
+            .datum(bins)
             .call(myChart);
     });
     // addSVGSavers('figure.saveable');
