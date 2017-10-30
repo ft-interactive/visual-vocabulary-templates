@@ -7,8 +7,8 @@ export function draw() {
     const colourScale = d3.scaleOrdinal();
         // .domain(['group']);
     let colourProperty = 'group';
-    let setPalette = false;
-    let includeLabel = true;
+    const setPalette = false;
+    const includeLabel = true;
     let seriesNames = [];
     let radius;
     let frameName;
@@ -31,39 +31,38 @@ export function draw() {
             .innerRadius(radius + rem);
 
         parent.append('path')
-            .on('click',function(d){
-                    chart.colourPalette(currentFame);
-                    chart.colourPicker(currentFame);
-                    let pieClass = d3.select(this);
-                    let segment = d3.select(this.parentNode);
-                    
-                    if (pieClass.attr('class') === '') {
-                        pieClass.attr('class','highlight')
+            .on('click', function (d) {
+                chart.colourPalette(currentFame);
+                chart.colourPicker(currentFame);
+                const pieClass = d3.select(this);
+                const segment = d3.select(this.parentNode);
+
+                if (pieClass.attr('class') === '') {
+                    pieClass.attr('class', 'highlight')
                         .attr('fill', d => colourScale.range()[setHighlight]);
 
-                        segment.select('.pie-name')
+                    segment.select('.pie-name')
                         .attr('class', 'pie-name highlight');
-                    }
-                    else{
-                        let el = d3.select(this)
-                        el.attr('class', '')
+                } else {
+                    const el = d3.select(this);
+                    el.attr('class', '')
                         .attr('fill', d => colourScale.range()[0]);
 
-                        segment.select('.pie-name')
+                    segment.select('.pie-name')
                         .attr('class', 'pie-name');
-                    }
-                })
+                }
+            })
             .attr('d', path)
             .attr('fill', d => colourScale.range()[0]);
 
         parent.append('text')
-              .attr('transform', function(d) { return 'translate(' + valueLabel.centroid(d) + ')'; })
+              .attr('transform', d => `translate(${valueLabel.centroid(d)})`)
               .attr('dy', '0.35em')
               .attr('class', 'pie-value')
               .text(d => d.data.value);
-        
+
         parent.append('text')
-              .attr('transform', function(d) { return 'translate(' + nameLabel.centroid(d) + ')'; })
+              .attr('transform', d => `translate(${nameLabel.centroid(d)})`)
               .attr('dy', '0.35em')
               .attr('class', 'pie-name')
               .text(d => d.data.name);
@@ -89,13 +88,13 @@ export function draw() {
         }
         return chart;
     };
-    
+
     chart.colourPicker = (d) => {
         if (d === 'social' || d === 'video' || d === 'print') {
-            setHighlight  = 1;
+            setHighlight = 1;
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             setHighlight = 4;
-        } 
+        }
         return chart;
     };
 

@@ -40,7 +40,7 @@ if (stalkWidth > 0) {
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 8;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the y axis
-const xAxisAlign = 'bottom'
+const xAxisAlign = 'bottom';
 
 // const legendAlign = 'vert';// hori or vert, alignment of the legend
 
@@ -70,14 +70,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-    //.width(53.71)// 1 col
+    // .width(53.71)// 1 col
     .width(112.25)// 2 col
-    //.width(170.8)// 3 col
-    //.width(229.34)// 4 col
-    //.width(287.88)// 5 col
-    //.width(346.43)// 6 col
-    //.width(74)// markets std print
-    .height(58.21),//markets std print
+    // .width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+    .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -139,18 +139,18 @@ parseData.load(dataURL)
         currentFrame.plot()
           .call(myYAxis);
 
-        //return the value in the variable newMargin
-        if (yAxisAlign == 'right' ){
-            let newMargin = myYAxis.labelWidth() +currentFrame.margin().right
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({right:newMargin});
-            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        // return the value in the variable newMargin
+        if (yAxisAlign == 'right') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left' ){
-            let newMargin = myYAxis.labelWidth() + currentFrame.margin().left
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({left:newMargin});
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+        if (yAxisAlign == 'left') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         }
 
 
@@ -169,10 +169,10 @@ parseData.load(dataURL)
         currentFrame.plot()
           .call(myXAxis);
 
-        if (xAxisAlign == 'bottom' ){
+        if (xAxisAlign == 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign == 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 

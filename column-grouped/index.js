@@ -50,15 +50,15 @@ const frame = {
 
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-    //.title("Put headline here")
-    //.width(53.71)// 1 col
+    // .title("Put headline here")
+    // .width(53.71)// 1 col
     .width(112.25)// 2 col
-    //.width(170.8)// 3 col
-    //.width(229.34)// 4 col
-    //.width(287.88)// 5 col
-    //.width(346.43)// 6 col
-    //.width(74)// markets std print
-    .height(58.21),//markets std print
+    // .width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+    .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -82,7 +82,6 @@ d3.selectAll('.framed')
 
 parseData.load(dataFile, '', { sort, sortOn })
 .then(({ seriesNames, plotData, valueExtent, data }) => {
-
     // define chart
     const myChart = columnGroupedChart.draw() // eslint-disable-line
           .seriesNames(seriesNames)
@@ -111,7 +110,7 @@ parseData.load(dataFile, '', { sort, sortOn })
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
-            .align(myChart.yAxisAlign())
+            .align(myChart.yAxisAlign());
 
         myYAxis
             .align(yAxisAlign)
@@ -124,18 +123,18 @@ parseData.load(dataFile, '', { sort, sortOn })
         currentFrame.plot()
           .call(myYAxis);
 
-        //return the value in the variable newMargin
-        if (yAxisAlign == 'right' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({right:newMargin});
-            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        // return the value in the variable newMargin
+        if (yAxisAlign == 'right') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({left:newMargin});
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+        if (yAxisAlign == 'left') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         }
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
@@ -160,10 +159,10 @@ parseData.load(dataFile, '', { sort, sortOn })
         currentFrame.plot()
           .call(myXAxis0);
 
-        if (xAxisAlign == 'bottom' ){
+        if (xAxisAlign == 'bottom') {
             myXAxis0.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign == 'top') {
             myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
         }
 

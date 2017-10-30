@@ -13,19 +13,19 @@ export function draw() {
     let markers = false;
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
-    let interpolation = d3.curveLinear;
+    const interpolation = d3.curveLinear;
     let colourScale = d3.scaleOrdinal();
     let boxWidth = 7;
 
     function chart(parent) {
-        boxWidth = boxWidth * 0.5;
+        boxWidth *= 0.5;
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
             .attr('x1', d => xScale(d.date))
             .attr('y2', (d) => {
-                if (d.open > d.close) {return +yScale(d.open)}
-                else {return +yScale(d.close)}
+                if (d.open > d.close) { return +yScale(d.open); }
+                return +yScale(d.close);
             })
             .attr('x2', d => xScale(d.date));
 
@@ -33,8 +33,7 @@ export function draw() {
             .attr('y1', d => yScale(+d.low))
             .attr('x1', d => xScale(d.date))
             .attr('y2', (d) => {
-                if (d.open < d.close) {return +yScale(d.open)}
-                else {return +yScale(d.close)};
+                if (d.open < d.close) { return +yScale(d.open); } return +yScale(d.close);
             })
             .attr('x2', d => xScale(d.date));
 
@@ -56,7 +55,7 @@ export function draw() {
             .attr('y', d => yScale(d.y))
             .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
             .attr('fill', (d) => {
-                if (d.close > d.open) { return colourScale(6) };
+                if (d.close > d.open) { return colourScale(6); }
                 return colourScale(7);
             });
     }
@@ -137,7 +136,7 @@ export function drawHighlights() {
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
         .attr('y', d => yScale.range()[1])
-        .attr('height', d => yScale.range()[0]);        
+        .attr('height', d => yScale.range()[0]);
     }
 
     highlights.yScale = (d) => {
@@ -149,7 +148,6 @@ export function drawHighlights() {
         return highlights;
     };
     return highlights;
-
 }
 
 export function drawAnnotations() {

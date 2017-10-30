@@ -76,14 +76,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 12 })
   // .title("Put headline here")
-  //.width(53.71)// 1 col
+  // .width(53.71)// 1 col
   .width(112.25)// 2 col
-  //.width(170.8)// 3 col
-  //.width(229.34)// 4 col
-  //.width(287.88)// 5 col
-  //.width(346.43)// 6 col
-  //.width(74)// markets std print
-  .height(58.21),//markets std print
+  // .width(170.8)// 3 col
+  // .width(229.34)// 4 col
+  // .width(287.88)// 5 col
+  // .width(346.43)// 6 col
+  // .width(74)// markets std print
+  .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
  .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -110,15 +110,13 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
     const seriesNames = parseData.getSeriesNames(data.columns);
 
     // Format the dataset that is used to draw the lines
-    const plotData = seriesNames.map(function(d,i) {
-      return {
+    const plotData = seriesNames.map((d, i) => ({
         name: d,
         index: i,
-        lineData: parseData.getlines(data, d, i)
-      }
-    });
+        lineData: parseData.getlines(data, d, i),
+    }));
 
-    console.log(plotData)
+    console.log(plotData);
 
     // Sort the data so that the labeled items are drawn on top
     const dataSorter = function dataSorter(a, b) {
@@ -146,8 +144,8 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
     });
 
     // Use the seriesNames array to calculate the minimum and max values in the dataset
-    const valueExtentL = parseData.extentMulti(data, seriesNames.slice(0,doubleScale), yMinL);
-    const valueExtentR = parseData.extentMulti(data, seriesNames.slice(doubleScale ), yMinR);
+    const valueExtentL = parseData.extentMulti(data, seriesNames.slice(0, doubleScale), yMinL);
+    const valueExtentR = parseData.extentMulti(data, seriesNames.slice(doubleScale), yMinR);
 
     // Define the chart x and x domains.
     // yDomainL will automatically overwrite the user defined min and max if the domain is too small
@@ -183,7 +181,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
           .domain([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
           .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksL)
-          .tickSize(currentFrame.rem()*2)
+          .tickSize(currentFrame.rem() * 2)
           .align('left')
           .frameName(frameName);
 
@@ -196,25 +194,25 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
           .domain([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
           .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksR)
-          .tickSize(currentFrame.rem()*2)
+          .tickSize(currentFrame.rem() * 2)
           .align('right')
           .frameName(frameName);
 
         currentFrame.plot()
           .call(yAxisR);
 
-        let newMarginL = yAxisL.labelWidth()+currentFrame.margin().left
-        let newMarginR = yAxisR.labelWidth()+currentFrame.margin().right
-        currentFrame.margin({left:newMarginL,right:newMarginR});
+        const newMarginL = yAxisL.labelWidth() + currentFrame.margin().left;
+        const newMarginR = yAxisR.labelWidth() + currentFrame.margin().right;
+        currentFrame.margin({ left: newMarginL, right: newMarginR });
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
         yAxisL.yLabel()
-          .attr('transform', `translate(${(yAxisL.tickSize()-yAxisL.labelWidth())},0)`)
+          .attr('transform', `translate(${(yAxisL.tickSize() - yAxisL.labelWidth())},0)`)
           .classed('baseline', true);
         yAxisR.yLabel()
-          .attr('transform', `translate(${(currentFrame.dimension().width-currentFrame.rem())},0)`)
+          .attr('transform', `translate(${(currentFrame.dimension().width - currentFrame.rem())},0)`)
           .classed('baseline', true);
 
         // axisHighlight.append("rect")
@@ -261,14 +259,13 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         currentFrame.plot()
           .call(myXAxis);
 
-        if (xAxisAlign == 'bottom' ){
+        if (xAxisAlign == 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            if(minorAxis) {
+            if (minorAxis) {
                 myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-
             }
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign == 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 

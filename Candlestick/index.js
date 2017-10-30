@@ -57,7 +57,7 @@ const chartColour = d3.scaleOrdinal()
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
  .margin({ top: 100, left: 15, bottom: 82, right: 5 })
- //.title('Put headline here') // use this if you need to override the defaults
+ // .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(400),
 
@@ -80,15 +80,15 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
-  //.width(53.71)// 1 col 
-  .width(112.25)// 2 col 
-  //.width(170.8)// 3 col
-  //.width(229.34)// 4 col
-  //.width(287.88)// 5 col 
-  //.width(346.43)// 6 col
-  //.width(74)// markets std print 
-  .height(58.21),//markets std print
- 
+  // .width(53.71)// 1 col
+  .width(112.25)// 2 col
+  // .width(170.8)// 3 col
+  // .width(229.34)// 4 col
+  // .width(287.88)// 5 col
+  // .width(346.43)// 6 col
+  // .width(74)// markets std print
+  .height(58.21), // markets std print
+
     social: gChartframe.socialFrame(sharedConfig)
  .margin({ top: 140, left: 50, bottom: 138, right: 40 })
  // .title("Put headline here")
@@ -108,8 +108,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seriesNames, data, plotData, valueExtent, highlights, annos}) => {
-
+parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -148,18 +147,18 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         currentFrame.plot()
           .call(myYAxis);
 
-        //return the value in the variable newMargin
-        if (yAxisAlign == 'right' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().right
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({right:newMargin});
-            //yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        // return the value in the variable newMargin
+        if (yAxisAlign == 'right') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left' ){
-            let newMargin = myYAxis.labelWidth()+currentFrame.margin().left
-            //Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({left:newMargin});
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
+        if (yAxisAlign == 'left') {
+            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         }
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
@@ -170,22 +169,21 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         //   .attr("fill","#ededee");
         let xDomain;
         if (intraday) {
-             xDomain = plotData.map(function(d) { return d.date;})  
-            }
-        else {xDomain = d3.extent(plotData, d => d.date)}
-        const boxWidth = (currentFrame.dimension().width) / (plotData.length-1);
+            xDomain = plotData.map(d => d.date);
+        } else { xDomain = d3.extent(plotData, d => d.date); }
+        const boxWidth = (currentFrame.dimension().width) / (plotData.length - 1);
 
 
         // Set up xAxis for this frame
         myXAxis
           .domain(xDomain)
-          .range([0, (currentFrame.dimension().width - (boxWidth/2))])
+          .range([0, (currentFrame.dimension().width - (boxWidth / 2))])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)
-          .tickSize(currentFrame.rem()* 0.75)
+          .tickSize(currentFrame.rem() * 0.75)
           .minorAxis(minorAxis)
-          .minorTickSize(currentFrame.rem()* 0.3)
+          .minorTickSize(currentFrame.rem() * 0.3)
           .fullYear(false)
           .frameName(frameName)
           .intraday(intraday);
@@ -194,14 +192,13 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
         currentFrame.plot()
           .call(myXAxis);
 
-        if (xAxisAlign == 'bottom' ){
+        if (xAxisAlign == 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            if(minorAxis) {
+            if (minorAxis) {
                 myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-
             }
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign == 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
@@ -215,7 +212,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .boxWidth(boxWidth);
 
         currentFrame.plot()
-          .selectAll('lines') 
+          .selectAll('lines')
           .data(plotData)
           .enter()
           .append('g')
@@ -228,7 +225,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale());
 
-        //Draw the highlights before the lines and xAxis
+        // Draw the highlights before the lines and xAxis
         axisHighlight
           .selectAll('.highlights')
           .data(highlights)
@@ -249,8 +246,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({seri
           .enter()
           .append('g')
           .call(myAnnotations);
-
-
     });
     // addSVGSavers('figure.saveable');
 });

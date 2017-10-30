@@ -44,10 +44,10 @@ export function getSeriesNames(columns) {
  */
 // a function that calculates the cumulative ma min values of the dataset
 function getMaxMin(values) {
-    let cumulativeMax = d3.sum(values.filter(d => (d > 0)));
-    let cumulativeMin = d3.sum(values.filter(d => (d < 0)));
+    const cumulativeMax = d3.sum(values.filter(d => (d > 0)));
+    const cumulativeMin = d3.sum(values.filter(d => (d < 0)));
     // console.log(cumulativeMax,cumulativeMin)
-   return [cumulativeMin,cumulativeMax]
+    return [cumulativeMin, cumulativeMax];
 }
 
 // a function to work out the extent of values in an array accross multiple properties...
@@ -73,24 +73,23 @@ export function extentMulti(data, columns) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group) {
-    let values=[]
-    d.forEach(function(el,i){
-        //console.log(el,i)
-        let column=new Object();
-        column.name = group
-        column.date = el.date
-        column.value = +el[group]
-        column.highlight = el.highlight
-        column.annotate = el.annotate
-        if(el[group]) {
-            values.push(column)
+    const values = [];
+    d.forEach((el, i) => {
+        // console.log(el,i)
+        const column = new Object();
+        column.name = group;
+        column.date = el.date;
+        column.value = +el[group];
+        column.highlight = el.highlight;
+        column.annotate = el.annotate;
+        if (el[group]) {
+            values.push(column);
         }
-        if(el[group] == false) {
-            values.push(null)
+        if (el[group] == false) {
+            values.push(null);
         }
-
     });
-    return values
+    return values;
     // return d.map((el) => {
     //     if (el[group]) {
     //         return {

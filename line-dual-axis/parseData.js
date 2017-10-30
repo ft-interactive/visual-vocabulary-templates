@@ -45,7 +45,7 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => row[key])
+        const values = columns.map(key => row[key])
         .map((item) => {
             if (!item || item === '*') {
                 return yMin;
@@ -70,24 +70,23 @@ export function extentMulti(d, columns, yMin) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group, index) {
-    let lineData=[]
-    d.forEach(function(el){
-        let column=new Object();
-        column.name = group
-        column.index = index
-        column.date = el.date
-        column.value = +el[group]
-        column.highlight = el.highlight
-        column.annotate = el.annotate
-        if(el[group]) {
-            lineData.push(column)
+    const lineData = [];
+    d.forEach((el) => {
+        const column = new Object();
+        column.name = group;
+        column.index = index;
+        column.date = el.date;
+        column.value = +el[group];
+        column.highlight = el.highlight;
+        column.annotate = el.annotate;
+        if (el[group]) {
+            lineData.push(column);
         }
-        if(el[group] == false) {
-            lineData.push(null)
+        if (el[group] == false) {
+            lineData.push(null);
         }
-
     });
-    return lineData
+    return lineData;
     // return d.map((el) => {
     //     if (el[group]) {
     //         return {

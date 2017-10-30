@@ -38,7 +38,7 @@ export function draw() {
             .attr('class', 'column-label')
             .attr('x', d => xScale0(d.date) + (xScale2.bandwidth() / 2))
             .attr('y', d => yScale(0))
-            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
+            .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
             .attr('font-size', rem)
             .attr('fill', '#ffffff')
             .style('text-anchor', 'middle');

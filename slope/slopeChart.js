@@ -7,11 +7,11 @@ export function draw() {
     let xScale = d3.scaleOrdinal();
     let yAxisAlign = 'right';
     let rem = 10;
-    const colourScale = d3.scaleOrdinal()
+    const colourScale = d3.scaleOrdinal();
         // .range('gChartcolour.basicLineWeb');
         // .domain(['group']);
     let colourProperty = 'group';
-    let setPalette = false;
+    const setPalette = false;
     let includeLabel = true;
     let groupNames = [];
     let labelTextStart = 'start text';

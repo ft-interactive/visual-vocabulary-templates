@@ -32,7 +32,7 @@ const frame = {
    .height(500)
    .sourcePlotYOffset(28),
 
-   webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
    .margin({ top: 100, left: 150, bottom: 86, right: 150 })
     // .title("Put headline here")
    .height(500),
@@ -48,14 +48,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 20, bottom: 35, right: 20 })
     // .title("Put headline here")
- 	  //.width(53.71)// 1 col
+ 	  // .width(53.71)// 1 col
     .width(112.25)// 2 col
-    //.width(170.8)// 3 col
-    //.width(229.34)// 4 col
-    //.width(287.88)// 5 col
-    //.width(346.43)// 6 col
-    //.width(74)// markets std print
-    .height(58.21),//markets std print
+    // .width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+    .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 150, bottom: 138, right: 150 })

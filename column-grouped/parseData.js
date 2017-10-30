@@ -34,7 +34,7 @@ export function load(url, options) { // eslint-disable-line
             plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
         } // Sorts biggest rects to the left
         else if (sort === 'alphabetical') {
-            plotData.sort((a, b) => a.name.localeCompare(b.name))
+            plotData.sort((a, b) => a.name.localeCompare(b.name));
         } // Sorts alphabetically
 
         return {
