@@ -1,0 +1,65 @@
+<html>
+
+
+<head>
+	<title></title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<style>
+		body{font-family:sans-serif;}
+		#results{background-color: #fff1e0;margin-top:30px;}
+		img{margin-bottom:20px;}
+
+	</style>
+</head>
+
+<body>
+	
+	<div>
+		<h2>Sankeymatic data formatter</h2>
+		<p>Step 1: Prepare your data in the format shown below, with origins in the 1st column and destinations in the subsequent columns (use the example.csv file to guide you). Save it as a csv file in the 'make-sankeymatic' directory
+		<div class="add-date"><img src="images/hint.png" alt=""></div>
+		<label for="fileChooser">Step 2: When ready, select your csv file...</label>
+		<input id="fileChooser" type="file" accept=".csv" onchange="convert(this)"></input>
+	</div>
+
+	<div id="results"></div>
+
+
+<script>
+
+/*THIS CREATES AN OUTPUT WHICH CAN BE PASTED INTO SANKEYMATIC.COM
+
+Please look at the sample data.csv file: origins in the rows, destinations in the columns
+
+*/
+
+
+function convert(button){
+
+	const filename = button.value.replace(/C:\\fakepath\\/i, '');
+
+	d3.csv(filename,function(data){
+		const results = d3.select("#results");
+		results.append("p").html("Step 3: Paste the text below into <a href='http://sankeymatic.com/build/' target='new'>Sankeymatic.com</a>")
+		//destination names
+		const destNames = d3.keys(data[0]).filter(function(d){return d!="origin"});
+		data.forEach(function(d,i){
+			destNames.forEach(function(e,j){
+				if (d[e]>0){
+					results.append("span").text(d.origin+" ["+d[e]+"] "+e)
+					results.append("br")
+				}
+			})
+		})
+	})
+
+	button.value=null;
+	return false;
+}
+
+</script>
+
+
+</body>
+
+</html>
