@@ -74,9 +74,9 @@ export function extentMulti(data, columns) {
  */
 export function getlines(d, group) {
     const values = [];
-    d.forEach((el, i) => {
+    d.forEach((el) => {
         // console.log(el,i)
-        const column = new Object();
+        const column = {};
         column.name = group;
         column.date = el.date;
         column.value = +el[group];
@@ -85,7 +85,7 @@ export function getlines(d, group) {
         if (el[group]) {
             values.push(column);
         }
-        if (el[group] == false) {
+        if (el[group] === false) {
             values.push(null);
         }
     });

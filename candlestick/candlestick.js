@@ -6,14 +6,14 @@ export function draw() {
     let rem = 10;
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
-    let seriesNames = [];
-    let highlightNames = [];
+    let seriesNames = []; // eslint-disable-line
+    let highlightNames = []; // eslint-disable-line
     let intraday;
     let yAxisAlign = 'right';
-    let markers = false;
+    let markers = false; // eslint-disable-line
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
-    const interpolation = d3.curveLinear;
+    const interpolation = d3.curveLinear; // eslint-disable-line
     let colourScale = d3.scaleOrdinal();
     let boxWidth = 7;
 
@@ -135,8 +135,8 @@ export function drawHighlights() {
         .attr('class', 'highlights')
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', d => yScale.range()[1])
-        .attr('height', d => yScale.range()[0]);
+        .attr('y', () => yScale.range()[1])
+        .attr('height', () => yScale.range()[0]);
     }
 
     highlights.yScale = (d) => {

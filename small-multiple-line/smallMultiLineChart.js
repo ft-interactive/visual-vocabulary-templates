@@ -121,7 +121,7 @@ export function drawHighlights() {
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
         .attr('y', () => yScale.range()[1])
-        .attr('height', d => yScale.range()[0])
+        .attr('height', () => yScale.range()[0])
         .attr('fill', '#fff1e0');
     }
 

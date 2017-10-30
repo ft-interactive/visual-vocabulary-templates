@@ -3,75 +3,72 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure, options) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                const { yMin, highlightNames } = options;
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
+export function load(url, options) { // eslint-disable-line
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        const { yMin, highlightNames, dateFormat } = options; // eslint-disable-line
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateFormat);
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
+        });
 
-                // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
+        // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
 
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames, yMin);
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames, yMin);
 
-                // Format the dataset that is used to draw the lines
-                const plotData = data.map(d => ({
-                    date: d.date,
-                    open: +d.open,
-                    close: +d.close,
-                    high: +d.high,
-                    low: +d.low,
-                    y: +Math.max(d.open, d.close),
-                    height: +Math.max(d.open, d.close) - Math.min(d.open, d.close),
-                }));
+        // Format the dataset that is used to draw the lines
+        const plotData = data.map(d => ({
+            date: d.date,
+            open: +d.open,
+            close: +d.close,
+            high: +d.high,
+            low: +d.low,
+            y: +Math.max(d.open, d.close),
+            height: +Math.max(d.open, d.close) - Math.min(d.open, d.close),
+        }));
 
-                // Adds extra date to plotData so there is space at the end of the chart
-                // const last = data[(Number(plotData.length) - 1)].date;
-                // console.log("last",last)
-                // let newLast = new Date();
-                // console.log('newLast', newLast)
-                // newLast.setDate(last.getDate() + 1);
-                // console.log('newLast', newLast)
-                // plotData.push({date: newLast});
+        // Adds extra date to plotData so there is space at the end of the chart
+        // const last = data[(Number(plotData.length) - 1)].date;
+        // console.log("last",last)
+        // let newLast = new Date();
+        // console.log('newLast', newLast)
+        // newLast.setDate(last.getDate() + 1);
+        // console.log('newLast', newLast)
+        // plotData.push({date: newLast});
 
-                // console.log(plotData)
+        // console.log(plotData)
 
-                 // Filter data for annotations
-                const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+         // Filter data for annotations
+        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
-                // Format the data that is used to draw highlight tonal bands
-                const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-                const highlights = [];
+        // Format the data that is used to draw highlight tonal bands
+        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const highlights = [];
 
-                boundaries.forEach((d, i) => {
-                    if (d.highlight === 'begin') {
-                        highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-                    }
-                });
-
-                resolve({
-                    seriesNames,
-                    plotData,
-                    data,
-                    valueExtent,
-                    highlights,
-                    annos,
-                });
+        boundaries.forEach((d, i) => {
+            if (d.highlight === 'begin') {
+                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+
+        return {
+            seriesNames,
+            plotData,
+            data,
+            valueExtent,
+            highlights,
+            annos,
+        };
     });
 }
 
@@ -119,4 +116,3 @@ export function extentMulti(d, columns, yMin) {
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
  */
-

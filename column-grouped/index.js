@@ -81,19 +81,14 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, '', { sort, sortOn })
-.then(({ seriesNames, plotData, valueExtent, data }) => {
-    // define chart
-    const myChart = columnGroupedChart.draw() // eslint-disable-line
-          .seriesNames(seriesNames)
-          .yAxisAlign(yAxisAlign);
-
+.then(({ seriesNames, plotData, valueExtent, data }) => { // eslint-disable-line no-unused-vars
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
         const myXAxis0 = gAxis.xOrdinal();// sets up yAxis
         const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
         const myYAxis = gAxis.yLinear();
-        const myChart = columnGroupedChart.draw(); // eslint-disable-line
+        const myChart = columnGroupedChart.draw(); // eslint-disable-line no-unused-vars
         const myLegend = gLegend.legend();
 
         // define other functions to be called
@@ -124,13 +119,13 @@ parseData.load(dataFile, '', { sort, sortOn })
           .call(myYAxis);
 
         // return the value in the variable newMargin
-        if (yAxisAlign == 'right') {
+        if (yAxisAlign === 'right') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
             // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left') {
+        if (yAxisAlign === 'left') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
@@ -159,10 +154,10 @@ parseData.load(dataFile, '', { sort, sortOn })
         currentFrame.plot()
           .call(myXAxis0);
 
-        if (xAxisAlign == 'bottom') {
+        if (xAxisAlign === 'bottom') {
             myXAxis0.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
-        if (xAxisAlign == 'top') {
+        if (xAxisAlign === 'top') {
             myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
         }
 

@@ -166,7 +166,7 @@ parseData.load(dataURL).then(({ seriesNames, setColourPalette, groupNames, dataS
 
         const uniqueGroupNames = [];
 
-        nest.forEach((d, i) => {
+        nest.forEach((d) => {
             uniqueGroupNames.push(d.key);
         });
 

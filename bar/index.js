@@ -86,7 +86,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { sort, sortOn })
-.then(({ seriesNames, plotData, valueExtent, data }) => {
+.then(({ seriesNames, plotData, valueExtent, data }) => { // eslint-disable-line
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -120,7 +120,7 @@ parseData.load(dataFile, { sort, sortOn })
             .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
 
-        const base = currentFrame.plot().append('g');
+        const base = currentFrame.plot().append('g'); // eslint-disable-line
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
@@ -197,7 +197,7 @@ parseData.load(dataFile, { sort, sortOn })
             .call(myLegend);
 
         const legendSelection = currentFrame.plot().select('#legend');
-        const legheight = (legendSelection.node().getBBox().height);
+        const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
     // addSVGSavers('figure.saveable');

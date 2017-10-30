@@ -125,7 +125,7 @@ export function drawQuartiles() {
                 .append('circle')
                 .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
                 .attr('cx', d => xScale(d.value))
-                .attr('r', d => rem * 0.5)
+                .attr('r', () => rem * 0.5)
                 .attr('fill', d => colourScale(d.group));
 
         parent.selectAll('.text')

@@ -140,13 +140,13 @@ parseData.load(dataURL)
           .call(myYAxis);
 
         // return the value in the variable newMargin
-        if (yAxisAlign == 'right') {
+        if (yAxisAlign === 'right') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
             // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left') {
+        if (yAxisAlign === 'left') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
@@ -169,10 +169,10 @@ parseData.load(dataURL)
         currentFrame.plot()
           .call(myXAxis);
 
-        if (xAxisAlign == 'bottom') {
+        if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
-        if (xAxisAlign == 'top') {
+        if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 

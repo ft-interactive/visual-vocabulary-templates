@@ -28,9 +28,9 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
-const minorAxis = false;// turns on or off the minor axis
+const xAxisAlign = 'bottom'; // alignment of the axis
+const interval = 'years'; // date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const minorAxis = false; /* turns on or off the minor axis */ // eslint-disable-line
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -117,7 +117,7 @@ parseData.load(dataFile, { dateFormat })
 
         // Get the size of the container to set scales for each box
         const h = currentFrame.dimension().height;
-        const w = currentFrame.dimension().width;
+        const w = currentFrame.dimension().width; // eslint-disable-line
 
         // calculate the size of the max circle - here using height
         const maxCircle = (h / 2 / countCategories) * circleSize;

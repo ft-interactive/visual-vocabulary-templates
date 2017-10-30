@@ -6,6 +6,10 @@ let rem = 10;
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let xRange;
+    let xDomain;
+    let yRange;
+    let yDomain;
     let seriesNames = [];
     let highlightNames = [];
     let yAxisAlign = 'right';
@@ -164,17 +168,17 @@ export function drawHighlights() {
     let invertScale = false;
 
     function highlights(parent) {
-        const highlights = parent.append('rect')
+        parent.append('rect')
         .attr('class', 'highlights')
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', (d) => {
+        .attr('y', () => {
             if (invertScale) {
                 return yScale.range()[0];
             }
             return yScale.range()[1];
         })
-        .attr('height', (d) => {
+        .attr('height', () => {
             if (invertScale) {
                 return yScale.range()[1];
             }

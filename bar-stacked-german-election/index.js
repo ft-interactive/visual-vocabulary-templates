@@ -2,9 +2,9 @@ import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
+import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as stackedBarChart from './stackedBarChart.js';
-import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 

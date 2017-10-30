@@ -3,12 +3,11 @@
  */
 
 import * as d3 from 'd3';
-import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
+import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as candlestick from './candlestick.js';
-import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 
@@ -39,14 +38,14 @@ const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'days';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
-const annotate = true; // show annotations, defined in the 'annotate' column
-const markers = false;// show dots on lines
-const legendAlign = 'vert';// hori or vert, alignment of the legend
-const legendType = 'line';// rect, line or circ, geometry of legend marker
+const annotate = true; /* show annotations, defined in the 'annotate' column */ // eslint-disable-line
+const markers = false; /* show dots on lines */ // eslint-disable-line
+const legendAlign = 'vert'; /* hori or vert, alignment of the legend */ // eslint-disable-line
+const legendType = 'line'; /* rect, line or circ, geometry of legend marker */ // eslint-disable-line
 const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const invertScale = false;
-const logScale = false;
+const logScale = false; // eslint-disable-line
 const intraday = true;
 const chartColour = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.categorical_bar))
@@ -108,7 +107,8 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames })
+.then(({ plotData, valueExtent, highlights, annos }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -148,13 +148,13 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({ ser
           .call(myYAxis);
 
         // return the value in the variable newMargin
-        if (yAxisAlign == 'right') {
+        if (yAxisAlign === 'right') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
             // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
         }
-        if (yAxisAlign == 'left') {
+        if (yAxisAlign === 'left') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
@@ -192,13 +192,13 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({ ser
         currentFrame.plot()
           .call(myXAxis);
 
-        if (xAxisAlign == 'bottom') {
+        if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             if (minorAxis) {
                 myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             }
         }
-        if (xAxisAlign == 'top') {
+        if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 

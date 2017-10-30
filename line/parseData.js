@@ -13,7 +13,7 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { yMin, joinPoints, highlightNames, dateFormat } = options;
+        const { yMin, joinPoints, highlightNames, dateFormat } = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
         const parseDate = d3.timeParse(dateFormat);
         data.forEach((d) => {
@@ -113,9 +113,9 @@ export function extentMulti(d, columns, yMin) {
  */
 export function getlines(d, group, joinPoints) {
     const lineData = [];
-    d.forEach((el, i) => {
+    d.forEach((el) => {
         // console.log(el,i)
-        const column = new Object();
+        const column = {};
         column.name = group;
         column.date = el.date;
         column.value = +el[group];
@@ -128,7 +128,7 @@ export function getlines(d, group, joinPoints) {
         // if(el[group] == false) {
         //     lineData.push(null)
         // }
-        if (el[group] == false && joinPoints == false) {
+        if (el[group] === false && joinPoints === false) {
             lineData.push(null);
         }
     });

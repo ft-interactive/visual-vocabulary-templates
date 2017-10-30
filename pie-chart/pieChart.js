@@ -6,10 +6,10 @@ export function draw() {
     let rem = 10;
     const colourScale = d3.scaleOrdinal();
         // .domain(['group']);
-    let colourProperty = 'group';
-    const setPalette = false;
-    const includeLabel = true;
-    let seriesNames = [];
+    let colourProperty = 'group'; // eslint-disable-line no-unused-vars
+    const setPalette = false; // eslint-disable-line no-unused-vars
+    const includeLabel = true; // eslint-disable-line no-unused-vars
+    let seriesNames = []; // eslint-disable-line no-unused-vars
     let radius;
     let frameName;
     let setHighlight;
@@ -31,7 +31,7 @@ export function draw() {
             .innerRadius(radius + rem);
 
         parent.append('path')
-            .on('click', function (d) {
+            .on('click', function sliceClickHandler() {
                 chart.colourPalette(currentFame);
                 chart.colourPicker(currentFame);
                 const pieClass = d3.select(this);
@@ -39,21 +39,21 @@ export function draw() {
 
                 if (pieClass.attr('class') === '') {
                     pieClass.attr('class', 'highlight')
-                        .attr('fill', d => colourScale.range()[setHighlight]);
+                        .attr('fill', () => colourScale.range()[setHighlight]);
 
                     segment.select('.pie-name')
                         .attr('class', 'pie-name highlight');
                 } else {
                     const el = d3.select(this);
                     el.attr('class', '')
-                        .attr('fill', d => colourScale.range()[0]);
+                        .attr('fill', () => colourScale.range()[0]);
 
                     segment.select('.pie-name')
                         .attr('class', 'pie-name');
                 }
             })
             .attr('d', path)
-            .attr('fill', d => colourScale.range()[0]);
+            .attr('fill', () => colourScale.range()[0]);
 
         parent.append('text')
               .attr('transform', d => `translate(${valueLabel.centroid(d)})`)

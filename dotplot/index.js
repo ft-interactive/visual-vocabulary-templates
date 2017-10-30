@@ -84,7 +84,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataURL, { sort, sortOn })
-.then(({ groupNames, plotData, valueExtent, data }) => {
+.then(({ groupNames, plotData, valueExtent, data }) => { // eslint-disable-line no-unused-vars
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -93,10 +93,9 @@ parseData.load(dataURL, { sort, sortOn })
         const xAxis = gAxis.xLinear();
         const myChart = dotPlot.draw();
         const myQuartiles = dotPlot.drawQuartiles();
-        const myLegend = gLegend.legend();
-
-        // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
+        const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
+        const tickSize = currentFrame.dimension().height; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
+        // const plotDim=currentFrame.dimension(); // useful variable to carry the current frame dimensions
 
         yAxis
             .align(yAxisAlign)
@@ -113,7 +112,7 @@ parseData.load(dataURL, { sort, sortOn })
 
         // console.log(xMin,xMax,valueExtent, xAxis.domain)
 
-        const base = currentFrame.plot().append('g');
+        const base = currentFrame.plot().append('g'); // eslint-disable-line no-unused-vars
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()

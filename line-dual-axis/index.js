@@ -38,7 +38,7 @@ const yMaxR = 0;// sets the maximum value on the xAxisR
 const doubleScale = 1;
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 6;// Number of tick on the uAxis
-const yAxisAlign = 'left';// alignment of the axis
+const yAxisAlign = 'left'; /* alignment of the axis */ // eslint-disable-line no-unused-vars
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
@@ -116,8 +116,6 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         lineData: parseData.getlines(data, d, i),
     }));
 
-    console.log(plotData);
-
     // Sort the data so that the labeled items are drawn on top
     const dataSorter = function dataSorter(a, b) {
         if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
@@ -168,7 +166,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         const myAnnotations = lineChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+        const tickSize = currentFrame.dimension().width; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
@@ -259,13 +257,13 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         currentFrame.plot()
           .call(myXAxis);
 
-        if (xAxisAlign == 'bottom') {
+        if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             if (minorAxis) {
                 myXAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             }
         }
-        if (xAxisAlign == 'top') {
+        if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 

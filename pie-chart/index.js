@@ -3,7 +3,7 @@
  */
 
 import * as d3 from 'd3';
-import * as gLegend from 'g-legend';
+import * as gLegend from 'g-legend'; // eslint-disable-line no-unused-vars
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as pieChart from './pieChart.js';
@@ -48,7 +48,7 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
    .margin({ top: 40, left: 20, bottom: 35, right: 20 })
     // .title("Put headline here")
- 	  // .width(53.71)// 1 col
+    // .width(53.71)// 1 col
     .width(112.25)// 2 col
     // .width(170.8)// 3 col
     // .width(229.34)// 4 col
@@ -80,7 +80,7 @@ d3.selectAll('.framed')
 parseData.load(dataURL).then(({ seriesNames, data }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
 
-    const valueFormat = d => d3.format(',')(d);
+    const valueFormat = d => d3.format(',')(d); // eslint-disable-line no-unused-vars
     const pie = d3.pie()
                 .value(d => d.value);
 

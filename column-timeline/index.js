@@ -202,13 +202,13 @@ parseData.load(dataFile, { dateFormat })
 
         currentFrame.plot()
           .call(myXAxis0);
-        if (xAxisAlign == 'bottom') {
+        if (xAxisAlign === 'bottom') {
             myXAxis0.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             if (minorAxis) {
                 myXAxis0.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             }
         }
-        if (xAxisAlign == 'top') {
+        if (xAxisAlign === 'top') {
             myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
         }
 

@@ -24,15 +24,15 @@ export function load(url, options) { // eslint-disable-line
         const valueExtent = extentMulti(data, seriesNames);
         // Buid the dataset for plotting
         const plotData = groupNames.map((d) => {
-            const values = data.filter(el => el.group == d);
+            const values = data.filter(el => el.group === d);
             // Create an array of just the values to extract min, max and quartiles
             const dotValues = values.map(item => Number(item.value));
             dotValues.sort((a, b) => parseFloat(a) - parseFloat(b));
             const quantiles = [];
-            for (let i = 1; i < 4; i++) {
-                const qData = new Object();
-                qData.name = `q${i}`,
-                qData.value = d3.quantile(dotValues, (i / 4)),
+            for (let i = 1; i < 4; i += 1) {
+                const qData = {};
+                qData.name = `q${i}`;
+                qData.value = d3.quantile(dotValues, (i / 4));
                 qData.group = d;
                 quantiles.push(qData);
             }
