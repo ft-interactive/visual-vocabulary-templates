@@ -11,7 +11,7 @@ import * as areaChart from './smallMultiAreaChart.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%d/%m/%Y';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -92,7 +92,7 @@ const frame = {
         .extend('numberOfColumns', 3)
         .extend('numberOfRows', 3),
 
-    //social: gChartframe.socialFrame(sharedConfig)
+    // social: gChartframe.socialFrame(sharedConfig)
         // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
         // // .title("Put headline here")
         // .width(612)
@@ -113,7 +113,7 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
-parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({ seriesNames, data, plotData, valueExtent, annos }) => {
+parseData.load(dataFile, { dateFormat, yMin, dataDivisor }).then(({ seriesNames, data, plotData, valueExtent, annos }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
