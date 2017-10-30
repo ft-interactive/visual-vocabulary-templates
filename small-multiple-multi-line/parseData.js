@@ -34,7 +34,7 @@ export function fromCSV(url, dateStructure, options) {
                     lineData: getlines(data, d, joinPoints, dataDivisor),
                 }))
                     .reduce((col, cur) => {
-                        const [name, colname] = cur.name.split('_');
+                        const [name] = cur.name.split('_');
                         if (!col[name]) col[name] = [];
                         col[name].push(cur.lineData);
                         return col;
@@ -112,12 +112,12 @@ export function getGroupNamesReduced(columns) {
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
         const values = columns.map(key => row[key])
-        .map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
+            .map((item) => {
+                if (!item || item === '*') {
+                    return yMin;
+                }
+                return Number(item);
+            });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
