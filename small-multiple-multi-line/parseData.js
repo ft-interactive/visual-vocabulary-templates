@@ -24,16 +24,32 @@ export function fromCSV(url, dateStructure, options) {
                 // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
 
+                const seriesNamesReduced = getSeriesNamesReduced(seriesNames);
+
+                const groupNamesReduced = getGroupNamesReduced(seriesNames);
+
                 // Format the dataset that is used to draw the lines
                 const plotData = seriesNames.map(d => ({
                     name: d,
                     lineData: getlines(data, d, joinPoints, dataDivisor),
+                }))
+                    .reduce((col, cur) => {
+                        const [name, colname] = cur.name.split('_');
+                        if (!col[name]) col[name] = [];
+                        col[name].push(cur.lineData);
+                        return col;
+                    }, {});
+
+                const newData = seriesNamesReduced.map(d => ({
+                    name: d,
+                    lineData: plotData[d],
                 }));
+
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames, yMin);
 
-                 // Filter data for annotations
+                // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
                 // Format the data that is used to draw highlight tonal bands
@@ -48,7 +64,9 @@ export function fromCSV(url, dateStructure, options) {
 
                 resolve({
                     seriesNames,
-                    plotData,
+                    seriesNamesReduced,
+                    groupNamesReduced,
+                    newData,
                     data,
                     valueExtent,
                     highlights,
@@ -67,13 +85,22 @@ export function fromCSV(url, dateStructure, options) {
  */
 export function getSeriesNames(columns) {
     const exclude = ['date', 'annotate', 'highlight'];
-    const columnHeadings = columns.filter(d => (exclude.indexOf(d) === -1));// return column headings with excluded column names
+
+    return columns.filter(d => (exclude.indexOf(d) === -1));// return column headings with excluded column names
+}
+
+export function getSeriesNamesReduced(columns) {
     const columnsToDedupe = [];
-
-    columnHeadings.forEach((el) => { columnsToDedupe.push(el.split('_')[0]); });// split the column names on delimeter
-
+    columns.forEach((el) => { columnsToDedupe.push(el.split('_')[0]); });// split the column names on delimeter
     return Array.from(new Set(columnsToDedupe)); // returns a deduped array
 }
+
+export function getGroupNamesReduced(columns) {
+    const groupsToDedupe = [];
+    columns.forEach((el) => { groupsToDedupe.push(el.split('_')[1]); });// split the column names on delimeter
+    return Array.from(new Set(groupsToDedupe)); // returns a deduped array
+}
+
 
 /**
  * Calculates the extent of multiple columns
@@ -111,13 +138,14 @@ export function extentMulti(d, columns, yMin) {
 export function getlines(d, group, joinPoints, dataDivisor) {
     const lineData = [];
     d.forEach((el) => {
+        const groupName = group.split('_')[1];
         const column = {};
-        column.name = group;
+        column.name = groupName;
         column.date = el.date;
         column.value = +(el[group] / dataDivisor);
         column.highlight = el.highlight;
         column.annotate = el.annotate;
-        console.log(dataDivisor);
+
         if (el[group]) {
             lineData.push(column);
         }
@@ -129,6 +157,7 @@ export function getlines(d, group, joinPoints, dataDivisor) {
             lineData.push(null);
         }
     });
+
     return lineData;
     // return d.map((el) => {
     //     if (el[group]) {

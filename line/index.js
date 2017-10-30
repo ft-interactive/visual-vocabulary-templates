@@ -210,6 +210,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, highlightNames })
           .rem(currentFrame.rem())
           .colourPalette((frameName));
 
+        console.log(plotData)
         //Draw the lines
         currentFrame.plot()
           .selectAll('lines')

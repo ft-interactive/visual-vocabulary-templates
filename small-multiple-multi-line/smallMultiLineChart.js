@@ -8,43 +8,62 @@ export function draw() {
     let xScale = d3.scaleTime();
     let seriesNames = [];
     let yAxisAlign = 'right';
-    let markers = false;
+    let slopeMarkers = false;
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
     const colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
+        .domain(seriesNames);
+
 
     function chart(parent) {
         const lineData = d3.line()
-        .defined(d => d)
-        .curve(interpolation)
-        .x(d => xScale(d.date))
-        .y(d => yScale(d.value));
+            .defined(d => d)
+            .curve(interpolation)
+            .x(d => xScale(d.date))
+            .y(d => yScale(d.value));
 
+        parent.selectAll('.lines')
+            .data(d => d.lineData)
+            .enter()
+            .append('g')
+            .attr('id', d => (d.length ? `${parent.data()[0].name.toLowerCase()}__${d[0].name}` : undefined))
+            .attr('class', 'lines')
+            .append('path')
+            .attr('stroke', d => (d.length ? colourScale(d[0].name) : 'black'))
+            .attr('d', d => lineData(d));
 
-        parent.append('path')
-          .attr('stroke', () => colourScale.range()[0])
-          .attr('d', d => lineData(d.lineData));
-
-        if (markers) {
+        if (slopeMarkers) {
             parent.selectAll('.markers')
-        .data((d) => {
-            if (markers) {
-                return d.lineData;
-            }
+                .data((d) => {
+                    if (slopeMarkers) {
+                        return d.lineData;
+                    }
 
-            return undefined;
-        })
-        .enter()
-        .append('circle')
-        .classed('markers', true)
-        .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        .attr('cx', d => xScale(d.date))
-        .attr('cy', d => yScale(d.value))
-        .attr('r', rem * 0.25)
-        .attr('fill', d => colourScale(d.name));
+                    return undefined;
+                })
+                .enter()
+                .append('g')
+                .classed('markers', true);
+
+            // add start circles
+            parent.selectAll('.markers')
+                .append('circle')
+                .attr('id', d => `date: ${d[0].date} value: ${d[0].value}`)
+                .attr('cx', d => xScale(d[0].date))
+                .attr('cy', d => yScale(d[0].value))
+                .attr('r', rem * 0.25)
+                .attr('fill', d => colourScale(d[0].name));
+
+            // add end circles
+            parent.selectAll('.markers')
+                .append('circle')
+                .attr('id', d => `date: ${d[d.length - 1].date} value: ${d[d.length - 1].value}`)
+                .attr('cx', d => xScale(d[d.length - 1].date))
+                .attr('cy', d => yScale(d[d.length - 1].value))
+                .attr('r', rem * 0.25)
+                .attr('fill', d => colourScale(d[d.length - 1].name));
         }
 
         // add titles for each chart
@@ -87,8 +106,8 @@ export function draw() {
         annotate = d;
         return chart;
     };
-    chart.markers = (d) => {
-        markers = d;
+    chart.slopeMarkers = (d) => {
+        slopeMarkers = d;
         return chart;
     };
     chart.interpolation = (d) => {
@@ -117,12 +136,12 @@ export function drawHighlights() {
 
     function highlights(parent) {
         const highlights = parent.append('rect') // eslint-disable-line
-        .attr('class', 'highlights')
-        .attr('x', d => xScale(d.begin))
-        .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', () => yScale.range()[1])
-        .attr('height', d => yScale.range()[0])
-        .attr('fill', '#fff1e0');
+            .attr('class', 'highlights')
+            .attr('x', d => xScale(d.begin))
+            .attr('width', d => xScale(d.end) - xScale(d.begin))
+            .attr('y', () => yScale.range()[1])
+            .attr('height', () => yScale.range()[0])
+            .attr('fill', '#fff1e0');
     }
 
     highlights.yScale = (d) => {
@@ -155,18 +174,18 @@ export function drawAnnotations() {
 
     function annotations(parent) {
         parent.append('line')
-      .attr('class', 'annotation')
-      .attr('x1', d => xScale(d.date))
-      .attr('x2', d => xScale(d.date))
-      .attr('y1', yScale.range()[0])
-      .attr('y2', yScale.range()[1] - 5);
+            .attr('class', 'annotation')
+            .attr('x1', d => xScale(d.date))
+            .attr('x2', d => xScale(d.date))
+            .attr('y1', yScale.range()[0])
+            .attr('y2', yScale.range()[1] - 5);
 
         parent.append('text')
-      .attr('class', 'annotation')
-      .attr('text-anchor', 'middle')
-      .attr('x', d => xScale(d.date))
-      .attr('y', yScale.range()[1] - (rem / 2))
-      .text(d => d.annotate);
+            .attr('class', 'annotation')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.date))
+            .attr('y', yScale.range()[1] - (rem / 2))
+            .text(d => d.annotate);
     }
 
     annotations.yScale = (d) => {
