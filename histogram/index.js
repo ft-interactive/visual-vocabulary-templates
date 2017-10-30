@@ -4,7 +4,7 @@ import gChartframe from 'g-chartframe';
 import * as histogram from './histogram.js';
 import * as parseData from './parseData.js';
 
-const thresholds = 5;
+const thresholds = 7;
 
 const dataFile = 'data.csv';
 
@@ -76,7 +76,6 @@ d3.selectAll('.framed')
     });
 
 parseData.fromCSV(dataFile).then(({ data }) => {
-
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -87,12 +86,21 @@ parseData.fromCSV(dataFile).then(({ data }) => {
             .frameName(frameName);
 
         const xAxis = gAxis.xLinear()
-            .domain([0, thresholds - 1])
+            .domain(d3.extent(data))
             .frameName(frameName);
+
+        const histogramGenerator = d3.histogram()
+            .domain(xAxis.scale().domain())
+            .thresholds(xAxis.scale().ticks(thresholds));
+
+        const bins = histogramGenerator(data);
+
+        yAxis.domain(d3.extent(bins, d => d.length));
 
         const myChart = histogram.draw()
             .yScale(yAxis.scale())
             .xScale(xAxis.scale())
+            .xRange([0, currentFrame.dimension().width])
             .thresholds(thresholds)
             .rem(currentFrame.rem());
 
@@ -100,7 +108,11 @@ parseData.fromCSV(dataFile).then(({ data }) => {
             .call(currentFrame);
 
         currentFrame.plot()
-            .datum(data)
+            .selectAll('lines')
+            .data(bins)
+            .enter()
+            .append('g')
+            .attr('class', 'bins')
             .call(myChart);
     });
     // addSVGSavers('figure.saveable');

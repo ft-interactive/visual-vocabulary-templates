@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 import * as gChartcolour from 'g-chartcolour';
 
 export function draw() {
@@ -12,23 +11,12 @@ export function draw() {
     let interpolation = false;
 
     function chart(parent) {
-        const data = parent.datum();
-        const histogramGenerator = d3.histogram()
-
-            .thresholds(xScale.ticks(thresholds));
-
-        const bins = histogramGenerator(data);
-        console.log(bins);
-
-
-        parent.selectAll('.bar')
-            .data(bins)
-            .enter()
-            .append('rect')
+        parent.append('rect')
             .attr('class', 'bar')
             .attr('x', d => xScale(d.x0))
-            .attr('width', xScale(bins[0].x1) - xScale(bins[0].x0) - 1)
-            .attr('height', d => yScale(d.length))
+            .attr('y', d => yScale(Math.max(0, d.length)))
+            .attr('width', d => 40)
+            .attr('height', d => Math.abs(yScale(d.length) - yScale(0)))
             .attr('fill', 'blue');
     }
 
