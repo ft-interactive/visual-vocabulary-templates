@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Small multiple area chart - Visual Vocabulary</title>
+
+    <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
+    <link rel="stylesheet" href="//rawgit.com/ft-interactive/visual-vocabulary-templates/master/styles.css"/>
+    <link rel="stylesheet" href="./small-multi-area.css"/>
+    <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
+</head>
+<body>
+
+    <h1>Small multiple area charts</h1>
+    <p>These are good at showing changes to total</p>
+    <p><b>Some useful settings in the index.js</b>
+        <ul>
+            <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
+            <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
+            <li><b>annotate</b> – set to 'true' will display annotations in your dataset's 'annotate' column</li>
+            <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
+            <li><b>endTicks</b> – set to true to show just first and last date on x-Axis</li>
+            <li><b>fullYear</b> – set to true to show full years for dates on x-Axis</li>
+            <li><b>dataDivisor</b> – divides data values to more manageable numbers, default is 1</li>
+            <li><b>hideAxisLabels</b> – set to true to hide axis labels on middle columns of charts to avoid duplication</li>
+        </ul>
+    </p>
+    <p><b>Setting the rows and columns for each frame</b>
+    <p>Change these values in the .extend() function for each frame</p>
+        <li><b>numberOfColumns</b> – set the number of columns</li>
+        <li><b>numberOfRows</b> – set the number of rows</li>
+    </p>
+     <p><b>Column headings in the csv</b>
+        <ul>
+            <li><b>annotate</b> – use this column to create annotations for a particular point in time</li>
+            <li><b>highlight</b> – use this column to define highlight bands in the background of your chart, add 'begin' where you want the band to start and 'end' where you want it to finish. You can have as many highlights as you want.</li>
+        </ul>
+    </p>
+    <hr>
+
+    <!-- These are provided already for convenience, but could also be added purely via JS: -->
+    <script>
+    /*
+      [
+        'webS'
+        'webM'
+        'webL'
+        'print'
+        'social'
+        'video'
+      ].forEach(function(size){
+        const container = document.createElement('figure');
+        container.dataset.frame = size;
+        container.className = 'framed saveable';
+        container.appendChild(document.createElement('svg'));
+        document.body.appendChild(container);
+      });
+    */
+    </script>
+    <p class="section-heading">Non-responsive chart</p>
+    <figure class="framed saveable" data-frame="webMDefault"><svg></svg></figure>
+    <p class="section-heading">Responsive image set</p>
+    <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="print"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="video"><svg></svg></figure>
+    <!-- <figure class="framed saveable" data-frame="social"><svg></svg></figure> -->
+
+</body>
+</html>
