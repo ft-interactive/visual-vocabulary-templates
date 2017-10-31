@@ -14,7 +14,7 @@ export function fromCSV(url, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const {yMin, joinPoints, highlightNames, dataDivisor } = options;
+                const { yMin, dataDivisor } = options;
 
                 // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
@@ -23,19 +23,6 @@ export function fromCSV(url, options) {
 
                 // Use the seriesNames array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, seriesNames, yMin);
-
-                 // Filter data for annotations
-                const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
-
-                // Format the data that is used to draw highlight tonal bands
-                const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-                const highlights = [];
-
-                boundaries.forEach((d, i) => {
-                    if (d.highlight === 'begin') {
-                        highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-                    }
-                });
 
                 // format the dataset that is used to draw the lines
                 const plotData = seriesNames.map(d => ({
@@ -49,8 +36,6 @@ export function fromCSV(url, options) {
                     plotData,
                     data,
                     valueExtent,
-                    highlights,
-                    annos
                 });
             }
         });
@@ -77,13 +62,13 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => row[key])
-        .map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
+        const values = columns.map(key => row[key])
+            .map((item) => {
+                if (!item || item === '*') {
+                    return yMin;
+                }
+                return Number(item);
+            });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
@@ -108,7 +93,7 @@ function getColumns(data, group, dataDivisor) {
         const column = {
             name: el.name,
             // date: el.date,
-            value: +(el[group]/dataDivisor),
+            value: +(el[group] / dataDivisor),
             highlight: el.highlight,
             annotate: el.annotate,
         };
