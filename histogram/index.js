@@ -4,27 +4,23 @@ import gChartframe from 'g-chartframe';
 import * as histogram from './histogram.js';
 import * as parseData from './parseData.js';
 
-const thresholdCount = 7;
+const thresholdCount = 5;
 
-const dataFile = 'data.csv';
+const dataFile = 'data--random-normal-distribution.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-// let yMin = 0;//sets the minimum value on the yAxis
-// let yMax = 1500;//sets the maximum value on the xAxis
+const yMin = -Infinity; // Sets the minimum value on the yAxis
+const yMax = Infinity; // Sets the maximum value on the yAxis
+const xMin = -Infinity; // Sets the minimum value on the xAxis
+const xMax = Infinity; // Sets the maximum value on the xAxis
 // const yAxisHighlight = 100; //sets which tick to highlight on the yAxis
-// const numTicksy = 3;//Number of tick on the uAxis
-// const yAxisAlign = "right";//alignment of the axis
-// const interval = "years";//date interval on xAxis "decade", "lustrum", "years","months","days"
+const numTicksY = 5; // Number of tick on the uAxis
+const yAxisAlign = 'left'; // Alignment of the axis
 // let annotate = true; // show annotations, defined in the 'annotate' column
-// let markers = false;//show dots on lines
-// let legendAlign = "vert";//hori or vert, alignment of the legend
-// let legendType = "line";//rect, line or circ, geometry of legend marker
-// let interpolation=d3.curveLinear//curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-// let minorAxis = true//turns on or off the minor axis
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -80,47 +76,62 @@ parseData.load(dataFile).then(({ data }) => {
         const currentFrame = frame[frameName];
         const tickSize = currentFrame.dimension().width; // Used when drawing the yAxis ticks
 
-        const [min, max] = d3.extent(data);
-        const histogramGenerator = d3.histogram()
-            .thresholds(d3.range(min, max, (max - min) / thresholdCount));
+        const [minData, maxData] = d3.extent(data);
+        const xAxis = gAxis.xLinear()
+            .domain([
+                (xMin > -Infinity ? xMin : minData),
+                (xMax < Infinity ? xMax : maxData),
+            ])
+            .range([0, currentFrame.dimension().width])
+            .tickSize(currentFrame.rem() * 0.75)
+            .frameName(frameName);
 
-        const bins = histogramGenerator(data);
+        const xAxisTicks = xAxis.scale().ticks(thresholdCount);
+        const bins = d3.histogram()
+            .thresholds(xAxisTicks)(data);
+            // For Freedman-Diaconis, comment out the above and use the following:
+            // .thresholds(d3.thresholdFreedmanDiaconis(xAxisTicks, yMin, yMax))(data);
+            // For Scott's normal reference rule, uncomment the following instead:
+            // .thresholds(d3.thresholdScott(xAxisTicks, yMin, yMax))(data);
+            //
+            // For more on D3's threshold algorithms, @see:
+            // http://devdocs.io/d3~4/d3-array#histogram_thresholds
 
         // Set up and draw y-axis
         const yAxis = gAxis.yLinear()
             .range([currentFrame.dimension().height, 0])
             .tickSize(currentFrame.dimension().width)
-            .align('left')
+            .align(yAxisAlign)
             .tickSize(tickSize)
+            .numTicks(numTicksY)
             .frameName(frameName);
 
-        yAxis.domain(d3.extent(bins, d => d.length));
+        const [lowerBounds, upperBounds] = d3.extent(bins, d => d.length);
+        yAxis.domain([
+            (yMin > -Infinity ? yMin : lowerBounds),
+            (yMax < Infinity ? yMax : upperBounds),
+        ]);
 
         currentFrame.plot().call(yAxis);
         const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
         currentFrame.margin({ left: newMargin }); // Use newMargin redefine the new margin and range of xAxis
         yAxis.yLabel().attr('transform', `translate(${(yAxis.tickSize() - yAxis.labelWidth())}, 0)`);
 
+        // Draw x-axis
+        currentFrame.plot().call(xAxis);
+        xAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+
         // Set up rest of frame...
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
-
-        // Set up and draw x-axis
-        const xAxis = gAxis.xLinear()
-            .domain([d3.min(bins, d => d.x0), d3.max(bins, d => d.x1)])
-            .range([0, currentFrame.dimension().width])
-            .tickSize(currentFrame.rem() * 0.75)
-            .frameName(frameName);
-
-        currentFrame.plot().call(xAxis);
-        xAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
 
         // Draw rest of chart
         const myChart = histogram.draw()
             .yScale(yAxis.scale())
             .xScale(xAxis.scale())
             .thresholds(thresholdCount)
-            .rem(currentFrame.rem());
+            .rem(currentFrame.rem())
+            .colourPalette(frameName);
 
         currentFrame.plot()
             .append('g')

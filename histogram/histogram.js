@@ -1,4 +1,5 @@
 import * as gChartcolour from 'g-chartcolour';
+import * as d3 from 'd3';
 
 export function draw() {
     let yScale;
@@ -6,14 +7,17 @@ export function draw() {
     let yAxisAlign = 'right';
     let rem = 16;
     let thresholds = 4;
-    let colourScale;
     let markers = false; // eslint-disable-line
     let includeMarker = false; // eslint-disable-line
     let interpolation = false;
     let barPadding = 2;
+    const colourScale = d3.scaleOrdinal();
 
     function chart(parent) {
         const bins = parent.datum();
+        console.dir(parent);
+        console.dir(bins);
+        console.log(yScale(yScale.domain()[0]));
         parent.selectAll('.bar')
             .data(bins)
             .enter()
@@ -21,9 +25,10 @@ export function draw() {
             .attr('class', 'bar')
             .attr('x', d => xScale(d.x0))
             .attr('y', d => yScale(Math.max(0, d.length)))
-            .attr('width', xScale(bins[0].x1) - xScale(bins[0].x0) - barPadding)
-            .attr('height', d => Math.abs(yScale(d.length) - yScale(0)))
-            .attr('fill', 'blue');
+            // .attr('width', d => Math.abs(xScale(d.x1) - xScale(d.x0)) - barPadding)
+            .attr('width', d => xScale(d.x1) - xScale(d.x0) - barPadding)
+            .attr('height', d => yScale(yScale.domain()[0]) - yScale(d.length))
+            .attr('fill', () => colourScale(0)); // @TODO Is there a better way of doing this?
     }
 
     chart.thresholds = (d) => {
@@ -90,12 +95,13 @@ export function draw() {
     };
     chart.barPadding = (d) => {
         if (!d) {
-            return barPadding
+            return barPadding;
         }
 
         barPadding = d;
         return chart;
-    }
+    };
+
     chart.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
