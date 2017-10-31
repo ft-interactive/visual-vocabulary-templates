@@ -11,20 +11,6 @@ import * as columnChart from './smallMultiColumnGroupChart.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%d/%m/%Y';
-/*
-  some common formatting parsers....
-  '%m/%d/%Y'        01/28/1986
-  '%d-%b-%y'        28-Jan-86
-  '%Y %b'           1986 Jan
-  '%Y-%m-%d'        1986-01-28
-  '%B %d'           January 28
-  '%d %b'           28 Jan
-  '%H:%M'           11:39
-  '%H:%M %p'        11:39 AM
-  '%d/%m/%Y %H:%M'  28/01/2016 11:39
-*/
-
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
@@ -37,9 +23,6 @@ const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 4;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'decade';/* date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days" */ // eslint-disable-line no-unused-vars
-const endTicks = true;/* show just first and last date on x-Axis */ // eslint-disable-line no-unused-vars
-const fullYear = true; /* show full years for dates on x-Axis */ // eslint-disable-line no-unused-vars
 const dataDivisor = 1; // divides data values to more manageable numbers
 const hideAxisLabels = false; // hide axis labels on middle columns of charts to avoid duplication
 const minorAxis = false;// turns on or off the minor axis
@@ -125,7 +108,7 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
-parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
+parseData.fromCSV(dataFile, { yMin, dataDivisor })
     .then(({
         columnNames, plotData, valueExtent,
     }) => {
