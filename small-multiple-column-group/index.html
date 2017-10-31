@@ -11,12 +11,11 @@
 <body>
 
     <h1>Small multiple grouped column chart</h1>
-    <p>Columns work well for showing change over time - but usually best with only one series of data at a time</p>
+    <p>The standard way to compare the size of things. Must always start at 0 on the axis.</p>
     <p><b>Some useful settings in the index.js</b>
         <ul>
             <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
             <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
-            <li><b>annotate</b> – set to 'true' will display annotations in your dataset's 'annotate' column</li>
             <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
             <li><b>endTicks</b> – set to true to show just first and last date on x-Axis</li>
             <li><b>fullYear</b> – set to true to show full years for dates on x-Axis</li>
@@ -29,14 +28,6 @@
         <li><b>numberOfColumns</b> – set the number of columns</li>
         <li><b>numberOfRows</b> – set the number of rows</li>
     </p>
-     <p><b>Column headings in the csv</b>
-        <ul>
-            <li><b>annotate</b> – use this column to create annotations for a particular point in time</li>
-            <li><b>highlight</b> – use this column to define highlight bands in the background of your chart, add 'begin' where you want the band to start and 'end' where you want it to finish. You can have as many highlights as you want.</li>
-        </ul>
-    </p>
-    <p>Please make sure than the <b>blue line</b> is on top as this is the primary line colour</p>
-
     <hr>
 
     <!-- These are provided already for convenience, but could also be added purely via JS: -->

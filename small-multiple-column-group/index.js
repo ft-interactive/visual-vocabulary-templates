@@ -42,8 +42,9 @@ const endTicks = true;/* show just first and last date on x-Axis */ // eslint-di
 const fullYear = true; /* show full years for dates on x-Axis */ // eslint-disable-line no-unused-vars
 const dataDivisor = 1; // divides data values to more manageable numbers
 const hideAxisLabels = false; // hide axis labels on middle columns of charts to avoid duplication
-const annotate = true; // show annotations, defined in the 'annotate' column
 const minorAxis = false;// turns on or off the minor axis
+const legendAlign = 'hori';// hori or vert, alignment of the legend
+const legendType = 'rect';// rect, line or circ, geometry of legend marker
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -126,7 +127,7 @@ d3.selectAll('.framed')
     });
 parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
     .then(({
-        seriesNames, columnNames, data, plotData, valueExtent, highlights, annos,
+        columnNames, plotData, valueExtent,
     }) => {
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -135,8 +136,6 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
             const myYAxis = gAxis.yLinear();// sets up yAxis
             const myXAxis0 = gAxis.xOrdinal();// sets up date xAxis
             // const xDomain = data.map(columnNames);// sets up domain for xAxis
-            const myHighlights = columnChart.drawHighlights();// sets up highlight tonal bands
-            const myAnnotations = columnChart.drawAnnotations();// sets up annotations
             const myLegend = gLegend.legend();// sets up the legend
             // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
 
@@ -161,15 +160,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
                     return `translate(${(((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem())}, ${yPos})`;
                 });
 
-            const myChart = columnChart.draw()
-                .annotate(annotate);
-
-            // create a 'g' element at the back of the chart to add time period
-            // highlights after axis have been created
-            const axisHighlight = chart.append('g');
-
-            // create a 'g' element behind the chart and in front of the highlights
-            const plotAnnotation = chart.append('g').attr('class', 'annotations-holder');
+            const myChart = columnChart.draw();
 
             myYAxis
                 .domain([Math.min(yMin / dataDivisor, valueExtent[0] / dataDivisor), Math.max(yMax / dataDivisor, valueExtent[1] / dataDivisor)])
@@ -251,33 +242,28 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
             chart
                 .call(myChart);
 
-            // Set up highlights for this frame
-            myHighlights
-                .yScale(myYAxis.scale())
-                .xScale0(myXAxis0.scale());
+            // Set up legend for this frame
+            myLegend
+                .frameName(frameName)
+                .seriesNames(columnNames)
+                .colourPalette((frameName))
+                .rem(myChart.rem())
+                .geometry(legendType)
+                .alignment(legendAlign);
 
-
-            // Draw the highlights before the lines and xAxis
-            axisHighlight
-                .selectAll('.highlights')
-                .data(highlights)
+            // Draw the Legend
+            currentFrame.plot()
+                .append('g')
+                .attr('id', 'legend')
+                .selectAll('.legend')
+                .data(() => columnNames)
                 .enter()
                 .append('g')
-                .call(myHighlights);
+                .classed('legend', true)
+                .call(myLegend);
 
-            // Set up highlights for this frame
-            myAnnotations
-                .yScale(myYAxis.scale())
-                .xScale0(myXAxis0.scale())
-                .rem(currentFrame.rem());
-
-            // Draw the annotations before the lines
-            plotAnnotation
-                .selectAll('.annotation')
-                .data(annos)
-                .enter()
-                .append('g')
-                .call(myAnnotations);
+            const legendSelection = currentFrame.plot().select('#legend');
+            legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
         });
     // addSVGSavers('figure.saveable');
     });
