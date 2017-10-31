@@ -49,7 +49,7 @@ const minorAxis = false;// turns on or off the minor axis
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({
-            top: 10, left: 10, bottom: 88, right: 5,
+            top: 10, left: 10, bottom: 78, right: 5,
         })
         // .title('Put headline here') // use this if you need to override the defaults
         // .subtitle("Put headline |here") //use this if you need to override the defaults
@@ -63,15 +63,15 @@ const frame = {
         })
         // .title("Put headline here")
         .height(1000)
-        .extend('numberOfColumns', 2)
-        .extend('numberOfRows', 3),
+        .extend('numberOfColumns', 3)
+        .extend('numberOfRows', 2),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
             top: 10, left: 10, bottom: 80, right: 5,
         })
         // .title("Put headline here")
-        .height(500)
+        .height(400)
         .fullYear(true)
         .extend('numberOfColumns', 6)
         .extend('numberOfRows', 1),
@@ -82,8 +82,8 @@ const frame = {
         })
     // .title("Put headline here")
         .height(500)
-        .extend('numberOfColumns', 2)
-        .extend('numberOfRows', 3),
+        .extend('numberOfColumns', 3)
+        .extend('numberOfRows', 2),
 
     print: gChartframe.printFrame(sharedConfig)
         .margin({
@@ -142,7 +142,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
 
             // Create the plot widths, but for each individual graph
             const widthOfSmallCharts = ((currentFrame.dimension().width / currentFrame.numberOfColumns()) - currentFrame.rem());
-            const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows()) - (currentFrame.rem() * 3.5));
+            const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows()) - (currentFrame.rem() * 2.5));
 
             const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
 
@@ -156,7 +156,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
                 .attr('class', 'columnHolder')
                 .attr('xPosition', (d, i) => i % currentFrame.numberOfColumns())
                 .attr('transform', (d, i) => {
-                    const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 4.5))));
+                    const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * (heightOfSmallCharts + (currentFrame.rem() * 3.25))));
                     const xPos = i % currentFrame.numberOfColumns();
                     return `translate(${(((widthOfSmallCharts + currentFrame.rem()) * xPos) + currentFrame.rem())}, ${yPos})`;
                 });
@@ -219,7 +219,7 @@ parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
 
             if (hideAxisLabels) {
                 chart
-                    .each(() => {
+                    .each(function hideLabels() {
                         const xPosAttr = Number(d3.select(this).attr('xPosition'));
 
                         if (xPosAttr > 0 && xPosAttr < (currentFrame.numberOfColumns() - 1)) {
