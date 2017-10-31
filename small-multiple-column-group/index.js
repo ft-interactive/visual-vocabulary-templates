@@ -9,7 +9,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as columnChart from './smallMultiColumnTimeChart.js';
 
-const dataFile = 'bar.csv';
+const dataFile = 'data.csv';
 
 const dateStructure = '%d/%m/%Y';
 /*
@@ -37,9 +37,9 @@ const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 4;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'decade';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
-const endTicks = true;// show just first and last date on x-Axis
-const fullYear = true; //show full years for dates on x-Axis
+const interval = 'decade';/* date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days" */ // eslint-disable-line no-unused-vars
+const endTicks = true;/* show just first and last date on x-Axis */ // eslint-disable-line no-unused-vars
+const fullYear = true; /* show full years for dates on x-Axis */ // eslint-disable-line no-unused-vars
 const dataDivisor = 1; // divides data values to more manageable numbers
 const hideAxisLabels = false; // hide axis labels on middle columns of charts to avoid duplication
 const annotate = true; // show annotations, defined in the 'annotate' column
@@ -48,34 +48,34 @@ const minorAxis = false;// turns on or off the minor axis
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 88, right: 5 })
- //.title('Put headline here') // use this if you need to override the defaults
- // .subtitle("Put headline |here") //use this if you need to override the defaults
- .height(1000)
- .extend('numberOfColumns', 1)
- .extend('numberOfRows', 6),
+        .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+        //.title('Put headline here') // use this if you need to override the defaults
+        // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(1000)
+        .extend('numberOfColumns', 1)
+        .extend('numberOfRows', 6),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 88, right: 5 })
- // .title("Put headline here")
- .height(1000)
- .extend('numberOfColumns', 1)
- .extend('numberOfRows', 4),
+        .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+        // .title("Put headline here")
+        .height(1000)
+        .extend('numberOfColumns', 2)
+        .extend('numberOfRows', 3),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 10, left: 10, bottom: 80, right: 5 })
- // .title("Put headline here")
- .height(500)
- .fullYear(true)
- .extend('numberOfColumns', 11)
- .extend('numberOfRows', 1),
+        .margin({ top: 10, left: 10, bottom: 80, right: 5 })
+        // .title("Put headline here")
+        .height(500)
+        .fullYear(true)
+        .extend('numberOfColumns', 6)
+        .extend('numberOfRows', 1),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
  .margin({ top: 10, left: 10, bottom: 80, right: 5 })
  // .title("Put headline here")
- .height(300)
- .extend('numberOfColumns', 3)
- .extend('numberOfRows', 1),
+ .height(500)
+ .extend('numberOfColumns', 2)
+ .extend('numberOfRows', 3),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
@@ -88,8 +88,8 @@ const frame = {
   //.width(346.43)// 6 col
   //.width(74)// markets std print
   .height(150)//markets std print
-  .extend('numberOfColumns', 3)
-  .extend('numberOfRows', 4),
+  .extend('numberOfColumns', 2)
+  .extend('numberOfRows', 3),
 
  //    social: gChartframe.socialFrame(sharedConfig)
  // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -101,7 +101,7 @@ const frame = {
  .margin({ left: 207, right: 207, bottom: 210, top: 233 })
  // .title("Put headline here")
      .extend('numberOfColumns', 6)
-     .extend('numberOfRows', 2),
+     .extend('numberOfRows', 1),
 };
 
 
@@ -112,7 +112,8 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor }).then(({seriesNames, columnNames, data, plotData, valueExtent, highlights, annos}) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin, dataDivisor })
+    .then(({seriesNames, columnNames, data, plotData, valueExtent, highlights, annos}) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
