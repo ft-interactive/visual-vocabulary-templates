@@ -14,7 +14,7 @@ export function fromCSV(url, dateStructure, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const {yMin, highlightNames } = options;
+                const { yMin } = options;
                 // make sure all the dates in the date column are a date object
                 const parseDate = d3.timeParse(dateStructure);
                 data.forEach((d) => {
@@ -28,19 +28,17 @@ export function fromCSV(url, dateStructure, options) {
                 const valueExtent = extentMulti(data, seriesNames, yMin);
 
                 // Format the dataset that is used to draw the lines
-                const plotData = data.map((d) => {
-                    return {
-                        date: d.date,
-                        open: +d.open,
-                        close: +d. close,
-                        high: +d.high,
-                        low: +d.low,
-                        y: +Math.max(d.open, d.close),
-                        height: +Math.max(d.open,d.close) - Math.min(d.open, d.close)
-                    }
-                });
+                const plotData = data.map(d => ({
+                    date: d.date,
+                    open: +d.open,
+                    close: +d.close,
+                    high: +d.high,
+                    low: +d.low,
+                    y: +Math.max(d.open, d.close),
+                    height: +Math.max(d.open, d.close) - Math.min(d.open, d.close),
+                }));
 
-                //Adds extra date to plotData so there is space at the end of the chart
+                // Adds extra date to plotData so there is space at the end of the chart
                 // const last = data[(Number(plotData.length) - 1)].date;
                 // console.log("last",last)
                 // let newLast = new Date();
@@ -51,7 +49,7 @@ export function fromCSV(url, dateStructure, options) {
 
                 // console.log(plotData)
 
-                 // Filter data for annotations
+                // Filter data for annotations
                 const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
                 // Format the data that is used to draw highlight tonal bands
@@ -70,7 +68,7 @@ export function fromCSV(url, dateStructure, options) {
                     data,
                     valueExtent,
                     highlights,
-                    annos
+                    annos,
                 });
             }
         });
@@ -97,13 +95,13 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => +row[key])
-        .map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
+        const values = columns.map(key => +row[key])
+            .map((item) => {
+                if (!item || item === '*') {
+                    return yMin;
+                }
+                return Number(item);
+            });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
