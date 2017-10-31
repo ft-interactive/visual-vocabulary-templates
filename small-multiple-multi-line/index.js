@@ -56,7 +56,9 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-        .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+        .margin({
+            top: 10, left: 10, bottom: 88, right: 5,
+        })
         // .title('Put headline here') // use this if you need to override the defaults
         // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(1000)
@@ -64,14 +66,18 @@ const frame = {
         .extend('numberOfRows', 4),
 
     webM: gChartframe.webFrameM(sharedConfig)
-        .margin({ top: 10, left: 10, bottom: 88, right: 5 })
+        .margin({
+            top: 10, left: 10, bottom: 88, right: 5,
+        })
         // .title("Put headline here")
         .height(1000)
         .extend('numberOfColumns', 3)
         .extend('numberOfRows', 3),
 
     webL: gChartframe.webFrameL(sharedConfig)
-        .margin({ top: 10, left: 10, bottom: 80, right: 5 })
+        .margin({
+            top: 10, left: 10, bottom: 80, right: 5,
+        })
         // .title("Put headline here")
         .height(500)
         .fullYear(true)
@@ -79,14 +85,18 @@ const frame = {
         .extend('numberOfRows', 1),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-        .margin({ top: 10, left: 10, bottom: 80, right: 5 })
+        .margin({
+            top: 10, left: 10, bottom: 80, right: 5,
+        })
         // .title("Put headline here")
         .height(800)
         .extend('numberOfColumns', 4)
         .extend('numberOfRows', 2),
 
     print: gChartframe.printFrame(sharedConfig)
-        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+        .margin({
+            top: 40, left: 7, bottom: 35, right: 7,
+        })
         // .title("Put headline here")
         // .width(53.71)// 1 col
         .width(112.25)// 2 col
@@ -99,15 +109,17 @@ const frame = {
         .extend('numberOfColumns', 3)
         .extend('numberOfRows', 3),
 
-    //social: gChartframe.socialFrame(sharedConfig)
-        // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
-        // // .title("Put headline here")
-        // .width(612)
-        // .height(612), // 700 is ideal height for Instagram
+    // social: gChartframe.socialFrame(sharedConfig)
+    // .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+    // // .title("Put headline here")
+    // .width(612)
+    // .height(612), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
-        .margin({ left: 207, right: 207, bottom: 210, top: 233 })
-      //.title("Put headline here")
+        .margin({
+            left: 207, right: 207, bottom: 210, top: 233,
+        })
+    // .title("Put headline here")
         .extend('numberOfColumns', 4)
         .extend('numberOfRows', 2),
 };
@@ -120,7 +132,9 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
-parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).then(({ seriesNames, groupNamesReduced, data, newData, valueExtent, highlights, annos }) => {
+parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).then(({
+    seriesNames, groupNamesReduced, data, newData, valueExtent, highlights, annos,
+}) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
