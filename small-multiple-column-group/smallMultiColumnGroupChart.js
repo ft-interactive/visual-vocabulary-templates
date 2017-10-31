@@ -22,7 +22,6 @@ export function draw() {
             .attr('class', 'columns')
             .attr('id', d => `name: ${d.name} value: ${d.value}`)
             .attr('x', d => xScale0(d.name))
-            .attr('transform', () => `translate(${-xScale0.bandwidth() / 4},0)`)
             .attr('width', () => xScale0.bandwidth())
             .attr('y', d => yScale(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
