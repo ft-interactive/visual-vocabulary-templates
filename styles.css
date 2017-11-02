@@ -28,7 +28,7 @@ svg {
 
 .ft-socialgraphic .axis text,
 .ft-videographic .axis text {
-    fill-opacity: 0.5;
+    opacity: 0.5;
 }
 
 .ft-webgraphic-s .highlighted-label,
@@ -90,12 +90,12 @@ svg {
     text-anchor: end;
 }
 .ft-socialgraphic .yAxis text{
-    fill-opacity: 0.5;
+    opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: end;
 }
 .ft-videographic .yAxis text{
-    fill-opacity: 0.5;
+    opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: end;
 }
@@ -185,12 +185,12 @@ svg {
     text-anchor: middle;
 }
 .ft-socialgraphic .xAxis text{
-    fill-opacity: 0.5;
+    opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: middle;
 }
 .ft-videographic .xAxis text{
-    fill-opacity: 0.5;
+    opacity: 0.5;
     fill: #FFFFFF;
     text-anchor: middle;
 }
@@ -401,14 +401,14 @@ svg {
 .ft-socialgraphic .timeline-label,
 .ft-socialgraphic .legend text {
     font-family: metric;
-    fill-opacity: 0.5;
+    opacity: 0.5;
     fill: #FFFFFF;
     font-size: 28px;
 }
 .ft-videographic .timeline-label,
 .ft-videographic .legend text{
     font-family: metric;
-    fill-opacity: 0.5;
+    opacity: 0.5;
     fill: #FFFFFF;
     font-size: 48px;
 }
