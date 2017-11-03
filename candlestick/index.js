@@ -3,16 +3,16 @@
  */
 
 import * as d3 from 'd3';
-import * as gLegend from 'g-legend';
+// import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
+import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as candlestick from './candlestick.js';
-import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%d/%m/%Y';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -122,7 +122,7 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
-parseData.fromCSV(dataFile, dateStructure, { yMin, highlightNames }).then(({
+parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
     plotData, valueExtent, highlights, annos,
 }) => {
     Object.keys(frame).forEach((frameName) => {
