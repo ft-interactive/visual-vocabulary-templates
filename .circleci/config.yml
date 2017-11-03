@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/visual-vocabulary
+    # The primary container is an instance of the first list image listed. Your build commands run in this container.
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install npm deps
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - deploy:
+          name: Deploy CSS to S3
+          command: |
+            if [[ `git diff-tree --no-commit-id --name-only -r master | grep styles.css` ]]
+            then
+                npm run deploy-css
+            fi
