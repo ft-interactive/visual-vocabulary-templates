@@ -38,13 +38,12 @@ export function draw() {
             .html(d => d.value)
             .attr('class', 'column-label')
             .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
-            .attr('y', d => yScale(0))
-            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
+            .attr('y', () => yScale(0))
+            .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
             .attr('font-size', rem)
             .attr('fill', '#ffffff')
             .style('text-anchor', 'middle');
         }
-
     }
 
     chart.yScale = (d) => {

@@ -6,6 +6,10 @@ let rem = 10;
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let xRange;
+    let xDomain;
+    let yRange;
+    let yDomain;
     let seriesNames = [];
     let highlightNames = [];
     let yAxisAlign = 'right';
@@ -18,9 +22,8 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-
         const lineData = d3.line()
-        .defined(function(d) { return d; })
+        .defined(d => d)
         .curve(interpolation)
         .x(d => xScale(d.date))
         .y(d => yScale(d.value));
@@ -162,24 +165,24 @@ export function draw() {
 export function drawHighlights() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
-    let invertScale = false
+    let invertScale = false;
 
     function highlights(parent) {
-        let highlights = parent.append('rect')
+        parent.append('rect')
         .attr('class', 'highlights')
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', function(d) {
-            if(invertScale) {
-                return yScale.range()[0]
+        .attr('y', () => {
+            if (invertScale) {
+                return yScale.range()[0];
             }
-              return yScale.range()[1]
-            })
-        .attr('height', function (d) {
-            if(invertScale) {
-                return yScale.range()[1]
+            return yScale.range()[1];
+        })
+        .attr('height', () => {
+            if (invertScale) {
+                return yScale.range()[1];
             }
-            return yScale.range()[0]
+            return yScale.range()[0];
         })
         .attr('fill', '#fff1e0');
     }

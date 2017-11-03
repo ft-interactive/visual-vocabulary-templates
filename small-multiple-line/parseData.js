@@ -11,11 +11,9 @@ import loadData from '@financial-times/load-data';
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) { // eslint-disable-line
-    const { dateFormat } = options;
-
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { yMin, joinPoints, dataDivisor } = options;
+        const { yMin, joinPoints, dataDivisor, dateFormat } = options;
         // make sure all the dates in the date column are a date object
         const parseDate = d3.timeParse(dateFormat);
         data.forEach((d) => {
@@ -112,7 +110,6 @@ export function getlines(d, group, joinPoints, dataDivisor) {
         column.value = +(el[group] / dataDivisor);
         column.highlight = el.highlight;
         column.annotate = el.annotate;
-        console.log(dataDivisor);
         if (el[group]) {
             lineData.push(column);
         }

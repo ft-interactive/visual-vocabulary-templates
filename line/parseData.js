@@ -13,7 +13,7 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { yMin, joinPoints, highlightNames, dateFormat } = options;
+        const { yMin, joinPoints, highlightNames, dateFormat } = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
         const parseDate = d3.timeParse(dateFormat);
         data.forEach((d) => {
@@ -62,7 +62,7 @@ export function load(url, options) { // eslint-disable-line
             data,
             valueExtent,
             highlights,
-            annos
+            annos,
         };
     });
 }
@@ -87,7 +87,7 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => row[key])
+        const values = columns.map(key => row[key])
         .map((item) => {
             if (!item || item === '*') {
                 return yMin;
@@ -112,28 +112,27 @@ export function extentMulti(d, columns, yMin) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group, joinPoints) {
-    let lineData=[]
-    d.forEach(function(el,i){
-        //console.log(el,i)
-        let column=new Object();
-        column.name = group
-        column.date = el.date
-        column.value = +el[group]
-        column.highlight = el.highlight
-        column.annotate = el.annotate
-        if(el[group]) {
-            lineData.push(column)
+    const lineData = [];
+    d.forEach((el) => {
+        // console.log(el,i)
+        const column = {};
+        column.name = group;
+        column.date = el.date;
+        column.value = +el[group];
+        column.highlight = el.highlight;
+        column.annotate = el.annotate;
+        if (el[group]) {
+            lineData.push(column);
         }
 
         // if(el[group] == false) {
         //     lineData.push(null)
         // }
-        if(el[group] == false && joinPoints == false) {
-            lineData.push(null)
+        if (el[group] === false && joinPoints === false) {
+            lineData.push(null);
         }
-
     });
-    return lineData
+    return lineData;
     // return d.map((el) => {
     //     if (el[group]) {
     //         return {

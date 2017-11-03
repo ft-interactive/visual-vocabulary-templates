@@ -28,22 +28,22 @@ export function draw() {
             .data(d => d.values)
             .enter()
             .append('circle')
-            .attr('id',d => d.name)
+            .attr('id', d => d.name)
             .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
             .attr('cx', d => xScale(d.value))
             .attr('r', rem * 0.5)
             .attr('fill', d => colourScale(d.group));
 
         parent.selectAll('text')
-            .data(d => {return d.values.filter(el => el.highlight === 'yes')})
+            .data(d => d.values.filter(el => el.highlight === 'yes'))
             .enter()
             .append('text')
-                .attr('id', d=> currentFrame +d.name)
+                .attr('id', d => currentFrame + d.name)
                 .attr('class', 'xAxis text')
                 .attr('text-anchor', 'middle')
                 .attr('x', d => xScale(d.value))
                 .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
-                .text(d => d.name + ' ' + d.value);
+                .text(d => `${d.name} ${d.value}`);
     }
 
     dots.frameName = (d) => {
@@ -105,7 +105,7 @@ export function draw() {
         return dots;
     };
     return dots;
-};
+}
 
 export function drawQuartiles() {
     let yScale = d3.scaleBand();
@@ -123,11 +123,11 @@ export function drawQuartiles() {
             .data(d => d.quantiles)
                 .enter()
                 .append('circle')
-                .attr('cy', d => yScale(d.group) + (yScale.bandwidth()*.5))
+                .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
                 .attr('cx', d => xScale(d.value))
-                .attr('r', d => rem * 0.5)
-                .attr('fill', d => colourScale(d.group))     
-        
+                .attr('r', () => rem * 0.5)
+                .attr('fill', d => colourScale(d.group));
+
         parent.selectAll('.text')
             .data(d => d.quantiles)
             .enter()
@@ -135,7 +135,7 @@ export function drawQuartiles() {
                 .attr('class', 'xAxis text')
                 .attr('text-anchor', 'middle')
                 .attr('x', d => xScale(d.value))
-                .attr('y', d => yScale(d.group)+ (yScale.bandwidth() * 0.15))
+                .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
                 .text(d => d.name);
     }
     quants.frameName = (d) => {
@@ -197,5 +197,4 @@ export function drawQuartiles() {
         return quants;
     };
     return quants;
-
-};
+}

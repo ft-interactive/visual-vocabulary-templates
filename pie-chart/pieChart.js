@@ -6,10 +6,10 @@ export function draw() {
     let rem = 10;
     const colourScale = d3.scaleOrdinal();
         // .domain(['group']);
-    let colourProperty = 'group';
-    let setPalette = false;
-    let includeLabel = true;
-    let seriesNames = [];
+    let colourProperty = 'group'; // eslint-disable-line no-unused-vars
+    const setPalette = false; // eslint-disable-line no-unused-vars
+    const includeLabel = true; // eslint-disable-line no-unused-vars
+    let seriesNames = []; // eslint-disable-line no-unused-vars
     let radius;
     let frameName;
     let setHighlight;
@@ -31,39 +31,38 @@ export function draw() {
             .innerRadius(radius + rem);
 
         parent.append('path')
-            .on('click',function(d){
-                    chart.colourPalette(currentFame);
-                    chart.colourPicker(currentFame);
-                    let pieClass = d3.select(this);
-                    let segment = d3.select(this.parentNode);
-                    
-                    if (pieClass.attr('class') === '') {
-                        pieClass.attr('class','highlight')
-                        .attr('fill', d => colourScale.range()[setHighlight]);
+            .on('click', function sliceClickHandler() {
+                chart.colourPalette(currentFame);
+                chart.colourPicker(currentFame);
+                const pieClass = d3.select(this);
+                const segment = d3.select(this.parentNode);
 
-                        segment.select('.pie-name')
+                if (pieClass.attr('class') === '') {
+                    pieClass.attr('class', 'highlight')
+                        .attr('fill', () => colourScale.range()[setHighlight]);
+
+                    segment.select('.pie-name')
                         .attr('class', 'pie-name highlight');
-                    }
-                    else{
-                        let el = d3.select(this)
-                        el.attr('class', '')
-                        .attr('fill', d => colourScale.range()[0]);
+                } else {
+                    const el = d3.select(this);
+                    el.attr('class', '')
+                        .attr('fill', () => colourScale.range()[0]);
 
-                        segment.select('.pie-name')
+                    segment.select('.pie-name')
                         .attr('class', 'pie-name');
-                    }
-                })
+                }
+            })
             .attr('d', path)
-            .attr('fill', d => colourScale.range()[0]);
+            .attr('fill', () => colourScale.range()[0]);
 
         parent.append('text')
-              .attr('transform', function(d) { return 'translate(' + valueLabel.centroid(d) + ')'; })
+              .attr('transform', d => `translate(${valueLabel.centroid(d)})`)
               .attr('dy', '0.35em')
               .attr('class', 'pie-value')
               .text(d => d.data.value);
-        
+
         parent.append('text')
-              .attr('transform', function(d) { return 'translate(' + nameLabel.centroid(d) + ')'; })
+              .attr('transform', d => `translate(${nameLabel.centroid(d)})`)
               .attr('dy', '0.35em')
               .attr('class', 'pie-name')
               .text(d => d.data.name);
@@ -89,13 +88,13 @@ export function draw() {
         }
         return chart;
     };
-    
+
     chart.colourPicker = (d) => {
         if (d === 'social' || d === 'video' || d === 'print') {
-            setHighlight  = 1;
+            setHighlight = 1;
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             setHighlight = 4;
-        } 
+        }
         return chart;
     };
 
