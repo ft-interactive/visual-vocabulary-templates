@@ -1,4 +1,6 @@
-/* overall text style for each chart frame*/
+/**
+ * Global styles for Visual Vocabulary Templates
+ */
 
 .section-heading {
     background-color: #00757F;
@@ -350,6 +352,7 @@ svg {
     fill: #ffffff;
     opacity: 0.2;
 }
+
 .ft-videographic .highlights{
     fill: #ffffff;
     opacity: 0.2;
@@ -398,6 +401,7 @@ svg {
     font-size: 9.6px;
     fill: #000000;
 }
+
 .ft-socialgraphic .timeline-label,
 .ft-socialgraphic .legend text {
     font-family: metric;
@@ -405,6 +409,7 @@ svg {
     fill: #FFFFFF;
     font-size: 28px;
 }
+
 .ft-videographic .timeline-label,
 .ft-videographic .legend text{
     font-family: metric;
