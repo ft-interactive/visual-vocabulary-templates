@@ -15,14 +15,13 @@ export function load([url, url2], options) { // eslint-disable-line
     return loadData([ // ... and with multiple files
         url,
         url2,
-      ]).then( ([result1, result2]) => {
-
-    //return loadData(url).then((result) => {
+    ]).then(([result1, result2]) => {
+    // return loadData(url).then((result) => {
 
         const data1 = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
- 
-        const { dateFormat, joinPoints } = options;
+
+        const { dateFormat, joinPoints } = options; // eslint-disable-line no-unused-vars
 
         const parseDate = d3.timeParse(dateFormat);
         data1.forEach((d) => {
@@ -49,9 +48,9 @@ export function load([url, url2], options) { // eslint-disable-line
             name: d,
             linedata: getlines(data2, d),
         }));
-        const dateExtent1 = d3.extent(data1, d => d.date)
-        const dateExtent2 = d3.extent(data2, d => d.date)
-        const dateExtent = [Math.min(dateExtent1[0],dateExtent2[0]),Math.max(dateExtent1[1],dateExtent2[1])]
+        const dateExtent1 = d3.extent(data1, d => d.date);
+        const dateExtent2 = d3.extent(data2, d => d.date);
+        const dateExtent = [Math.min(dateExtent1[0], dateExtent2[0]), Math.max(dateExtent1[1], dateExtent2[1])];
 
         return {
             seriesNamesL,
@@ -98,23 +97,20 @@ function getGroups(seriesNames, el) {
 }
 
 export function getlines(d, group, joinPoints) {
-    let lineData = [];
-    d.forEach(function ( el, i) {
-        //console.log(el,i)
-        let column = new Object();
-        column.name = group,
-        column.date = el.date,
-        column.value = +el[group],
-        column.highlight = el.highlight,
-        column.annotate = el.annotate
+    const lineData = [];
+    d.forEach((el) => {
+        const column = {};
+        column.name = group;
+        column.date = el.date;
+        column.value = +el[group];
+        column.highlight = el.highlight;
+        column.annotate = el.annotate;
         if (el[group]) {
             lineData.push(column);
         }
-        if (el[group] == false && joinPoints == false) {
+        if (el[group] === false && joinPoints === false) {
             lineData.push(null);
         }
-
     });
     return lineData;
-
 }

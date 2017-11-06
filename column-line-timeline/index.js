@@ -2,11 +2,9 @@ import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
+import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as columnLineTimeline from './columnLineTimeline.js';
-import gChartcolour from 'g-chartcolour';
-
-
 
 const barFile = 'dataBar2.csv';
 const lineFile = 'dataLine2.csv';
@@ -34,21 +32,21 @@ const yMinL = 0;// sets the minimum value on the yAxis
 const yMaxL = 10;// sets the maximum value on the yAxis
 const yMinR = 0;// sets the minimum value on the yAxis
 const yMaxR = 200;// sets the maximum value on the yAxis
-const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
+const yAxisHighlight = 100; /* sets which tick to highlight on the yAxis */ // eslint-disable-line no-unused-vars
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 5;// Number of tick on the uAxis
 const xAxisAlign = 'bottom';// alignment of the axis
-const minorAxis = true
+const minorAxis = true;
 const invertScaleR = false;
 const logScaleL = false;
 const logScaleR = false;
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const joinPoints = true;//Joints gaps in lines where there are no data points
+const joinPoints = true;// Joints gaps in lines where there are no data points
 const interval = 'quarters';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
-const barColour = d3.scaleOrdinal()
+const barColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
     .domain(Object.keys(gChartcolour.categorical_bar))
     .range(Object.values(gChartcolour.categorical_bar));
-const lineColour = d3.scaleOrdinal()
+const lineColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
     .domain(Object.keys(gChartcolour.categorical_line))
     .range(Object.values(gChartcolour.categorical_line));
 
@@ -78,15 +76,15 @@ const frame = {
 
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
-    //.title("Put headline here")
-    //.width(53.71)// 1 col
+    // .title("Put headline here")
+    // .width(53.71)// 1 col
     .width(112.25)// 2 col
-    //.width(170.8)// 3 col
-    //.width(229.34)// 4 col
-    //.width(287.88)// 5 col
-    //.width(346.43)// 6 col
-    //.width(74)// markets std print
-    .height(58.21),//markets std print
+    // .width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+    .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -110,7 +108,17 @@ d3.selectAll('.framed')
 
 
 parseData.load([barFile, lineFile], { dateFormat, joinPoints })
-.then(({seriesNamesL, seriesNamesR, valueExtentL, valueExtentR, barData, lineData, dateExtent, data1, data2}) => {    
+.then(({
+    seriesNamesL,
+    seriesNamesR,
+    valueExtentL,
+    valueExtentR,
+    barData,
+    lineData,
+    dateExtent,
+    data1, // eslint-disable-line no-unused-vars
+    data2, // eslint-disable-line no-unused-vars
+}) => {
     // define chart
     const myBars = columnLineTimeline.drawBars() // eslint-disable-line
     const myLines = columnLineTimeline.drawLines();
@@ -125,22 +133,22 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
         const barsLegend = gLegend.legend();
         const lineLegend = gLegend.legend();
 
-        const axisHighlight = currentFrame.plot().append('g');
+        const axisHighlight = currentFrame.plot().append('g'); // eslint-disable-line no-unused-vars
 
 
         yAxisL
           .domain([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
           .range([currentFrame.dimension().height, 0])
-          .tickSize(currentFrame.rem()*2)
+          .tickSize(currentFrame.rem() * 2)
           .numTicks(numTicksL)
           .align('left')
           .logScale(logScaleL)
           .frameName(frameName);
 
-         yAxisR
+        yAxisR
            .domain([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
            .range([currentFrame.dimension().height, 0])
-           .tickSize(currentFrame.rem()*2)
+           .tickSize(currentFrame.rem() * 2)
            .numTicks(numTicksR)
            .align('right')
            .invert(invertScaleR)
@@ -148,15 +156,15 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
            .frameName(frameName);
 
         currentFrame.plot()
-          .call(yAxisL)
+          .call(yAxisL);
 
         currentFrame.plot()
           .call(yAxisR);
 
 
-        let newMarginL = yAxisL.yLabel().node().getBBox().width + currentFrame.margin().left;
-        let newMarginR = yAxisR.yLabel().node().getBBox().width + currentFrame.margin().right
-        currentFrame.margin({left:newMarginL, right:newMarginR});
+        const newMarginL = yAxisL.yLabel().node().getBBox().width + currentFrame.margin().left;
+        const newMarginR = yAxisR.yLabel().node().getBBox().width + currentFrame.margin().right;
+        currentFrame.margin({ left: newMarginL, right: newMarginR });
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
@@ -173,26 +181,25 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
         .interval(interval)
         .tickSize(currentFrame.rem() * 0.75)
         .minorAxis(minorAxis)
-        .minorTickSize(currentFrame.rem() * 0.3)
+        .minorTickSize(currentFrame.rem() * 0.3);
 
-        //Calculae the bandwidth
-        let xScale = xAxis.scale();
-        let barLength = barData.length;
-        const barWidth = ((xScale(barData[barLength-1].date)) - (xScale(barData[0].date))) / barLength
+        // Calculae the bandwidth
+        const xScale = xAxis.scale();
+        const barLength = barData.length;
+        const barWidth = ((xScale(barData[barLength - 1].date)) - (xScale(barData[0].date))) / barLength;
 
         xAxis
-        .range([0, ((currentFrame.dimension().width)-(barWidth*.5))])
+        .range([0, ((currentFrame.dimension().width) - (barWidth * 0.5))]);
         currentFrame.plot()
           .call(xAxis);
 
-        if (xAxisAlign == 'bottom' ) {
+        if (xAxisAlign === 'bottom') {
             xAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            if(minorAxis) {
+            if (minorAxis) {
                 xAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-
             }
         }
-        if (xAxisAlign == 'top' ){
+        if (xAxisAlign === 'top') {
             xAxis.xLabel().attr('transform', `translate(0,${xAxis.tickSize()})`);
         }
 
@@ -201,10 +208,10 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
         //   .attr("height",currentFrame.dimension().height)
         //   .attr("fill","#ededee");
 
-         xAxis1
+        xAxis1
             .align(xAxisAlign)
             .domain(seriesNamesL)
-            .rangeRound([0, barWidth], 10)
+            .rangeRound([0, barWidth], 10);
 
         myBars
             .yScaleL(yAxisL.scale())
@@ -212,7 +219,7 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
             .xScale0(xAxis.scale())
             .xScale1(xAxis1.scale())
             .barWidth(barWidth)
-            .colourPalette(frameName)
+            .colourPalette(frameName);
 
         currentFrame.plot()
           .selectAll('.columnHolder')
@@ -222,7 +229,7 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
           .attr('class', 'columnHolder')
           .call(myBars);
 
-          myLines
+        myLines
             .yScale(yAxisR.scale())
             .xScale(xAxis.scale())
             .interpolation(interpolation)
@@ -230,7 +237,7 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
             .colourPalette((frameName))
             .interpolation(interpolation);
 
-          currentFrame.plot()
+        currentFrame.plot()
           .selectAll('lines')
           .data(lineData)
           .enter()
@@ -277,13 +284,8 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
                 .classed('legend', true)
             .call(lineLegend);
 
-        let moveLegend = currentFrame.plot().select('#lineLegend')
+        const moveLegend = currentFrame.plot().select('#lineLegend');
         const legwidth = ((currentFrame.plot().select('#legend')).node().getBBox().width);
         moveLegend.attr('transform', `translate(${legwidth + currentFrame.rem()},0)`);
-
-
-
-    })
-
-
+    });
 });

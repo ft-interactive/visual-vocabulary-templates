@@ -13,7 +13,6 @@ export function drawBars() {
         .domain(seriesNamesL);
 
     function bars(parent) {
-
         parent.attr('transform', d => `translate(${xScale0(d.date)},0)`)
             .attr('width', barWidth);
 
@@ -26,8 +25,7 @@ export function drawBars() {
             .attr('width', () => xScale1.bandwidth())
             .attr('y', d => yScaleL(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScaleL(d.value) - yScaleL(0)))
-            .attr('fill', function(d,i)  { return barColour.range()[i+1]});
-
+            .attr('fill', (d, i) => barColour.range()[i + 1]);
     }
 
     bars.yScaleL = (d) => {
@@ -94,24 +92,21 @@ export function drawLines() {
     let interpolation = d3.curveLinear;
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
-    let rem = 16
+    let rem = 16;
     let seriesNamesR = [];
     let lineColour = d3.scaleOrdinal()
         .domain(seriesNamesR);
 
     function lines(parent) {
-
         const lineData = d3.line()
-        .defined(function(d) { return d; })
+        .defined(d => d)
         .curve(interpolation)
         .x(d => xScale(d.date))
         .y(d => yScale(d.value));
 
         parent.append('path')
-            .attr('stroke', d =>  lineColour(d.name))
+            .attr('stroke', d => lineColour(d.name))
             .attr('d', d => lineData(d.linedata));
-            
-
     }
 
     lines.yScale = (d) => {
@@ -147,10 +142,11 @@ export function drawLines() {
         return lines;
     };
     lines.seriesNamesR = (d) => {
-        seriesNamesL = d;
+        if (!d) return seriesNamesR;
+        seriesNamesR = d;
         return lines;
     };
 
 
-    return lines
+    return lines;
 }
