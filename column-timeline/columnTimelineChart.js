@@ -52,11 +52,13 @@ export function draw() {
         return chart;
     };
     chart.yDomain = (d) => {
+        if (typeof d === 'undefined') return yScale.domain();
         yScale.domain(d);
         return chart;
     };
 
     chart.yRange = (d) => {
+        if (typeof d === 'undefined') return yScale.range();
         yScale.range(d);
         return chart;
     };
@@ -68,6 +70,7 @@ export function draw() {
     };
 
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
@@ -123,6 +126,8 @@ export function draw() {
         return chart;
     };
     chart.includeMarker = (d) => {
+        if (typeof d === 'undefined') return includeMarker;
+        if (typeof includeMarker === 'undefined') return includeMarker;
         if (!d) return includeMarker;
         includeMarker = d;
         return chart;
@@ -133,6 +138,7 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webL') {
