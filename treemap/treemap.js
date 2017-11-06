@@ -41,16 +41,6 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            }
-            return chart;
-        }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {

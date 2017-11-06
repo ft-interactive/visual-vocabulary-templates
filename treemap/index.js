@@ -11,19 +11,6 @@ import * as treemap from './treemap.js';
 
 const dataFile = 'data.csv';
 
-const dateFormat = '%d/%m/%Y';
-/*
-  some common formatting parsers....
-  '%m/%d/%Y'        01/28/1986
-  '%d-%b-%y'        28-Jan-86
-  '%Y %b'           1986 Jan
-  '%Y-%m-%d'        1986-01-28
-  '%B %d'           January 28
-  '%d %b'           28 Jan
-  '%H:%M'           11:39
-  '%H:%M %p'        11:39 AM
-  '%d/%m/%Y %H:%M'  28/01/2016 11:39
-*/
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -109,23 +96,24 @@ parseData.load(dataFile, {yMin})
         // highlights after axis have been created
         const axisHighlight = currentFrame.plot().append('g');
 
-        // create a 'g' element behind the chart and in front of the highlights
-
-        myYAxis
-          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-          .range([currentFrame.dimension().height, 0])
-
-        // Draw the yAxis first, this will position the yAxis correctly and
-        // measure the width of the label text
-        currentFrame.plot()
-          .call(myYAxis);
-
-
-
         axisHighlight.append("rect")
           .attr("width", currentFrame.dimension().width)
           .attr("height",currentFrame.dimension().height)
           .attr("fill","#ededee");
+
+        myTreemap
+          .plotDim(currentFrame.dimension())
+          .seriesNames(seriesNames)
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
+
+        currentFrame.plot()
+          .selectAll('.treemap')
+          .data(plotData)
+          .enter()
+          .append('g')
+          .attr('class', 'treemap')
+          .call(myTreemap)
 
         
         
