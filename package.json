@@ -7,7 +7,7 @@
         "url": "git+https://github.com/ft-interactive/visual-vocabulary-templates.git"
     },
     "scripts": {
-        "deploy-css": "ft-graphics-deploy --confirm --local-dir=./"
+        "deploy-css": "ft-graphics-deploy --confirm --local-dir=./docs/"
     },
     "keywords": [],
     "author": "Financial Times Interactive Graphics",
