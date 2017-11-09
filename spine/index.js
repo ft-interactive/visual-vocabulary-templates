@@ -127,7 +127,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
-        
+
         // Call the axis and move it if needed
         currentFrame.plot()
             .call(xAxisL);
@@ -137,10 +137,9 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .tickSize(currentFrame.dimension().height)
             .frameName(frameName);
-        
+
         currentFrame.plot()
             .call(xAxisR);
-        console.log(plotData)
 
         myChart
             // .paddingInner(0.06)
@@ -167,7 +166,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .attr('class', 'annotation')
             .attr('id', frameName + 'annotateright')
             .attr('x', (currentFrame.dimension().width / 2) - (currentFrame.rem() / 2))
-            .attr('y', -currentFrame.rem()/4)
+            .attr('y', -currentFrame.rem() / 4)
             .attr('text-anchor', 'end')
             .text(seriesNames[0]);
 
@@ -176,9 +175,9 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .attr('class', 'annotations-holder')
             .append('text')
             .attr('class', 'annotation')
-             .attr('id', frameName + 'annotateleft')
+            .attr('id', frameName + 'annotateleft')
             .attr('x', (currentFrame.dimension().width / 2) + (currentFrame.rem() / 2))
-            .attr('y', -currentFrame.rem()/4)
+            .attr('y', -currentFrame.rem() / 4)
             .attr('text-anchor', 'start')
             .text(seriesNames[1]);
 
