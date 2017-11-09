@@ -127,8 +127,6 @@ export function draw() {
     };
     chart.includeMarker = (d) => {
         if (typeof d === 'undefined') return includeMarker;
-        if (typeof includeMarker === 'undefined') return includeMarker;
-        if (!d) return includeMarker;
         includeMarker = d;
         return chart;
     };

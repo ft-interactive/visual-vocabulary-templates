@@ -51,6 +51,7 @@ export function draw() {
         yScale = d;
         return chart;
     };
+
     chart.yDomain = (d) => {
         if (typeof d === 'undefined') return yScale.domain();
         yScale.domain(d);
@@ -74,15 +75,18 @@ export function draw() {
         seriesNames = d;
         return chart;
     };
+
     chart.xScale0 = (d) => {
         if (!d) return xScale0;
         xScale0 = d;
         return chart;
     };
+
     chart.xDomain0 = (d) => {
         xScale0.domain(d);
         return chart;
     };
+
     chart.xRange0 = (d) => {
         xScale0.rangeRound(d);
         return chart;
@@ -93,40 +97,47 @@ export function draw() {
         xScale1 = d;
         return chart;
     };
+
     chart.xDomain1 = (d) => {
         xScale1.domain(d);
         return chart;
     };
+
     chart.xRange1 = (d) => {
         xScale1.rangeRound(d);
         return chart;
     };
+
     chart.plotDim = (d) => {
         if (!d) return window.plotDim;
         window.plotDim = d;
         return chart;
     };
+
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
         return chart;
     };
+
     chart.includeMarker = (d) => {
         if (typeof d === 'undefined') return includeMarker;
-        if (typeof includeMarker === 'undefined') return includeMarker;
         includeMarker = d;
         return chart;
     };
+
     chart.markers = (d) => {
         if (typeof d === 'undefined') return markers;
         markers = d;
         return chart;
     };
+
     chart.interpolation = (d) => {
         if (!d) return interpolation;
         interpolation = d;
         return chart;
     };
+
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
@@ -138,6 +149,7 @@ export function draw() {
         }
         return chart;
     };
+
     chart.showNumberLabels = (d) => {
         if (!d) return showNumberLabels;
         showNumberLabels = d;
