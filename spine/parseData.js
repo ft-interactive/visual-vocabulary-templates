@@ -23,7 +23,6 @@ export function fromCSV(url, options) {
 
                 // Buid the dataset for plotting
                 const plotData = data;
-                console.log(plotData)
 
                 if (sort === 'descending') {
                     plotData.sort((a, b) =>
@@ -37,7 +36,6 @@ export function fromCSV(url, options) {
                     valueExtent,
                     seriesNames,
                     plotData,
-                    data,
                 });
             }
         });

@@ -29,6 +29,24 @@ export function draw() {
             .attr('x', d => xScaleR(Math.min(0, +d[seriesNames[1]])))
             .attr('width', d => Math.abs(xScaleR(+d[seriesNames[1]]) - xScaleR(0)))
             .attr('fill', colourScale(1));
+
+        if (showNumberLabels) {
+            parent.append('text')
+                .html(d => +d[seriesNames[0]])
+                .attr('y', d => yScale(d.name) + (yScale.bandwidth() / 2) + (rem / 2.5))
+                .attr('x', xScaleL(0) - (rem / 2))
+                .attr('class', 'highlight-label')
+                .attr('font-size', rem)
+                .style('text-anchor', 'end');
+
+            parent.append('text')
+                .html(d => +d[seriesNames[1]])
+                .attr('y', d => yScale(d.name) + (yScale.bandwidth() / 2) + (rem / 2.5))
+                .attr('x', xScaleL(0) + (rem * 1.3))
+                .attr('class', 'highlight-label')
+                .attr('font-size', rem)
+                .style('text-anchor', 'end');
+        }
     }
 
     bars.yScale = (d) => {

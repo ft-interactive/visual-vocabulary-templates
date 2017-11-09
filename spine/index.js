@@ -20,12 +20,9 @@ const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
-const xAxisAlign = 'bottom';
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const showNumberLabels = false;// show numbers on end of bars
-const legendAlign = 'hori'; // hori or vert, alignment of the legend
-const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -41,7 +38,7 @@ const frame = {
    // .title("Put headline here")
    .height(500),
 
-   webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
    .margin({ top: 100, left: 20, bottom: 86, right: 20 })
     // .title("Put headline here")
    .height(500),
@@ -86,7 +83,7 @@ d3.selectAll('.framed')
     });
 
 parseData.fromCSV(dataFile, { sort, sortOn })
-.then(({ seriesNames, plotData, valueExtent, data }) => {
+.then(({ seriesNames, plotData, valueExtent }) => {
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -96,11 +93,8 @@ parseData.fromCSV(dataFile, { sort, sortOn })
         const xAxisL = gAxis.xLinear();
         const xAxisR = gAxis.xLinear();
         const myChart = spineChart.draw();
-        const myLegend = gLegend.legend();
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
-
         yAxis
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
@@ -130,6 +124,8 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .tickSize(currentFrame.dimension().height)
             .invert(true)
+            .numTicks(numTicks)
+            .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
         
         // Call the axis and move it if needed
@@ -144,13 +140,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
         
         currentFrame.plot()
             .call(xAxisR);
-
-        if (xAxisAlign === 'top') {
-            xAxisL.xLabel()
-            .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
-            xAxisR.xLabel()
-            .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
-        }
+        console.log(plotData)
 
         myChart
             // .paddingInner(0.06)
