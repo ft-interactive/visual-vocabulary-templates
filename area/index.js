@@ -107,10 +107,12 @@ d3.selectAll('.framed')
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing')
+            .style('float', 'left')
             .on('click', savePNG);
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing twice as big')
+            .style('float', 'left')
             .on('click', savePNGDouble);
 
         function savePNG() {
