@@ -60,7 +60,7 @@ export function draw() {
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.linePrint);
+            colourScale.range(gChartcolour.barPrint);
         }
         return chart;
     };
