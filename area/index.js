@@ -8,7 +8,7 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as areaChart from './areaChart.js';
-import savePng from 'save-svg-as-png';
+//import savePng from 'save-svg-as-png';
 
 const dataFile = 'data.csv';
 
