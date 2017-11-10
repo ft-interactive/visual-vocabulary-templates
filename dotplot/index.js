@@ -17,12 +17,13 @@ const sharedConfig = {
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 200;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 7;// Number of tick on the uAxis
+const numTicks = 4;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
 const quantiles = false;
+const logscale = false;
 
 const sort = '';
 const sortOn = 0;
@@ -105,6 +106,7 @@ parseData.load(dataURL, { sort, sortOn })
 
         xAxis
             .align(xAxisAlign)
+            .logScale(logscale)
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
