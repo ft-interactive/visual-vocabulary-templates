@@ -62,7 +62,7 @@ const frame = {
     // .width(287.88)// 5 col
     // .width(346.43)// 6 col
     // .width(74)// markets std print
-    .height(69.85), // markets std print
+    .height(69.85), // std print (Use 58.21mm for markets charts that matter)
 
 
     social: gChartframe.socialFrame(sharedConfig)

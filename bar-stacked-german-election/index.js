@@ -60,8 +60,8 @@ const frame = {
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
         // Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
-        .width(112.25)
-        .height(69.85),
+        .width(53.71)
+        .height(69.85), //(use 58.21mm for markets charts that matter)
 
 
     social: gChartframe.socialFrame(sharedConfig)
