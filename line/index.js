@@ -59,20 +59,26 @@ const frame = {
  .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
- // .title("Put headline here")
- .height(500),
+        .margin({
+            top: 100, left: 20, bottom: 86, right: 5,
+        })
+    // .title("Put headline here")
+        .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 104, right: 5 })
- // .title("Put headline here")
- .height(700)
- .fullYear(true),
+        .margin({
+            top: 100, left: 20, bottom: 104, right: 5,
+        })
+    // .title("Put headline here")
+        .height(700)
+        .fullYear(true),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
- // .title("Put headline here")
- .height(500),
+        .margin({
+            top: 100, left: 20, bottom: 86, right: 5,
+        })
+    // .title("Put headline here")
+        .height(500),
 
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
@@ -87,14 +93,18 @@ const frame = {
   .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
- .margin({ top: 140, left: 50, bottom: 138, right: 40 })
- // .title("Put headline here")
- .width(612)
- .height(612), // 700 is ideal height for Instagram
+        .margin({
+            top: 140, left: 50, bottom: 138, right: 40,
+        })
+    // .title("Put headline here")
+        .width(612)
+        .height(612), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
- .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
- // .title("Put headline here")
+        .margin({
+            left: 207, right: 207, bottom: 210, top: 233,
+        }),
+    // .title("Put headline here")
 };
 
 
@@ -276,4 +286,4 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
     // addSVGSavers('figure.saveable');
-});
+    });
