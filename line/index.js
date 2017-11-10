@@ -140,7 +140,6 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         const axisHighlight = currentFrame.plot().append('g');
 
         // create a 'g' element behind the chart and in front of the highlights
-        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         myYAxis
           .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
@@ -210,6 +209,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
+      const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         myChart
           .yScale(myYAxis.scale())
