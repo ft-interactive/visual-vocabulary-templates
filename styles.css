@@ -433,8 +433,7 @@ ul {
 }
 
 .button {
-    display: block;
-    margin: 0 auto;
+    display: inline;
     border-radius: 10px;
     color: #ffffff;
     font-size: 1.1em;
