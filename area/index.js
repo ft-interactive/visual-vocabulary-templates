@@ -103,15 +103,15 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
 
-        var holder = figure.append('div')
+        const holder = figure.append('div');
         holder.append('button')
-            .attr('class','button')
+            .attr('class', 'button')
             .text('This does nothing at the minute')
             .attr('float', 'left')
-            .on("click", '');
+            .on('click', '');
 
-        function savePNG(){
-            let exportSVG = figure.select('svg');
+        function savePNG() {
+            const exportSVG = figure.select('svg');
             saveSvgAsPng(exportSVG, 'area-chart.png');
         }
 
