@@ -7,11 +7,10 @@ export function draw() {
     let xScale = d3.scaleOrdinal();
     let yAxisAlign = 'right';
     let rem = 10;
-    const colourScale = d3.scaleOrdinal()
+    const colourScale = d3.scaleOrdinal();
         // .range('gChartcolour.basicLineWeb');
         // .domain(['group']);
     let colourProperty = 'group';
-    let setPalette = false;
     let includeLabel = true;
     let groupNames = [];
     let labelTextStart = 'start text';
@@ -152,7 +151,7 @@ export function draw() {
         return chart;
     };
 
-    chart.colourPalette = (d, groups, setPalette) => {
+    chart.colourPalette = (d, groups, setPalette = false) => {
         if (groups.length > 0 && setPalette === false) {
             if (d === 'social' || d === 'video') {
                 colourScale.range(gChartcolour.mutedFirstLineSocial);

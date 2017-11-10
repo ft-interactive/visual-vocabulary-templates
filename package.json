@@ -1,68 +1,31 @@
 {
-  "name": "visual-vocabulary-templates",
-  "version": "1.0.0",
-  "description": "A library of data driven graphics -- to be used as starting points for static graphics to be further refined through Illustrator. [Viewable here](http://ft-interactive.github.io/visual-vocabulary/)",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ft-interactive/visual-vocabulary-templates.git"
-  },
-  "keywords": [],
-  "author": "Financial Times Interactive Graphics",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ft-interactive/visual-vocabulary-templates/issues"
-  },
-  "homepage": "https://github.com/ft-interactive/visual-vocabulary-templates#readme",
-  "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-plugin-html": "^3.2.2",
-    "eslint-plugin-import": "^2.6.0"
-  },
-  "eslintConfig": {
-    "extends": "airbnb-base",
-    "parserOptions": {
-      "sourceType": "script"
+    "name": "visual-vocabulary-templates",
+    "version": "1.0.0",
+    "description": "A library of data driven graphics -- to be used as starting points for static graphics to be further refined through Illustrator. [Viewable here](http://ft-interactive.github.io/visual-vocabulary/)",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ft-interactive/visual-vocabulary-templates.git"
     },
-    "rules": {
-      "no-param-reassign": [
-        0
-      ],
-      "no-use-before-define": [
-        "error",
-        {
-          "functions": false
-        }
-      ],
-      "max-len": [
-        "error",
-        {
-          "ignoreTrailingComments": true
-        }
-      ],
-      "indent": [
-        "error",
-        2
-      ]
+    "scripts": {
+        "deploy-css": "ft-graphics-deploy --confirm --local-dir=./docs/"
     },
-    "env": {
-      "browser": true
+    "keywords": [],
+    "author": "Financial Times Interactive Graphics",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ft-interactive/visual-vocabulary-templates/issues"
     },
-    "plugins": [
-      "html"
-    ],
-    "settings": {
-      "html/html-extensions": [
-        ".html"
-      ]
+    "homepage": "https://github.com/ft-interactive/visual-vocabulary-templates#readme",
+    "devDependencies": {
+        "eslint": "^3.19.0",
+        "eslint-config-airbnb-base": "^11.2.0",
+        "eslint-plugin-html": "^3.2.2",
+        "eslint-plugin-import": "^2.6.0",
+        "ft-graphics-deploy": "^2.1.6"
     },
-    "globals": {
-      "SystemJS": false
+    "dependencies": {
+        "d3": "^4.9.1",
+        "g-chartcolour": "^0.8.11",
+        "locate-path": "^2.0.0"
     }
-  },
-  "dependencies": {
-    "d3": "^4.9.1",
-    "g-chartcolour": "^0.8.11",
-    "locate-path": "^2.0.0"
-  }
 }

@@ -6,10 +6,6 @@ let rem = 10;
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
-    let xDomain;
-    let yDomain;
-    let xRange;
-    let yRange;
     let seriesNames = [];
     let yAxisAlign = 'right';
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
@@ -33,58 +29,68 @@ export function draw() {
         yScale = d;
         return chart;
     };
+
     chart.yAxisAlign = (d) => {
         if (!d) return yAxisAlign;
         yAxisAlign = d;
         return chart;
     };
+
     chart.yDomain = (d) => {
-        if (!d) return yDomain;
+        if (typeof d === 'undefined') return yScale.domain();
         yScale.domain(d);
         return chart;
     };
 
     chart.yRange = (d) => {
-        if (!d) return yRange;
+        if (typeof d === 'undefined') return yScale.range();
         yScale.range(d);
         return chart;
     };
 
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
+
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
         return chart;
     };
+
     chart.xDomain = (d) => {
-        if (!d) return xDomain;
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return chart;
     };
+
     chart.xRange = (d) => {
-        if (!d) return xRange;
+        if (typeof d === 'undefined') return xScale.range();
         xScale.range(d);
         return chart;
     };
+
     chart.plotDim = (d) => {
         if (!d) return window.plotDim;
         window.plotDim = d;
         return chart;
     };
+
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
         return chart;
     };
+
     chart.annotate = (d) => {
         annotate = d;
         return chart;
     };
 
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
@@ -123,22 +129,27 @@ export function drawAnnotations() {
         yScale = d;
         return annotations;
     };
+
     annotations.xScale = (d) => {
         xScale = d;
         return annotations;
     };
+
     annotations.yRange = (d) => {
         yScale.range(d);
         return annotations;
     };
+
     annotations.xRange = (d) => {
         xScale.range(d);
         return annotations;
     };
+
     annotations.rem = (d) => {
         if (!d) return rem;
         rem = d;
         return annotations;
     };
+
     return annotations;
 }

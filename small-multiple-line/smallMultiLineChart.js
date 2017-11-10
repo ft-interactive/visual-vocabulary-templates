@@ -65,6 +65,7 @@ export function draw() {
         return chart;
     };
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
@@ -88,6 +89,7 @@ export function draw() {
         return chart;
     };
     chart.markers = (d) => {
+        if (typeof d === 'undefined') return markers;
         markers = d;
         return chart;
     };
@@ -97,6 +99,7 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
@@ -121,7 +124,7 @@ export function drawHighlights() {
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
         .attr('y', () => yScale.range()[1])
-        .attr('height', d => yScale.range()[0])
+        .attr('height', () => yScale.range()[0])
         .attr('fill', '#fff1e0');
     }
 

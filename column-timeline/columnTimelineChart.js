@@ -9,6 +9,7 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
+    let includeMarker;
     let interpolation = d3.curveLinear;
     let showNumberLabels = false;// show numbers on end of bars
     const colourScale = d3.scaleOrdinal()
@@ -37,8 +38,8 @@ export function draw() {
             .html(d => d.value)
             .attr('class', 'column-label')
             .attr('x', d => xScale0(d.date) + (xScale2.bandwidth() / 2))
-            .attr('y', d => yScale(0))
-            .attr('dy', function(d) { if(d.value < 0) {return rem;} else {return -(rem/4)}})
+            .attr('y', () => yScale(0))
+            .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
             .attr('font-size', rem)
             .attr('fill', '#ffffff')
             .style('text-anchor', 'middle');
@@ -51,11 +52,13 @@ export function draw() {
         return chart;
     };
     chart.yDomain = (d) => {
+        if (typeof d === 'undefined') return yScale.domain();
         yScale.domain(d);
         return chart;
     };
 
     chart.yRange = (d) => {
+        if (typeof d === 'undefined') return yScale.range();
         yScale.range(d);
         return chart;
     };
@@ -67,6 +70,7 @@ export function draw() {
     };
 
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
@@ -122,6 +126,7 @@ export function draw() {
         return chart;
     };
     chart.includeMarker = (d) => {
+        if (typeof d === 'undefined') return includeMarker;
         includeMarker = d;
         return chart;
     };
@@ -131,6 +136,7 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webL') {

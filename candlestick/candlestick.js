@@ -6,49 +6,52 @@ export function draw() {
     let rem = 10;
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
-    let seriesNames = [];
-    let highlightNames = [];
+    let seriesNames = []; // eslint-disable-line no-unused-vars
+    let highlightNames = []; // eslint-disable-line no-unused-vars
     let intraday;
     let yAxisAlign = 'right';
-    let markers = false;
+    let markers = false; // eslint-disable-line no-unused-vars
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
-    let interpolation = d3.curveLinear;
+    const interpolation = d3.curveLinear; // eslint-disable-line no-unused-vars
     let colourScale = d3.scaleOrdinal();
     let boxWidth = 7;
 
     function chart(parent) {
-        boxWidth = boxWidth * 0.5;
+        boxWidth *= 0.5;
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
             .attr('x1', d => xScale(d.date))
             .attr('y2', (d) => {
-                if (d.open > d.close) {return +yScale(d.open)}
-                else {return +yScale(d.close)}
+                if (d.open > d.close) { return +yScale(d.open); }
+                return +yScale(d.close);
             })
-            .attr('x2', d => xScale(d.date));
+            .attr('x2', d => xScale(d.date))
+            .attr('class', 'whisker');
 
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
             .attr('x1', d => xScale(d.date))
             .attr('y2', (d) => {
-                if (d.open < d.close) {return +yScale(d.open)}
-                else {return +yScale(d.close)};
+                if (d.open < d.close) { return +yScale(d.open); } return +yScale(d.close);
             })
-            .attr('x2', d => xScale(d.date));
+            .attr('x2', d => xScale(d.date))
+            .attr('class', 'whisker');
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
-            .attr('x1', d => xScale(d.date) - (boxWidth / 2))
+            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
             .attr('y2', d => yScale(+d.high))
-            .attr('x2', d => xScale(d.date) + (boxWidth / 2));
+            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
+            .attr('class', 'whisker');
 
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
-            .attr('x1', d => xScale(d.date) - (boxWidth / 2))
+            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
             .attr('y2', d => yScale(+d.low))
-            .attr('x2', d => xScale(d.date) + (boxWidth / 2));
+            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
+            .attr('class', 'whisker');
 
         parent.append('rect')
             .attr('x', d => xScale(d.date) - (boxWidth / 2))
@@ -56,7 +59,7 @@ export function draw() {
             .attr('y', d => yScale(d.y))
             .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
             .attr('fill', (d) => {
-                if (d.close > d.open) { return colourScale(6) };
+                if (d.close > d.open) { return colourScale(3); }
                 return colourScale(7);
             });
     }
@@ -85,6 +88,7 @@ export function draw() {
         return chart;
     };
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
@@ -108,14 +112,16 @@ export function draw() {
         return chart;
     };
     chart.markers = (d) => {
+        if (typeof d === 'undefined') return markers;
         markers = d;
         return chart;
     };
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.categorical_bar);
+            colourScale.range(gChartcolour.categorical_line);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
         } else if (d && d.name && d.name === 'scale') {
@@ -133,11 +139,11 @@ export function drawHighlights() {
 
     function highlights(parent) {
         parent.append('rect')
-        .attr('class', 'highlights')
-        .attr('x', d => xScale(d.begin))
-        .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', d => yScale.range()[1])
-        .attr('height', d => yScale.range()[0]);        
+            .attr('class', 'highlights')
+            .attr('x', d => xScale(d.begin))
+            .attr('width', d => xScale(d.end) - xScale(d.begin))
+            .attr('y', () => yScale.range()[1])
+            .attr('height', () => yScale.range()[0]);
     }
 
     highlights.yScale = (d) => {
@@ -149,7 +155,6 @@ export function drawHighlights() {
         return highlights;
     };
     return highlights;
-
 }
 
 export function drawAnnotations() {
@@ -159,18 +164,18 @@ export function drawAnnotations() {
 
     function annotations(parent) {
         parent.append('line')
-          .attr('class', 'annotation')
-          .attr('x1', d => xScale(d.date))
-          .attr('x2', d => xScale(d.date))
-          .attr('y1', yScale.range()[0])
-          .attr('y2', yScale.range()[1] - 5);
+            .attr('class', 'annotation')
+            .attr('x1', d => xScale(d.date))
+            .attr('x2', d => xScale(d.date))
+            .attr('y1', yScale.range()[0])
+            .attr('y2', yScale.range()[1] - 5);
 
         parent.append('text')
-          .attr('class', 'annotation')
-          .attr('text-anchor', 'middle')
-          .attr('x', d => xScale(d.date))
-          .attr('y', yScale.range()[1] - (rem / 2))
-          .text(d => d.annotate);
+            .attr('class', 'annotation')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.date))
+            .attr('y', yScale.range()[1] - (rem / 2))
+            .text(d => d.annotate);
     }
 
     annotations.yScale = (d) => {
