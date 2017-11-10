@@ -116,15 +116,13 @@ d3.selectAll('.framed')
             .on('click', savePNGDouble);
 
         function savePNG() {
-            console.log('Does nothing')
+            console.log('Does nothing');
             const exportSVG = figure.select('svg');
-            console.log(exportSVG)
             //saveSvgAsPng(exportSVG, 'area-chart.png');
         }
         function savePNGDouble() {
-            console.log('Does nothing twice as big')
+            console.log('Does nothing twice as big');
             const exportSVG = figure.select('svg');
-            console.log(exportSVG)
             //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: 2.0});
         }
 
