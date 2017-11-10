@@ -113,6 +113,7 @@ d3.selectAll('.framed')
         function savePNG() {
             console.log('Does nothing')
             const exportSVG = figure.select('svg');
+            console.log(exportSVG)
             //saveSvgAsPng(exportSVG, 'area-chart.png');
         }
 
