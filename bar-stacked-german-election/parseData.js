@@ -3,84 +3,81 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, options) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                const { sort } = options;
+export function load(url, options) { // eslint-disable-line
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        const { sort } = options;
 
-                const seriesNames = getSeriesNames(data.columns);
+        const seriesNames = getSeriesNames(data.columns);
 
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames);
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
 
-                // function that calculates the position of each rectangle in the stack
-                const getStacks = function getStacks(el) {
-                    let posCumulative = 0;
-                    let negCumulative = 0;
-                    let baseX = 0;
-                    let baseX1 = 0;
-                    const stacks = seriesNames.map((name, i) => {
-                        if (el[name] > 0) {
-                            baseX1 = posCumulative;
-                            posCumulative += (+el[name]);
-                            baseX = posCumulative;
-                        }
-                        if (el[name] < 0) {
-                            baseX1 = negCumulative;
-                            negCumulative += (+el[name]);
-                            baseX = negCumulative;
-                            if (i < 1) { baseX = 0; baseX1 = negCumulative; }
-                        }
-                        return {
-                            name,
-                            x: +baseX,
-                            x1: +baseX1,
-                            value: +el[name],
-                        };
-                    });
-                    return stacks;
-                };
-
-                const plotData = data.map(d => ({
-                    name: d.name,
-                    bands: getStacks(d),
-                    total: d3.sum(getStacks(d), stack => stack.value),
-                }));
-
-                switch (sort) {
-                case 'descending':
-                    plotData.sort((a, b) => b.total - a.total);// Sorts biggest rects to the left
-                    break;
-                case 'ascending':
-                    plotData.sort((a, b) => a.total - b.total);// Sorts biggest rects to the right
-                    break;
-
-                case 'alphabetical':
-                    plotData.sort((a, b) => a.name.localeCompare(b.name));
-                    break;
-                default:
-                    break;
+        // function that calculates the position of each rectangle in the stack
+        const getStacks = function getStacks(el) {
+            let posCumulative = 0;
+            let negCumulative = 0;
+            let baseX = 0;
+            let baseX1 = 0;
+            const stacks = seriesNames.map((name, i) => {
+                if (el[name] > 0) {
+                    baseX1 = posCumulative;
+                    posCumulative += (+el[name]);
+                    baseX = posCumulative;
                 }
+                if (el[name] < 0) {
+                    baseX1 = negCumulative;
+                    negCumulative += (+el[name]);
+                    baseX = negCumulative;
+                    if (i < 1) { baseX = 0; baseX1 = negCumulative; }
+                }
+                return {
+                    name,
+                    x: +baseX,
+                    x1: +baseX1,
+                    value: +el[name],
+                };
+            });
+            return stacks;
+        };
 
-                const columnNames = data.map(d => d.name); // create an array of the column names
+        const plotData = data.map(d => ({
+            name: d.name,
+            bands: getStacks(d),
+            total: d3.sum(getStacks(d), stack => stack.value),
+        }));
 
-                resolve({
-                    valueExtent,
-                    columnNames,
-                    seriesNames,
-                    plotData,
-                    data,
-                });
-            }
-        });
+        switch (sort) {
+        case 'descending':
+            plotData.sort((a, b) => b.total - a.total);// Sorts biggest rects to the left
+            break;
+        case 'ascending':
+            plotData.sort((a, b) => a.total - b.total);// Sorts biggest rects to the right
+            break;
+
+        case 'alphabetical':
+            plotData.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        default:
+            break;
+        }
+
+        const columnNames = data.map(d => d.name); // create an array of the column names
+
+        return {
+            valueExtent,
+            columnNames,
+            seriesNames,
+            plotData,
+            data,
+        };
     });
 }
 

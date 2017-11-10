@@ -3,30 +3,27 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = d3.extent(data, d => d.seats);
-                // const plotData = data.map(d => d3.range(d.seats).map(() => d));
-                const plotData = data.map(d => (d.seats = Number(d.seats), d)); // eslint-disable-line
-                const seriesNames = d3.map(data, d => d.party).keys();
-                resolve({
-                    valueExtent,
-                    plotData,
-                    data,
-                    seriesNames,
-                });
-            }
-        });
+export function load(url, options) { // eslint-disable-line
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = d3.extent(data, d => d.seats);
+        // const plotData = data.map(d => d3.range(d.seats).map(() => d));
+        const plotData = data.map(d => (d.seats = Number(d.seats), d)); // eslint-disable-line
+        const seriesNames = d3.map(data, d => d.party).keys();
+        return {
+            valueExtent,
+            plotData,
+            data,
+            seriesNames,
+        };
     });
 }
 

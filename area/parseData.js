@@ -3,26 +3,24 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
-
-                resolve(data);
-            }
+export function load(url, options) { // eslint-disable-line
+    const { dateFormat } = options;
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateFormat);
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
         });
+
+        return data;
     });
 }
 
@@ -46,10 +44,10 @@ export function getSeriesNames(columns) {
  */
 // a function that calculates the cumulative ma min values of the dataset
 function getMaxMin(values) {
-    let cumulativeMax = d3.sum(values.filter(d => (d > 0)));
-    let cumulativeMin = d3.sum(values.filter(d => (d < 0)));
+    const cumulativeMax = d3.sum(values.filter(d => (d > 0)));
+    const cumulativeMin = d3.sum(values.filter(d => (d < 0)));
     // console.log(cumulativeMax,cumulativeMin)
-   return [cumulativeMin,cumulativeMax]
+    return [cumulativeMin, cumulativeMax];
 }
 
 // a function to work out the extent of values in an array accross multiple properties...
@@ -75,24 +73,23 @@ export function extentMulti(data, columns) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group) {
-    let values=[]
-    d.forEach(function(el,i){
-        //console.log(el,i)
-        let column=new Object();
-        column.name = group
-        column.date = el.date
-        column.value = +el[group]
-        column.highlight = el.highlight
-        column.annotate = el.annotate
-        if(el[group]) {
-            values.push(column)
+    const values = [];
+    d.forEach((el) => {
+        // console.log(el,i)
+        const column = {};
+        column.name = group;
+        column.date = el.date;
+        column.value = +el[group];
+        column.highlight = el.highlight;
+        column.annotate = el.annotate;
+        if (el[group]) {
+            values.push(column);
         }
-        if(el[group] == false) {
-            values.push(null)
+        if (el[group] === false) {
+            values.push(null);
         }
-
     });
-    return values
+    return values;
     // return d.map((el) => {
     //     if (el[group]) {
     //         return {

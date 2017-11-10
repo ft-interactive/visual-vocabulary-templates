@@ -11,7 +11,7 @@ import * as barChart from './smallMultiBarChart.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%d/%m/%Y';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -123,7 +123,8 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
-parseData.fromCSV(dataFile, dateStructure, { xMin, dataDivisor }).then(({ data, plotData, valueExtent }) => {
+parseData.load(dataFile, { dateFormat, xMin, dataDivisor })
+.then(({ data, plotData, valueExtent }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 

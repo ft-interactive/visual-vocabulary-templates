@@ -11,7 +11,7 @@ export function draw() {
     let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
-    let doubleScale = 0
+    let doubleScale = 0;
   const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
   let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
@@ -20,16 +20,15 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-    
         const lineData = d3.line()
-        .defined(function(d) { return d; })
+        .defined(d => d)
         .curve(interpolation)
         .x(d => xScale(d.date))
-        .y(function (d) {
-            if(d.index >= doubleScale ) {
-                return yScaleR(d.value)
+        .y((d) => {
+            if (d.index >= doubleScale) {
+                return yScaleR(d.value);
             }
-            return yScaleL(d.value)
+            return yScaleL(d.value);
         });
 
         parent.append('path')
@@ -115,6 +114,7 @@ export function draw() {
         return chart;
     };
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
@@ -124,10 +124,12 @@ export function draw() {
         return chart;
     };
     chart.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return chart;
     };
     chart.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.range();
         xScale.range(d);
         return chart;
     };
@@ -146,6 +148,7 @@ export function draw() {
         return chart;
     };
     chart.markers = (d) => {
+        if (typeof d === 'undefined') return markers;
         markers = d;
         return chart;
     };
@@ -155,6 +158,7 @@ export function draw() {
         return chart;
     };
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (highlightNames.length > 0) {
             if (d === 'social' || d === 'video') {
                 colourScale.range(gChartcolour.mutedFirstLineSocial);

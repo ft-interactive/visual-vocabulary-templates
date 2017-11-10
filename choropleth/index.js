@@ -88,13 +88,11 @@ const frame = {
 d3.selectAll('.framed')
     .each(function addFrames() {
         const figure = d3.select(this);
-        console.dir(frame);
-        console.dir(frame[figure.node().dataset.frame]);
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile).then((data) => {
+parseData.load(dataFile).then((data) => {
     // define chart
     const colorScale = d3.scaleOrdinal()
         .domain(partyScale.range())

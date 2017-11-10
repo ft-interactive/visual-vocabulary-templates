@@ -3,48 +3,44 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
+export function load(url, options) { // eslint-disable-line
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
 
-                // automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
+        // automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
 
-                const groupNames = data.map(d => d.group).filter(d => d); // create an array of the group names
+        const groupNames = data.map(d => d.group).filter(d => d); // create an array of the group names
 
-                const dataSorter = (a, b) => {    // Sort the data so that the labeled items are drawn on top
-                    if (groupNames.indexOf(a.group) > groupNames.indexOf(b.group)) {
-                        return 1;
-                    } else if (groupNames.indexOf(a.group) === groupNames.indexOf(b.group)) {
-                        return 0;
-                    }
-                    return -1;
-                };
-
-                function hasGroupName(element, index, array) {
-                  return element !== '';
-                }
-
-                const setColourPalette = data.map(d => d.group).every(hasGroupName);
-
-
-                resolve({
-                    seriesNames,
-                    setColourPalette,
-                    groupNames,
-                    dataSorter,
-                    data,
-                });
+        const dataSorter = (a, b) => {    // Sort the data so that the labeled items are drawn on top
+            if (groupNames.indexOf(a.group) > groupNames.indexOf(b.group)) {
+                return 1;
+            } else if (groupNames.indexOf(a.group) === groupNames.indexOf(b.group)) {
+                return 0;
             }
-        });
+            return -1;
+        };
+
+        function hasGroupName(element) {
+            return element !== '';
+        }
+
+        const setColourPalette = data.map(d => d.group).every(hasGroupName);
+
+        return {
+            seriesNames,
+            setColourPalette,
+            groupNames,
+            dataSorter,
+            data,
+        };
     });
 }
 

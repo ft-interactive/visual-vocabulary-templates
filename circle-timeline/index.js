@@ -7,7 +7,7 @@ import * as circleTimeline from './circleTimeline.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%Y';
+const dateFormat = '%Y';
 const circleSize = 1;
 /*
   some common formatting parsers....
@@ -28,9 +28,9 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
-const minorAxis = false;// turns on or off the minor axis
+const xAxisAlign = 'bottom'; // alignment of the axis
+const interval = 'years'; // date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const minorAxis = false; /* turns on or off the minor axis */ // eslint-disable-line
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -59,14 +59,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 40, right: 25 })
     // .title("Put headline here")
-        //.width(53.71)// 1 col
+        // .width(53.71)// 1 col
         .width(112.25)// 2 col
-        //.width(170.8)// 3 col
-        //.width(229.34)// 4 col
-        //.width(287.88)// 5 col
-        //.width(346.43)// 6 col
-        //.width(74)// markets std print
-        .height(58.21),//markets std print
+        // .width(170.8)// 3 col
+        // .width(229.34)// 4 col
+        // .width(287.88)// 5 col
+        // .width(346.43)// 6 col
+        // .width(74)// markets std print
+        .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 100, left: 50, bottom: 100, right: 80 })
@@ -88,7 +88,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plotData, dateDomain }) => {
+parseData.load(dataFile, { dateFormat })
+.then(({ valueExtent, seriesNames, plotData, dateDomain }) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
@@ -116,7 +117,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
 
         // Get the size of the container to set scales for each box
         const h = currentFrame.dimension().height;
-        const w = currentFrame.dimension().width;
+        const w = currentFrame.dimension().width; // eslint-disable-line
 
         // calculate the size of the max circle - here using height
         const maxCircle = (h / 2 / countCategories) * circleSize;
@@ -147,7 +148,7 @@ parseData.fromCSV(dataFile, dateStructure).then(({ valueExtent, seriesNames, plo
             .rScale(rScale)
             .maxCircle(maxCircle)
             .xScale(myXAxis.scale())
-            .setDateFormat(dateStructure);
+            .setDateFormat(dateFormat);
 
         currentFrame.plot()
             .selectAll('.timelineHolder')

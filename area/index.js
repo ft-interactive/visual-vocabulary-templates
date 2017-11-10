@@ -11,7 +11,7 @@ import * as areaChart from './areaChart.js';
 
 const dataFile = 'data.csv';
 
-const dateStructure = '%d/%m/%y';
+const dateFormat = '%d/%m/%y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -51,7 +51,7 @@ const logScale = false;
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({ top: 100, left: 15, bottom: 82, right: 5 })
-        //.title('Put headline here') // use this if you need to override the defaults
+        // .title('Put headline here') // use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
 
@@ -74,20 +74,20 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-        //.width(53.71)// 1 col 
-        .width(112.25)// 2 col 
-        //.width(170.8)// 3 col
-        //.width(229.34)// 4 col
-        //.width(287.88)// 5 col 
-        //.width(346.43)// 6 col
-        //.width(74)// markets std print 
-        .height(58.21),//markets std print
+        // .width(53.71)// 1 col
+        .width(112.25)// 2 col
+        // .width(170.8)// 3 col
+        // .width(229.34)// 4 col
+        // .width(287.88)// 5 col
+        // .width(346.43)// 6 col
+        // .width(74)// markets std print
+        .height(58.21), // markets std print
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
     // .title("Put headline here")
         .width(612)
-        .height(612), 
+        .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
         .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
@@ -103,7 +103,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then((data) => {
+parseData.load(dataFile, { dateFormat }).then((data) => {
     // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
     const seriesNames = parseData.getSeriesNames(data.columns);
 

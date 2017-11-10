@@ -3,62 +3,61 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure, options) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                const { yMin, dataDivisor } = options;
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
+export function load(url, options) { // eslint-disable-line
+    const { dateFormat } = options;
 
-                // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        const { yMin, dataDivisor } = options;
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateFormat);
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
+        });
 
-                const columnNames = data.map(d => d.date); // create an array of the column names
+        // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
 
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames, yMin);
+        const columnNames = data.map(d => d.date); // create an array of the column names
 
-                 // Filter data for annotations
-                const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames, yMin);
 
-                // Format the data that is used to draw highlight tonal bands
-                const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-                const highlights = [];
+         // Filter data for annotations
+        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
-                boundaries.forEach((d, i) => {
-                    if (d.highlight === 'begin') {
-                        highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-                    }
-                });
+        // Format the data that is used to draw highlight tonal bands
+        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const highlights = [];
 
-                // format the dataset that is used to draw the lines
-                const plotData = seriesNames.map(d => ({
-                    name: d,
-                    columnData: getColumns(data, d, dataDivisor),
-                }));
-
-                resolve({
-                    columnNames,
-                    seriesNames,
-                    plotData,
-                    data,
-                    valueExtent,
-                    highlights,
-                    annos,
-                });
+        boundaries.forEach((d, i) => {
+            if (d.highlight === 'begin') {
+                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+
+        // format the dataset that is used to draw the lines
+        const plotData = seriesNames.map(d => ({
+            name: d,
+            columnData: getColumns(data, d, dataDivisor),
+        }));
+
+        return {
+            columnNames,
+            seriesNames,
+            plotData,
+            data,
+            valueExtent,
+            highlights,
+            annos,
+        };
     });
 }
 

@@ -28,7 +28,7 @@ const yVar = 'var b';
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 
-const opacity = 0.7;//sets the fill opacity of the dots...
+const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
 
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -74,14 +74,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 17 })
     // .title("Put headline here")
-        //.width(53.71)// 1 col 
-        .width(112.25)// 2 col 
-        //.width(170.8)// 3 col
-        //.width(229.34)// 4 col
-        //.width(287.88)// 5 col 
-        //.width(346.43)// 6 col
-        //.width(74)// markets std print 
-        .height(58.21),//markets std print
+        // .width(53.71)// 1 col
+        .width(112.25)// 2 col
+        // .width(170.8)// 3 col
+        // .width(229.34)// 4 col
+        // .width(287.88)// 5 col
+        // .width(346.43)// 6 col
+        // .width(74)// markets std print
+        .height(58.21), // markets std print
 
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -103,8 +103,8 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint-disable-line
-// identify groups
+parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint-disable-line
+    // identify groups
     const groups = d3.map(data, d => d.group).keys();
 
     // determin extents for each scale

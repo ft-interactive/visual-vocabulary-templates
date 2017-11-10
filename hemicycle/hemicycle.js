@@ -85,6 +85,7 @@ export function draw() {
     };
 
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (!d) {
             return colourScale;
         } else if (d === 'social' || d === 'video') {

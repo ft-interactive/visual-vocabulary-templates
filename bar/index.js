@@ -41,7 +41,7 @@ const frame = {
    // .title("Put headline here")
    .height(500),
 
-   webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
    .margin({ top: 100, left: 20, bottom: 86, right: 20 })
     // .title("Put headline here")
    .height(500),
@@ -55,14 +55,14 @@ const frame = {
    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
    // .title("Put headline here")
    /* Print column widths */
-    //.width(53.71)// 1 col 
-    .width(112.25)// 2 col 
-    //.width(170.8)// 3 col
-    //.width(229.34)// 4 col
-    //.width(287.88)// 5 col 
-    //.width(346.43)// 6 col
-    //.width(74)// markets std print 
-    .height(58.21),//markets std print
+    // .width(53.71)// 1 col
+    .width(112.25)// 2 col
+    // .width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+    .height(58.21), // markets std print
 
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -85,8 +85,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, { sort, sortOn })
-.then(({ seriesNames, plotData, valueExtent, data }) => {
+parseData.load(dataFile, { sort, sortOn })
+.then(({ seriesNames, plotData, valueExtent, data }) => { // eslint-disable-line
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -120,7 +120,7 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
 
-        const base = currentFrame.plot().append('g');
+        const base = currentFrame.plot().append('g'); // eslint-disable-line
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
@@ -197,9 +197,8 @@ parseData.fromCSV(dataFile, { sort, sortOn })
             .call(myLegend);
 
         const legendSelection = currentFrame.plot().select('#legend');
-        const legheight = (legendSelection.node().getBBox().height);
+        const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
-
     });
     // addSVGSavers('figure.saveable');
 });

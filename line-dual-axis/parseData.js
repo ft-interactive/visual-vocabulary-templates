@@ -3,26 +3,25 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
+export function load(url, options) { // eslint-disable-line
+    const { dateFormat } = options;
 
-                resolve(data);
-            }
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateFormat);
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
         });
+
+        return data;
     });
 }
 
@@ -46,7 +45,7 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        let values = columns.map(key => row[key])
+        const values = columns.map(key => row[key])
         .map((item) => {
             if (!item || item === '*') {
                 return yMin;
@@ -71,24 +70,23 @@ export function extentMulti(d, columns, yMin) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group, index) {
-    let lineData=[]
-    d.forEach(function(el){
-        let column=new Object();
-        column.name = group
-        column.index = index
-        column.date = el.date
-        column.value = +el[group]
-        column.highlight = el.highlight
-        column.annotate = el.annotate
-        if(el[group]) {
-            lineData.push(column)  
+    const lineData = [];
+    d.forEach((el) => {
+        const column = {};
+        column.name = group;
+        column.index = index;
+        column.date = el.date;
+        column.value = +el[group];
+        column.highlight = el.highlight;
+        column.annotate = el.annotate;
+        if (el[group]) {
+            lineData.push(column);
         }
-        if(el[group] == false) {
-            lineData.push(null)  
+        if (el[group] === false) {
+            lineData.push(null);
         }
-
     });
-    return lineData
+    return lineData;
     // return d.map((el) => {
     //     if (el[group]) {
     //         return {

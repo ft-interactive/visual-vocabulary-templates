@@ -2,9 +2,9 @@ import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
+import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as stackedBarChart from './stackedBarChart.js';
-import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 
@@ -23,8 +23,8 @@ const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const sort = '';// specify 'ascending', 'descending', 'alphabetical' - default is order of input file
 
-//const data = loadsheet(key, data)
-//get spreadsheet info
+// const data = loadsheet(key, data)
+// get spreadsheet info
 
 // const url = 'https://bertha.ig.ft.com/republish/publish/dsv/1UlBBMV8lrmwqTMtyiyaQBr_Qz7Ffrr6qFr1ERsKEtTs/coalitions.csv';
 // const text = await fetch(url).then(response => response.ok ? response.text() : Promise.reject(response.status));
@@ -59,10 +59,10 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-        //Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
+        // Print column sizes-- 1col 53.71mm: 2col 112.25mm: 3col 170.8mm: 4col 229.34mm: 5col 287.88mm: 6col 346.43,
         .width(112.25)
         .height(69.85),
-        
+
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -84,7 +84,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, plotData, seriesNames }) => {
+parseData.load(dataFile, { sort })
+.then(({ valueExtent, plotData, seriesNames }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         const partyColours = d3.scaleOrdinal()
@@ -141,7 +142,7 @@ parseData.fromCSV(dataFile, { sort }).then(({ valueExtent, plotData, seriesNames
         currentFrame.plot()
             .call(myXAxis);
 
-        
+
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
