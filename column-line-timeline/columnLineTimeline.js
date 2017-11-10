@@ -25,7 +25,7 @@ export function drawBars() {
             .attr('width', () => xScale1.bandwidth())
             .attr('y', d => yScaleL(Math.max(0, d.value)))
             .attr('height', d => Math.abs(yScaleL(d.value) - yScaleL(0)))
-            .attr('fill', (d, i) => barColour.range()[i + 1]);
+            .attr('fill', (d, i) => barColour.range()[i]);
     }
 
     bars.yScaleL = (d) => {

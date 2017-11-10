@@ -43,10 +43,10 @@ const logScaleR = false;
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const interval = 'quarters';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
-const barColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
+let barColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
     .domain(Object.keys(gChartcolour.categorical_bar))
     .range(Object.values(gChartcolour.categorical_bar));
-const lineColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
+let lineColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
     .domain(Object.keys(gChartcolour.categorical_line))
     .range(Object.values(gChartcolour.categorical_line));
 
@@ -106,19 +106,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-
 parseData.load([barFile, lineFile], { dateFormat, joinPoints })
-.then(({
-    seriesNamesL,
-    seriesNamesR,
-    valueExtentL,
-    valueExtentR,
-    barData,
-    lineData,
-    dateExtent,
-    data1, // eslint-disable-line no-unused-vars
-    data2, // eslint-disable-line no-unused-vars
-}) => {
+.then(({ seriesNamesL, seriesNamesR, valueExtentL, valueExtentR, barData, lineData, dateExtent, data1, data2}) => {
     // define chart
     const myBars = columnLineTimeline.drawBars() // eslint-disable-line
     const myLines = columnLineTimeline.drawLines();
@@ -135,6 +124,50 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
 
         const axisHighlight = currentFrame.plot().append('g'); // eslint-disable-line no-unused-vars
 
+        function move(arr, oldIndex, newIndex) {
+          while (oldIndex < 0) {
+            oldIndex += arr.length;
+          }
+          while (newIndex < 0) {
+            newIndex += arr.length;
+          }
+          if (newIndex >= arr.length) {
+            var k = newIndex - arr.length;
+            while ((k--) + 1) {
+              arr.push(undefined);
+            }
+          }
+          arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);  
+          return arr;
+        }
+        barColour = colourPalette(frameName);
+
+        function colourPalette(d) {
+          let newPalette = d3.scaleOrdinal()
+          if (d === 'social' || d === 'video') {
+              newPalette
+              .domain(Object.keys(gChartcolour.lineSocial))
+              .range(Object.values(gChartcolour.lineSocial));
+              newPalette.range(move(newPalette.range(), 0, newPalette.range().length - 1));
+              newPalette.range(move(newPalette.range(), 0, newPalette.range().length - 1));
+
+          }
+          if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+              newPalette
+              .domain(Object.keys(gChartcolour.categorical_bar))
+              .range(Object.values(gChartcolour.categorical_bar));
+              newPalette.range(move(newPalette.range(), 0, newPalette.range().length - 1));
+          }
+          if (d === 'print') {
+              newPalette
+              .domain(Object.keys(gChartcolour.linePrint))
+              .range(Object.values(gChartcolour.linePrint));
+              newPalette.range(move(newPalette.range(), 0, newPalette.range().length - 1));
+              newPalette.range(move(newPalette.range(), 0, newPalette.range().length - 1));
+
+          }
+          return newPalette;
+        }
 
         yAxisL
           .domain([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
@@ -219,7 +252,7 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
             .xScale0(xAxis.scale())
             .xScale1(xAxis1.scale())
             .barWidth(barWidth)
-            .colourPalette(frameName);
+            .colourPalette(barColour);
 
         currentFrame.plot()
           .selectAll('.columnHolder')
@@ -253,7 +286,7 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
             .frameName(frameName)
             .rem(currentFrame.rem())
             .alignment('vert')
-            .colourPalette((frameName));
+            .colourPalette(barColour);
 
         // Draw the Legend
         currentFrame.plot()
