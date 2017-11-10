@@ -8,6 +8,7 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as areaChart from './areaChart.js';
+import savePng from 'save-svg-as-png';
 
 const dataFile = 'data.csv';
 
@@ -101,6 +102,20 @@ d3.selectAll('.framed')
         const figure = d3.select(this);
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
+
+        var holder = figure.append('div')
+        holder.append('button')
+            .attr('class','button')
+            .text('This does nothing at the minute')
+            .attr('float', 'left')
+            .on("click", '');
+
+        function savePNG(){
+            let exportSVG = figure.select('svg');
+            saveSvgAsPng(exportSVG, 'area-chart.png');
+        }
+
+
     });
 
 parseData.load(dataFile, { dateFormat }).then((data) => {
