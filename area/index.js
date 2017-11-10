@@ -109,12 +109,23 @@ d3.selectAll('.framed')
             .text('Does nothing')
             .attr('float', 'left')
             .on('click', savePNG);
+        holder.append('button')
+            .attr('class', 'button')
+            .text('Does nothing twice as big')
+            .attr('float', 'left')
+            .on('click', savePNGDouble);
 
         function savePNG() {
             console.log('Does nothing')
             const exportSVG = figure.select('svg');
             console.log(exportSVG)
             //saveSvgAsPng(exportSVG, 'area-chart.png');
+        }
+        function savePNGDouble() {
+            console.log('Does nothing twice as big')
+            const exportSVG = figure.select('svg');
+            console.log(exportSVG)
+            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: 2.0});
         }
 
 
