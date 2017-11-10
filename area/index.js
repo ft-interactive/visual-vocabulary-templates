@@ -106,13 +106,14 @@ d3.selectAll('.framed')
         const holder = figure.append('div');
         holder.append('button')
             .attr('class', 'button')
-            .text('This does nothing at the minute')
+            .text('Does nothing')
             .attr('float', 'left')
-            .on('click', '');
+            .on('click', savePNG);
 
         function savePNG() {
+            console.log('Does nothing')
             const exportSVG = figure.select('svg');
-            saveSvgAsPng(exportSVG, 'area-chart.png');
+            //saveSvgAsPng(exportSVG, 'area-chart.png');
         }
 
 
