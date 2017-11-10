@@ -281,6 +281,7 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
 
         // Set up legend for this frame
         barsLegend
+            .forceLegend(true)
             .seriesNames(seriesNamesL)
             .geometry('rect')
             .frameName(frameName)
@@ -300,6 +301,7 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
             .call(barsLegend);
 
         lineLegend
+            .forceLegend(true)
             .seriesNames(seriesNamesR)
             .geometry('line')
             .frameName(frameName)
