@@ -108,12 +108,14 @@ d3.selectAll('.framed')
             .attr('class', 'button')
             .text('Does nothing')
             .style("float", "left")
+            .style('opacity',0.6)
             .on('click', function (d) {
                 savePNG(1)
             });
         holder.append('button')
             .attr('class', 'button')
             .style("float", "left")
+            .style('opacity',0.6)
             .text('Does nothing twice as big')
             .on('click', function (d) {
                 savePNG(2)
