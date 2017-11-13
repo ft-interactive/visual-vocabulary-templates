@@ -21,6 +21,9 @@ const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
+const showRect = true;//extent shades
+const showLine = false;//connecting line
+const markers = false;//marker dots
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -167,7 +170,9 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .yScale1(yAxis1.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .showNumberLabels(showNumberLabels);
+            .showRects(showRect)
+            .showMarkers(marker)
+            .showLines(showLine);
 
         currentFrame.plot()
             .selectAll('.barHolder')

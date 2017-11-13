@@ -120,9 +120,19 @@ export function draw() {
         rem = d;
         return bars;
     };
-    bars.showNumberLabels = (d) => {
-        if (!d) return showNumberLabels;
-        showNumberLabels = d;
+    bars.showMarkers = (d) => {
+        if (!d) return showMarkers;
+        showMarkers = d;
+        return bars;
+    };
+    bars.showRects = (d) => {
+        if (!d) return showRects;
+        showRects = d;
+        return bars;
+    };
+    bars.showLines = (d) => {
+        if (!d) return showLines;
+        showLines = d;
         return bars;
     };
 
