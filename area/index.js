@@ -110,7 +110,9 @@ d3.selectAll('.framed')
             .style("float", "left")
             .style('opacity',0.6)
             .on('click', function (d) {
-                savePNG(1)
+                let exportSVG = figure.select('svg')
+                console.log(exportSVG);
+                savePNG(exportSVG,1)
             });
         holder.append('button')
             .attr('class', 'button')
@@ -123,10 +125,10 @@ d3.selectAll('.framed')
         holder.append('div')
             .html('<br/>')
 
-        function savePNG(scaleFactor) {
+        function savePNG(exportSVG, scaleFactor) {
             console.log('Does nothing', scaleFactor);
-            const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
+            //const exportSVG = figure.select('svg');
+            saveSvgAsPng(exportSVG, 'area-chart.png');
         }
 
 
