@@ -107,20 +107,24 @@ d3.selectAll('.framed')
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing')
+            .style("float", "left")
             .on('click', function (d) {
                 savePNG(1)
             });
         holder.append('button')
             .attr('class', 'button')
+            .style("float", "left")
             .text('Does nothing twice as big')
             .on('click', function (d) {
                 savePNG(2)
             });
+        holder.append('div')
+            .html('<br/>')
 
         function savePNG(scaleFactor) {
             console.log('Does nothing', scaleFactor);
             const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor});
+            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
         }
 
 
