@@ -20,9 +20,11 @@ const sharedConfig = {
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
+const minorAxis = false;// turns on or off the minor axis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
+const interval = 'jubilee';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const showNumberLabels = false;// show numbers on end of bars
@@ -118,6 +120,9 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         xAxis
             .align(xAxisAlign)
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+            .interval(interval)
+            .fullYear(true)
+            .minorAxis(minorAxis)
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
