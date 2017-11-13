@@ -15,11 +15,12 @@ export function draw() {
 
 
     function bars(parent) {
-        parent.attr('transform', d => `translate(0,${yScale(d.name)})`);
+        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`);
 
+        //draw rects
         if(showRects === true) {    
             for(let k = 0; k < seriesNames.length -1; k++) {
-                    parent.append('rect')
+                parent.append('rect')
                     .attr('class', 'bars')
                     .attr('y', 0)
                     .attr('height', () => yScale.bandwidth())
@@ -29,17 +30,16 @@ export function draw() {
             };
         }   
 
-
          //connecting lines
         if (showLines === true){
-                parent
-                    .append('line')
-                    .attr('x1', d => xScale(d.groups[0].value))
-                    .attr('x2', d => xScale(d.groups[seriesNames.length - 1].value))
-                    .attr('y1', d => yScale.bandwidth() / 2)
-                    .attr('y2', d => yScale.bandwidth() / 2)
-                    .attr('class', 'connector')
-            }
+            parent
+                .append('line')
+                .attr('x1', d => xScale(d.groups[0].value))
+                .attr('x2', d => xScale(d.groups[seriesNames.length - 1].value))
+                .attr('y1', d => yScale.bandwidth() / 2)
+                .attr('y2', d => yScale.bandwidth() / 2)
+                .attr('class', 'connector')
+        }
        
         //circles
         if(showMarkers === true) {
@@ -132,4 +132,54 @@ export function draw() {
     };
 
     return bars;
+}
+
+export function drawAnnotations() {
+    let yScale = d3.scaleLinear();
+    let xScale = d3.scaleTime();
+    let rem = 10;
+
+    function annotations(parent) {
+        parent.append('line')
+            .attr('class', 'annotation')
+            .attr('x1', d => xScale(d.value))
+            .attr('x2', d => xScale(d.value))
+            .attr('y1', yScale.range()[0])
+            .attr('y2', yScale.range()[0] - rem / 2);
+
+        parent.append('text')
+            .attr('class', 'annotation')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.value))
+            .attr('y', yScale.range()[0] - (rem / 1.5))
+            .text(d => d.name);
+    }
+
+    annotations.yScale = (d) => {
+        yScale = d;
+        return annotations;
+    };
+
+    annotations.xScale = (d) => {
+        xScale = d;
+        return annotations;
+    };
+
+    annotations.yRange = (d) => {
+        yScale.range(d);
+        return annotations;
+    };
+
+    annotations.xRange = (d) => {
+        xScale.range(d);
+        return annotations;
+    };
+
+    annotations.rem = (d) => {
+        if (!d) return rem;
+        rem = d;
+        return annotations;
+    };
+
+    return annotations;
 }

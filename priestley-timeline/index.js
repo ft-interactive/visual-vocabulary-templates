@@ -102,6 +102,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         const xAxis = gAxis.xDate();
         const myChart = priestleyChart.draw();
         const myLegend = gLegend.legend();
+        const myAnnotations = priestleyChart.drawAnnotations();// sets up annotations
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
@@ -153,6 +154,8 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
         }
 
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
         myChart
             // .paddingInner(0.06)
             .colourProperty(colourProperty)
@@ -171,6 +174,21 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .enter()
             .append('g')
             .call(myChart);
+
+         // Set up highlights for this frame
+        myAnnotations
+            .yScale(yAxis.scale())
+            .xScale(xAxis.scale())
+            .rem(currentFrame.rem());
+
+        // Draw the annotations before the lines
+        plotAnnotation
+            .selectAll('.annotation')
+            .data(plotData[0].groups)
+            .enter()
+            .append('g')
+            .call(myAnnotations);
+
 
 
         // Set up legend for this frame
