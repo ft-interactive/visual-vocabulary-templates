@@ -10,7 +10,9 @@ export function draw() {
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
     let rem = 10;
-    let showNumberLabels = false;// show numbers on end of bars
+    let showRects = false;// show numbers on end of bars
+    let showMarkers = false;// show numbers on end of bars
+    let showLines = false;// show numbers on end of bars
 
 
     function bars(parent) {
@@ -27,36 +29,6 @@ export function draw() {
             .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
             .attr('fill', d => colourScale(d.name));
 
-        if (showNumberLabels) {
-            parent.selectAll('text')
-            .data(d => d.groups)
-            .enter()
-            .append('text')
-            .html(d => d.value)
-            .attr('class', 'highlight-label')
-            .style('text-anchor', 'end')
-            .attr('y', d => yScale1(d.name) + (yScale1.bandwidth() / 2) + (rem / 2.5))
-            .attr('x', () => xScale(0))
-            .attr('dx', (d) => { if (d.value < 0) { return rem / 4; } return -(rem / 4); })
-            .attr('font-size', rem)
-            .style('text-anchor', (d) => { if (d.value < 0) { return 'start'; } return 'end'; });
-
-            let labelWidth = 0;
-            parent.selectAll('.label').each(function calcLabels() {
-                labelWidth = Math.max(this.getBBox().width, labelWidth);
-                // console.log(labelWidth);
-                // positionText(this,labelWidth)
-            });
-
-            parent.selectAll('.label').each(function positionLabels() {
-                positionText(this, labelWidth);
-            });
-        }
-
-        function positionText(item, labelWidth) {
-            const object = d3.select(item);
-            object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
-        }
     }
 
     bars.yScale0 = (d) => {
@@ -125,14 +97,14 @@ export function draw() {
         showMarkers = d;
         return bars;
     };
-    bars.showRects = (d) => {
-        if (!d) return showRects;
-        showRects = d;
-        return bars;
-    };
     bars.showLines = (d) => {
         if (!d) return showLines;
         showLines = d;
+        return bars;
+    };
+    bars.showRects = (d) => {
+        if (!d) return showRects;
+        showRects = d;
         return bars;
     };
 

@@ -3,7 +3,7 @@ import * as gAxis from 'g-axis';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
-import * as barChart from './barChart.js';
+import * as priestleyChart from './priestleyChart.js';
 
 
 
@@ -21,8 +21,8 @@ const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
-const showRect = true;//extent shades
-const showLine = false;//connecting line
+const showRects = true;//extent shades
+const showLines = false;//connecting line
 const markers = false;//marker dots
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
@@ -30,7 +30,6 @@ const xAxisAlign = 'bottom';
 const interval = 'jubilee';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
-const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
@@ -102,7 +101,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         const yAxis0 = gAxis.yOrdinal();// sets up yAxis
         const yAxis1 = gAxis.yOrdinal();// sets up yAxis
         const xAxis = gAxis.xDate();
-        const myChart = barChart.draw();
+        const myChart = priestleyChart.draw();
         const myLegend = gLegend.legend();
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
@@ -170,9 +169,9 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .yScale1(yAxis1.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .showRects(showRect)
-            .showMarkers(marker)
-            .showLines(showLine);
+            .showRects(showRects)
+            .showMarkers(markers)
+            .showLines(showLines)
 
         currentFrame.plot()
             .selectAll('.barHolder')
