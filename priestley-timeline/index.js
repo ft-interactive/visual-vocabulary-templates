@@ -174,13 +174,15 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
 
 
         // Set up legend for this frame
-        myLegend
-            .seriesNames(seriesNames)
-            .geometry(legendType)
-            .frameName(frameName)
-            .rem(currentFrame.rem())
-            .alignment(legendAlign)
-            .colourPalette((frameName));
+        if (showRects === false) {
+            myLegend
+                .seriesNames(seriesNames)
+                .geometry(legendType)
+                .frameName(frameName)
+                .rem(currentFrame.rem())
+                .alignment(legendAlign)
+                .colourPalette((frameName));
+        }
 
         // Draw the Legend
         currentFrame.plot()
