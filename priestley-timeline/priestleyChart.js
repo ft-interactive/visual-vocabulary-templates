@@ -97,7 +97,7 @@ export function draw() {
         colourProperty = d;
         return bars;
     };
-    bars.colourPalette = (d) => {
+    bars.colourPalette = (d, showRects) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {

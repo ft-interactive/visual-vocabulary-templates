@@ -21,9 +21,9 @@ const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
-const showRects = false;//extent shades
-const showLines = true;//connecting line
-const showMarkers = true;//marker dots
+const showRects = true;//extent shades
+const showLines = false;//connecting line
+const showMarkers = false;//marker dots
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -186,7 +186,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         myChart
             // .paddingInner(0.06)
             .colourProperty(colourProperty)
-            .colourPalette((frameName))
+            .colourPalette(frameName, showRects)
             .seriesNames(seriesNames)
             .yScale(yAxis.scale())
             .xScale(xAxis.scale())
