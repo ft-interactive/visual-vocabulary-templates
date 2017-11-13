@@ -21,9 +21,9 @@ const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
-const showRects = false;//extent shades
+const showRects = true;//extent shades
 const showLines = false;//connecting line
-const showMarkers = true;//marker dots
+const showMarkers = false;//marker dots
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -31,7 +31,7 @@ const interval = 'jubilee';// date interval on xAxis "century", "jubilee", "deca
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
-const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const legendType = 'circ'; // rect, line or circ, geometry of legend marker
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -98,8 +98,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         const currentFrame = frame[frameName];
         // define other functions to be called
 
-        const yAxis0 = gAxis.yOrdinal();// sets up yAxis
-        const yAxis1 = gAxis.yOrdinal();// sets up yAxis
+        const yAxis = gAxis.yOrdinal();// sets up yAxis
         const xAxis = gAxis.xDate();
         const myChart = priestleyChart.draw();
         const myLegend = gLegend.legend();
@@ -107,17 +106,11 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
 
-        yAxis0
+        yAxis
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
             .rangeRound([0, tickSize], 10)
             .frameName(frameName);
-
-        // yAxis1
-        //     .paddingInner(0.06)
-        //     .align(yAxisAlign)
-        //     .domain(seriesNames)
-        //     .rangeRound([0, yAxis0.bandwidth()]);
 
         xAxis
             .align(xAxisAlign)
@@ -131,17 +124,17 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         console.log(plotData);
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
-            .call(yAxis0);
+            .call(yAxis);
         // console.log(plotData);
         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().right;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
-            yAxis0.yLabel()
-                .attr('transform', `translate(${currentFrame.dimension().width + yAxis0.labelWidth()},${0})`);
+            yAxis.yLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width + yAxis.labelWidth()},${0})`);
         } else {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().left;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
         }
@@ -165,8 +158,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .colourProperty(colourProperty)
             .colourPalette((frameName))
             .seriesNames(seriesNames)
-            .yScale0(yAxis0.scale())
-            .yScale1(yAxis1.scale())
+            .yScale(yAxis.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
             .showRects(showRects)

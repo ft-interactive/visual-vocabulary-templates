@@ -2,9 +2,8 @@ import * as d3 from 'd3';
 import * as gChartcolour from 'g-chartcolour';
 
 export function draw() {
-    let yScale0 = d3.scaleBand();
-    let yScale1 = d3.scaleBand();
-    let xScale = d3.scaleLinear();
+    let yScale = d3.scaleBand();
+    let xScale = d3.scaleTime();
     let seriesNames = [];
     let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
@@ -16,43 +15,55 @@ export function draw() {
 
 
     function bars(parent) {
-        parent.attr('transform', d => `translate(0,${yScale0(d.name)})`);
+        parent.attr('transform', d => `translate(0,${yScale(d.name)})`);
 
         if(showRects === true) {    
-            parent.selectAll('rect')
-                .data(d => d.groups)
-                .enter()
-                .append('rect')
-                .attr('class', 'bars')
-                .attr('y', d => yScale0(d.name))
-                .attr('height', () => yScale0.bandwidth())
-                .attr('x', d => xScale(d.value))
-                .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
-                .attr('fill', d => colourScale(d.name));
-        }
+            for(let k = 0; k < seriesNames.length -1; k++) {
+                    parent.append('rect')
+                    .attr('class', 'bars')
+                    .attr('y', 0)
+                    .attr('height', () => yScale.bandwidth())
+                    .attr('x', d => xScale(d.groups[k].value))
+                    .attr('width', d => xScale(d.groups[k + 1].value) - xScale(d.groups[k].value))
+                    .attr('fill', d => colourScale(k));
+            };
+        }   
 
+
+         //connecting lines
+        if (showLines === true){
+                parent
+                    .append('line')
+                    .attr('x1', d => xScale(d.groups[0].value))
+                    .attr('x2', d => xScale(d.groups[seriesNames.length - 1].value))
+                    .attr('y1', d => yScale.bandwidth() / 2)
+                    .attr('y2', d => yScale.bandwidth() / 2)
+                    .attr('class', 'connector')
+            }
+       
+        //circles
         if(showMarkers === true) {
             parent.selectAll('circle')
                 .data(d => d.groups)
                 .enter()
                 .append('circle')
                 .attr('r', rem / 2)
-                .attr('cy', d => yScale0(d.name))
+                .attr('cy', d =>  yScale.bandwidth() / 2)
                 .attr('cx', d => xScale(d.value))
                 .attr('fill', d => colourScale(d.name));
         }
     }
 
-    bars.yScale0 = (d) => {
-        yScale0 = d;
+    bars.yScale = (d) => {
+        yScale = d;
         return bars;
     };
     bars.yDomain0 = (d) => {
-        yScale0.domain(d);
+        yScale.domain(d);
         return bars;
     };
     bars.yRange0 = (d) => {
-        yScale0.rangeRound(d);
+        yScale.rangeRound(d);
         return bars;
     };
     bars.yScale1 = (d) => {
