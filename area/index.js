@@ -8,7 +8,7 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as areaChart from './areaChart.js';
-// import savePng from 'save-svg-as-png';
+//import savePng from 'save-svg-as-png';
 
 const dataFile = 'data.csv';
 
@@ -107,21 +107,20 @@ d3.selectAll('.framed')
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing')
-            .on('click', savePNG);
+            .on('click', function (d) {
+                savePNG(1)
+            });
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing twice as big')
-            .on('click', savePNGDouble);
+            .on('click', function (d) {
+                savePNG(2)
+            });
 
-        function savePNG() {
-            console.log('Does nothing');
+        function savePNG(scaleFactor) {
+            console.log('Does nothing', scaleFactor);
             const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png');
-        }
-        function savePNGDouble() {
-            console.log('Does nothing twice as big');
-            const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: 2.0});
+            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor});
         }
 
 
