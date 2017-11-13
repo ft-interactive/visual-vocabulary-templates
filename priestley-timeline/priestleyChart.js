@@ -101,9 +101,17 @@ export function draw() {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.categorical_bar);
+            if (showRects === true) {
+                colourScale.range(gChartcolour.categorical_bar);
+            } else {
+                colourScale.range(gChartcolour.categorical_line);
+            }
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.barPrint);
+            if (showRects === true) {
+                colourScale.range(gChartcolour.barPrint);
+            } else {
+                colourScale.range(gChartcolour.linePrint);
+            }
         }
         return bars;
     };

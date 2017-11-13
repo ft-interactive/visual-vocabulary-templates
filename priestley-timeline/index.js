@@ -21,9 +21,9 @@ const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
-const showRects = true;//extent shades
-const showLines = false;//connecting line
-const showMarkers = false;//marker dots
+const showRects = false;//extent shades
+const showLines = true;//connecting line
+const showMarkers = true;//marker dots
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -89,6 +89,32 @@ d3.selectAll('.framed')
         const figure = d3.select(this);
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
+
+        const holder = figure.append('div');
+        holder.append('button')
+            .attr('class', 'button')
+            .text('Does nothing')
+            .style("float", "left")
+            .style('opacity',0.6)
+            .on('click', function (d) {
+                savePNG(1)
+            });
+        holder.append('button')
+            .attr('class', 'button')
+            .style("float", "left")
+            .style('opacity',0.6)
+            .text('Does nothing twice as big')
+            .on('click', function (d) {
+                savePNG(2)
+            });
+        holder.append('div')
+            .html('<br/>')
+
+        function savePNG(scaleFactor) {
+            console.log('Does nothing', scaleFactor);
+            const exportSVG = figure.select('svg');
+            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
+        }
     });
 
 parseData.load(dataFile, { sort, sortOn, dateFormat })
@@ -142,6 +168,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         // Set the plot object to its new dimensions
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
         // Use new widtth of frame to set the range of the x-axis and any other parameters
         xAxis
             .range([0, currentFrame.dimension().width])
@@ -175,21 +202,23 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .append('g')
             .call(myChart);
 
-         // Set up highlights for this frame
-        myAnnotations
-            .yScale(yAxis.scale())
-            .xScale(xAxis.scale())
-            .rem(currentFrame.rem());
+         // Show annotations for bars
+        if (showRects === true) {
+       
+             // Set up annotation for this frame
+            myAnnotations
+                .yScale(yAxis.scale())
+                .xScale(xAxis.scale())
+                .rem(currentFrame.rem());
 
-        // Draw the annotations before the lines
-        plotAnnotation
-            .selectAll('.annotation')
-            .data(plotData[0].groups)
-            .enter()
-            .append('g')
-            .call(myAnnotations);
-
-
+            // Draw the annotations
+            plotAnnotation
+                .selectAll('.annotation')
+                .data(plotData[0].groups)
+                .enter()
+                .append('g')
+                .call(myAnnotations);
+        }
 
         // Set up legend for this frame
         if (showRects === false) {
