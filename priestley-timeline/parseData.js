@@ -23,7 +23,7 @@ export function load(url, options) { // eslint-disable-line
         // Buid the dataset for plotting
         const plotData = data.map(d => ({
             name: d.name,
-            groups: getGroups(seriesNames, d),
+            groups: getGroups(seriesNames, d, parseDate),
         }));
 
         if (sort === 'descending') {
@@ -66,9 +66,9 @@ function extentMulti(data, columns, parseDate) {
     return [parseDate(ext.min), parseDate(ext.max)];
 }
 
-function getGroups(seriesNames, el) {
+function getGroups(seriesNames, el, parseDate) {
     return seriesNames.map(name => ({
         name,
-        value: +el[name],
+        value: parseDate(el[name]),
     }));
 }

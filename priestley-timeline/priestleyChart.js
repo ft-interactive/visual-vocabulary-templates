@@ -18,17 +18,29 @@ export function draw() {
     function bars(parent) {
         parent.attr('transform', d => `translate(0,${yScale0(d.name)})`);
 
-        parent.selectAll('rect')
-            .data(d => d.groups)
-            .enter()
-            .append('rect')
-            .attr('class', 'bars')
-            .attr('y', d => yScale1(d.name))
-            .attr('height', () => yScale1.bandwidth())
-            .attr('x', d => xScale(Math.min(0, d.value)))
-            .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
-            .attr('fill', d => colourScale(d.name));
+        if(showRects === true) {    
+            parent.selectAll('rect')
+                .data(d => d.groups)
+                .enter()
+                .append('rect')
+                .attr('class', 'bars')
+                .attr('y', d => yScale0(d.name))
+                .attr('height', () => yScale0.bandwidth())
+                .attr('x', d => xScale(d.value))
+                .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
+                .attr('fill', d => colourScale(d.name));
+        }
 
+        if(showMarkers === true) {
+            parent.selectAll('circle')
+                .data(d => d.groups)
+                .enter()
+                .append('circle')
+                .attr('r', rem / 2)
+                .attr('cy', d => yScale0(d.name))
+                .attr('cx', d => xScale(d.value))
+                .attr('fill', d => colourScale(d.name));
+        }
     }
 
     bars.yScale0 = (d) => {
@@ -93,17 +105,17 @@ export function draw() {
         return bars;
     };
     bars.showMarkers = (d) => {
-        if (!d) return showMarkers;
+        if (typeof d === 'undefined') return showMarkers;
         showMarkers = d;
         return bars;
     };
     bars.showLines = (d) => {
-        if (!d) return showLines;
+        if (typeof d === 'undefined') return showLines;
         showLines = d;
         return bars;
     };
     bars.showRects = (d) => {
-        if (!d) return showRects;
+        if (typeof d === 'undefined') return showRects;
         showRects = d;
         return bars;
     };

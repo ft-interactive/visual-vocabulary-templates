@@ -21,9 +21,9 @@ const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
-const showRects = true;//extent shades
+const showRects = false;//extent shades
 const showLines = false;//connecting line
-const markers = false;//marker dots
+const showMarkers = true;//marker dots
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -113,11 +113,11 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .rangeRound([0, tickSize], 10)
             .frameName(frameName);
 
-        yAxis1
-            .paddingInner(0.06)
-            .align(yAxisAlign)
-            .domain(seriesNames)
-            .rangeRound([0, yAxis0.bandwidth()]);
+        // yAxis1
+        //     .paddingInner(0.06)
+        //     .align(yAxisAlign)
+        //     .domain(seriesNames)
+        //     .rangeRound([0, yAxis0.bandwidth()]);
 
         xAxis
             .align(xAxisAlign)
@@ -128,11 +128,11 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
-
+        console.log(plotData);
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
             .call(yAxis0);
-
+        // console.log(plotData);
         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
             const newMargin = yAxis0.labelWidth() + currentFrame.margin().right;
@@ -170,7 +170,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
             .showRects(showRects)
-            .showMarkers(markers)
+            .showMarkers(showMarkers)
             .showLines(showLines)
 
         currentFrame.plot()
@@ -179,11 +179,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .enter()
             .append('g')
             .call(myChart);
-        // remove ticks if numbers are added to vars
-        if (showNumberLabels) {
-            const clear = xAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
-            clear.remove();
-        }
+
 
         // Set up legend for this frame
         myLegend
