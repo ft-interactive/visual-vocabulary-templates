@@ -21,7 +21,7 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const total = false; // show total bar at end of chart
+const total = true; // show total bar at end of chart
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -111,15 +111,14 @@ parseData.load(dataFile, '', { total })
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-        const myXAxis0 = gAxis.xOrdinal();// sets up yAxis
-        const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
+        const myXAxis = gAxis.xOrdinal();// sets up yAxis
         const myYAxis = gAxis.yLinear();
         const myChart = waterfallCategoryChart.draw(); // eslint-disable-line no-unused-vars
         const myLegend = gLegend.legend();
 
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-
+        console.log(plotData);
         myChart
             .yRange([currentFrame.dimension().height, 0])
             .plotDim(currentFrame.dimension())
@@ -160,31 +159,25 @@ parseData.load(dataFile, '', { total })
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        myXAxis0
+        myXAxis
             .align(xAxisAlign)
             .domain(plotData.map(d => d.name))
             .rangeRound([0, currentFrame.dimension().width], 10)
             .frameName(frameName);
 
-        myXAxis1
-            .align(xAxisAlign)
-            .domain(seriesNames)
-            .rangeRound([0, myXAxis0.bandwidth()]);
-
         myChart
-            .xScale0(myXAxis0.scale())
-            .xScale1(myXAxis1.scale())
+            .xScale(myXAxis.scale())
             .showNumberLabels(showNumberLabels);
             // .yScale(myYAxis.yScale())
 
         currentFrame.plot()
-          .call(myXAxis0);
+          .call(myXAxis);
 
         if (xAxisAlign === 'bottom') {
-            myXAxis0.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
         if (xAxisAlign === 'top') {
-            myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
 

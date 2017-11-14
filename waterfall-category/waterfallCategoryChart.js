@@ -3,8 +3,7 @@ import gChartcolour from 'g-chartcolour';
 
 export function draw() {
     let yScale = d3.scaleLinear();
-    let xScale0 = d3.scaleBand();
-    let xScale1 = d3.scaleBand();
+    let xScale = d3.scaleBand();
     let seriesNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
@@ -16,34 +15,31 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        parent.attr('transform', d => `translate(${xScale0(d.name)},0)`)
-            .attr('width', xScale0.bandwidth());
+        parent.attr('transform', d => `translate(${xScale(d.name)},0)`)
+            .attr('width', xScale.bandwidth());
 
-        parent.selectAll('rect')
-            .data(d => d.groups)
-            .enter()
-            .append('rect')
+        parent.append('rect')
             .attr('class', 'columns')
-            .attr('x', d => xScale1(d.name))
-            .attr('width', () => xScale1.bandwidth())
-            .attr('y', d => yScale(Math.max(0, d.value)))
-            .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
-            .attr('fill', d => colourScale(d.name));
+            .attr('x', d => xScale(0))
+            .attr('width', () => xScale.bandwidth())
+            .attr('y', d => yScale(d.end))
+            .attr('height', d => Math.abs(yScale(d.end) - yScale(d.start)))
+            .attr('fill', d => colourScale(d.group));
 
-        if (showNumberLabels) {
-            parent.selectAll('text')
-            .data(d => d.groups)
-            .enter()
-            .append('text')
-            .html(d => d.value)
-            .attr('class', 'column-label')
-            .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
-            .attr('y', () => yScale(0))
-            .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
-            .attr('font-size', rem)
-            .attr('fill', '#ffffff')
-            .style('text-anchor', 'middle');
-        }
+        // if (showNumberLabels) {
+        //     parent.selectAll('text')
+        //     .data(d => d.groups)
+        //     .enter()
+        //     .append('text')
+        //     .html(d => d.value)
+        //     .attr('class', 'column-label')
+        //     .attr('x', d => xScale(d.name) + (xScale.bandwidth() / 2))
+        //     .attr('y', () => yScale(0))
+        //     .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
+        //     .attr('font-size', rem)
+        //     .attr('fill', '#ffffff')
+        //     .style('text-anchor', 'middle');
+        // }
     }
 
     chart.yScale = (d) => {
@@ -76,35 +72,19 @@ export function draw() {
         return chart;
     };
 
-    chart.xScale0 = (d) => {
-        if (!d) return xScale0;
-        xScale0 = d;
+    chart.xScale = (d) => {
+        if (!d) return xScale;
+        xScale = d;
         return chart;
     };
 
-    chart.xDomain0 = (d) => {
-        xScale0.domain(d);
+    chart.xDomain = (d) => {
+        xScale.domain(d);
         return chart;
     };
 
-    chart.xRange0 = (d) => {
-        xScale0.rangeRound(d);
-        return chart;
-    };
-
-    chart.xScale1 = (d) => {
-        if (!d) return xScale1;
-        xScale1 = d;
-        return chart;
-    };
-
-    chart.xDomain1 = (d) => {
-        xScale1.domain(d);
-        return chart;
-    };
-
-    chart.xRange1 = (d) => {
-        xScale1.rangeRound(d);
+    chart.xRange = (d) => {
+        xScale.rangeRound(d);
         return chart;
     };
 
