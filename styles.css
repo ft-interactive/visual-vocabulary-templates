@@ -11,6 +11,10 @@
     padding: 8px 8px 5px;
 }
 
+figure {
+    width: fit-content;
+}
+
 svg {
     font-size: 0;
     fill: transparent;
