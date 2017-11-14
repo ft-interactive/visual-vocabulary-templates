@@ -18,7 +18,7 @@ const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksx = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
-const showNumberLabels = true;// show numbers on end of bars
+const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const total = true; // show total bar at end of chart
@@ -115,7 +115,7 @@ parseData.load(dataFile, { total })
         const myXAxis = gAxis.xLinear();
         const myChart = waterfallChart.draw(); // eslint-disable-line no-unused-vars
         const myLegend = gLegend.legend();
-        console.log(plotData);
+
         // define other functions to be called
         const tickSize = currentFrame.dimension().height;// Used when drawing the xAxis ticks
         myChart
