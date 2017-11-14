@@ -3,7 +3,7 @@ import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as columnGroupedChart from './columnGroupedChart.js';
+import * as waterfallCategoryChart from './waterfallCategoryChart.js';
 
 const dataFile = 'data.csv';
 
@@ -18,11 +18,10 @@ const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const sort = '';// specify 'ascending', 'descending', 'alphabetical'
-const sortOn = 0;// specify column number to sort on (ignore name column)
 const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const total = false; // show total bar at end of chart
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -107,7 +106,7 @@ d3.selectAll('.framed')
         }
     });
 
-parseData.load(dataFile, '', { sort, sortOn })
+parseData.load(dataFile, '', { total })
 .then(({ seriesNames, plotData, valueExtent, data }) => { // eslint-disable-line no-unused-vars
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -115,7 +114,7 @@ parseData.load(dataFile, '', { sort, sortOn })
         const myXAxis0 = gAxis.xOrdinal();// sets up yAxis
         const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
         const myYAxis = gAxis.yLinear();
-        const myChart = columnGroupedChart.draw(); // eslint-disable-line no-unused-vars
+        const myChart = waterfallCategoryChart.draw(); // eslint-disable-line no-unused-vars
         const myLegend = gLegend.legend();
 
         // define other functions to be called

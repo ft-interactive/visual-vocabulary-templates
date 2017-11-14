@@ -13,28 +13,75 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { sort, sortOn } = options;
         const seriesNames = getSeriesNames(data.columns);
+        const { total } = options;
 
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
 
-        // Buid the dataset for plotting
-        const plotData = data.map(d => ({
-            name: d.name,
-            groups: getGroups(seriesNames, d),
-        }));
+        let cumulative = 0;
 
-        if (sort === 'descending') {
-            plotData.sort((a, b) =>
-                b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
-        } else if (sort === 'ascending') {
-            plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
-        } else if (sort === 'alphabetical') { // Sorts biggest rects to the left
-            plotData.sort((a, b) => a.name.localeCompare(b.name));
-        } // Sorts alphabetically
+        function extents(last, value) {
+            if (last === 0){
+                return [0, value];
+            } else {
+                if (value > 0){
+                    return [last, cumulative + value];
+                } else {
+                    return [(last + value), (last + value + Math.abs(value))];
+                }    
+            }
+        }
+
+        function group(value) {
+            return value < 0 ? 'negative' : 'positive';
+        }
+
+        const plotData = data.map(function(d,i) {
+            let yMin = Math.min(cumulative, yMin);
+            let yMax = Math.max(cumulative, yMax);
+
+            let extent = extents(cumulative, +d.value);
+            cumulative = extent[1];
+
+            if(d.value < 0) {
+                cumulative = extent[0];
+            } else {
+                cumulative = extent[1];
+            }
+            if(i === 0 && d.value < 0) {
+                cumulative = extent[1];
+                extent[0] = d.value;
+                extent[1] = 0;
+            }
+            return {
+                name: d.name,
+                value: +d.value,
+                start: extent[0],
+                end: extent[1],
+                group: group(d.value)
+            }
+        });
+
+        if(total) {
+            plotData.push({
+            name: 'Total',
+            value: cumulative,
+            start: 0,
+            end: d3.sum(data, function(d){
+                return d3.format('.2f')(d.value);
+            }),
+            group: null
+        })
+
+        }
+        // // Buid the dataset for plotting
+        // const plotData = data.map(d => ({
+        //     name: d.name,
+        //     groups: getGroups(seriesNames, d),
+        // }));
 
         return {
             valueExtent,
