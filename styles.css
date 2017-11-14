@@ -15,6 +15,10 @@ figure {
     width: fit-content;
 }
 
+.button-holder {
+    margin-bottom: 50px;
+}
+
 svg {
     font-size: 0;
     fill: transparent;
