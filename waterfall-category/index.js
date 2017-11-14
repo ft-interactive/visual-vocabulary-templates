@@ -79,7 +79,8 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
 
-        const holder = figure.append('div');
+        const holder = figure.append('div')
+                        .attr('class', 'button-holder');
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing')
