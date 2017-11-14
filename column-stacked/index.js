@@ -73,7 +73,9 @@ const frame = {
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
-        const figure = d3.select(this);
+        const figure = d3.select(this)
+                        .attr('class', 'button-holder');
+
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
 
