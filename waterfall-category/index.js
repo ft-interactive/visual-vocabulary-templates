@@ -107,7 +107,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { total })
-.then(({ seriesNames, plotData, valueExtent, data }) => { // eslint-disable-line no-unused-vars
+.then(({ seriesNames, plotData, valueExtent, data, groupNames }) => { // eslint-disable-line no-unused-vars
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -191,7 +191,7 @@ parseData.load(dataFile, { total })
 
         // Set up legend for this frame
         myLegend
-            .seriesNames(seriesNames)
+            .seriesNames(groupNames)
             .geometry(legendType)
             .frameName(frameName)
             .rem(myChart.rem())
@@ -203,7 +203,7 @@ parseData.load(dataFile, { total })
             .append('g')
             .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(seriesNames)
+                .data(groupNames)
                 .enter()
                 .append('g')
                 .classed('legend', true)

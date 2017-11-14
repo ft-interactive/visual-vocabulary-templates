@@ -16,7 +16,8 @@ export function load(url, options) { // eslint-disable-line
         const { total } = options;
         const seriesNames = getSeriesNames(data.columns);
 
-        const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
+        const groupNamesToDedupe = data.map(d => d.group).filter(d => d); // create an array of the group names
+        const groupNames = Array.from(new Set(groupNamesToDedupe)); // returns a deduped array
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
@@ -75,13 +76,13 @@ export function load(url, options) { // eslint-disable-line
                 }),
                 group: null
             });
+            groupNames.push('Total')
         }
         // // Buid the dataset for plotting
         // const plotData = data.map(d => ({
         //     name: d.name,
         //     groups: getGroups(seriesNames, d),
         // }));
-
         return {
             valueExtent,
             seriesNames,
