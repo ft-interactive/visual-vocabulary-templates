@@ -12,12 +12,12 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
-const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
-const xAxisAlign = 'bottom';// alignment of the axis
+const xMin = 0;// sets the minimum value on the yAxis
+const xMax = 0;// sets the maximum value on the yAxis
+const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
+const numTicksx = 5;// Number of tick on the uAxis
+const yAxisAlign = 'left';// alignment of the axis
+const xAxisAlign = 'top';// alignment of the axis
 const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -111,31 +111,36 @@ parseData.load(dataFile, { total })
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-        const myXAxis = gAxis.xOrdinal();// sets up yAxis
-        const myYAxis = gAxis.yLinear();
+        const myYAxis = gAxis.yOrdinal();// sets up yAxis
+        const myXAxis = gAxis.xLinear();
         const myChart = waterfallChart.draw(); // eslint-disable-line no-unused-vars
         const myLegend = gLegend.legend();
 
         // define other functions to be called
-        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+        const tickSize = currentFrame.dimension().height;// Used when drawing the xAxis ticks
         myChart
-            .yRange([currentFrame.dimension().height, 0])
+            .xRange([currentFrame.dimension().width, 0])
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette((frameName))
             .invertScale(invertScale);
 
         myYAxis
-            .scale(myChart.yScale())
-            .numTicks(numTicksy)
-            .tickSize(tickSize)
-            .yAxisHighlight(yAxisHighlight)
-            .align(myChart.yAxisAlign());
-
-        myYAxis
             .align(yAxisAlign)
-            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-            .numTicks(numTicksy)
+            .domain(plotData.map(d => d.name))
+            .rangeRound([0, currentFrame.dimension().height], 10)
+            .frameName(frameName);
+
+        myXAxis
+            .scale(myChart.xScale())
+            .numTicks(numTicksx)
+            .tickSize(tickSize)
+            .xAxisHighlight(xAxisHighlight);
+
+
+        myXAxis
+            .align(xAxisAlign)
+            .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .invert(invertScale)
             .frameName(frameName);
 
@@ -144,27 +149,25 @@ parseData.load(dataFile, { total })
         currentFrame.plot()
           .call(myYAxis);
 
-        // return the value in the variable newMargin
+         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
-            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
-        }
-        if (yAxisAlign === 'left') {
+            myYAxis.yLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width + myYAxis.labelWidth()},${0})`);
+        } else {
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
-            // Use newMargin redefine the new margin and range of xAxis
+            // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         }
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
+        // Use new widtth of frame to set the range of the x-axis and any other parameters
         myXAxis
-            .align(xAxisAlign)
-            .domain(plotData.map(d => d.name))
-            .rangeRound([0, currentFrame.dimension().width], 10)
-            .frameName(frameName);
+            .range([0, (currentFrame.dimension().width - (currentFrame.rem() / 3))])
+            .tickSize(currentFrame.dimension().height);
 
         myChart
             .xScale(myXAxis.scale())

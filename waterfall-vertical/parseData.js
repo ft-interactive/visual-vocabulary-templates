@@ -41,8 +41,8 @@ export function load(url, options) { // eslint-disable-line
         }
 
         const plotData = data.map(function(d,i) {
-            let yMin = Math.min(cumulative, yMin);
-            let yMax = Math.max(cumulative, yMax);
+            let xMin = Math.min(cumulative, xMin);
+            let xMax = Math.max(cumulative, xMax);
 
             let extent = extents(cumulative, +d.value);
             cumulative = extent[1];
