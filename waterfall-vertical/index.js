@@ -21,7 +21,7 @@ const xAxisAlign = 'top';// alignment of the axis
 const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const total = true; // show total bar at end of chart
+const total = false; // show total bar at end of chart
 const invertScale = false; // invert y-axis
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
