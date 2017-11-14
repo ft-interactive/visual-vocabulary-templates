@@ -106,7 +106,7 @@ d3.selectAll('.framed')
         }
     });
 
-parseData.load(dataFile, '', { total })
+parseData.load(dataFile, { total })
 .then(({ seriesNames, plotData, valueExtent, data }) => { // eslint-disable-line no-unused-vars
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];

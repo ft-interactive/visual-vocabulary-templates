@@ -13,8 +13,8 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const seriesNames = getSeriesNames(data.columns);
         const { total } = options;
+        const seriesNames = getSeriesNames(data.columns);
 
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
 
@@ -64,18 +64,17 @@ export function load(url, options) { // eslint-disable-line
                 group: group(d.value)
             }
         });
-
-        if(total) {
+        console.log(total);
+        if(total === true) {
             plotData.push({
-            name: 'Total',
-            value: cumulative,
-            start: 0,
-            end: d3.sum(data, function(d){
-                return d3.format('.2f')(d.value);
-            }),
-            group: null
-        })
-
+                name: 'Total',
+                value: cumulative,
+                start: 0,
+                end: d3.sum(data, function(d){
+                    return d3.format('.2f')(d.value);
+                }),
+                group: null
+            });
         }
         // // Buid the dataset for plotting
         // const plotData = data.map(d => ({
