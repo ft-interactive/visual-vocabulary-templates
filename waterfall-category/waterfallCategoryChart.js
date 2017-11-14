@@ -7,9 +7,6 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
-    let markers = false; // eslint-disable-line
-    let includeMarker = undefined; // eslint-disable-line
-    let interpolation = d3.curveLinear;
     let showNumberLabels = false; // show numbers on end of bars
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
@@ -26,20 +23,16 @@ export function draw() {
             .attr('height', d => Math.abs(yScale(d.end) - yScale(d.start)))
             .attr('fill', d => colourScale(d.group));
 
-        // if (showNumberLabels) {
-        //     parent.selectAll('text')
-        //     .data(d => d.groups)
-        //     .enter()
-        //     .append('text')
-        //     .html(d => d.value)
-        //     .attr('class', 'column-label')
-        //     .attr('x', d => xScale(d.name) + (xScale.bandwidth() / 2))
-        //     .attr('y', () => yScale(0))
-        //     .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
-        //     .attr('font-size', rem)
-        //     .attr('fill', '#ffffff')
-        //     .style('text-anchor', 'middle');
-        // }
+        if (showNumberLabels) {
+            parent.append('text')
+                .html(d => d.value)
+                .attr('class', 'column-label')
+                .attr('x', d => (xScale.bandwidth() / 2))
+                .attr('y', (d) => yScale(d.end))
+                .attr('dy', (d) => {return -(rem / 4); })
+                .attr('font-size', rem)
+                .style('text-anchor', 'middle');
+        }
     }
 
     chart.yScale = (d) => {
@@ -97,24 +90,6 @@ export function draw() {
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
-        return chart;
-    };
-
-    chart.includeMarker = (d) => {
-        if (typeof d === 'undefined') return includeMarker;
-        includeMarker = d;
-        return chart;
-    };
-
-    chart.markers = (d) => {
-        if (typeof d === 'undefined') return markers;
-        markers = d;
-        return chart;
-    };
-
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
         return chart;
     };
 

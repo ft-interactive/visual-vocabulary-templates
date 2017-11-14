@@ -18,7 +18,7 @@ const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const showNumberLabels = false;// show numbers on end of bars
+const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const total = true; // show total bar at end of chart
@@ -188,13 +188,6 @@ parseData.load(dataFile, { total })
           .append('g')
           .attr('class', 'columnHolder')
           .call(myChart);
-
-        // remove ticks if numbers are added to vars
-        if (showNumberLabels) {
-            const clear = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
-            clear.remove();
-        }
-
 
         // Set up legend for this frame
         myLegend

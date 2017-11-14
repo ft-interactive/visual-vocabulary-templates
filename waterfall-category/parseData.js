@@ -64,11 +64,11 @@ export function load(url, options) { // eslint-disable-line
                 group: group(d.value)
             }
         });
-        console.log(total);
+
         if(total === true) {
             plotData.push({
                 name: 'Total',
-                value: cumulative,
+                value: d3.format('.1f')(cumulative),
                 start: 0,
                 end: d3.sum(data, function(d){
                     return d3.format('.2f')(d.value);

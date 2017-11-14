@@ -1,0 +1,19 @@
+/* .tick text on yAxis*/
+.ft-webgraphic-s .column-label,
+.ft-webgraphic-m .column-label,
+.ft-webgraphic-m-default .column-label,
+.ft-webgraphic-l .column-label {
+    fill: #66605C;
+}
+.ft-printgraphic .column-label {
+}
+.ft-socialgraphic .column-label {
+    opacity: 0.7;
+    fill: #FFFFFF;
+    font-size: 28px;
+}
+.ft-videographic ..column-label {
+    opacity: 0.7;
+    fill: #FFFFFF;
+    font-size: 48px;
+}
