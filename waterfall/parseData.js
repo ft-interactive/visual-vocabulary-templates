@@ -36,9 +36,14 @@ export function load(url, options) { // eslint-disable-line
             }
         }
 
-        function group(value) {
-            return value < 0 ? 'negative' : 'positive';
+        function group(value, group) {
+            if(!group) {
+                return value < 0 ? 'negative' : 'positive';
+            } else {
+                return group;
+            }
         }
+
 
         const plotData = data.map(function(d,i) {
             let yMin = Math.min(cumulative, yMin);
@@ -62,7 +67,7 @@ export function load(url, options) { // eslint-disable-line
                 value: +d.value,
                 start: extent[0],
                 end: extent[1],
-                group: group(d.value)
+                group: group(d.value, d.group)
             }
         });
 
