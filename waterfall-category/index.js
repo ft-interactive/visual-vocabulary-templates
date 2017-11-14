@@ -3,7 +3,7 @@ import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as waterfallCategoryChart from './waterfallCategoryChart.js';
+import * as waterfallChart from './waterfallChart.js';
 
 const dataFile = 'data.csv';
 
@@ -21,8 +21,8 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const total = true; // show total bar at end of chart
-const invertScale = true;
+const total = false; // show total bar at end of chart
+const invertScale = false; // invert y-axis
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -101,7 +101,6 @@ d3.selectAll('.framed')
             .html('<br/>')
 
         function savePNG(scaleFactor) {
-            console.log('Does nothing', scaleFactor);
             const exportSVG = figure.select('svg');
             //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
         }
@@ -114,30 +113,30 @@ parseData.load(dataFile, { total })
 
         const myXAxis = gAxis.xOrdinal();// sets up yAxis
         const myYAxis = gAxis.yLinear();
-        const myChart = waterfallCategoryChart.draw(); // eslint-disable-line no-unused-vars
+        const myChart = waterfallChart.draw(); // eslint-disable-line no-unused-vars
         const myLegend = gLegend.legend();
 
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-        console.log(plotData);
         myChart
             .yRange([currentFrame.dimension().height, 0])
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
-            .colourPalette((frameName));
+            .colourPalette((frameName))
+            .invertScale(invertScale);
 
         myYAxis
             .scale(myChart.yScale())
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
-            .invertScale(invertScale)
             .align(myChart.yAxisAlign());
 
         myYAxis
             .align(yAxisAlign)
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
             .numTicks(numTicksy)
+            .invert(invertScale)
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
@@ -170,7 +169,6 @@ parseData.load(dataFile, { total })
         myChart
             .xScale(myXAxis.scale())
             .showNumberLabels(showNumberLabels);
-            // .yScale(myYAxis.yScale())
 
         currentFrame.plot()
           .call(myXAxis);
@@ -184,12 +182,16 @@ parseData.load(dataFile, { total })
 
 
         currentFrame.plot()
-          .selectAll('.columnHolder')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', 'columnHolder')
-          .call(myChart);
+            .selectAll('.columnHolder')
+            .data(plotData)
+            .enter()
+            .append('g')
+            .attr('class', 'columnHolder')
+            .attr('class', (d, i) => { if (i < plotData.length -1) {
+                    return 'whisker'
+                }
+            })
+            .call(myChart);
 
         // Set up legend for this frame
         myLegend

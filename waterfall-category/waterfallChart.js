@@ -21,7 +21,7 @@ export function draw() {
             .attr('x', d => xScale(0))
             .attr('width', () => xScale.bandwidth())
             .attr('y', d => { if(invertScale === true) {
-                    return yScale(d.end);
+                    return yScale(d.start);
                 } else {
                     return yScale(d.end);
                 }   
@@ -34,12 +34,33 @@ export function draw() {
             })
             .attr('fill', d => colourScale(d.group));
 
+        parent.append('line')
+            .attr('x1',0)
+            .attr('x2', () =>xScale.bandwidth() * 2.25)
+            .attr('y1', d => { if(d.value < 0) {
+                    return yScale(d.start)
+                } else {
+                    return yScale(d.end)
+                }
+            })
+            .attr('y2', d => { if(d.value < 0) {
+                    return yScale(d.start)
+                } else {
+                    return yScale(d.end)
+                }
+            });
+
         if (showNumberLabels) {
             parent.append('text')
                 .html(d => d.value)
                 .attr('class', 'column-label')
                 .attr('x', d => (xScale.bandwidth() / 2))
-                .attr('y', (d) => yScale(d.end))
+                .attr('y', d => { if(invertScale === true) {
+                        return yScale(d.start)
+                    } else {
+                        return yScale(d.end)
+                    }
+                })
                 .attr('dy', (d) => {return -(rem / 4); })
                 .attr('font-size', rem)
                 .style('text-anchor', 'middle');
@@ -76,12 +97,6 @@ export function draw() {
         return chart;
     };
     
-    chart.invertScale = (d) => {
-        if (typeof d === 'undefined') return invertScale;
-        invertScale = d;
-        return chart;
-    };
-
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
@@ -127,6 +142,10 @@ export function draw() {
         showNumberLabels = d;
         return chart;
     };
-
+    chart.invertScale = (d) => {
+        if (typeof d === 'undefined') return invertScale;
+        invertScale = d;
+        return chart;
+    };
     return chart;
 }
