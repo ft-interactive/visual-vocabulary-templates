@@ -22,6 +22,7 @@ const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const total = true; // show total bar at end of chart
+const invertScale = true;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -130,6 +131,7 @@ parseData.load(dataFile, { total })
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
+            .invertScale(invertScale)
             .align(myChart.yAxisAlign());
 
         myYAxis

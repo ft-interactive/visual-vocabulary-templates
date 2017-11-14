@@ -8,6 +8,7 @@ export function draw() {
     let yAxisAlign = 'right';
     let rem = 16;
     let showNumberLabels = false; // show numbers on end of bars
+    let invertScale = false;
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -19,8 +20,18 @@ export function draw() {
             .attr('class', 'columns')
             .attr('x', d => xScale(0))
             .attr('width', () => xScale.bandwidth())
-            .attr('y', d => yScale(d.end))
-            .attr('height', d => Math.abs(yScale(d.end) - yScale(d.start)))
+            .attr('y', d => { if(invertScale === true) {
+                    return yScale(d.end);
+                } else {
+                    return yScale(d.end);
+                }   
+            })
+            .attr('height', d => { if(invertScale === true) {
+                    return Math.abs(yScale(d.end) - yScale(d.start))
+                } else {
+                    return Math.abs(yScale(d.start) - yScale(d.end))
+                }
+            })
             .attr('fill', d => colourScale(d.group));
 
         if (showNumberLabels) {
@@ -62,6 +73,12 @@ export function draw() {
     chart.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
+        return chart;
+    };
+    
+    chart.invertScale = (d) => {
+        if (typeof d === 'undefined') return invertScale;
+        invertScale = d;
         return chart;
     };
 
