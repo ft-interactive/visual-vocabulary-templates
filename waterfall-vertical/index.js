@@ -21,38 +21,38 @@ const xAxisAlign = 'top';// alignment of the axis
 const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const total = false; // show total bar at end of chart
+const total = true; // show total bar at end of chart
 const invertScale = false; // invert y-axis
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+   .margin({ top: 100, left: 15, bottom: 82, right: 10 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
-   .height(400),
+   .height(600),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 86, right: 20 })
    // .title("Put headline here")
-   .height(500),
+   .height(600),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+    .margin({ top: 100, left: 20, bottom: 86, right: 10 })
     // .title("Put headline here")
-    .height(500),
+    .height(600),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+   .margin({ top: 100, left: 20, bottom: 104, right: 10 })
    // .title("Put headline here")
-   .height(700)
+   .height(800)
    .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-    .width(53.71)// 1 col
-    // .width(112.25)// 2 col
+    // .width(53.71)// 1 col
+    .width(112.25)// 2 col
     // .width(170.8)// 3 col
     // .width(229.34)// 4 col
     // .width(287.88)// 5 col
@@ -115,7 +115,7 @@ parseData.load(dataFile, { total })
         const myXAxis = gAxis.xLinear();
         const myChart = waterfallChart.draw(); // eslint-disable-line no-unused-vars
         const myLegend = gLegend.legend();
-
+        console.log(plotData);
         // define other functions to be called
         const tickSize = currentFrame.dimension().height;// Used when drawing the xAxis ticks
         myChart
@@ -128,7 +128,7 @@ parseData.load(dataFile, { total })
         myYAxis
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
-            .rangeRound([0, currentFrame.dimension().height], 10)
+            .rangeRound([0, tickSize], 10)
             .frameName(frameName);
 
         myXAxis
@@ -171,6 +171,7 @@ parseData.load(dataFile, { total })
 
         myChart
             .xScale(myXAxis.scale())
+            .yScale(myYAxis.scale())
             .showNumberLabels(showNumberLabels);
 
         currentFrame.plot()

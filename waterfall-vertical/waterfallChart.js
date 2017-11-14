@@ -13,58 +13,58 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        // parent.attr('transform', d => `translate(${0, yScale(d.name)},)`)
-        //     .attr('width', yScale.bandwidth());
+        parent.attr('transform', d => `translate(0,${yScale(d.name)})`);
 
-        // parent.append('rect')
-        //     .attr('class', 'columns')
-        //     .attr('x', d => xScale(0))
-        //     .attr('width', () => xScale.bandwidth())
-        //     .attr('y', d => { if(invertScale === true) {
-        //             return yScale(d.start);
-        //         } else {
-        //             return yScale(d.end);
-        //         }   
-        //     })
-        //     .attr('height', d => { if(invertScale === true) {
-        //             return Math.abs(yScale(d.end) - yScale(d.start))
-        //         } else {
-        //             return Math.abs(yScale(d.start) - yScale(d.end))
-        //         }
-        //     })
-        //     .attr('fill', d => colourScale(d.group));
+        parent.append('rect')
+            .attr('class', 'columns')
+            .attr('y', d => yScale(0))
+            .attr('height', () => yScale.bandwidth())
+            .attr('x', d => { if(invertScale === true) {
+                    return xScale(d.end);
+                } else {
+                    return xScale(d.start);
+                }   
+            })
+            .attr('width', d => { if(invertScale === true) {
+                    return Math.abs(xScale(d.end) - xScale(d.start))
+                } else {
+                    return Math.abs(xScale(d.start) - xScale(d.end))
+                }
+            })
+            .attr('fill', d => colourScale(d.group));
 
-        // parent.append('line')
-        //     .attr('x1',0)
-        //     .attr('x2', () =>xScale.bandwidth() * 2.25)
-        //     .attr('y1', d => { if(d.value < 0) {
-        //             return yScale(d.start)
-        //         } else {
-        //             return yScale(d.end)
-        //         }
-        //     })
-        //     .attr('y2', d => { if(d.value < 0) {
-        //             return yScale(d.start)
-        //         } else {
-        //             return yScale(d.end)
-        //         }
-        //     });
+        parent.append('line')
+            .attr('y1',0)
+            .attr('y2', () => yScale.bandwidth() * 2.25)
+            .attr('x1', d => { if(d.value < 0) {
+                    return xScale(d.start)
+                } else {
+                    return xScale(d.end)
+                }
+            })
+            .attr('x2', d => { if(d.value < 0) {
+                    return xScale(d.start)
+                } else {
+                    return xScale(d.end)
+                }
+            });
 
-        // if (showNumberLabels) {
-        //     parent.append('text')
-        //         .html(d => d.value)
-        //         .attr('class', 'column-label')
-        //         .attr('x', d => (xScale.bandwidth() / 2))
-        //         .attr('y', d => { if(invertScale === true) {
-        //                 return yScale(d.start)
-        //             } else {
-        //                 return yScale(d.end)
-        //             }
-        //         })
-        //         .attr('dy', (d) => {return -(rem / 4); })
-        //         .attr('font-size', rem)
-        //         .style('text-anchor', 'middle');
-        // }
+        if (showNumberLabels) {
+            parent.append('text')
+                .html(d => d.value)
+                .attr('class', 'column-label')
+                .attr('y', d => (yScale.bandwidth() / 2))
+                .attr('x', d => { if(invertScale === true) {
+                        return xScale(d.start)
+                    } else {
+                        return xScale(d.end)
+                    }
+                })
+                .attr('dx', (d) => {return (rem / 4); })
+                .attr('dy', (d) => {return (rem / 4); })
+                .attr('font-size', rem)
+                .style('text-anchor', 'start');
+        }
     }
 
     chart.yScale = (d) => {
