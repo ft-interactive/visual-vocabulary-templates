@@ -49,7 +49,7 @@ export function load(url, options) { // eslint-disable-line
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['name']; // adjust column headings to match your dataset
+    const exclude = ['name', 'group']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
