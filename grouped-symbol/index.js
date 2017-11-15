@@ -21,13 +21,13 @@ const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
-const sort = '';// specify 'ascending', 'descending'
+const sort = 'decending';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const numberOfRows = 4; // number of rows in each group
 const divisor = 0.25;// data divisor to adjust number and value of circles
 const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
-const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const legendType = 'circ'; // rect, line or circ, geometry of legend marker
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -109,13 +109,12 @@ d3.selectAll('.framed')
             .html('<br/>')
 
         function savePNG(scaleFactor) {
-            console.log('Does nothing', scaleFactor);
             const exportSVG = figure.select('svg');
             //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
         }
     });
 
-parseData.load(dataFile, { sort, sortOn })
+parseData.load(dataFile, { sort, sortOn, divisor })
 .then(({ seriesNames, plotData, valueExtent, data }) => { // eslint-disable-line
     // Draw the frames
     Object.keys(frame).forEach((frameName) => {
@@ -134,7 +133,8 @@ parseData.load(dataFile, { sort, sortOn })
 
          myChart
             .divisor(divisor)
-            .numberOfRows(numberOfRows);
+            .numberOfRows(numberOfRows)
+            .dotData(plotData);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 1.5);// Used when drawing the yAxis ticks
@@ -236,6 +236,8 @@ parseData.load(dataFile, { sort, sortOn })
         const legendSelection = currentFrame.plot().select('#legend');
         const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+
+        xDotAxis.xLabel().selectAll('.tick').remove();
     });
     // addSVGSavers('figure.saveable');
 });

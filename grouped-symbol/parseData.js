@@ -13,7 +13,7 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { sort, sortOn } = options;
+        const { sort, sortOn, divisor } = options;
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
@@ -23,9 +23,10 @@ export function load(url, options) { // eslint-disable-line
         const plotData = data.map(d => ({
             name: d.name,
             total: d.total,
+            range: getRanges(seriesNames, d),
             groups: getGroups(seriesNames, d),
         }));
-
+        console.log(data);
         if (sort === 'descending') {
             plotData.sort((a, b) =>
                 b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
@@ -72,6 +73,24 @@ function extentMulti(data, columns) {
         return acc;
     }, {});
     return [ext.min, ext.max];
+}
+
+ // plotData.forEach( function(d) { 
+ //            ranges = [];
+ //            d.groups.forEach( function(g, i) { 
+ //                if(g.name === seriesNames[i]) {
+ //                    ranges.push(g.value / divisor);
+ //                }
+ //            });
+ //        });
+
+function getRanges(seriesNames, el) {
+    let ranges = [];
+    seriesNames.forEach((d, i) =>{
+        ranges.push(+el[seriesNames[i]])
+        
+    });
+    return ranges;
 }
 
 function getGroups(seriesNames, el) {

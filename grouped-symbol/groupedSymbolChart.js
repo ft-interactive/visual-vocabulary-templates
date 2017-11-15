@@ -6,65 +6,63 @@ export function draw() {
     let yDotScale = d3.scaleBand();
     let xDotScale = d3.scaleOrdinal();
     let seriesNames = [];
+    let dotData = [];
     let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
     let rem = 10;
     let numberOfRows = 0;
     let divisor = 1;
+    let ranges = [];
     let showNumberLabels = false;// show numbers on end of groupedSymbols
 
 
     function groupedSymbols(parent) {
         parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 2.5)})`);
-            console.log(d => d);
+            console.log(d => d.groups);
             parent
                 .selectAll('circle')
-                    .data(d => d3.range(d.total/divisor))
+                    .data(d => d3.range(d.total / divisor))
                     .enter()
                     .append('circle')
                     .attr('r', yDotScale.bandwidth()/2.5)
-                    .attr('id', (d, i) =>`${'circle'+i+'_'+d}`)
+                    .attr('id', (d, i) =>`${'circle' + i + '_' + d.name}`)
                     .attr('cx', (d, i) => xDotScale(Math.floor(d / numberOfRows)))
                     .attr('cy', (d, i) => yDotScale(d % numberOfRows))
                     .attr('fill', 'red');
 
-            var ranges = seriesNames.map(function(e,j){
-            console.log(parent);
-                // return d[e]/divisor//number of shapes to be coloured for each group
-              })
+            dotData.forEach( function(d, n) { 
+                // ranges = [];
+                d.groups.forEach( function(g, i) { 
+                    if(g.name === seriesNames[i]) {
+                        ranges.push(g.value / divisor);
+                    }
+                });
+            });
 
-              // var index = 0;
-              // stackIndex=[0]
+            console.log(ranges);
+            let index = 0;
+            let stackIndex = [0];
 
-              // seriesNames.forEach(function(obj,k){
-              //   if (k>0){
-              //     index=index+ranges[k-1];
-              //     stackIndex.push(index)
-              //   }
-              // })
+            seriesNames.forEach(function(obj, k){
+                if (k > 0){
+                    index = index + ranges[k - 1];
+                    stackIndex.push(index);
+                }
+            });
 
-              // for (i=0;i<seriesNames.length;i++){
-              //   var selecty = d3.select(this).selectAll("circle").filter(function(y,z){
-              //     if (i<seriesNames.length-1){
-              //     return z>=stackIndex[i]&&z<stackIndex[i+1]
-              //   } else {
-              //     return z>=stackIndex[i];
-              //   }
-              //   })
-              //   selecty.attr("fill",colours[i])
-              // }
+            for (let i = 0; i < seriesNames.length; i++){
+                let selecty = parent.selectAll('circle').filter(function(y, z){
+                    if (i < seriesNames.length - 1){
+                        return z >= stackIndex[i] && z < stackIndex[i + 1];
+                    } else {
+                        return z >= stackIndex[i];
+                    }
+                })
+                selecty.attr('fill',colourScale(i));
+            }
 
-        // // parent.selectAll('rect')
-        // //     .data(d => d.groups)
-        // //     .enter()
-        // //     .append('rect')
-        // //     .attr('class', 'groupedSymbols')
-        // //     .attr('y', d => yScale1(d.name))
-        // //     .attr('height', () => yScale.bandwidth())
-        // //     .attr('x', d => xScale(Math.min(0, d.value)))
-        // //     .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
-        // //     .attr('fill', d => colourScale(d.name));
+       
 
         // // if (showNumberLabels) {
         // //     parent.selectAll('text')
@@ -144,9 +142,9 @@ export function draw() {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.categorical_bar);
+            colourScale.range(gChartcolour.categorical_line);
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.barPrint);
+            colourScale.range(gChartcolour.linePrint);
         }
         return groupedSymbols;
     };
@@ -171,6 +169,11 @@ export function draw() {
     groupedSymbols.divisor = (d) => {
         if (!d) return divisor;
         divisor = d;
+        return groupedSymbols;
+    };
+    groupedSymbols.dotData = (d) => {
+        if (!d) return dotData;
+        dotData = d;
         return groupedSymbols;
     };
 
