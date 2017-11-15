@@ -3,7 +3,7 @@ import * as gAxis from 'g-axis';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
-import * as barChart from './barChart.js';
+import * as groupedSymbolChart from './groupedSymbolChart.js';
 
 
 const dataFile = 'data.csv';
@@ -125,7 +125,7 @@ parseData.load(dataFile, { sort, sortOn })
         const yAxis = gAxis.yOrdinal();// sets up yAxis
         const yDotAxis = gAxis.yOrdinal();// sets up yAxis
         const xDotAxis = gAxis.xOrdinal();
-        const myChart = barChart.draw();
+        const myChart = groupedSymbolChart.draw();
         const myLegend = gLegend.legend();
         const maxValue = valueExtent[1];
         const maxCols = (maxValue / divisor) / numberOfRows

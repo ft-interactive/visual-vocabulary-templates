@@ -9,17 +9,17 @@ export function draw() {
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
     let rem = 10;
-    let showNumberLabels = false;// show numbers on end of bars
+    let showNumberLabels = false;// show numbers on end of groupedSymbols
 
 
-    function bars(parent) {
+    function groupedSymbols(parent) {
         parent.attr('transform', d => `translate(0,${yScale(d.name)})`);
 
         // // parent.selectAll('rect')
         // //     .data(d => d.groups)
         // //     .enter()
         // //     .append('rect')
-        // //     .attr('class', 'bars')
+        // //     .attr('class', 'groupedSymbols')
         // //     .attr('y', d => yScale1(d.name))
         // //     .attr('height', () => yScale.bandwidth())
         // //     .attr('x', d => xScale(Math.min(0, d.value)))
@@ -58,37 +58,37 @@ export function draw() {
         // }
     }
 
-    bars.yScale = (d) => {
+    groupedSymbols.yScale = (d) => {
         yScale = d;
-        return bars;
+        return groupedSymbols;
     };
-    bars.yDomain = (d) => {
+    groupedSymbols.yDomain = (d) => {
         yScale.domain(d);
-        return bars;
+        return groupedSymbols;
     };
-    bars.yRange = (d) => {
+    groupedSymbols.yRange = (d) => {
         yScale.rangeRound(d);
-        return bars;
+        return groupedSymbols;
     };
-      bars.xScale = (d) => {
+      groupedSymbols.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
-        return bars;
+        return groupedSymbols;
     };
-    bars.xDomain = (d) => {
+    groupedSymbols.xDomain = (d) => {
         xScale.domain(d);
-        return bars;
+        return groupedSymbols;
     };
 
-    bars.xRange = (d) => {
+    groupedSymbols.xRange = (d) => {
         xScale.range(d);
-        return bars;
+        return groupedSymbols;
     };
-    bars.colourProperty = (d) => {
+    groupedSymbols.colourProperty = (d) => {
         colourProperty = d;
-        return bars;
+        return groupedSymbols;
     };
-    bars.colourPalette = (d) => {
+    groupedSymbols.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
@@ -96,21 +96,21 @@ export function draw() {
         } else if (d === 'print') {
             colourScale.range(gChartcolour.barPrint);
         }
-        return bars;
+        return groupedSymbols;
     };
-    bars.seriesNames = (d) => {
+    groupedSymbols.seriesNames = (d) => {
         seriesNames = d;
-        return bars;
+        return groupedSymbols;
     };
-    bars.rem = (d) => {
+    groupedSymbols.rem = (d) => {
         rem = d;
-        return bars;
+        return groupedSymbols;
     };
-    bars.showNumberLabels = (d) => {
+    groupedSymbols.showNumberLabels = (d) => {
         if (!d) return showNumberLabels;
         showNumberLabels = d;
-        return bars;
+        return groupedSymbols;
     };
 
-    return bars;
+    return groupedSymbols;
 }
