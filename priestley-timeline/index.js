@@ -23,7 +23,7 @@ const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
 const showRects = true;//extent shades
 const showLines = false;//connecting line
-const markers = false;//marker dots
+const showMarkers = false;//marker dots
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -31,7 +31,7 @@ const interval = 'jubilee';// date interval on xAxis "century", "jubilee", "deca
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
-const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const legendType = 'circ'; // rect, line or circ, geometry of legend marker
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -86,11 +86,35 @@ const frame = {
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
-        const figure = d3.select(this)
-                        .attr('class', 'button-holder');
-
+        const figure = d3.select(this);
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
+
+        const holder = figure.append('div');
+        holder.append('button')
+            .attr('class', 'button')
+            .text('Does nothing')
+            .style("float", "left")
+            .style('opacity',0.6)
+            .on('click', function (d) {
+                savePNG(1)
+            });
+        holder.append('button')
+            .attr('class', 'button')
+            .style("float", "left")
+            .style('opacity',0.6)
+            .text('Does nothing twice as big')
+            .on('click', function (d) {
+                savePNG(2)
+            });
+        holder.append('div')
+            .html('<br/>')
+
+        function savePNG(scaleFactor) {
+            console.log('Does nothing', scaleFactor);
+            const exportSVG = figure.select('svg');
+            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
+        }
     });
 
 parseData.load(dataFile, { sort, sortOn, dateFormat })
@@ -100,26 +124,20 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         const currentFrame = frame[frameName];
         // define other functions to be called
 
-        const yAxis0 = gAxis.yOrdinal();// sets up yAxis
-        const yAxis1 = gAxis.yOrdinal();// sets up yAxis
+        const yAxis = gAxis.yOrdinal();// sets up yAxis
         const xAxis = gAxis.xDate();
         const myChart = priestleyChart.draw();
         const myLegend = gLegend.legend();
+        const myAnnotations = priestleyChart.drawAnnotations();// sets up annotations
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
 
-        yAxis0
+        yAxis
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
             .rangeRound([0, tickSize], 10)
             .frameName(frameName);
-
-        yAxis1
-            .paddingInner(0.06)
-            .align(yAxisAlign)
-            .domain(seriesNames)
-            .rangeRound([0, yAxis0.bandwidth()]);
 
         xAxis
             .align(xAxisAlign)
@@ -131,25 +149,26 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
-        // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
+      // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
-            .call(yAxis0);
-
+            .call(yAxis);
+        // console.log(plotData);
         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().right;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
-            yAxis0.yLabel()
-                .attr('transform', `translate(${currentFrame.dimension().width + yAxis0.labelWidth()},${0})`);
+            yAxis.yLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width + yAxis.labelWidth()},${0})`);
         } else {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().left;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
         }
         // Set the plot object to its new dimensions
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
         // Use new widtth of frame to set the range of the x-axis and any other parameters
         xAxis
             .range([0, currentFrame.dimension().width])
@@ -162,17 +181,18 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
         }
 
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
         myChart
             // .paddingInner(0.06)
             .colourProperty(colourProperty)
-            .colourPalette((frameName))
+            .colourPalette(frameName, showRects)
             .seriesNames(seriesNames)
-            .yScale0(yAxis0.scale())
-            .yScale1(yAxis1.scale())
+            .yScale(yAxis.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
             .showRects(showRects)
-            .showMarkers(markers)
+            .showMarkers(showMarkers)
             .showLines(showLines)
 
         currentFrame.plot()
@@ -181,20 +201,35 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .enter()
             .append('g')
             .call(myChart);
-        // remove ticks if numbers are added to vars
-        if (showNumberLabels) {
-            const clear = xAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
-            clear.remove();
+
+         // Show annotations for bars
+        if (showRects === true) {
+       
+             // Set up annotation for this frame
+            myAnnotations
+                .yScale(yAxis.scale())
+                .xScale(xAxis.scale())
+                .rem(currentFrame.rem());
+
+            // Draw the annotations
+            plotAnnotation
+                .selectAll('.annotation')
+                .data(plotData[0].groups)
+                .enter()
+                .append('g')
+                .call(myAnnotations);
         }
 
         // Set up legend for this frame
-        myLegend
-            .seriesNames(seriesNames)
-            .geometry(legendType)
-            .frameName(frameName)
-            .rem(currentFrame.rem())
-            .alignment(legendAlign)
-            .colourPalette((frameName));
+        if (showRects === false) {
+            myLegend
+                .seriesNames(seriesNames)
+                .geometry(legendType)
+                .frameName(frameName)
+                .rem(currentFrame.rem())
+                .alignment(legendAlign)
+                .colourPalette((frameName));
+        }
 
         // Draw the Legend
         currentFrame.plot()
