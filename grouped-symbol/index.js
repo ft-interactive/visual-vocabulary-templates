@@ -123,31 +123,14 @@ parseData.load(dataFile, { sort, sortOn })
         // define other functions to be called
 
         const yAxis = gAxis.yOrdinal();// sets up yAxis
-        const yAxis1 = gAxis.yOrdinal();// sets up yAxis
-        const xAxis = gAxis.xLinear();
+        const yDotAxis = gAxis.yOrdinal();// sets up yAxis
+        const xDotAxis = gAxis.xOrdinal();
         const myChart = barChart.draw();
         const myLegend = gLegend.legend();
-
-        //some globals for chart configuration
-
-        var maxValue = d3.max(data.map(function(d){
-          return d.total;
-        }))
-
-        var maxCols = (maxValue/divisor)/numberOfRows
-        var colIndex = d3.range(maxCols)
-        var xDotScale = d3.scale.ordinal()
-          .domain(colIndex)
-          .rangeBands([innerMargin.left,plotWidth*0.8],0.9)
-
-        var yDotScale = d3.scale.ordinal()
-          .domain(d3.range(numberOfRows))
-          .rangeBands([0,yScale.rangeBand()/2])
-
-        var stacks = plot.selectAll("g").data(data).enter().append("g")
-          .attr("transform",function(d){
-              return "translate(0,"+(innerMargin.top+yScale(d.label))+")";
-          })
+        const maxValue = valueExtent[1];
+        const maxCols = (maxValue / divisor) / numberOfRows
+        const colIndex = d3.range(maxCols)
+        console.log(colIndex);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
@@ -158,11 +141,9 @@ parseData.load(dataFile, { sort, sortOn })
             .rangeRound([0, tickSize], 10)
             .frameName(frameName);
 
-        xAxis
+        xDotAxis
             .align(xAxisAlign)
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
-            .numTicks(numTicks)
-            .xAxisHighlight(xAxisHighlight)
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
@@ -187,37 +168,44 @@ parseData.load(dataFile, { sort, sortOn })
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
         // Use new widtth of frame to set the range of the x-axis and any other parameters
-        xAxis
-            .range([0, currentFrame.dimension().width])
-            .tickSize(currentFrame.dimension().height);
+        xDotAxis
+            .domain(colIndex)
+            .rangeRound([0,currentFrame.dimension().width],0.9)
+
         // Call the axis and move it if needed
         currentFrame.plot()
-            .call(xAxis);
+            .call(xDotAxis);
+
         if (xAxisAlign === 'top') {
-            xAxis.xLabel()
+            xDotAxis.xLabel()
             .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
         }
+
+        yDotAxis
+            .domain(d3.range(numberOfRows))
+            .rangeRound([0,yAxis.bandwidth()/2])
 
         myChart
             // .paddingInner(0.06)
             .colourProperty(colourProperty)
             .colourPalette((frameName))
             .seriesNames(seriesNames)
-            .yScale0(yAxis.scale())
-            .yScale1(yAxis1.scale())
-            .xScale(xAxis.scale())
+            .yScale(yAxis.scale())
+            .xScale(xDotAxis.scale())
             .rem(currentFrame.rem())
             .showNumberLabels(showNumberLabels);
 
         currentFrame.plot()
-            .selectAll('.barHolder')
+            .selectAll('.stackHolder')
             .data(plotData)
             .enter()
             .append('g')
+            .attr('class', 'stackHolder')
             .call(myChart);
+
         // remove ticks if numbers are added to vars
         if (showNumberLabels) {
-            const clear = xAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
+            const clear = xDotAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
             clear.remove();
         }
 
