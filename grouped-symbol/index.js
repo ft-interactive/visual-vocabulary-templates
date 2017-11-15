@@ -203,7 +203,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', (d, i) => 'stackHolder_' + i)
+            .attr('class', (d, i) => 'stackHolder stackHolder_' + i)
             .call(myChart);
 
         // remove ticks if numbers are added to vars

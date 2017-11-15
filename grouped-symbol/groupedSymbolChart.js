@@ -24,16 +24,14 @@ export function draw() {
                     .data(d => d3.range(d.total / divisor))
                     .enter()
                     .append('circle')
-                    .attr('r', yDotScale.bandwidth()/2.5)
+                    .attr('r', yDotScale.bandwidth() / 2.5)
                     .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
                     .attr('cx', (d, i) => xDotScale(Math.floor(d / numberOfRows)))
                     .attr('cy', (d, i) => yDotScale(d % numberOfRows))
-                    .attr('fill', function(d, i) { 
-                        console.log(i, parent.attr('class'));
-                        });
+                    .attr('fill', 'red')
 
-                console.log(parent.attr('class'));
-           for( let j=0; j< dotData.length-2; j++) { 
+            dotData.forEach( function(d,j) { 
+                console.log(dotData[j].range);
                 let index = 0;
                 let stackIndex = [0];
 
@@ -45,7 +43,7 @@ export function draw() {
                 });
 
                 for (let i = 0; i < seriesNames.length; i++){
-                    let selecty = parent.selectAll('circle').filter(function(y, z){
+                    let selecty = d3.select('.stackHolder_' + j).selectAll('circle').filter(function(y, z){
                         if (i < seriesNames.length - 1){
                             return z >= stackIndex[i] && z < stackIndex[i + 1];
                         } else {
@@ -55,7 +53,7 @@ export function draw() {
                     console.log(selecty);
                     selecty.attr('fill',colourScale(i));
                 }
-            };
+            });
 
 
        
