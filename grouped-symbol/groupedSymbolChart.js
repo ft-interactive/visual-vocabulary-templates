@@ -11,21 +11,49 @@ export function draw() {
         .domain(seriesNames);
     let rem = 10;
     let numberOfRows = 0;
+    let divisor = 1;
     let showNumberLabels = false;// show numbers on end of groupedSymbols
 
 
     function groupedSymbols(parent) {
         parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 2.5)})`);
-
+            console.log(d => d);
             parent
                 .selectAll('circle')
-                    .data(d => d3.range(d.total/0.25))
+                    .data(d => d3.range(d.total/divisor))
                     .enter()
                     .append('circle')
                     .attr('r', yDotScale.bandwidth()/2.5)
                     .attr('id', (d, i) =>`${'circle'+i+'_'+d}`)
                     .attr('cx', (d, i) => xDotScale(Math.floor(d / numberOfRows)))
                     .attr('cy', (d, i) => yDotScale(d % numberOfRows))
+                    .attr('fill', 'red');
+
+            var ranges = seriesNames.map(function(e,j){
+            console.log(parent);
+                // return d[e]/divisor//number of shapes to be coloured for each group
+              })
+
+              // var index = 0;
+              // stackIndex=[0]
+
+              // seriesNames.forEach(function(obj,k){
+              //   if (k>0){
+              //     index=index+ranges[k-1];
+              //     stackIndex.push(index)
+              //   }
+              // })
+
+              // for (i=0;i<seriesNames.length;i++){
+              //   var selecty = d3.select(this).selectAll("circle").filter(function(y,z){
+              //     if (i<seriesNames.length-1){
+              //     return z>=stackIndex[i]&&z<stackIndex[i+1]
+              //   } else {
+              //     return z>=stackIndex[i];
+              //   }
+              //   })
+              //   selecty.attr("fill",colours[i])
+              // }
 
         // // parent.selectAll('rect')
         // //     .data(d => d.groups)
@@ -138,6 +166,11 @@ export function draw() {
     groupedSymbols.numberOfRows = (d) => {
         if (!d) return numberOfRows;
         numberOfRows = d;
+        return groupedSymbols;
+    };
+    groupedSymbols.divisor = (d) => {
+        if (!d) return divisor;
+        divisor = d;
         return groupedSymbols;
     };
 

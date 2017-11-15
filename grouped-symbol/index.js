@@ -133,6 +133,7 @@ parseData.load(dataFile, { sort, sortOn })
         console.log(plotData);
 
          myChart
+            .divisor(divisor)
             .numberOfRows(numberOfRows);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
