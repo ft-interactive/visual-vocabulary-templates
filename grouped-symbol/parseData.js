@@ -26,7 +26,7 @@ export function load(url, options) { // eslint-disable-line
             range: getRanges(seriesNames, d),
             groups: getGroups(seriesNames, d),
         }));
-        console.log(data);
+
         if (sort === 'descending') {
             plotData.sort((a, b) =>
                 b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
@@ -75,20 +75,10 @@ function extentMulti(data, columns) {
     return [ext.min, ext.max];
 }
 
- // plotData.forEach( function(d) { 
- //            ranges = [];
- //            d.groups.forEach( function(g, i) { 
- //                if(g.name === seriesNames[i]) {
- //                    ranges.push(g.value / divisor);
- //                }
- //            });
- //        });
-
 function getRanges(seriesNames, el) {
     let ranges = [];
     seriesNames.forEach((d, i) =>{
-        ranges.push(+el[seriesNames[i]])
-        
+        ranges.push(+el[seriesNames[i]]);
     });
     return ranges;
 }

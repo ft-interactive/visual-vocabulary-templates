@@ -19,48 +19,44 @@ export function draw() {
 
     function groupedSymbols(parent) {
         parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 2.5)})`);
-            console.log(d => d.groups);
             parent
                 .selectAll('circle')
                     .data(d => d3.range(d.total / divisor))
                     .enter()
                     .append('circle')
                     .attr('r', yDotScale.bandwidth()/2.5)
-                    .attr('id', (d, i) =>`${'circle' + i + '_' + d.name}`)
+                    .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
                     .attr('cx', (d, i) => xDotScale(Math.floor(d / numberOfRows)))
                     .attr('cy', (d, i) => yDotScale(d % numberOfRows))
-                    .attr('fill', 'red');
+                    .attr('fill', function(d, i) { 
+                        console.log(i, parent.attr('class'));
+                        });
 
-            dotData.forEach( function(d, n) { 
-                // ranges = [];
-                d.groups.forEach( function(g, i) { 
-                    if(g.name === seriesNames[i]) {
-                        ranges.push(g.value / divisor);
+                console.log(parent.attr('class'));
+           for( let j=0; j< dotData.length-2; j++) { 
+                let index = 0;
+                let stackIndex = [0];
+
+                seriesNames.forEach(function(obj, k){
+                    if (k > 0){
+                        index = index + dotData[j].range[k - 1];
+                        stackIndex.push(index / divisor);
                     }
                 });
-            });
 
-            console.log(ranges);
-            let index = 0;
-            let stackIndex = [0];
-
-            seriesNames.forEach(function(obj, k){
-                if (k > 0){
-                    index = index + ranges[k - 1];
-                    stackIndex.push(index);
+                for (let i = 0; i < seriesNames.length; i++){
+                    let selecty = parent.selectAll('circle').filter(function(y, z){
+                        if (i < seriesNames.length - 1){
+                            return z >= stackIndex[i] && z < stackIndex[i + 1];
+                        } else {
+                            return z >= stackIndex[i];
+                        }
+                    })
+                    console.log(selecty);
+                    selecty.attr('fill',colourScale(i));
                 }
-            });
+            };
 
-            for (let i = 0; i < seriesNames.length; i++){
-                let selecty = parent.selectAll('circle').filter(function(y, z){
-                    if (i < seriesNames.length - 1){
-                        return z >= stackIndex[i] && z < stackIndex[i + 1];
-                    } else {
-                        return z >= stackIndex[i];
-                    }
-                })
-                selecty.attr('fill',colourScale(i));
-            }
 
        
 

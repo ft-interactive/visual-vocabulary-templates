@@ -129,7 +129,6 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const maxValue = valueExtent[1];
         const maxCols = (maxValue / divisor) / numberOfRows
         const colIndex = d3.range(maxCols)
-        console.log(plotData);
 
          myChart
             .divisor(divisor)
@@ -204,7 +203,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', 'stackHolder')
+            .attr('class', (d, i) => 'stackHolder_' + i)
             .call(myChart);
 
         // remove ticks if numbers are added to vars
