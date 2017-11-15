@@ -23,7 +23,7 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
-const numberOfRows = 5; // number of rows in each group
+const numberOfRows = 4; // number of rows in each group
 const divisor = 0.25;// data divisor to adjust number and value of circles
 const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
@@ -136,8 +136,7 @@ parseData.load(dataFile, { sort, sortOn })
             .numberOfRows(numberOfRows);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
-
+        const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 1.5);// Used when drawing the yAxis ticks
         yAxis
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))

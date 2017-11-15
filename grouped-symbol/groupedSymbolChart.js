@@ -15,7 +15,7 @@ export function draw() {
 
 
     function groupedSymbols(parent) {
-        parent.attr('transform', d => `translate(0,${yScale(d.name)})`);
+        parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 2.5)})`);
 
             parent
                 .selectAll('circle')
@@ -27,7 +27,6 @@ export function draw() {
                       return 'circle'+i+'_'+d;
                     })
                     .attr('cx',function(d,i){
-                        console.log(Math.floor(d / numberOfRows));
                         return xDotScale(Math.floor(d / numberOfRows))
                     })
                     .attr('cy',function(d,i){
