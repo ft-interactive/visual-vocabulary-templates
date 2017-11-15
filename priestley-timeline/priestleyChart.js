@@ -97,6 +97,7 @@ export function draw() {
         colourProperty = d;
         return bars;
     };
+
     bars.colourPalette = (d, showRects) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
@@ -191,3 +192,4 @@ export function drawAnnotations() {
 
     return annotations;
 }
+

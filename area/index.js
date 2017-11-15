@@ -8,7 +8,7 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as areaChart from './areaChart.js';
-// import savePng from 'save-svg-as-png';
+//import savePng from 'save-svg-as-png';
 
 const dataFile = 'data.csv';
 
@@ -99,7 +99,9 @@ const frame = {
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
-        const figure = d3.select(this);
+        const figure = d3.select(this)
+                        .attr('class', 'button-holder');
+
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
 
@@ -107,21 +109,28 @@ d3.selectAll('.framed')
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing')
-            .on('click', savePNG);
+            .style("float", "left")
+            .style('opacity',0.6)
+            .on('click', function (d) {
+                let exportSVG = figure.select('svg')
+                console.log(exportSVG);
+                savePNG(exportSVG,1)
+            });
         holder.append('button')
             .attr('class', 'button')
+            .style("float", "left")
+            .style('opacity',0.6)
             .text('Does nothing twice as big')
-            .on('click', savePNGDouble);
+            .on('click', function (d) {
+                savePNG(2)
+            });
+        holder.append('div')
+            .html('<br/>')
 
-        function savePNG() {
-            console.log('Does nothing');
-            const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png');
-        }
-        function savePNGDouble() {
-            console.log('Does nothing twice as big');
-            const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: 2.0});
+        function savePNG(exportSVG, scaleFactor) {
+            console.log('Does nothing', scaleFactor);
+            //const exportSVG = figure.select('svg');
+            saveSvgAsPng(exportSVG, 'area-chart.png');
         }
 
 

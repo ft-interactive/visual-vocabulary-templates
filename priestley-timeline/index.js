@@ -148,8 +148,8 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
-        console.log(plotData);
-        // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
+
+      // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
             .call(yAxis);
         // console.log(plotData);
