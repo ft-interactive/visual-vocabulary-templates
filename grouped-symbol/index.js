@@ -23,6 +23,8 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
+const numberOfRows = 5; // number of rows in each group
+const divisor = 0.25;// data divisor to adjust number and value of circles
 const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -120,26 +122,41 @@ parseData.load(dataFile, { sort, sortOn })
         const currentFrame = frame[frameName];
         // define other functions to be called
 
-        const yAxis0 = gAxis.yOrdinal();// sets up yAxis
+        const yAxis = gAxis.yOrdinal();// sets up yAxis
         const yAxis1 = gAxis.yOrdinal();// sets up yAxis
         const xAxis = gAxis.xLinear();
         const myChart = barChart.draw();
         const myLegend = gLegend.legend();
 
+        //some globals for chart configuration
+
+        var maxValue = d3.max(data.map(function(d){
+          return d.total;
+        }))
+
+        var maxCols = (maxValue/divisor)/numberOfRows
+        var colIndex = d3.range(maxCols)
+        var xDotScale = d3.scale.ordinal()
+          .domain(colIndex)
+          .rangeBands([innerMargin.left,plotWidth*0.8],0.9)
+
+        var yDotScale = d3.scale.ordinal()
+          .domain(d3.range(numberOfRows))
+          .rangeBands([0,yScale.rangeBand()/2])
+
+        var stacks = plot.selectAll("g").data(data).enter().append("g")
+          .attr("transform",function(d){
+              return "translate(0,"+(innerMargin.top+yScale(d.label))+")";
+          })
+
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
 
-        yAxis0
+        yAxis
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
             .rangeRound([0, tickSize], 10)
             .frameName(frameName);
-
-        yAxis1
-            .paddingInner(0.06)
-            .align(yAxisAlign)
-            .domain(seriesNames)
-            .rangeRound([0, yAxis0.bandwidth()]);
 
         xAxis
             .align(xAxisAlign)
@@ -152,17 +169,17 @@ parseData.load(dataFile, { sort, sortOn })
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
-            .call(yAxis0);
+            .call(yAxis);
 
         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().right;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
-            yAxis0.yLabel()
-                .attr('transform', `translate(${currentFrame.dimension().width + yAxis0.labelWidth()},${0})`);
+            yAxis.yLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width + yAxis.labelWidth()},${0})`);
         } else {
-            const newMargin = yAxis0.labelWidth() + currentFrame.margin().left;
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
         }
@@ -186,7 +203,7 @@ parseData.load(dataFile, { sort, sortOn })
             .colourProperty(colourProperty)
             .colourPalette((frameName))
             .seriesNames(seriesNames)
-            .yScale0(yAxis0.scale())
+            .yScale0(yAxis.scale())
             .yScale1(yAxis1.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
