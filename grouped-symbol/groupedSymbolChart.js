@@ -22,17 +22,10 @@ export function draw() {
                     .data(d => d3.range(d.total/0.25))
                     .enter()
                     .append('circle')
-                    .attr('r',yDotScale.bandwidth()/2.5)
-                    .attr('id',function(d, i){
-                      return 'circle'+i+'_'+d;
-                    })
-                    .attr('cx',function(d,i){
-                        return xDotScale(Math.floor(d / numberOfRows))
-                    })
-                    .attr('cy',function(d,i){
-                        return yDotScale(d % numberOfRows)
-                    })
-                    .attr('fill','gray')
+                    .attr('r', yDotScale.bandwidth()/2.5)
+                    .attr('id', (d, i) =>`${'circle'+i+'_'+d}`)
+                    .attr('cx', (d, i) => xDotScale(Math.floor(d / numberOfRows)))
+                    .attr('cy', (d, i) => yDotScale(d % numberOfRows))
 
         // // parent.selectAll('rect')
         // //     .data(d => d.groups)
