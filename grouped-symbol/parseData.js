@@ -22,6 +22,7 @@ export function load(url, options) { // eslint-disable-line
         // Buid the dataset for plotting
         const plotData = data.map(d => ({
             name: d.name,
+            total: d.total,
             groups: getGroups(seriesNames, d),
         }));
 
@@ -48,11 +49,19 @@ function getSeriesNames(columns) {
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
+// a function that calculates the cumulative max/min values of the dataset
+function getMaxMin(values) {
+    const cumulativeMax = d3.sum(values.filter(d => (d > 0)));
+    const cumulativeMin = d3.sum(values.filter(d => (d < 0)));
+    return [cumulativeMin, cumulativeMax];
+}
+
 // a function to work out the extent of values in an array accross multiple properties...
 function extentMulti(data, columns) {
     const ext = data.reduce((acc, row) => {
         const values = columns.map(key => +row[key]);
-        const rowExtent = d3.extent(values);
+        const maxMin = getMaxMin(values);
+        const rowExtent = maxMin;
         if (!acc.max) {
             acc.max = rowExtent[1];
             acc.min = rowExtent[0];

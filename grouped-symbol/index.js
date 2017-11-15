@@ -130,7 +130,10 @@ parseData.load(dataFile, { sort, sortOn })
         const maxValue = valueExtent[1];
         const maxCols = (maxValue / divisor) / numberOfRows
         const colIndex = d3.range(maxCols)
-        console.log(colIndex);
+        console.log(plotData);
+
+         myChart
+            .numberOfRows(numberOfRows);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().height;// Used when drawing the yAxis ticks
@@ -138,7 +141,7 @@ parseData.load(dataFile, { sort, sortOn })
         yAxis
             .align(yAxisAlign)
             .domain(plotData.map(d => d.name))
-            .rangeRound([0, tickSize], 10)
+            .rangeRound([0, tickSize])
             .frameName(frameName);
 
         xDotAxis
@@ -170,7 +173,7 @@ parseData.load(dataFile, { sort, sortOn })
         // Use new widtth of frame to set the range of the x-axis and any other parameters
         xDotAxis
             .domain(colIndex)
-            .rangeRound([0,currentFrame.dimension().width],0.9)
+            .rangeRound([0,currentFrame.dimension().width],0.5)
 
         // Call the axis and move it if needed
         currentFrame.plot()
@@ -183,7 +186,7 @@ parseData.load(dataFile, { sort, sortOn })
 
         yDotAxis
             .domain(d3.range(numberOfRows))
-            .rangeRound([0,yAxis.bandwidth()/2])
+            .rangeRound([0,yAxis.bandwidth()])
 
         myChart
             // .paddingInner(0.06)
@@ -191,7 +194,8 @@ parseData.load(dataFile, { sort, sortOn })
             .colourPalette((frameName))
             .seriesNames(seriesNames)
             .yScale(yAxis.scale())
-            .xScale(xDotAxis.scale())
+            .yDotScale(yDotAxis.scale())
+            .xDotScale(xDotAxis.scale())
             .rem(currentFrame.rem())
             .showNumberLabels(showNumberLabels);
 
