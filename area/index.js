@@ -99,41 +99,9 @@ const frame = {
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
-        const figure = d3.select(this)
-                        .attr('class', 'button-holder');
-
+        const figure = d3.select(this);
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
-
-        const holder = figure.append('div');
-        holder.append('button')
-            .attr('class', 'button')
-            .text('Does nothing')
-            .style("float", "left")
-            .style('opacity',0.6)
-            .on('click', function (d) {
-                let exportSVG = figure.select('svg')
-                console.log(exportSVG);
-                savePNG(exportSVG,1)
-            });
-        holder.append('button')
-            .attr('class', 'button')
-            .style("float", "left")
-            .style('opacity',0.6)
-            .text('Does nothing twice as big')
-            .on('click', function (d) {
-                savePNG(2)
-            });
-        holder.append('div')
-            .html('<br/>')
-
-        function savePNG(exportSVG, scaleFactor) {
-            console.log('Does nothing', scaleFactor);
-            //const exportSVG = figure.select('svg');
-            saveSvgAsPng(exportSVG, 'area-chart.png');
-        }
-
-
     });
 
 parseData.load(dataFile, { dateFormat }).then((data) => {
@@ -286,5 +254,46 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
-    // addSVGSavers('figure.saveable');
+
+d3.selectAll('.framed')
+    .each(function addButtons() {
+        const figure = d3.select(this);
+        const exportSVG = this.firstChild;
+        const holder = figure.append('div');
+
+        holder.append('button')
+            .attr('class', 'button')
+            .text('Does nothing')
+            .style('float', 'left')
+            .style('opacity', 0.6)
+            .on('click', function(d) {
+                savePNG(exportSVG, 1);
+            });
+
+        holder.append('button')
+            .attr('class', 'button')
+            .style('float', 'left')
+            .style('opacity', 0.6)
+            .text('Does nothing twice as big')
+            .on('click', function (d) {
+                savePNG(exportSVG, 2)
+            });
+        holder.append('div')
+            .html('<br/>');
+
+        function savePNG(svg, scaleFactor) {
+            figure.selectAll('.axis path, .axis text, .axis line, .axis, legend').each(function() {
+            const element = this;
+            const computedStyle = getComputedStyle(element, null);
+            //loop through and compute inline svg styles
+            for (let i = 0; i < computedStyle.length; i ++) {
+                  const property = computedStyle.item(i);
+                  const value = computedStyle.getPropertyValue(property);
+                  element.style[property] = value;
+                }
+            });
+
+            saveSvgAsPng(svg, 'area-chart.png', {scale: scaleFactor});
+        }
+    });
 });
