@@ -254,46 +254,44 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
+});
 
-d3.selectAll('.framed')
-    .each(function addButtons() {
-        const figure = d3.select(this);
-        const exportSVG = this.firstChild;
-        const holder = figure.append('div');
+d3.selectAll('.framed') .each(function addButtons() {
+    const figure = d3.select(this);
+    const exportSVG = this.firstChild;
+    const holder = figure.append('div');
 
-        holder.append('button')
-            .attr('class', 'button')
-            .text('Does nothing')
-            .style('float', 'left')
-            .style('opacity', 0.6)
-            .on('click', function(d) {
-                savePNG(exportSVG, 1);
-            });
+    holder.append('button')
+        .attr('class', 'button')
+        .text('Save as .png')
+        .style('float', 'left')
+        .style('opacity', 0.6)
+        .on('click', function (d) {
+            savePNG(exportSVG, 1);
+        });
 
-        holder.append('button')
-            .attr('class', 'button')
-            .style('float', 'left')
-            .style('opacity', 0.6)
-            .text('Does nothing twice as big')
-            .on('click', function (d) {
-                savePNG(exportSVG, 2)
-            });
-        holder.append('div')
-            .html('<br/>');
+    holder.append('button')
+        .attr('class', 'button')
+        .style('float', 'left')
+        .style('opacity', 0.6)
+        .text('Save as double size .png')
+        .on('click', function (d) {
+            savePNG(exportSVG, 2);
+        });
+    holder.append('div')
+        .html('<br/>');
 
-        function savePNG(svg, scaleFactor) {
-            figure.selectAll('.axis path, .axis text, .axis line, .axis, legend').each(function() {
+    function savePNG(svg, scaleFactor) {
+        figure.selectAll('.axis path, .axis text, .axis line, .axis, .baseline , .baseline line, .legend, .legend text').each(function() {
             const element = this;
             const computedStyle = getComputedStyle(element, null);
             //loop through and compute inline svg styles
             for (let i = 0; i < computedStyle.length; i ++) {
-                  const property = computedStyle.item(i);
-                  const value = computedStyle.getPropertyValue(property);
-                  element.style[property] = value;
-                }
-            });
-
-            saveSvgAsPng(svg, 'area-chart.png', {scale: scaleFactor});
-        }
-    });
+                const property = computedStyle.item(i);
+                const value = computedStyle.getPropertyValue(property);
+                element.style[property] = value;
+            }
+        });
+        saveSvgAsPng(svg, 'area-chart.png', { scale: scaleFactor });
+    }
 });
