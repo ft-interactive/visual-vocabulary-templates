@@ -106,19 +106,19 @@ function getCircles(seriesNames, el, divisor) {
         }
     });
     
-        for (let k = 0; k < seriesNames.length; k++) {
-            for (let i = 0; i < numCircles.length; i++) {
-                if (k < seriesNames.length - 1) {
-                    if (i >= stackIndex[k] && i < stackIndex[k + 1]) {
-                        circleCat.push(seriesNames[k]);
-                    } 
-                } else {
-                    if (i >= stackIndex[k]) {
-                        circleCat.push(seriesNames[k]);
-                    }
+    for (let k = 0; k < seriesNames.length; k++) {
+        for (let i = 0; i < numCircles.length; i++) {
+            if (k < seriesNames.length - 1) {
+                if (i >= stackIndex[k] && i < stackIndex[k + 1]) {
+                    circleCat.push(seriesNames[k]);
+                } 
+            } else {
+                if (i >= stackIndex[k]) {
+                    circleCat.push(seriesNames[k]);
                 }
             }
-        };
+        }
+    };
 
     return circleCat.map(name => ({
         name

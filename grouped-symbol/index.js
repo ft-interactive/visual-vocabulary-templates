@@ -25,7 +25,7 @@ const sort = 'decending';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const numberOfRows = 4; // number of rows in each group
 const divisor = 0.25;// data divisor to adjust number and value of circles
-const showNumberLabels = false;// show numbers on end of bars
+const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'circ'; // rect, line or circ, geometry of legend marker
 

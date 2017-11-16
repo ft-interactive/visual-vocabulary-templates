@@ -38,64 +38,36 @@ export function draw() {
                         return colourIndex;
                     });
 
-            // dotData.forEach( function(d,j) { 
-            //     console.log(dotData[j].range);
-            //     let index = 0;
-            //     let stackIndex = [0];
+        if (showNumberLabels) {
+            parent.select('text')
+            .data(d => d)
+            .enter()
+            .append('text')
+            .html(d => d.total)
+            .attr('class', 'highlight-label')
+            .style('text-anchor', 'end')
+            .attr('y', d => yScale1(d.name) + (yScale1.bandwidth() / 2) + (rem / 2.5))
+            .attr('x', () => xScale(0))
+            .attr('dx', (d) => { if (d.value < 0) { return rem / 4; } return -(rem / 4); })
+            .attr('font-size', rem)
+            .style('text-anchor', (d) => { if (d.value < 0) { return 'start'; } return 'end'; });
 
-            //     seriesNames.forEach(function(obj, k){
-            //         if (k > 0){
-            //             index = index + dotData[j].range[k - 1];
-            //             stackIndex.push(index / divisor);
-            //         }
-            //     });
+            let labelWidth = 0;
+            parent.selectAll('.label').each(function calcLabels() {
+                labelWidth = Math.max(this.getBBox().width, labelWidth);
+                // console.log(labelWidth);
+                // positionText(this,labelWidth)
+            });
 
-            //     for (let i = 0; i < seriesNames.length; i++){
-            //         let selecty = d3.select('.stackHolder_' + j).selectAll('circle').filter(function(y, z){
-            //             if (i < seriesNames.length - 1){
-            //                 return z >= stackIndex[i] && z < stackIndex[i + 1];
-            //             } else {
-            //                 return z >= stackIndex[i];
-            //             }
-            //         })
-            //         console.log(selecty);
-            //         selecty.attr('fill',colourScale(i));
-            //     }
-            // });
+            parent.selectAll('.label').each(function positionLabels() {
+                positionText(this, labelWidth);
+            });
+        }
 
-
-       
-
-        // // if (showNumberLabels) {
-        // //     parent.selectAll('text')
-        // //     .data(d => d.groups)
-        // //     .enter()
-        // //     .append('text')
-        // //     .html(d => d.value)
-        // //     .attr('class', 'highlight-label')
-        // //     .style('text-anchor', 'end')
-        // //     .attr('y', d => yScale1(d.name) + (yScale1.bandwidth() / 2) + (rem / 2.5))
-        // //     .attr('x', () => xScale(0))
-        // //     .attr('dx', (d) => { if (d.value < 0) { return rem / 4; } return -(rem / 4); })
-        // //     .attr('font-size', rem)
-        // //     .style('text-anchor', (d) => { if (d.value < 0) { return 'start'; } return 'end'; });
-
-        // //     let labelWidth = 0;
-        // //     parent.selectAll('.label').each(function calcLabels() {
-        // //         labelWidth = Math.max(this.getBBox().width, labelWidth);
-        // //         // console.log(labelWidth);
-        // //         // positionText(this,labelWidth)
-        // //     });
-
-        // //     parent.selectAll('.label').each(function positionLabels() {
-        // //         positionText(this, labelWidth);
-        // //     });
-        // }
-
-        // function positionText(item, labelWidth) {
-        //     const object = d3.select(item);
-        //     object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
-        // }
+        function positionText(item, labelWidth) {
+            const object = d3.select(item);
+            object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
+        }
     }
 
     groupedSymbols.yScale = (d) => {
