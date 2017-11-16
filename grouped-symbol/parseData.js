@@ -14,6 +14,7 @@ export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
         const { sort, sortOn, divisor } = options;
+
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
@@ -23,8 +24,9 @@ export function load(url, options) { // eslint-disable-line
         const plotData = data.map(d => ({
             name: d.name,
             total: d.total,
-            range: getRanges(seriesNames, d),
+            // range: getRanges(seriesNames, d),
             groups: getGroups(seriesNames, d),
+            circleCats: getCircles(seriesNames, d, divisor)
         }));
 
         if (sort === 'descending') {
@@ -83,6 +85,45 @@ function getRanges(seriesNames, el) {
     return ranges;
 }
 
+function getCircles(seriesNames, el, divisor) {
+    let ranges = [];
+    let rangeTotal = 0; 
+    seriesNames.forEach((d, i) =>{
+        rangeTotal = ((+el[seriesNames[i]]) / divisor)
+        ranges.push(rangeTotal);
+    });
+    
+    let numCircles = d3.range(el.total / divisor);
+
+    let circleCat = [];
+    let index = 0;
+    let stackIndex = [0];
+
+    seriesNames.forEach(function(obj, k){
+        if(k > 0) {
+            index = index + ranges[k-1];
+            stackIndex.push(index);        
+        }
+    });
+    
+        for (let k = 0; k < seriesNames.length; k++) {
+            for (let i = 0; i < numCircles.length; i++) {
+                if (k < seriesNames.length - 1) {
+                    if (i >= stackIndex[k] && i < stackIndex[k + 1]) {
+                        circleCat.push(seriesNames[k]);
+                    } 
+                } else {
+                    if (i >= stackIndex[k]) {
+                        circleCat.push(seriesNames[k]);
+                    }
+                }
+            }
+        };
+
+    return circleCat.map(name => ({
+        name
+    }));
+}
 function getGroups(seriesNames, el) {
     return seriesNames.map(name => ({
         name,

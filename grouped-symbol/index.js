@@ -120,7 +120,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         // define other functions to be called
-
+        console.log(plotData);
         const yAxis = gAxis.yOrdinal();// sets up yAxis
         const yDotAxis = gAxis.yOrdinal();// sets up yAxis
         const xDotAxis = gAxis.xOrdinal();

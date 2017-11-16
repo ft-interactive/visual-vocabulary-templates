@@ -21,39 +21,47 @@ export function draw() {
         parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 2.5)})`);
             parent
                 .selectAll('circle')
-                    .data(d => d3.range(d.total / divisor))
+                    .data(d => d.circleCats)
                     .enter()
                     .append('circle')
                     .attr('r', yDotScale.bandwidth() / 2.5)
                     .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
-                    .attr('cx', (d, i) => xDotScale(Math.floor(d / numberOfRows)))
-                    .attr('cy', (d, i) => yDotScale(d % numberOfRows))
-                    .attr('fill', 'red')
+                    .attr('cx', (d, i) => xDotScale(Math.floor(i / numberOfRows)))
+                    .attr('cy', (d, i) => yDotScale(i % numberOfRows))
+                    .attr('fill', (d)  => {
+                        let colourIndex = 0;
+                        seriesNames.forEach(function(obj, k) {
+                            if (obj === d.name) {
+                                colourIndex = colourScale.range()[k];
+                            }
+                        });
+                        return colourIndex;
+                    });
 
-            dotData.forEach( function(d,j) { 
-                console.log(dotData[j].range);
-                let index = 0;
-                let stackIndex = [0];
+            // dotData.forEach( function(d,j) { 
+            //     console.log(dotData[j].range);
+            //     let index = 0;
+            //     let stackIndex = [0];
 
-                seriesNames.forEach(function(obj, k){
-                    if (k > 0){
-                        index = index + dotData[j].range[k - 1];
-                        stackIndex.push(index / divisor);
-                    }
-                });
+            //     seriesNames.forEach(function(obj, k){
+            //         if (k > 0){
+            //             index = index + dotData[j].range[k - 1];
+            //             stackIndex.push(index / divisor);
+            //         }
+            //     });
 
-                for (let i = 0; i < seriesNames.length; i++){
-                    let selecty = d3.select('.stackHolder_' + j).selectAll('circle').filter(function(y, z){
-                        if (i < seriesNames.length - 1){
-                            return z >= stackIndex[i] && z < stackIndex[i + 1];
-                        } else {
-                            return z >= stackIndex[i];
-                        }
-                    })
-                    console.log(selecty);
-                    selecty.attr('fill',colourScale(i));
-                }
-            });
+            //     for (let i = 0; i < seriesNames.length; i++){
+            //         let selecty = d3.select('.stackHolder_' + j).selectAll('circle').filter(function(y, z){
+            //             if (i < seriesNames.length - 1){
+            //                 return z >= stackIndex[i] && z < stackIndex[i + 1];
+            //             } else {
+            //                 return z >= stackIndex[i];
+            //             }
+            //         })
+            //         console.log(selecty);
+            //         selecty.attr('fill',colourScale(i));
+            //     }
+            // });
 
 
        
