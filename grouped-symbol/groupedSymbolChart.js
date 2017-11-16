@@ -18,13 +18,17 @@ export function draw() {
 
 
     function groupedSymbols(parent) {
-        parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 2.5)})`);
+        if (showNumberLabels) {
+            parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 1.5)})`);
+        } else {
+            parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 4)})`);
+        }
             parent
                 .selectAll('circle')
                     .data(d => d.circleCats)
                     .enter()
                     .append('circle')
-                    .attr('r', yDotScale.bandwidth() / 2.5)
+                    .attr('r', yDotScale.bandwidth() / 2)
                     .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
                     .attr('cx', (d, i) => xDotScale(Math.floor(i / numberOfRows)))
                     .attr('cy', (d, i) => yDotScale(i % numberOfRows))
@@ -39,18 +43,17 @@ export function draw() {
                     });
 
         if (showNumberLabels) {
-            parent.select('text')
-            .data(d => d)
-            .enter()
-            .append('text')
-            .html(d => d.total)
-            .attr('class', 'highlight-label')
-            .style('text-anchor', 'end')
-            .attr('y', d => yScale1(d.name) + (yScale1.bandwidth() / 2) + (rem / 2.5))
-            .attr('x', () => xScale(0))
-            .attr('dx', (d) => { if (d.value < 0) { return rem / 4; } return -(rem / 4); })
-            .attr('font-size', rem)
-            .style('text-anchor', (d) => { if (d.value < 0) { return 'start'; } return 'end'; });
+            parent
+                .append('text')
+                .html(d => d.total)
+                .attr('class', 'highlight-label')
+                .style('text-anchor', 'end')
+                .attr('y', d => (yScale.bandwidth() / 2) + (rem / 4))
+                .attr('x', 0)
+                .attr('dx',  (-rem / 4))
+                .attr('dy', (d) =>  (rem / 2))
+                .attr('font-size', rem)
+                .style('font-weight', 600);
 
             let labelWidth = 0;
             parent.selectAll('.label').each(function calcLabels() {
