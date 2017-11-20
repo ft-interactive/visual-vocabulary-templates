@@ -41,6 +41,7 @@ let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 8;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the y axis
 const xAxisAlign = 'bottom';
+const logScale  = false
 
 // const legendAlign = 'vert';// hori or vert, alignment of the legend
 
@@ -135,8 +136,6 @@ parseData.load(dataURL)
     // define chart
     const myChart = lollipopChart.draw()
       .seriesNames(seriesNames)
-      .xDomain(data.map(d => d.name))
-      .yDomain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
       .yAxisAlign(yAxisAlign);
 
     // draw, for each frame
@@ -162,7 +161,10 @@ parseData.load(dataURL)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
           .align(yAxisAlign)
-          .frameName(frameName);
+          .frameName(frameName)
+          .logScale(logScale);
+
+        myChart.yScale(myYAxis.scale())
 
         currentFrame.plot()
           .call(myYAxis);
