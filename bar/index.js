@@ -6,7 +6,7 @@ import * as parseData from './parseData.js';
 import * as barChart from './barChart.js';
 
 
-const dataFile = 'logData.csv';
+const dataFile = 'data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -14,8 +14,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 10;// sets the minimum value on the yAxis
-const xMax = 850000;// sets the maximum value on the xAxis
+const xMin = 0;// sets the minimum value on the yAxis
+const xMax = 1000;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
