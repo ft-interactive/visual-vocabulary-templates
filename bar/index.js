@@ -6,7 +6,7 @@ import * as parseData from './parseData.js';
 import * as barChart from './barChart.js';
 
 
-const dataFile = 'data.csv';
+const dataFile = 'logData.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -14,13 +14,14 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the xAxis
+const xMin = 10;// sets the minimum value on the yAxis
+const xMax = 850000;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
+const logScale = false;
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const showNumberLabels = false;// show numbers on end of bars
@@ -146,7 +147,8 @@ parseData.load(dataFile, { sort, sortOn })
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
-            .frameName(frameName);
+            .frameName(frameName)
+            .logScale(logScale);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
@@ -190,7 +192,8 @@ parseData.load(dataFile, { sort, sortOn })
             .yScale1(yAxis1.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .showNumberLabels(showNumberLabels);
+            .showNumberLabels(showNumberLabels)
+            .logScale(logScale);
 
         currentFrame.plot()
             .selectAll('.barHolder')

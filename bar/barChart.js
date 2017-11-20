@@ -10,10 +10,13 @@ export function draw() {
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
     let rem = 10;
-    let showNumberLabels = false;// show numbers on end of bars
+    let showNumberLabels = false;
+    let logScale = false// show numbers on end of bars
 
 
     function bars(parent) {
+        const min = xScale.domain()[0]
+
         parent.attr('transform', d => `translate(0,${yScale0(d.name)})`);
 
         parent.selectAll('rect')
@@ -23,8 +26,18 @@ export function draw() {
             .attr('class', 'bars')
             .attr('y', d => yScale1(d.name))
             .attr('height', () => yScale1.bandwidth())
-            .attr('x', d => xScale(Math.min(0, d.value)))
-            .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
+            .attr('x', (d) => {
+                if(logScale) {
+                    return xScale(Math.min(min, d.value));
+                }                
+                xScale(Math.min(0, d.value))
+                })
+            .attr('width', (d) => {
+                if(logScale) {
+                    return Math.abs(xScale(d.value) - xScale(min));
+                }
+                return Math.abs(xScale(d.value) - xScale(0))
+            })
             .attr('fill', d => colourScale(d.name));
 
         if (showNumberLabels) {
@@ -93,9 +106,13 @@ export function draw() {
         xScale.domain(d);
         return bars;
     };
-
     bars.xRange = (d) => {
         xScale.range(d);
+        return bars;
+    };
+    bars.logScale = (d) => {
+        if (typeof d === 'undefined') return logScale();
+        logScale = d;
         return bars;
     };
     bars.colourProperty = (d) => {
@@ -121,7 +138,7 @@ export function draw() {
         return bars;
     };
     bars.showNumberLabels = (d) => {
-        if (!d) return showNumberLabels;
+        if (typeof d === 'undefined') return showNumberLabels;
         showNumberLabels = d;
         return bars;
     };
