@@ -111,7 +111,7 @@ export function draw() {
         return bars;
     };
     bars.logScale = (d) => {
-        if (typeof d === 'undefined') return logScale();
+        if (typeof d === 'undefined') return logScale;
         logScale = d;
         return bars;
     };
