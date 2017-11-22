@@ -14,10 +14,11 @@ const sharedConfig = {
 };
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the yAxis
-const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
+const yAxisHighlight = 10; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
+const logScale = false
 const sort = '';// specify 'ascending', 'descending', 'alphabetical'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const showNumberLabels = false;// show numbers on end of bars
@@ -94,23 +95,16 @@ parseData.load(dataFile, '', { sort, sortOn })
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
-        myChart
-            .yRange([currentFrame.dimension().height, 0])
-            .plotDim(currentFrame.dimension())
-            .rem(currentFrame.rem())
-            .colourPalette((frameName));
+
 
         myYAxis
-            .scale(myChart.yScale())
+            .range([currentFrame.dimension().height, 0])
+            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
-            .align(myChart.yAxisAlign());
-
-        myYAxis
             .align(yAxisAlign)
-            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-            .numTicks(numTicksy)
+            .logScale(logScale)
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
@@ -148,6 +142,11 @@ parseData.load(dataFile, '', { sort, sortOn })
         myChart
             .xScale0(myXAxis0.scale())
             .xScale1(myXAxis1.scale())
+            .yScale(myYAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette((frameName))
+            .logScale(logScale)
             .showNumberLabels(showNumberLabels);
             // .yScale(myYAxis.yScale())
 

@@ -6,6 +6,7 @@ export function draw() {
     let xScale0 = d3.scaleBand();
     let xScale1 = d3.scaleBand();
     let seriesNames = [];
+    let logScale = false;
     let yAxisAlign = 'right';
     let rem = 16;
     let markers = false; // eslint-disable-line
@@ -16,6 +17,8 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
+        const min = yScale.domain()[0];
+
         parent.attr('transform', d => `translate(${xScale0(d.name)},0)`)
             .attr('width', xScale0.bandwidth());
 
@@ -26,8 +29,18 @@ export function draw() {
             .attr('class', 'columns')
             .attr('x', d => xScale1(d.name))
             .attr('width', () => xScale1.bandwidth())
-            .attr('y', d => yScale(Math.max(0, d.value)))
-            .attr('height', d => Math.abs(yScale(d.value) - yScale(0)))
+            .attr('y', (d) => {
+                if(logScale) {
+                    return yScale(Math.max(min, d.value))
+                }
+               return yScale(Math.max(0, d.value))
+            })
+            .attr('height', (d) => {
+                if(logScale) {
+                    return Math.abs(yScale(d.value) - yScale(min))
+                }
+                return Math.abs(yScale(d.value) - yScale(0))
+            })
             .attr('fill', d => colourScale(d.name));
 
         if (showNumberLabels) {
@@ -126,6 +139,12 @@ export function draw() {
         return chart;
     };
 
+    chart.logScale = (d) => {
+        if (typeof d === 'undefined') return logScale;
+        logScale = d;
+        return chart;
+    };
+
     chart.markers = (d) => {
         if (typeof d === 'undefined') return markers;
         markers = d;
@@ -151,7 +170,7 @@ export function draw() {
     };
 
     chart.showNumberLabels = (d) => {
-        if (!d) return showNumberLabels;
+        if (typeof d === 'undefined') return showNumberLabels;
         showNumberLabels = d;
         return chart;
     };
