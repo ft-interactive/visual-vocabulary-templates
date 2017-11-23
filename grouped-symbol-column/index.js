@@ -23,9 +23,9 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const sort = 'decending';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
-const numberOfColumns = 10; // number of rows in each group
+const numberOfColumns = 5; // number of rows in each group
 const divisor = 0.25;// data divisor to adjust number and value of circles
-const showNumberLabels = false;// show numbers on end of bars
+const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'circ'; // rect, line or circ, geometry of legend marker
 
@@ -129,7 +129,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const maxValue = valueExtent[1];
         const maxRows = (maxValue / divisor) / numberOfColumns
         const rowIndex = d3.range(maxRows)
-
+        console.log(rowIndex);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks

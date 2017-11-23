@@ -19,28 +19,28 @@ export function draw() {
 
     function groupedSymbols(parent) {
         if (showNumberLabels) {
-            parent.attr('transform', d => `translate(0,${(xScale(d.name) + rem / 1.5)})`);
+            parent.attr('transform', d => `translate(${(xScale(d.name) + rem / 1.5)},${rem})`);
         } else {
-            parent.attr('transform', d => `translate(0,${(xScale(d.name) + rem / 4)})`);
+            parent.attr('transform', d => `translate(${(xScale(d.name) + rem / 4)},${rem})`);
         }
-        //     parent
-        //         .selectAll('circle')
-        //             .data(d => d.circleCats)
-        //             .enter()
-        //             .append('circle')
-        //             .attr('r', yDotScale.bandwidth() / 2)
-        //             .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
-        //             .attr('cx', (d, i) => xDotScale(Math.floor(i / numberOfColumns)))
-        //             .attr('cy', (d, i) => yDotScale(i % numberOfColumns))
-        //             .attr('fill', (d)  => {
-        //                 let colourIndex = 0;
-        //                 seriesNames.forEach(function(obj, k) {
-        //                     if (obj === d.name) {
-        //                         colourIndex = colourScale.range()[k];
-        //                     }
-        //                 });
-        //                 return colourIndex;
-        //             });
+            parent
+                .selectAll('circle')
+                    .data(d => d.circleCats)
+                    .enter()
+                    .append('circle')
+                    .attr('r', yDotScale.bandwidth() / 2)
+                    .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
+                    .attr('cx', (d, i) => xDotScale(i % numberOfColumns))
+                    .attr('cy', (d, i) => yDotScale(Math.floor(i / numberOfColumns)))
+                    .attr('fill', (d)  => {
+                        let colourIndex = 0;
+                        seriesNames.forEach(function(obj, k) {
+                            if (obj === d.name) {
+                                colourIndex = colourScale.range()[k];
+                            }
+                        });
+                        return colourIndex;
+                    });
 
         // if (showNumberLabels) {
         //     parent
