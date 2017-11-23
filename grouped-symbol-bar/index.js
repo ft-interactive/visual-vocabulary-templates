@@ -16,8 +16,8 @@ const sharedConfig = {
 
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the xAxis
-const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 5;// Number of tick on the uAxis
+const xAxisHighlight = 0; /* sets which tick to highlight on the yAxis */ // eslint-disable-line no-unused-vars
+const numTicks = 5; /* Number of tick on the uAxis */ // eslint-disable-line no-unused-vars
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -82,36 +82,10 @@ const frame = {
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
-        const figure = d3.select(this)
-                        .attr('class', 'button-holder');
+        const figure = d3.select(this);
 
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
-
-        const holder = figure.append('div');
-        holder.append('button')
-            .attr('class', 'button')
-            .text('Does nothing')
-            .style("float", "left")
-            .style('opacity',0.6)
-            .on('click', function (d) {
-                savePNG(1)
-            });
-        holder.append('button')
-            .attr('class', 'button')
-            .style("float", "left")
-            .style('opacity',0.6)
-            .text('Does nothing twice as big')
-            .on('click', function (d) {
-                savePNG(2)
-            });
-        holder.append('div')
-            .html('<br/>')
-
-        function savePNG(scaleFactor) {
-            const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
-        }
     });
 
 parseData.load(dataFile, { sort, sortOn, divisor })
@@ -120,17 +94,17 @@ parseData.load(dataFile, { sort, sortOn, divisor })
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         // define other functions to be called
-        console.log(plotData);
+        console.log(plotData); // eslint-disable-line
         const yAxis = gAxis.yOrdinal();// sets up yAxis
         const yDotAxis = gAxis.yOrdinal();// sets up yAxis
         const xDotAxis = gAxis.xOrdinal();
         const myChart = groupedSymbolChart.draw();
         const myLegend = gLegend.legend();
         const maxValue = valueExtent[1];
-        const maxCols = (maxValue / divisor) / numberOfRows
-        const colIndex = d3.range(maxCols)
+        const maxCols = (maxValue / divisor) / numberOfRows;
+        const colIndex = d3.range(maxCols);
 
-         myChart
+        myChart
             .divisor(divisor)
             .numberOfRows(numberOfRows)
             .dotData(plotData);
@@ -172,7 +146,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         // Use new widtth of frame to set the range of the x-axis and any other parameters
         xDotAxis
             .domain(colIndex)
-            .rangeRound([0,currentFrame.dimension().width],0.5)
+            .rangeRound([0, currentFrame.dimension().width], 0.5);
 
         // Call the axis and move it if needed
         currentFrame.plot()
@@ -185,7 +159,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
 
         yDotAxis
             .domain(d3.range(numberOfRows))
-            .rangeRound([0,yAxis.bandwidth()])
+            .rangeRound([0, yAxis.bandwidth()]);
 
         myChart
             // .paddingInner(0.06)
@@ -203,7 +177,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .data(plotData)
             .enter()
             .append('g')
-            .attr('class', (d, i) => 'stackHolder stackHolder_' + i)
+            .attr('class', (d, i) => `stackHolder stackHolder_${i}`)
             .call(myChart);
 
         // remove ticks if numbers are added to vars

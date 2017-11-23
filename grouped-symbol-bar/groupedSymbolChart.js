@@ -13,28 +13,28 @@ export function draw() {
     let rem = 10;
     let numberOfRows = 0;
     let divisor = 1;
-    let ranges = [];
+    const ranges = []; // eslint-disable-line no-unused-vars
     let showNumberLabels = false;// show numbers on end of groupedSymbols
 
 
     function groupedSymbols(parent) {
         if (showNumberLabels) {
-            parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 1.5)})`);
+            parent.attr('transform', d => `translate(0,${(yScale(d.name) + (rem / 1.5))})`);
         } else {
-            parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 4)})`);
+            parent.attr('transform', d => `translate(0,${(yScale(d.name) + (rem / 4))})`);
         }
-            parent
+        parent
                 .selectAll('circle')
                     .data(d => d.circleCats)
                     .enter()
                     .append('circle')
                     .attr('r', yDotScale.bandwidth() / 2)
-                    .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
+                    .attr('id', (d, i) => `${`circle${i}_${i}`}`)
                     .attr('cx', (d, i) => xDotScale(Math.floor(i / numberOfRows)))
                     .attr('cy', (d, i) => yDotScale(i % numberOfRows))
-                    .attr('fill', (d)  => {
+                    .attr('fill', (d) => {
                         let colourIndex = 0;
-                        seriesNames.forEach(function(obj, k) {
+                        seriesNames.forEach((obj, k) => {
                             if (obj === d.name) {
                                 colourIndex = colourScale.range()[k];
                             }
@@ -48,10 +48,10 @@ export function draw() {
                 .html(d => d.total)
                 .attr('class', 'highlight-label')
                 .style('text-anchor', 'end')
-                .attr('y', d => (yScale.bandwidth() / 2) + (rem / 4))
+                .attr('y', () => (yScale.bandwidth() / 2) + (rem / 4))
                 .attr('x', 0)
-                .attr('dx',  (-rem / 4))
-                .attr('dy', (d) =>  (rem / 2))
+                .attr('dx', (-rem / 4))
+                .attr('dy', () => (rem / 2))
                 .attr('font-size', rem)
                 .style('font-weight', 600);
 
