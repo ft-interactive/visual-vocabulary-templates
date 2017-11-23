@@ -130,13 +130,9 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const maxRows = (maxValue / divisor) / numberOfColumns
         const rowIndex = d3.range(maxRows)
 
-         myChart
-            .divisor(divisor)
-            .numberOfColumns(numberOfColumns)
-            .dotData(plotData);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().width + (currentFrame.rem() * 1.5);// Used when drawing the yAxis ticks
+        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         xAxis
             .align(xAxisAlign)
             .domain(plotData.map(d => d.name))
@@ -147,9 +143,12 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .align(yAxisAlign)
             .domain(rowIndex)
             .rangeRound([currentFrame.dimension().height, 0])
+            .tickSize(tickSize)
+            .align(yAxisAlign)
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
+        
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
@@ -161,7 +160,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
             yDotAxis.yLabel()
-                .attr('transform', `translate(${currentFrame.dimension().width + yDotAxis.labelWidth()},${0})`);
+                .attr('transform', `translate(${-currentFrame.dimension().width + yDotAxis.labelWidth()},${0})`);
         } else {
             const newMargin = yDotAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
@@ -196,8 +195,14 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .domain(d3.range(numberOfColumns))
             .rangeRound([0,xAxis.bandwidth()])
 
+       
+
+
         myChart
             // .paddingInner(0.06)
+            .divisor(divisor)
+            .numberOfColumns(numberOfColumns)
+            .dotData(plotData)
             .colourProperty(colourProperty)
             .colourPalette((frameName))
             .seriesNames(seriesNames)
@@ -215,11 +220,11 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .attr('class', (d, i) => 'stackHolder stackHolder_' + i)
             .call(myChart);
 
-        // remove ticks if numbers are added to vars
-        if (showNumberLabels) {
-            const clear = xDotAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
-            clear.remove();
-        }
+        // // remove ticks if numbers are added to vars
+        // if (showNumberLabels) {
+        //     const clear = xDotAxis.xLabel().selectAll('.tick').filter(d => d !== 0);
+        //     clear.remove();
+        // }
 
         // Set up legend for this frame
         myLegend
@@ -245,7 +250,8 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
-        // xDotAxis.xLabel().selectAll('.tick').remove();
+        xAxis.xLabel().selectAll('.tick line').remove();
+        yDotAxis.yLabel().selectAll('.tick').remove();
     });
     // addSVGSavers('figure.saveable');
 });
