@@ -14,16 +14,16 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the xAxis
-const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
+const yMin = 0;// sets the minimum value on the yAxis
+const yMax = 0;// sets the maximum value on the xAxis
+const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const sort = 'decending';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
-const numberOfRows = 4; // number of rows in each group
+const numberOfColumns = 10; // number of rows in each group
 const divisor = 0.25;// data divisor to adjust number and value of circles
 const showNumberLabels = false;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
@@ -121,48 +121,49 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const currentFrame = frame[frameName];
         // define other functions to be called
         console.log(plotData);
-        const yAxis = gAxis.yOrdinal();// sets up yAxis
-        const yDotAxis = gAxis.yOrdinal();// sets up yAxis
-        const xDotAxis = gAxis.xOrdinal();
+        const xAxis = gAxis.xOrdinal();// sets up yAxis
+        const xDotAxis = gAxis.xOrdinal();// sets up yAxis
+        const yDotAxis = gAxis.yOrdinal();
         const myChart = groupedSymbolChart.draw();
         const myLegend = gLegend.legend();
         const maxValue = valueExtent[1];
-        const maxCols = (maxValue / divisor) / numberOfRows
-        const colIndex = d3.range(maxCols)
+        const maxRows = (maxValue / divisor) / numberOfColumns
+        const rowIndex = d3.range(maxRows)
 
          myChart
             .divisor(divisor)
-            .numberOfRows(numberOfRows)
+            .numberOfColumns(numberOfColumns)
             .dotData(plotData);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 1.5);// Used when drawing the yAxis ticks
-        yAxis
-            .align(yAxisAlign)
+        const tickSize = currentFrame.dimension().width + (currentFrame.rem() * 1.5);// Used when drawing the yAxis ticks
+        xAxis
+            .align(xAxisAlign)
             .domain(plotData.map(d => d.name))
             .rangeRound([0, tickSize])
             .frameName(frameName);
 
-        xDotAxis
-            .align(xAxisAlign)
-            .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+        yDotAxis
+            .align(yAxisAlign)
+            .domain(rowIndex)
+            .rangeRound([currentFrame.dimension().height, 0])
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
-            .call(yAxis);
+            .call(yDotAxis);
 
         // return the value in the variable newMargin and move axis if needed
         if (yAxisAlign === 'right') {
-            const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
+            const newMargin = yDotAxis.labelWidth() + currentFrame.margin().right;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMargin });
-            yAxis.yLabel()
-                .attr('transform', `translate(${currentFrame.dimension().width + yAxis.labelWidth()},${0})`);
+            yDotAxis.yLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width + yDotAxis.labelWidth()},${0})`);
         } else {
-            const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
+            const newMargin = yDotAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin re define the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
         }
@@ -170,30 +171,38 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
         // Use new widtth of frame to set the range of the x-axis and any other parameters
-        xDotAxis
-            .domain(colIndex)
+        xAxis
             .rangeRound([0,currentFrame.dimension().width],0.5)
 
         // Call the axis and move it if needed
         currentFrame.plot()
-            .call(xDotAxis);
+            .call(xAxis);
 
+        // if (xAxisAlign === 'top') {
+        //     xAxis.xLabel()
+        //     .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
+        // }
+
+        if (xAxisAlign === 'bottom') {
+            xAxis.xLabel()
+            .attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        }
         if (xAxisAlign === 'top') {
-            xDotAxis.xLabel()
-            .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
+            xAxis.xLabel()
+            .attr('transform', `translate(0,${myXAxis0.tickSize()})`);
         }
 
-        yDotAxis
-            .domain(d3.range(numberOfRows))
-            .rangeRound([0,yAxis.bandwidth()])
+        xDotAxis
+            .domain(d3.range(numberOfColumns))
+            .rangeRound([0,xAxis.bandwidth()])
 
         myChart
             // .paddingInner(0.06)
             .colourProperty(colourProperty)
             .colourPalette((frameName))
             .seriesNames(seriesNames)
-            .yScale(yAxis.scale())
             .yDotScale(yDotAxis.scale())
+            .xScale(xAxis.scale())
             .xDotScale(xDotAxis.scale())
             .rem(currentFrame.rem())
             .showNumberLabels(showNumberLabels);
@@ -236,7 +245,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
-        xDotAxis.xLabel().selectAll('.tick').remove();
+        // xDotAxis.xLabel().selectAll('.tick').remove();
     });
     // addSVGSavers('figure.saveable');
 });

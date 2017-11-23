@@ -2,16 +2,16 @@ import * as d3 from 'd3';
 import * as gChartcolour from 'g-chartcolour';
 
 export function draw() {
-    let yScale = d3.scaleBand();
-    let yDotScale = d3.scaleBand();
-    let xDotScale = d3.scaleOrdinal();
+    let xScale = d3.scaleBand();
+    let xDotScale = d3.scaleBand();
+    let yDotScale = d3.scaleOrdinal();
     let seriesNames = [];
     let dotData = [];
     let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
     let rem = 10;
-    let numberOfRows = 0;
+    let numberOfColumns = 0;
     let divisor = 1;
     let ranges = [];
     let showNumberLabels = false;// show numbers on end of groupedSymbols
@@ -19,70 +19,83 @@ export function draw() {
 
     function groupedSymbols(parent) {
         if (showNumberLabels) {
-            parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 1.5)})`);
+            parent.attr('transform', d => `translate(0,${(xScale(d.name) + rem / 1.5)})`);
         } else {
-            parent.attr('transform', d => `translate(0,${(yScale(d.name) + rem / 4)})`);
+            parent.attr('transform', d => `translate(0,${(xScale(d.name) + rem / 4)})`);
         }
-            parent
-                .selectAll('circle')
-                    .data(d => d.circleCats)
-                    .enter()
-                    .append('circle')
-                    .attr('r', yDotScale.bandwidth() / 2)
-                    .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
-                    .attr('cx', (d, i) => xDotScale(Math.floor(i / numberOfRows)))
-                    .attr('cy', (d, i) => yDotScale(i % numberOfRows))
-                    .attr('fill', (d)  => {
-                        let colourIndex = 0;
-                        seriesNames.forEach(function(obj, k) {
-                            if (obj === d.name) {
-                                colourIndex = colourScale.range()[k];
-                            }
-                        });
-                        return colourIndex;
-                    });
+        //     parent
+        //         .selectAll('circle')
+        //             .data(d => d.circleCats)
+        //             .enter()
+        //             .append('circle')
+        //             .attr('r', yDotScale.bandwidth() / 2)
+        //             .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
+        //             .attr('cx', (d, i) => xDotScale(Math.floor(i / numberOfColumns)))
+        //             .attr('cy', (d, i) => yDotScale(i % numberOfColumns))
+        //             .attr('fill', (d)  => {
+        //                 let colourIndex = 0;
+        //                 seriesNames.forEach(function(obj, k) {
+        //                     if (obj === d.name) {
+        //                         colourIndex = colourScale.range()[k];
+        //                     }
+        //                 });
+        //                 return colourIndex;
+        //             });
 
-        if (showNumberLabels) {
-            parent
-                .append('text')
-                .html(d => d.total)
-                .attr('class', 'highlight-label')
-                .style('text-anchor', 'end')
-                .attr('y', d => (yScale.bandwidth() / 2) + (rem / 4))
-                .attr('x', 0)
-                .attr('dx',  (-rem / 4))
-                .attr('dy', (d) =>  (rem / 2))
-                .attr('font-size', rem)
-                .style('font-weight', 600);
+        // if (showNumberLabels) {
+        //     parent
+        //         .append('text')
+        //         .html(d => d.total)
+        //         .attr('class', 'highlight-label')
+        //         .style('text-anchor', 'end')
+        //         .attr('y', d => (yScale.bandwidth() / 2) + (rem / 4))
+        //         .attr('x', 0)
+        //         .attr('dx',  (-rem / 4))
+        //         .attr('dy', (d) =>  (rem / 2))
+        //         .attr('font-size', rem)
+        //         .style('font-weight', 600);
 
-            let labelWidth = 0;
-            parent.selectAll('.label').each(function calcLabels() {
-                labelWidth = Math.max(this.getBBox().width, labelWidth);
-                // console.log(labelWidth);
-                // positionText(this,labelWidth)
-            });
+        //     let labelWidth = 0;
+        //     parent.selectAll('.label').each(function calcLabels() {
+        //         labelWidth = Math.max(this.getBBox().width, labelWidth);
+        //         // console.log(labelWidth);
+        //         // positionText(this,labelWidth)
+        //     });
 
-            parent.selectAll('.label').each(function positionLabels() {
-                positionText(this, labelWidth);
-            });
-        }
+        //     parent.selectAll('.label').each(function positionLabels() {
+        //         positionText(this, labelWidth);
+        //     });
+        // }
 
-        function positionText(item, labelWidth) {
-            const object = d3.select(item);
-            object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
-        }
+        // function positionText(item, labelWidth) {
+        //     const object = d3.select(item);
+        //     object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
+        // }
     }
 
-    groupedSymbols.yScale = (d) => {
-        yScale = d;
+    groupedSymbols.xScale = (d) => {
+        xScale = d;
         return groupedSymbols;
     };
-    groupedSymbols.yDomain = (d) => {
-        yScale.domain(d);
+    groupedSymbols.xDomain = (d) => {
+        xScale.domain(d);
         return groupedSymbols;
     };
-    groupedSymbols.yRange = (d) => {
-        yScale.rangeRound(d);
+    groupedSymbols.xRange = (d) => {
+        xScale.rangeRound(d);
+        return groupedSymbols;
+    };
+    groupedSymbols.xDotScale = (d) => {
+        if (!d) return xDotScale;
+        xDotScale = d;
+        return groupedSymbols;
+    };
+    groupedSymbols.xDotDomain = (d) => {
+        xDotScale.domain(d);
+        return groupedSymbols;
+    };
+    groupedSymbols.xDotRange = (d) => {
+        xDotScale.range(d);
         return groupedSymbols;
     };
     groupedSymbols.yDotScale = (d) => {
@@ -96,19 +109,6 @@ export function draw() {
     };
     groupedSymbols.yDotRange = (d) => {
         yDotScale.range(d);
-        return groupedSymbols;
-    };
-    groupedSymbols.xDotScale = (d) => {
-        if (!d) return xDotScale;
-        xDotScale = d;
-        return groupedSymbols;
-    };
-    groupedSymbols.xDomain = (d) => {
-        xDotScale.domain(d);
-        return groupedSymbols;
-    };
-    groupedSymbols.xRange = (d) => {
-        xDotScale.range(d);
         return groupedSymbols;
     };
     groupedSymbols.colourProperty = (d) => {
@@ -138,9 +138,9 @@ export function draw() {
         showNumberLabels = d;
         return groupedSymbols;
     };
-    groupedSymbols.numberOfRows = (d) => {
-        if (!d) return numberOfRows;
-        numberOfRows = d;
+    groupedSymbols.numberOfColumns = (d) => {
+        if (!d) return numberOfColumns;
+        numberOfColumns = d;
         return groupedSymbols;
     };
     groupedSymbols.divisor = (d) => {
