@@ -27,13 +27,11 @@ export function load(url, options) { // eslint-disable-line
 
         // Format the dataset that is used to draw the lines
         let highlightLines = {};
-        let plotData = seriesNames.map((d) => {
-            return {
-                name: d,
-                lineData: getlines(data, d),
-                highlightLine: getHighlightNames(d),
-            };
-        });
+        let plotData = seriesNames.map(d => ({
+            name: d,
+            lineData: getlines(data, d),
+            highlightLine: getHighlightNames(d),
+        }));
 
         function getHighlightNames(el) {
             let status = false;
@@ -43,12 +41,8 @@ export function load(url, options) { // eslint-disable-line
             return status;
         }
 
-        highlightLines = plotData.filter((d) => {
-            return d.highlightLine === true;
-        });
-        plotData = plotData.filter((d) => {
-            return d.highlightLine === false;
-        });
+        highlightLines = plotData.filter(d => d.highlightLine === true);
+        plotData = plotData.filter(d => d.highlightLine === false);
 
          // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
@@ -120,7 +114,7 @@ export function extentMulti(d, columns, yMin) {
  * head, so that the line path can be passed as one object to the drawing function
  */
 export function getlines(d, group) {
-    //console.log('d and group',d,group)
+    // console.log('d and group',d,group)
     const lineData = [];
     d.forEach((el) => {
         // console.log(el,i)

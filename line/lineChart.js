@@ -25,20 +25,18 @@ export function draw() {
         .y(d => yScale(d.value));
 
         parent.append('path')
-      .attr('stroke', (d, i) => {
+      .attr('stroke', (d) => {
           if (highlightNames.length > 0 && d.highlightLine === false) {
               return colourScale.range()[0];
           }
           if (highlightNames.length > 0 && d.highlightLine === true) {
               return colourScale(d.name);
-          }
-          else {return colourScale(d.name)};
+          } return colourScale(d.name);
       })
       .attr('opacity', (d) => {
           if (highlightNames.length > 0 && d.highlightLine === false) {
               return 0.5;
-          }
-          else {return 1};
+          } return 1;
       })
       .attr('d', d => lineData(d.lineData));
 

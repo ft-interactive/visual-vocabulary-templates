@@ -85,7 +85,7 @@ const frame = {
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
   .width(53.71)// 1 col
-  //.width(112.25)// 2 col
+  // .width(112.25)// 2 col
   // .width(170.8)// 3 col
   // .width(229.34)// 4 col
   // .width(287.88)// 5 col
@@ -331,4 +331,4 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
     // addSVGSavers('figure.saveable');
-    });
+});
