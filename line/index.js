@@ -5,6 +5,7 @@
 import * as d3 from 'd3';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
+import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
@@ -32,7 +33,7 @@ const sharedConfig = {
 };
 
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the xAxis
+const yMax = 1400;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -116,7 +117,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
-.then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
+.then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, annos }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -134,6 +135,34 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .markers(markers)
           .annotate(annotate)
           .interpolation(interpolation);
+        const myHighLines = lineChart.draw()
+          .seriesNames(seriesNames)
+          .highlightNames(highlightNames)
+          .markers(markers)
+          .annotate(annotate)
+          .interpolation(interpolation);
+
+        const highlightedLines = colourPalette(frameName);
+
+        function colourPalette(d) {
+            const newPalette = d3.scaleOrdinal();
+            if (d === 'social' || d === 'video') {
+                newPalette
+                .domain(highlightNames)
+                .range(Object.values(gChartcolour.lineSocial));
+            }
+            if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+                newPalette
+                .domain(highlightNames)
+                .range(Object.values(gChartcolour.lineWeb));
+            }
+            if (d === 'print') {
+                newPalette
+                .domain(highlightNames)
+                .range(Object.values(gChartcolour.linePrint));
+            }
+            return newPalette;
+        }
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
@@ -209,7 +238,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
-      const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         myChart
           .yScale(myYAxis.scale())
@@ -217,6 +246,13 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
+
+        myHighLines
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette(highlightedLines);
 
         // Draw the lines
         currentFrame.plot()
@@ -227,6 +263,15 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .attr('class', 'lines')
           .attr('id', d => d.name)
           .call(myChart);
+
+        currentFrame.plot()
+          .selectAll('lines')
+          .data(highlightLines)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .attr('id', d => d.name)
+          .call(myHighLines);
 
         // Set up highlights for this frame
         myHighlights

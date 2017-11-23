@@ -13,7 +13,7 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { yMin, joinPoints, highlightNames, dateFormat } = options; // eslint-disable-line no-unused-vars
+        const { dateFormat, yMin, joinPoints, highlightNames } = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
         const parseDate = d3.timeParse(dateFormat);
         data.forEach((d) => {
@@ -22,26 +22,33 @@ export function load(url, options) { // eslint-disable-line
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
-
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames, yMin);
 
         // Format the dataset that is used to draw the lines
-        const plotData = seriesNames.map(d => ({
-            name: d,
-            lineData: getlines(data, d),
-        }));
+        let highlightLines = {};
+        let plotData = seriesNames.map((d) => {
+            return {
+                name: d,
+                lineData: getlines(data, d),
+                highlightLine: getHighlightNames(d),
+            };
+        });
 
-        // Sort the data so that the labeled items are drawn on top
-        const dataSorter = function dataSorter(a, b) {
-            if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-                return 1;
-            } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-                return 0;
-            }
-            return -1;
-        };
-        if (highlightNames.length > 0) { plotData.sort(dataSorter); }
+        function getHighlightNames(el) {
+            let status = false;
+            highlightNames.map((d) => {
+                if (el === d) { status = true; }
+            });
+            return status;
+        }
+
+        highlightLines = plotData.filter((d) => {
+            return d.highlightLine === true;
+        });
+        plotData = plotData.filter((d) => {
+            return d.highlightLine === false;
+        });
 
          // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
@@ -58,8 +65,9 @@ export function load(url, options) { // eslint-disable-line
 
         return {
             seriesNames,
-            plotData,
             data,
+            plotData,
+            highlightLines,
             valueExtent,
             highlights,
             annos,
@@ -111,7 +119,8 @@ export function extentMulti(d, columns, yMin) {
  * Sorts the column information in the dataset into groups according to the column
  * head, so that the line path can be passed as one object to the drawing function
  */
-export function getlines(d, group, joinPoints) {
+export function getlines(d, group) {
+    //console.log('d and group',d,group)
     const lineData = [];
     d.forEach((el) => {
         // console.log(el,i)
