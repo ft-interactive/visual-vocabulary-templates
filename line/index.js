@@ -256,7 +256,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
 
         // Draw the lines
         currentFrame.plot()
-          .selectAll('lines')
+          .selectAll('.lines')
           .data(plotData)
           .enter()
           .append('g')
@@ -265,7 +265,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .call(myChart);
 
         currentFrame.plot()
-          .selectAll('lines')
+          .selectAll('.lines')
           .data(highlightLines)
           .enter()
           .append('g')
