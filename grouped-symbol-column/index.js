@@ -24,8 +24,9 @@ const xAxisAlign = 'bottom';
 const sort = 'decending';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const numberOfColumns = 4; // number of rows in each group
-const divisor = 0.25;// data divisor to adjust number and value of circles
+const divisor = 0.5;// data divisor to adjust number and value of circles
 const showNumberLabels = true;// show numbers on end of bars
+const circleSize = 1;// change this number to increase or decrease the size of the circles
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
 const legendType = 'circ'; // rect, line or circ, geometry of legend marker
 
@@ -120,7 +121,6 @@ parseData.load(dataFile, { sort, sortOn, divisor })
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         // define other functions to be called
-        console.log(plotData);
         const xAxis = gAxis.xOrdinal();// sets up xAxis
         const xDotAxis = gAxis.xOrdinal();// sets up xAxis
         const xTotalAxis = gAxis.xOrdinal();// sets up xAxis
@@ -130,18 +130,17 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const maxValue = valueExtent[1];
         const maxRows = (maxValue / divisor) / numberOfColumns
         const rowIndex = d3.range(maxRows)
-        console.log(rowIndex);
 
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         xAxis
-            .align(xAxisAlign)
+            // .align(xAxisAlign)
             .domain(plotData.map(d => d.name))
             .rangeRound([0, tickSize])
             .frameName(frameName);
 
         xTotalAxis
-            .align(xAxisAlign)
+            // .align(xAxisAlign)
             .domain(plotData.map(d => d.total))
             .rangeRound([0, tickSize])
             .frameName(frameName);
@@ -149,7 +148,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         yDotAxis
             .align(yAxisAlign)
             .domain(rowIndex)
-            .rangeRound([currentFrame.dimension().height, 0])
+            .rangeRound([(currentFrame.dimension().height - currentFrame.rem()), 0])
             .tickSize(tickSize)
             .align(yAxisAlign)
             .frameName(frameName);
@@ -188,21 +187,6 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .call(xTotalAxis)
             .call(xAxis);
 
-        // if (xAxisAlign === 'top') {
-        //     xAxis.xLabel()
-        //     .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
-        // }
-
-        if (xAxisAlign === 'bottom') {
-            xAxis.xLabel()
-            .attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            xTotalAxis.xLabel()
-            .attr('transform', `translate(0,${currentFrame.dimension().height + (currentFrame.rem() * 1.5)})`);
-        }
-        // if (xAxisAlign === 'top') {
-        //     xAxis.xLabel()
-        //     .attr('transform', `translate(0,${myXAxis0.tickSize()})`);
-        // }
 
         xDotAxis
             .domain(d3.range(numberOfColumns))
@@ -224,7 +208,8 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .xDotScale(xDotAxis.scale())
             .xTotalScale(xTotalAxis.scale())
             .rem(currentFrame.rem())
-            .showNumberLabels(showNumberLabels);
+            .showNumberLabels(showNumberLabels)
+            .circleSize(circleSize);
 
         currentFrame.plot()
             .selectAll('.stackHolder')
@@ -264,7 +249,37 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
+
+
+        if (xAxisAlign === 'top') {
+            xAxis.xLabel()
+            .attr('transform', `translate(0,${-(currentFrame.rem() * 2)})`);
+            xTotalAxis.xLabel()
+            .attr('transform', `translate(0,${-currentFrame.rem()})`);
+
+            const holder = currentFrame.plot().append('g').classed('plot-holder', true)
+            .attr('transform', `translate(0,${(currentFrame.rem())})`);
+
+            [...currentFrame.plot().node().children].forEach(function(d) {
+                if (d3.select(d).attr('class') !== 'plot-holder') {
+                    holder.append(() => {
+                        return d;
+                    });
+                }
+            });
+
+        }
+
+        if (xAxisAlign === 'bottom') {
+            xAxis.xLabel()
+            .attr('transform', `translate(0,${currentFrame.dimension().height  - currentFrame.rem()})`);
+            xTotalAxis.xLabel()
+            .attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        }
+
         xAxis.xLabel().selectAll('.tick line').remove();
+        xTotalAxis.xLabel().selectAll('.tick line').remove();
+        xTotalAxis.xLabel().classed('axisTotal', true);
         yDotAxis.yLabel().selectAll('.tick').remove();
     });
     // addSVGSavers('figure.saveable');

@@ -8,6 +8,7 @@ export function draw() {
     let yDotScale = d3.scaleOrdinal();
     let seriesNames = [];
     let dotData = [];
+    let circleSize = 1;
     let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
@@ -19,17 +20,13 @@ export function draw() {
 
 
     function groupedSymbols(parent) {
-        if (showNumberLabels) {
-            parent.attr('transform', d => `translate(${(xScale(d.name))},${rem})`);
-        } else {
-            parent.attr('transform', d => `translate(${(xScale(d.name))},${rem})`);
-        }
+            parent.attr('transform', d => `translate(${(xScale(d.name) + (xScale.bandwidth() / 8))},${rem})`);
             parent
                 .selectAll('circle')
                     .data(d => d.circleCats)
                     .enter()
                     .append('circle')
-                    .attr('r', yDotScale.bandwidth() / 2)
+                    .attr('r', (xDotScale.bandwidth() / 2) * circleSize)
                     .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
                     .attr('cx', (d, i) => xDotScale(i % numberOfColumns))
                     .attr('cy', (d, i) => yDotScale(Math.floor(i / numberOfColumns)))
@@ -161,6 +158,11 @@ export function draw() {
     groupedSymbols.dotData = (d) => {
         if (!d) return dotData;
         dotData = d;
+        return groupedSymbols;
+    };
+    groupedSymbols.circleSize = (d) => {
+        if (!d) return circleSize;
+        circleSize = d;
         return groupedSymbols;
     };
 
