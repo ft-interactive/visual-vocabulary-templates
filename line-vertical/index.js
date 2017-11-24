@@ -150,6 +150,7 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
 
         // define other functions to be called
         const myYAxis = gAxis.yDate();// sets up yAxis
+        const myYAxis1 = gAxis.yDate();// sets up yAxis
         const myXAxis = gAxis.xLinear();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = lineChart.drawAnnotations();// sets up annotations
@@ -176,36 +177,57 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
 
         // Set up yAxis for this frame
         myYAxis
-          .domain(yDomain)
-          .range([0, currentFrame.dimension().height])
-          .align(yAxisAlign)
-          .fullYear(true)
-          .interval(interval)
-          .tickSize(currentFrame.dimension().width)
-          .minorAxis(minorAxis)
-          .minorTickSize(currentFrame.rem() * 0.3)
-          .frameName(frameName)
-          .intraday(intraday);
+            .domain(yDomain)
+            .range([0, currentFrame.dimension().height])
+            .align(yAxisAlign)
+            .fullYear(true)
+            .interval(interval)
+            .minorAxis(minorAxis)
+            .minorTickSize(currentFrame.rem() * 0.3)
+            .frameName(frameName)
+            .intraday(intraday);
+
+        currentFrame.plot()
+            .call(myYAxis);
+
+        const yLabelWidth = myYAxis.labelWidth();
+
+        // myYAxis.ylabel().selectAll('.tick').remove();
+
+        myYAxis
+            .tickSize(currentFrame.dimension().width - yLabelWidth);
+
+        myYAxis1
+            .domain(yDomain)
+            .range([0, currentFrame.dimension().height])
+            .align('right')
+            .fullYear(true)
+            .interval(interval)
+            .tickSize(currentFrame.dimension().width - yLabelWidth)
+            .minorAxis(minorAxis)
+            .minorTickSize(currentFrame.rem() * 0.3)
+            .frameName(frameName)
+            .intraday(intraday);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
         currentFrame.plot()
-          .call(myYAxis);
+            .call(myYAxis)
+            .call(myYAxis1);
 
         // return the value in the variable newMargin
-        if (yAxisAlign === 'right') {
-            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
-            // Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({ right: newMargin });
-            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
-        }
-        if (yAxisAlign === 'left') {
-            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
-            // Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({ left: newMargin });
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
-            myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
-        }
+
+        const newMarginR = myYAxis1.labelWidth() + currentFrame.margin().right;
+        currentFrame.margin({ right: newMarginR });
+
+
+        const newMarginL = myYAxis.labelWidth() + currentFrame.margin().left;
+        // Use newMargin redefine the new margin and range of xAxis
+        currentFrame.margin({ left: newMarginL });
+        myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+        myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
+        myYAxis1.yLabel().selectAll('.tick text').attr('dx', (currentFrame.rem() / 2));
+
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
@@ -313,6 +335,7 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
 
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+        // myYAxis1.yLabel().selectAll('.tick line').remove();
 
     });
     // addSVGSavers('figure.saveable');
