@@ -15,56 +15,29 @@ export function draw() {
     let rem = 10;
     let numberOfColumns = 0;
     let divisor = 1;
-    let ranges = [];
     let showNumberLabels = false;// show numbers on end of groupedSymbols
 
 
     function groupedSymbols(parent) {
-            parent.attr('transform', d => `translate(${(xScale(d.name) + (xScale.bandwidth() / 8))},${rem})`);
-            parent
-                .selectAll('circle')
-                    .data(d => d.circleCats)
-                    .enter()
-                    .append('circle')
-                    .attr('r', (xDotScale.bandwidth() / 2) * circleSize)
-                    .attr('id', (d, i) =>`${'circle' + i + '_' + i}`)
-                    .attr('cx', (d, i) => xDotScale(i % numberOfColumns))
-                    .attr('cy', (d, i) => yDotScale(Math.floor(i / numberOfColumns)))
-                    .attr('fill', (d)  => {
-                        let colourIndex = 0;
-                        seriesNames.forEach(function(obj, k) {
-                            if (obj === d.name) {
-                                colourIndex = colourScale.range()[k];
-                            }
-                        });
-                        return colourIndex;
-                    });
-
-        if (showNumberLabels) {
-            // parent
-            //     .append('text')
-            //     .html(d => d.total)
-            //     .attr('class', 'highlight-label')
-            //     .style('text-anchor', 'end')
-            //     .attr('x', d => xScale.bandwidth()/2)
-            //     .attr('y', () => parent.node().getBBox().height + (rem * 2))
-            //     .attr('font-size', rem)
-            //     .style('font-weight', 600)
-            //     .style('text-anchor', 'middle');
-        //     let labelWidth = 0;
-        //     parent.selectAll('.label').each(function calcLabels() {
-        //         labelWidth = Math.max(this.getBBox().width, labelWidth);
-        //     });
-
-        //     parent.selectAll('.label').each(function positionLabels() {
-        //         positionText(this, labelWidth);
-        //     });
-        }
-
-        // function positionText(item, labelWidth) {
-        //     const object = d3.select(item);
-        //     object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
-        // }
+        parent.attr('transform', d => `translate(${(xScale(d.name) + (xScale.bandwidth() / 8))},${rem})`);
+        parent
+            .selectAll('circle')
+            .data(d => d.circleCats)
+            .enter()
+            .append('circle')
+            .attr('r', (xDotScale.bandwidth() / 2) * circleSize)
+            .attr('id', (d, i) => `${'circle' + i + '_' + i}`)
+            .attr('cx', (d, i) => xDotScale(i % numberOfColumns))
+            .attr('cy', (d, i) => yDotScale(Math.floor(i / numberOfColumns)))
+            .attr('fill', (d) => {
+                let colourIndex = 0;
+                seriesNames.forEach((obj, k) => {
+                    if (obj === d.name) {
+                        colourIndex = colourScale.range()[k];
+                    }
+                });
+                return colourIndex;
+            });
     }
 
     groupedSymbols.xScale = (d) => {
