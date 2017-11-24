@@ -25,20 +25,20 @@ export function draw() {
         .y(d => yScale(d.value));
 
         parent.append('path')
-      .attr('stroke', (d) => {
-          if (highlightNames.length > 0 && d.highlightLine === false) {
-              return colourScale.range()[0];
-          }
-          if (highlightNames.length > 0 && d.highlightLine === true) {
-              return colourScale(d.name);
-          } return colourScale(d.name);
-      })
-      .attr('opacity', (d) => {
-          if (highlightNames.length > 0 && d.highlightLine === false) {
-              return 0.5;
-          } return 1;
-      })
-      .attr('d', d => lineData(d.lineData));
+            .attr('stroke', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return colourScale.range()[0];
+                }
+                if (highlightNames.length > 0 && d.highlightLine === true) {
+                    return colourScale(d.name);
+                } return colourScale(d.name);
+            })
+            .attr('opacity', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return 0.5;
+                } return 1;
+            })
+            .attr('d', d => lineData(d.lineData));
 
         if (markers) {
             parent.selectAll('.markers')
@@ -192,7 +192,6 @@ export function drawHighlights() {
             }
             return yScale.range()[0];
         })
-        .attr('fill', '#fff1e0');
     }
 
     highlights.yScale = (d) => {

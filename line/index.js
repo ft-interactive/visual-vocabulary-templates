@@ -265,11 +265,11 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .call(myChart);
 
         currentFrame.plot()
-          .selectAll('.lines')
+          .selectAll('.lines.highlighlines')
           .data(highlightLines)
           .enter()
           .append('g')
-          .attr('class', 'lines')
+          .attr('class', 'lines highlighlines')
           .attr('id', d => d.name)
           .call(myHighLines);
 

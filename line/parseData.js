@@ -25,21 +25,15 @@ export function load(url, options) { // eslint-disable-line
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames, yMin);
 
+        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
+
         // Format the dataset that is used to draw the lines
         let highlightLines = {};
         let plotData = seriesNames.map(d => ({
             name: d,
             lineData: getlines(data, d),
-            highlightLine: getHighlightNames(d),
+            highlightLine: isLineHighlighted(d),
         }));
-
-        function getHighlightNames(el) {
-            let status = false;
-            highlightNames.map((d) => {
-                if (el === d) { status = true; }
-            });
-            return status;
-        }
 
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
