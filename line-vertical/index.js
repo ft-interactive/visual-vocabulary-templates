@@ -32,9 +32,9 @@ const sharedConfig = {
 };
 
 const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the xAxis
+const xMax = 1500;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 5;// Number of tick on the uAxis
+const numTicks = 3;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
@@ -45,7 +45,7 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const invertScale = false;
+const invertScale = true;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
@@ -60,14 +60,14 @@ const frame = {
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 20, bottom: 86, right: 20,
         })
     // .title("Put headline here")
         .height(1000),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 5,
+            top: 100, left: 20, bottom: 104, right: 25,
         })
     // .title("Put headline here")
         .height(1200)
@@ -75,13 +75,13 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 20, bottom: 86, right: 25,
         })
     // .title("Put headline here")
         .height(1000),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+ .margin({ top: 40, left: 15, bottom: 35, right: 20 })
   // .title("Put headline here")
   .width(53.71)// 1 col
   //.width(112.25)// 2 col
@@ -92,18 +92,18 @@ const frame = {
   // .width(74)// markets std print
   .height(150), // std print (Use 58.21mm for markets charts that matter)
 
-    social: gChartframe.socialFrame(sharedConfig)
-        .margin({
-            top: 140, left: 50, bottom: 138, right: 40,
-        })
-    // .title("Put headline here")
-        .width(612)
-        .height(612), // 700 is ideal height for Instagram
+    // social: gChartframe.socialFrame(sharedConfig)
+    //     .margin({
+    //         top: 140, left: 50, bottom: 138, right: 40,
+    //     })
+    // // .title("Put headline here")
+    //     .width(612)
+    //     .height(612), // 700 is ideal height for Instagram
 
-    video: gChartframe.videoFrame(sharedConfig)
-        .margin({
-            left: 207, right: 207, bottom: 210, top: 233,
-        }),
+    // video: gChartframe.videoFrame(sharedConfig)
+    //     .margin({
+    //         left: 207, right: 207, bottom: 210, top: 233,
+    //     }),
     // .title("Put headline here")
 };
 
@@ -216,7 +216,7 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
 
         myXAxis
           .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
-          .range([0, (currentFrame.dimension().width + myYAxis.labelWidth())])
+          .range([0, currentFrame.dimension().width])
           .numTicks(numTicks)
           .tickSize(tickSize)
           .xAxisHighlight(xAxisHighlight)
@@ -268,7 +268,7 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
           .data(highlights)
           .enter()
           .append('g')
-          // .call(myHighlights);
+          .call(myHighlights);
 
         // Set up highlights for this frame
         myAnnotations

@@ -10,6 +10,7 @@ export function draw() {
     let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
+    let invertScale = false;
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
@@ -18,52 +19,52 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-      //   const lineData = d3.line()
-      //   .defined(d => d)
-      //   .curve(interpolation)
-      //   .x(d => xScale(d.date))
-      //   .y(d => yScale(d.value));
+        const lineData = d3.line()
+        .defined(d => d)
+        .curve(interpolation)
+        .y(d => yScale(d.date))
+        .x(d => xScale(d.value));
 
-      //   parent.append('path')
-      // .attr('stroke', (d) => {
-      //     if (highlightNames.length > 0) {
-      //         if (highlightNames.indexOf(d.name) !== -1) {
-      //             return colourScale(d.name);
-      //         }
-      //         d.name = '';
-      //         return colourScale(d.name);
-      //     }
-      //     return colourScale(d.name);
-      // })
-      // .attr('opacity', (d) => {
-      //     if (highlightNames.length > 0) {
-      //         if (highlightNames.indexOf(d.name) !== -1) {
-      //             return 1;
-      //         }
-      //         return 0.5;
-      //     }
-      //     return 1;
-      // })
-      // .attr('d', d => lineData(d.lineData));
+        parent.append('path')
+            .attr('stroke', (d) => {
+              if (highlightNames.length > 0) {
+                  if (highlightNames.indexOf(d.name) !== -1) {
+                      return colourScale(d.name);
+                  }
+                  d.name = '';
+                  return colourScale(d.name);
+              }
+              return colourScale(d.name);
+            })
+      .attr('opacity', (d) => {
+          if (highlightNames.length > 0) {
+              if (highlightNames.indexOf(d.name) !== -1) {
+                  return 1;
+              }
+              return 0.5;
+          }
+          return 1;
+      })
+      .attr('d', d => lineData(d.lineData));
 
-      //   if (markers) {
-      //       parent.selectAll('.markers')
-      //   .data((d) => {
-      //       if (markers) {
-      //           return d.lineData;
-      //       }
+        if (markers) {
+            parent.selectAll('.markers')
+        .data((d) => {
+            if (markers) {
+                return d.lineData;
+            }
 
-      //       return undefined;
-      //   })
-      //   .enter()
-      //   .append('circle')
-      //   .classed('markers', true)
-      //   .attr('id', d => `date: ${d.date} value: ${d.value}`)
-      //   .attr('cx', d => xScale(d.date))
-      //   .attr('cy', d => yScale(d.value))
-      //   .attr('r', rem * 0.25)
-      //   .attr('fill', d => colourScale(d.name));
-      //   }
+            return undefined;
+        })
+        .enter()
+        .append('circle')
+        .classed('markers', true)
+        .attr('id', d => `date: ${d.date} value: ${d.value}`)
+        .attr('cy', d => yScale(d.date))
+        .attr('cx', d => xScale(d.value))
+        .attr('r', rem * 0.25)
+        .attr('fill', d => colourScale(d.name));
+        }
     }
 
     chart.yScale = (d) => {
@@ -148,6 +149,12 @@ export function draw() {
         return chart;
     };
 
+    chart.invertScale = (d) => {
+        if (typeof d === 'undefined') return invertScale;
+        invertScale = d;
+        return chart;
+    };
+
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
         if (highlightNames.length > 0) {
@@ -181,19 +188,20 @@ export function drawHighlights() {
     function highlights(parent) {
         parent.append('rect')
         .attr('class', 'highlights')
-        .attr('x', d => xScale(d.begin))
-        .attr('width', d => xScale(d.end) - xScale(d.begin))
-        .attr('y', () => {
+        .attr('y', d => yScale(d.begin))
+        .attr('height', d => yScale(d.end) - yScale(d.begin))
+        // .attr('width', d => xScale(d.end) - xScale(d.begin))
+        .attr('x', () => {
             if (invertScale) {
-                return yScale.range()[0];
+                return xScale.range()[1];
             }
-            return yScale.range()[1];
+            return xScale.range()[0];
         })
-        .attr('height', () => {
+        .attr('width', () => {
             if (invertScale) {
-                return yScale.range()[1];
+                return xScale.range()[0];
             }
-            return yScale.range()[0];
+            return xScale.range()[1];
         })
         .attr('fill', '#fff1e0');
     }
@@ -233,16 +241,16 @@ export function drawAnnotations() {
     function annotations(parent) {
         parent.append('line')
       .attr('class', 'annotation')
-      .attr('x1', d => xScale(d.date))
-      .attr('x2', d => xScale(d.date))
-      .attr('y1', yScale.range()[0])
-      .attr('y2', yScale.range()[1] - 5);
+      .attr('y1', d => yScale(d.date))
+      .attr('y2', d => yScale(d.date))
+      .attr('x1', xScale.range()[1])
+      .attr('x2', xScale.range()[0] - 5);
 
         parent.append('text')
       .attr('class', 'annotation')
-      .attr('text-anchor', 'middle')
-      .attr('x', d => xScale(d.date))
-      .attr('y', yScale.range()[1] - (rem / 2))
+      // .attr('text-anchor', 'middle')
+      .attr('y', d => yScale(d.date) - (rem / 3))
+      .attr('x', xScale.range()[0])
       .text(d => d.annotate);
     }
 
