@@ -23,7 +23,7 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const sort = 'decending';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
-const numberOfColumns = 5; // number of rows in each group
+const numberOfColumns = 4; // number of rows in each group
 const divisor = 0.25;// data divisor to adjust number and value of circles
 const showNumberLabels = true;// show numbers on end of bars
 const legendAlign = 'hori'; // hori or vert, alignment of the legend
@@ -121,8 +121,9 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         const currentFrame = frame[frameName];
         // define other functions to be called
         console.log(plotData);
-        const xAxis = gAxis.xOrdinal();// sets up yAxis
-        const xDotAxis = gAxis.xOrdinal();// sets up yAxis
+        const xAxis = gAxis.xOrdinal();// sets up xAxis
+        const xDotAxis = gAxis.xOrdinal();// sets up xAxis
+        const xTotalAxis = gAxis.xOrdinal();// sets up xAxis
         const yDotAxis = gAxis.yOrdinal();
         const myChart = groupedSymbolChart.draw();
         const myLegend = gLegend.legend();
@@ -139,6 +140,12 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .rangeRound([0, tickSize])
             .frameName(frameName);
 
+        xTotalAxis
+            .align(xAxisAlign)
+            .domain(plotData.map(d => d.total))
+            .rangeRound([0, tickSize])
+            .frameName(frameName);
+
         yDotAxis
             .align(yAxisAlign)
             .domain(rowIndex)
@@ -148,7 +155,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
-        
+
 
         // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
         currentFrame.plot()
@@ -171,10 +178,14 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .call(currentFrame);
         // Use new widtth of frame to set the range of the x-axis and any other parameters
         xAxis
-            .rangeRound([0,currentFrame.dimension().width],0.5)
+            .rangeRound([0,currentFrame.dimension().width])
+
+        xTotalAxis
+            .rangeRound([0,currentFrame.dimension().width])
 
         // Call the axis and move it if needed
         currentFrame.plot()
+            .call(xTotalAxis)
             .call(xAxis);
 
         // if (xAxisAlign === 'top') {
@@ -185,17 +196,19 @@ parseData.load(dataFile, { sort, sortOn, divisor })
         if (xAxisAlign === 'bottom') {
             xAxis.xLabel()
             .attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            xTotalAxis.xLabel()
+            .attr('transform', `translate(0,${currentFrame.dimension().height + (currentFrame.rem() * 1.5)})`);
         }
-        if (xAxisAlign === 'top') {
-            xAxis.xLabel()
-            .attr('transform', `translate(0,${myXAxis0.tickSize()})`);
-        }
+        // if (xAxisAlign === 'top') {
+        //     xAxis.xLabel()
+        //     .attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+        // }
 
         xDotAxis
             .domain(d3.range(numberOfColumns))
             .rangeRound([0,xAxis.bandwidth()])
 
-       
+
 
 
         myChart
@@ -209,6 +222,7 @@ parseData.load(dataFile, { sort, sortOn, divisor })
             .yDotScale(yDotAxis.scale())
             .xScale(xAxis.scale())
             .xDotScale(xDotAxis.scale())
+            .xTotalScale(xTotalAxis.scale())
             .rem(currentFrame.rem())
             .showNumberLabels(showNumberLabels);
 

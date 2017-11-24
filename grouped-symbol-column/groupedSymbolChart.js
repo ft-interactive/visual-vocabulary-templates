@@ -4,6 +4,7 @@ import * as gChartcolour from 'g-chartcolour';
 export function draw() {
     let xScale = d3.scaleBand();
     let xDotScale = d3.scaleBand();
+    let xTotalScale = d3.scaleBand();
     let yDotScale = d3.scaleOrdinal();
     let seriesNames = [];
     let dotData = [];
@@ -19,9 +20,9 @@ export function draw() {
 
     function groupedSymbols(parent) {
         if (showNumberLabels) {
-            parent.attr('transform', d => `translate(${(xScale(d.name) + rem / 1.5)},${rem})`);
+            parent.attr('transform', d => `translate(${(xScale(d.name))},${rem})`);
         } else {
-            parent.attr('transform', d => `translate(${(xScale(d.name) + rem / 4)},${rem})`);
+            parent.attr('transform', d => `translate(${(xScale(d.name))},${rem})`);
         }
             parent
                 .selectAll('circle')
@@ -43,32 +44,30 @@ export function draw() {
                     });
 
         if (showNumberLabels) {
-            parent
-                .append('text')
-                .html(d => d.total)
-                .attr('class', 'highlight-label')
-                .style('text-anchor', 'end')
-                .attr('x', d => xScale(d.name))
-                .attr('y', 0)
-                .attr('dx', d => (xDotScale.bandwidth() / 2) + (rem / 4))
-                .attr('dy', (d) =>  (rem / 2))
-                .attr('font-size', rem)
-                .style('font-weight', 600)
-                .style('text-anchor', 'middle');
-            let labelWidth = 0;
-            parent.selectAll('.label').each(function calcLabels() {
-                labelWidth = Math.max(this.getBBox().width, labelWidth);
-            });
+            // parent
+            //     .append('text')
+            //     .html(d => d.total)
+            //     .attr('class', 'highlight-label')
+            //     .style('text-anchor', 'end')
+            //     .attr('x', d => xScale.bandwidth()/2)
+            //     .attr('y', () => parent.node().getBBox().height + (rem * 2))
+            //     .attr('font-size', rem)
+            //     .style('font-weight', 600)
+            //     .style('text-anchor', 'middle');
+        //     let labelWidth = 0;
+        //     parent.selectAll('.label').each(function calcLabels() {
+        //         labelWidth = Math.max(this.getBBox().width, labelWidth);
+        //     });
 
-            parent.selectAll('.label').each(function positionLabels() {
-                positionText(this, labelWidth);
-            });
+        //     parent.selectAll('.label').each(function positionLabels() {
+        //         positionText(this, labelWidth);
+        //     });
         }
 
-        function positionText(item, labelWidth) {
-            const object = d3.select(item);
-            object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
-        }
+        // function positionText(item, labelWidth) {
+        //     const object = d3.select(item);
+        //     object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
+        // }
     }
 
     groupedSymbols.xScale = (d) => {
@@ -94,6 +93,19 @@ export function draw() {
     };
     groupedSymbols.xDotRange = (d) => {
         xDotScale.range(d);
+        return groupedSymbols;
+    };
+    groupedSymbols.xTotalScale = (d) => {
+        if (!d) return xTotalScale;
+        xTotalScale = d;
+        return groupedSymbols;
+    };
+    groupedSymbols.xTotalDomain = (d) => {
+        xTotalScale.domain(d);
+        return groupedSymbols;
+    };
+    groupedSymbols.xTotalRange = (d) => {
+        xTotalScale.range(d);
         return groupedSymbols;
     };
     groupedSymbols.yDotScale = (d) => {
