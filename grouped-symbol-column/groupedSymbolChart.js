@@ -42,35 +42,33 @@ export function draw() {
                         return colourIndex;
                     });
 
-        // if (showNumberLabels) {
-        //     parent
-        //         .append('text')
-        //         .html(d => d.total)
-        //         .attr('class', 'highlight-label')
-        //         .style('text-anchor', 'end')
-        //         .attr('y', d => (yScale.bandwidth() / 2) + (rem / 4))
-        //         .attr('x', 0)
-        //         .attr('dx',  (-rem / 4))
-        //         .attr('dy', (d) =>  (rem / 2))
-        //         .attr('font-size', rem)
-        //         .style('font-weight', 600);
+        if (showNumberLabels) {
+            parent
+                .append('text')
+                .html(d => d.total)
+                .attr('class', 'highlight-label')
+                .style('text-anchor', 'end')
+                .attr('x', d => xScale(d.name))
+                .attr('y', 0)
+                .attr('dx', d => (xDotScale.bandwidth() / 2) + (rem / 4))
+                .attr('dy', (d) =>  (rem / 2))
+                .attr('font-size', rem)
+                .style('font-weight', 600)
+                .style('text-anchor', 'middle');
+            let labelWidth = 0;
+            parent.selectAll('.label').each(function calcLabels() {
+                labelWidth = Math.max(this.getBBox().width, labelWidth);
+            });
 
-        //     let labelWidth = 0;
-        //     parent.selectAll('.label').each(function calcLabels() {
-        //         labelWidth = Math.max(this.getBBox().width, labelWidth);
-        //         // console.log(labelWidth);
-        //         // positionText(this,labelWidth)
-        //     });
+            parent.selectAll('.label').each(function positionLabels() {
+                positionText(this, labelWidth);
+            });
+        }
 
-        //     parent.selectAll('.label').each(function positionLabels() {
-        //         positionText(this, labelWidth);
-        //     });
-        // }
-
-        // function positionText(item, labelWidth) {
-        //     const object = d3.select(item);
-        //     object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
-        // }
+        function positionText(item, labelWidth) {
+            const object = d3.select(item);
+            object.attr('transform', () => `translate(${labelWidth + (rem / 2)},0)`);
+        }
     }
 
     groupedSymbols.xScale = (d) => {
