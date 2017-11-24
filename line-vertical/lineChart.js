@@ -18,52 +18,52 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-        const lineData = d3.line()
-        .defined(d => d)
-        .curve(interpolation)
-        .x(d => xScale(d.date))
-        .y(d => yScale(d.value));
+      //   const lineData = d3.line()
+      //   .defined(d => d)
+      //   .curve(interpolation)
+      //   .x(d => xScale(d.date))
+      //   .y(d => yScale(d.value));
 
-        parent.append('path')
-      .attr('stroke', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return colourScale(d.name);
-              }
-              d.name = '';
-              return colourScale(d.name);
-          }
-          return colourScale(d.name);
-      })
-      .attr('opacity', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return 1;
-              }
-              return 0.5;
-          }
-          return 1;
-      })
-      .attr('d', d => lineData(d.lineData));
+      //   parent.append('path')
+      // .attr('stroke', (d) => {
+      //     if (highlightNames.length > 0) {
+      //         if (highlightNames.indexOf(d.name) !== -1) {
+      //             return colourScale(d.name);
+      //         }
+      //         d.name = '';
+      //         return colourScale(d.name);
+      //     }
+      //     return colourScale(d.name);
+      // })
+      // .attr('opacity', (d) => {
+      //     if (highlightNames.length > 0) {
+      //         if (highlightNames.indexOf(d.name) !== -1) {
+      //             return 1;
+      //         }
+      //         return 0.5;
+      //     }
+      //     return 1;
+      // })
+      // .attr('d', d => lineData(d.lineData));
 
-        if (markers) {
-            parent.selectAll('.markers')
-        .data((d) => {
-            if (markers) {
-                return d.lineData;
-            }
+      //   if (markers) {
+      //       parent.selectAll('.markers')
+      //   .data((d) => {
+      //       if (markers) {
+      //           return d.lineData;
+      //       }
 
-            return undefined;
-        })
-        .enter()
-        .append('circle')
-        .classed('markers', true)
-        .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        .attr('cx', d => xScale(d.date))
-        .attr('cy', d => yScale(d.value))
-        .attr('r', rem * 0.25)
-        .attr('fill', d => colourScale(d.name));
-        }
+      //       return undefined;
+      //   })
+      //   .enter()
+      //   .append('circle')
+      //   .classed('markers', true)
+      //   .attr('id', d => `date: ${d.date} value: ${d.value}`)
+      //   .attr('cx', d => xScale(d.date))
+      //   .attr('cy', d => yScale(d.value))
+      //   .attr('r', rem * 0.25)
+      //   .attr('fill', d => colourScale(d.name));
+      //   }
     }
 
     chart.yScale = (d) => {
