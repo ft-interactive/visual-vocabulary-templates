@@ -42,10 +42,10 @@ const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
-const minorAxis = false;// turns on or off the minor axis
+const minorAxis = true;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const invertScale = true;
+const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
@@ -81,16 +81,16 @@ const frame = {
         .height(1000),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 15, bottom: 35, right: 20 })
-  // .title("Put headline here")
-  .width(53.71)// 1 col
-  //.width(112.25)// 2 col
-  // .width(170.8)// 3 col
-  // .width(229.34)// 4 col
-  // .width(287.88)// 5 col
-  // .width(346.43)// 6 col
-  // .width(74)// markets std print
-  .height(150), // std print (Use 58.21mm for markets charts that matter)
+        .margin({ top: 40, left: 15, bottom: 35, right: 20 })
+        // .title("Put headline here")
+        // .width(53.71)// 1 col
+        .width(112.25)// 2 col
+        // .width(170.8)// 3 col
+        // .width(229.34)// 4 col
+        // .width(287.88)// 5 col
+        // .width(346.43)// 6 col
+        // .width(74)// markets std print
+        .height(200), // std print (Use 58.21mm for markets charts that matter)
 
     // social: gChartframe.socialFrame(sharedConfig)
     //     .margin({
@@ -181,7 +181,7 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
           .align(yAxisAlign)
           .fullYear(true)
           .interval(interval)
-          .tickSize(currentFrame.rem() * 0.75)
+          .tickSize(currentFrame.dimension().width)
           .minorAxis(minorAxis)
           .minorTickSize(currentFrame.rem() * 0.3)
           .frameName(frameName)
@@ -203,7 +203,8 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
             const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ left: newMargin });
-            myYAxis.yLabel().attr('transform', `translate(0,0)`);
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
         }
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
@@ -313,7 +314,6 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
-        myXAxis.xLabel().selectAll('.tick line').filter(d => d === 0).remove();
     });
     // addSVGSavers('figure.saveable');
     });
