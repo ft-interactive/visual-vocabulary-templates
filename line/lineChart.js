@@ -13,7 +13,7 @@ export function draw() {
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
-    const colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
 
@@ -25,26 +25,20 @@ export function draw() {
         .y(d => yScale(d.value));
 
         parent.append('path')
-      .attr('stroke', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return colourScale(d.name);
-              }
-              d.name = '';
-              return colourScale(d.name);
-          }
-          return colourScale(d.name);
-      })
-      .attr('opacity', (d) => {
-          if (highlightNames.length > 0) {
-              if (highlightNames.indexOf(d.name) !== -1) {
-                  return 1;
-              }
-              return 0.5;
-          }
-          return 1;
-      })
-      .attr('d', d => lineData(d.lineData));
+            .attr('stroke', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return colourScale.range()[0];
+                }
+                if (highlightNames.length > 0 && d.highlightLine === true) {
+                    return colourScale(d.name);
+                } return colourScale(d.name);
+            })
+            .attr('opacity', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return 0.5;
+                } return 1;
+            })
+            .attr('d', d => lineData(d.lineData));
 
         if (markers) {
             parent.selectAll('.markers')
@@ -91,6 +85,7 @@ export function draw() {
     };
 
     chart.highlightNames = (d) => {
+        if (!d) return highlightNames;
         highlightNames = d;
         return chart;
     };
@@ -157,6 +152,8 @@ export function draw() {
                 colourScale.range(gChartcolour.mutedFirstLineWeb);
             } else if (d === 'print') {
                 colourScale.range(gChartcolour.mutedFirstLinePrint);
+            } else if (d && d.name && d.name === 'scale') {
+                colourScale = d;
             }
             return chart;
         }
@@ -195,7 +192,6 @@ export function drawHighlights() {
             }
             return yScale.range()[0];
         })
-        .attr('fill', '#fff1e0');
     }
 
     highlights.yScale = (d) => {
