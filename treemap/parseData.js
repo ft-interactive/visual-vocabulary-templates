@@ -14,12 +14,10 @@ export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
         // make sure all the dates in the date column are a date object
-        console.log('data',data)
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         let  seriesNames = data.map(d => d.category);
         seriesNames = seriesNames.filter((el, i) => seriesNames.indexOf(el) === i);
-        console.log('seriesNames', seriesNames)
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         let plotData = [{'name': 'treemap', 'children': buildTree()}]
@@ -39,17 +37,6 @@ export function load(url, options) { // eslint-disable-line
             return children
 
         }
-
-        console.log('plotData', plotData)
-
-
-        // Format the dataset that is used to draw the lines
-        // const plotData = seriesNames.map(d => ({
-        //     name: d,
-        // }));
-
-
-
 
         return {
             seriesNames,
