@@ -13,50 +13,27 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { yMin, joinPoints, highlightNames, dateFormat } = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
-        const parseDate = d3.timeParse(dateFormat);
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames, yMin);
+
+
 
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map(d => ({
             name: d,
         }));
 
-        // Sort the data so that the labeled items are drawn on top
-        const dataSorter = function dataSorter(a, b) {
-            if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-                return 1;
-            } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-                return 0;
-            }
-            return -1;
-        };
 
-         // Filter data for annotations
-        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
-        // Format the data that is used to draw highlight tonal bands
-        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-        const highlights = [];
-
-        boundaries.forEach((d, i) => {
-            if (d.highlight === 'begin') {
-                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-            }
-        });
 
         return {
             seriesNames,
             plotData,
             data,
-            valueExtent,
-            highlights,
         };
     });
 }

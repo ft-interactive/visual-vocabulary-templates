@@ -9,7 +9,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as treemap from './treemap.js';
 
-const dataFile = 'data.csv';
+const dataFile = 'treeData.csv';
 
 
 const sharedConfig = {
@@ -80,13 +80,12 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load(dataFile, {yMin})
-.then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
+parseData.load(dataFile)
+.then(({ seriesNames, data, plotData}) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
-        const myYAxis = gAxis.yLinear();// sets up yAxis
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
