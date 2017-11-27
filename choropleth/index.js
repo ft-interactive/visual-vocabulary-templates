@@ -68,8 +68,8 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-        .height(68)
-        .width(55)
+        .height(69.85) //(Use 58.21mm for markets charts that matter)
+        .width(53.71) 
         .extend('scale', 650),
 
     social: gChartframe.socialFrame(sharedConfig)

@@ -32,12 +32,15 @@ export function draw() {
         yScale = d;
         return chart;
     };
+
     chart.yDomain = (d) => {
+        if (typeof d === 'undefined') return yScale.domain();
         yScale.domain(d);
         return chart;
     };
 
     chart.yRange = (d) => {
+        if (typeof d === 'undefined') return yScale.range();
         yScale.range(d);
         return chart;
     };
@@ -49,19 +52,25 @@ export function draw() {
     };
 
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
+
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
         return chart;
     };
+
     chart.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return chart;
     };
+
     chart.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.range();
         xScale.rangeRound(d);
         return chart;
     };
@@ -71,31 +80,39 @@ export function draw() {
         window.plotDim = d;
         return chart;
     };
+
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
         return chart;
     };
+
     chart.includeMarker = (d) => {
+        if (typeof d === 'undefined') return includeMarker;
         includeMarker = d;
         return chart;
     };
+
     chart.markers = (d) => {
+        if (typeof d === 'undefined') return markers;
         markers = d;
         return chart;
     };
+
     chart.interpolation = (d) => {
         if (!d) return interpolation;
         interpolation = d;
         return chart;
     };
+
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.linePrint);
+            colourScale.range(gChartcolour.barPrint);
         }
         return chart;
     };

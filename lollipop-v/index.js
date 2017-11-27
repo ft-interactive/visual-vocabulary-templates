@@ -41,6 +41,7 @@ let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
 const numTicksy = 8;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the y axis
 const xAxisAlign = 'bottom';
+const logScale  = false
 
 // const legendAlign = 'vert';// hori or vert, alignment of the legend
 
@@ -70,14 +71,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-    // .width(53.71)// 1 col
-    .width(112.25)// 2 col
+    .width(53.71)// 1 col
+    //.width(112.25)// 2 col
     // .width(170.8)// 3 col
     // .width(229.34)// 4 col
     // .width(287.88)// 5 col
     // .width(346.43)// 6 col
     // .width(74)// markets std print
-    .height(58.21), // markets std print
+    .height(69.85), // std print (Use 58.21mm for markets charts that matter)
 
     social: gChartframe.socialFrame(sharedConfig)
    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -107,8 +108,6 @@ parseData.load(dataURL)
     // define chart
     const myChart = lollipopChart.draw()
       .seriesNames(seriesNames)
-      .xDomain(data.map(d => d.name))
-      .yDomain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
       .yAxisAlign(yAxisAlign);
 
     // draw, for each frame
@@ -134,7 +133,10 @@ parseData.load(dataURL)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
           .align(yAxisAlign)
-          .frameName(frameName);
+          .frameName(frameName)
+          .logScale(logScale);
+
+        myChart.yScale(myYAxis.scale())
 
         currentFrame.plot()
           .call(myYAxis);

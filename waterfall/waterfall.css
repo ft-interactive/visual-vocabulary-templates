@@ -1,0 +1,46 @@
+/* .tick text on yAxis*/
+.ft-webgraphic-s .column-label,
+.ft-webgraphic-m .column-label,
+.ft-webgraphic-m-default .column-label,
+.ft-webgraphic-l .column-label {
+    fill: #66605C;
+}
+.ft-printgraphic .column-label {
+}
+.ft-socialgraphic .column-label {
+    opacity: 0.7;
+    fill: #FFFFFF;
+    font-size: 28px;
+}
+.ft-videographic ..column-label {
+    opacity: 0.7;
+    fill: #FFFFFF;
+    font-size: 48px;
+}
+
+
+.ft-webgraphic-s .whisker line,
+.ft-webgraphic-m .whisker line,
+.ft-webgraphic-m-default .whisker line,
+.ft-webgraphic-l .whisker line {
+	stroke-width: 1;
+	stroke: #000000;
+}
+
+.ft-printgraphic .whisker line {
+ 	stroke-width: 0.6;
+	stroke: #000000;
+}
+
+.ft-socialgraphic .whisker line{
+ 	stroke-width: 2;
+	stroke: #FFFFFF;
+	stroke-opacity: 0.5;
+}
+
+.ft-videographic .whisker line {
+ 	stroke-width: 4;
+	stroke: #FFFFFF;
+	stroke-opacity: 0.5
+}
+

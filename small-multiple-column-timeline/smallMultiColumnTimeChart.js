@@ -48,6 +48,7 @@ export function draw() {
     };
 
     chart.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return chart;
     };
@@ -78,12 +79,13 @@ export function draw() {
     };
 
     chart.colourPalette = (d) => {
+        if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.linePrint);
+            colourScale.range(gChartcolour.barPrint);
         }
         return chart;
     };

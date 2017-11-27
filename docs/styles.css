@@ -11,6 +11,14 @@
     padding: 8px 8px 5px;
 }
 
+figure {
+    width: fit-content;
+}
+
+.button-holder {
+    margin-bottom: 50px;
+}
+
 svg {
     font-size: 0;
     fill: transparent;
@@ -341,7 +349,7 @@ svg {
 .ft-webgraphic-m .highlights,
 .ft-webgraphic-m-default .highlights,
 .ft-webgraphic-l .highlights {
-    fill: #F2DFCE;
+    fill: #FCE6D6;
 }
 
 .ft-printgraphic .highlights{
@@ -430,4 +438,20 @@ svg text{
 
 ul {
   line-height: 24px;
+}
+
+.button {
+    border-radius: 10px;
+    background-color: #00757F;
+    color: #fff;
+    font-family: Metric;
+    font-weight: 600;
+    font-size: 20px;
+    height: 25px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border-width: 0px;
+    padding-top: 3px;
+    cursor: pointer;
 }

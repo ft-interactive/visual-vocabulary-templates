@@ -74,14 +74,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
-        // .width(53.71)// 1 col
-        .width(112.25)// 2 col
+        .width(53.71)// 1 col
+        //.width(112.25)// 2 col
         // .width(170.8)// 3 col
         // .width(229.34)// 4 col
         // .width(287.88)// 5 col
         // .width(346.43)// 6 col
         // .width(74)// markets std print
-        .height(58.21), // markets std print
+        .height(69.85), // std print (Use 58.21mm for markets charts that matter)
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
@@ -253,5 +253,4 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
-    // addSVGSavers('figure.saveable');
 });

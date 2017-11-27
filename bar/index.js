@@ -15,12 +15,13 @@ const sharedConfig = {
 };
 
 const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the xAxis
+const xMax = 1000;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
+const logScale = false;
 const sort = '';// specify 'ascending', 'descending'
 const sortOn = 0;// specify column number to sort on (ignore name column)
 const showNumberLabels = false;// show numbers on end of bars
@@ -55,14 +56,14 @@ const frame = {
    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
    // .title("Put headline here")
    /* Print column widths */
-    // .width(53.71)// 1 col
-    .width(112.25)// 2 col
+   .width(53.71)// 1 col
+    // .width(112.25)// 2 col
     // .width(170.8)// 3 col
     // .width(229.34)// 4 col
     // .width(287.88)// 5 col
     // .width(346.43)// 6 col
     // .width(74)// markets std print
-    .height(58.21), // markets std print
+    .height(69.85), // std print (Use 58.21mm for markets charts that matter)
 
 
     social: gChartframe.socialFrame(sharedConfig)
@@ -118,7 +119,8 @@ parseData.load(dataFile, { sort, sortOn })
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
-            .frameName(frameName);
+            .frameName(frameName)
+            .logScale(logScale);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
@@ -162,7 +164,8 @@ parseData.load(dataFile, { sort, sortOn })
             .yScale1(yAxis1.scale())
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
-            .showNumberLabels(showNumberLabels);
+            .showNumberLabels(showNumberLabels)
+            .logScale(logScale);
 
         currentFrame.plot()
             .selectAll('.barHolder')
