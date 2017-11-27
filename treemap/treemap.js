@@ -16,7 +16,6 @@ export function draw() {
         let treemap = d3.treemap().size([width, height]).paddingInner(1);
 
         let newData = parent.data()[0]
-        console.log(newData)
 
         var root = d3.hierarchy(newData)
             .sum(function (d) {
@@ -25,11 +24,17 @@ export function draw() {
             .sort(function (a, b) {
                 return b.height - a.height || b.value - a.value;
             });
-        console.log(root);
+        console.log('root', root);
  
         treemap(root);
 
-        var cell = parent.selectAll('g')
+        var map = parent.append('g')
+            .attr('id', 'map')
+            .attr('width', width )
+            .attr('height', height)
+
+
+        var cell = map.selectAll('g')
             .data(root.leaves())
             .enter()
             .append('g');
@@ -39,7 +44,7 @@ export function draw() {
         .attr('width', (d) => {return d.x1 - d.x0;})
         .attr('height', (d) => {return d.y1 - d.y0;})
         .attr('stroke', '#FFFFFF')
-        .attr('fill', '#000000');
+        .attr('fill', (d) => {return colourScale(d.data.category)});
 
         
 
