@@ -24,7 +24,6 @@ export function draw() {
             .sort(function (a, b) {
                 return b.height - a.height || b.value - a.value;
             });
-        console.log('root', root);
  
         treemap(root);
 
@@ -33,18 +32,24 @@ export function draw() {
             .attr('width', width )
             .attr('height', height)
 
-
         var cell = map.selectAll('g')
             .data(root.leaves())
             .enter()
             .append('g');
 
-        cell.append('rect').attr('x', function (d) {return d.x0;})
+        cell.append('rect')
+        .attr('class', 'bars')
+        .attr('x', function (d) {return d.x0;})
         .attr('y', d =>  d.y0)
         .attr('width', (d) => {return d.x1 - d.x0;})
         .attr('height', (d) => {return d.y1 - d.y0;})
-        .attr('stroke', '#FFFFFF')
         .attr('fill', (d) => {return colourScale(d.data.category)});
+
+        cell.append('text')
+        .attr('dx',rem)
+        .attr('dy',rem)
+        .attr('class', 'highlight-label')
+        .text((d) => {return d.data.name + ' ' + d.value})
 
         
 
