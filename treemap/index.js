@@ -20,7 +20,6 @@ const sharedConfig = {
 
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
-
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
 
@@ -28,24 +27,24 @@ const legendType = 'rect';// rect, line or circ, geometry of legend marker
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+ .margin({ top: 100, left: 0, bottom: 82, right: 5 })
  // .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+ .margin({ top: 100, left: 0, bottom: 86, right: 5 })
  // .title("Put headline here")
  .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 104, right: 5 })
+ .margin({ top: 100, left: 0, bottom: 104, right: 5 })
  // .title("Put headline here")
  .height(700)
  .fullYear(true),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
- .margin({ top: 100, left: 20, bottom: 86, right: 5 })
+ .margin({ top: 100, left: 0, bottom: 86, right: 5 })
  // .title("Put headline here")
  .height(500),
 
@@ -113,6 +112,28 @@ parseData.load(dataFile)
           .append('g')
           .attr('class', 'treemap')
           .call(myTreemap)
+
+        myLegend
+            .seriesNames(seriesNames)
+            .geometry(legendType)
+            .frameName(frameName)
+            .rem(currentFrame.rem())
+            .alignment(legendAlign)
+            .colourPalette((frameName));
+
+        currentFrame.plot()
+            .append('g')
+            .attr('id', 'legend')
+                .selectAll('.legend')
+                .data(seriesNames)
+                .enter()
+                .append('g')
+                .classed('legend', true)
+            .call(myLegend);
+
+        const legendSelection = currentFrame.plot().select('#legend');
+        const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
+        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
         
         
