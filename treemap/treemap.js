@@ -17,13 +17,10 @@ export function draw() {
 
         let newData = parent.data()[0]
 
-        var root = d3.hierarchy(newData)
+        var root = d3.hierarchy(newData, (d) => d.children)
             .sum(function (d) {
                 return d.value;
             })
-            .sort(function (a, b) {
-                return b.category - a.category || b.value - a.value;
-            });
  
         treemap(root);
 
