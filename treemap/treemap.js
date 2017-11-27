@@ -10,9 +10,37 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
-        console.log('plotDim', plotDim)
         const width = plotDim.width;
         const height = plotDim.height;
+
+        let treemap = d3.treemap().size([width, height]).paddingInner(1);
+
+        let newData = parent.data()
+        console.log(newData)
+
+        var root = d3.hierarchy(parent.data)
+            .sum(function (d) {
+                return d.value;
+            })
+            .sort(function (a, b) {
+                return b.height - a.height || b.value - a.value;
+            });
+        console.log(root);
+ 
+        treemap(root);
+
+        var cell = parent.selectAll('g')
+            .data(root.leaves())
+            .enter()
+            .append('g');
+
+        cell.append('rect').attr('x', function (d) {return d.x0;})
+        .attr('y', d =>  d.y0)
+        .attr('width', (d) => {return d.x1 - d.x0;})
+        .attr('height', (d) => {return d.y1 - d.y0;})
+        .attr('stroke', '#FFFFFF')
+        .attr('fill', '#000000');
+
         
 
     }
