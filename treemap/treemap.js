@@ -21,6 +21,10 @@ export function draw() {
             .sum(function (d) {
                 return d.value;
             })
+            // .sort(function (a, b) {
+            //     console.log (a,b)
+            //     return b.value - a.value || b.value - a.value;
+            // });
  
         treemap(root);
 
