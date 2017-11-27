@@ -15,10 +15,10 @@ export function draw() {
 
         let treemap = d3.treemap().size([width, height]).paddingInner(1);
 
-        let newData = parent.data()
+        let newData = parent.data()[0]
         console.log(newData)
 
-        var root = d3.hierarchy(parent.data)
+        var root = d3.hierarchy(newData)
             .sum(function (d) {
                 return d.value;
             })
