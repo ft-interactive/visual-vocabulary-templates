@@ -34,6 +34,7 @@ const sharedConfig = {
 /* eslint-disable */
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 9;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -149,7 +150,8 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
             .align(myChart.yAxisAlign())
-            .frameName(frameName);
+            .frameName(frameName)
+            .divisor(divisor);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
