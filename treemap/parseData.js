@@ -22,7 +22,7 @@ export function load(url, options) { // eslint-disable-line
         console.log('seriesNames', seriesNames)
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        let plotData = {'name': 'treemap', 'children': buildTree()}
+        let plotData = [{'name': 'treemap', 'children': buildTree()}]
 
         function buildTree() {
             let treeData = seriesNames.map(d => ({

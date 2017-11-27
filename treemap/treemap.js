@@ -3,8 +3,6 @@ import gChartcolour from 'g-chartcolour';
 
 
 export function draw() {
-    let yScale = d3.scaleLinear();
-    let xScale = d3.scaleTime();
     let rem = 10;
     let seriesNames = [];
     const colourScale = d3.scaleOrdinal()
@@ -12,22 +10,15 @@ export function draw() {
     .domain(seriesNames);
 
     function chart(parent) {
+        console.log('plotDim', plotDim)
+        const width = plotDim.width;
+        const height = plotDim.height;
         
 
     }
 
-    chart.yScale = (d) => {
-        if (!d) return yScale;
-        yScale = d;
-        return chart;
-    };
     chart.seriesNames = (d) => {
         seriesNames = d;
-        return chart;
-    };
-    chart.xScale = (d) => {
-        if (!d) return xScale;
-        xScale = d;
         return chart;
     };
     chart.plotDim = (d) => {
