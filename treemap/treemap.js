@@ -22,7 +22,7 @@ export function draw() {
                 return d.value;
             })
             .sort(function (a, b) {
-                return b.height - a.height || b.value - a.value;
+                return b.category - a.category || b.value - a.value;
             });
  
         treemap(root);
@@ -39,21 +39,22 @@ export function draw() {
 
         cell.append('rect')
         .attr('class', 'bars')
-        .attr('x', function (d) {return d.x0;})
+        .attr('x', (d) => {return d.x0;})
         .attr('y', d =>  d.y0)
         .attr('width', (d) => {return d.x1 - d.x0;})
         .attr('height', (d) => {return d.y1 - d.y0;})
         .attr('fill', (d) => {return colourScale(d.data.category)});
 
         cell.append('text')
-        .attr('dx',rem)
-        .attr('dy',rem)
+        .attr('dx',(d) => {return d.x0 +(rem/2);})
+        .attr('dy',(d) => {return d.y0 +rem;})
+        .attr('font-size', rem)
         .attr('class', 'highlight-label')
-        .text((d) => {return d.data.name + ' ' + d.value})
-
-        
-
-    }
+        .text((d) => {
+            if (d.data.highlight) {
+                return d.data.name + ' ' + d.value}
+            })
+        }
 
     chart.seriesNames = (d) => {
         seriesNames = d;
