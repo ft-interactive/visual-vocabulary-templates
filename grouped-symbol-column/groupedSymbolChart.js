@@ -26,29 +26,23 @@ export function draw() {
             .enter()
             .append('circle')
             .attr('r', (xDotScale.bandwidth() / 2) * circleSize)
-            .attr('id', (d, i) => `${`circle${i}_${i}`}`)
             .attr('cx', (d, i) => xDotScale(i % numberOfColumns))
             .attr('cy', (d, i) => yDotScale(Math.floor(i / numberOfColumns)))
-            .attr('fill', (d) => {
-                let colourIndex = 0;
-                seriesNames.forEach((obj, k) => {
-                    if (obj === d.name) {
-                        colourIndex = colourScale.range()[k];
-                    }
-                });
-                return colourIndex;
-            });
+            .attr('fill', d => colourScale.range()[seriesNames.lastIndexOf(d.name)]);
     }
 
     groupedSymbols.xScale = (d) => {
+        if (!d) return xScale;
         xScale = d;
         return groupedSymbols;
     };
     groupedSymbols.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return groupedSymbols;
     };
     groupedSymbols.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.rangeRound();
         xScale.rangeRound(d);
         return groupedSymbols;
     };
@@ -58,10 +52,12 @@ export function draw() {
         return groupedSymbols;
     };
     groupedSymbols.xDotDomain = (d) => {
+        if (typeof d === 'undefined') return xDotScale.domain();
         xDotScale.domain(d);
         return groupedSymbols;
     };
     groupedSymbols.xDotRange = (d) => {
+        if (typeof d === 'undefined') return xDotScale.range();
         xDotScale.range(d);
         return groupedSymbols;
     };
@@ -71,10 +67,12 @@ export function draw() {
         return groupedSymbols;
     };
     groupedSymbols.xTotalDomain = (d) => {
+        if (typeof d === 'undefined') return xTotalScale.domain();
         xTotalScale.domain(d);
         return groupedSymbols;
     };
     groupedSymbols.xTotalRange = (d) => {
+        if (typeof d === 'undefined') return xTotalScale.range();
         xTotalScale.range(d);
         return groupedSymbols;
     };
@@ -84,14 +82,17 @@ export function draw() {
         return groupedSymbols;
     };
     groupedSymbols.yDotDomain = (d) => {
+        if (typeof d === 'undefined') return yDotScale.domain();
         yDotScale.domain(d);
         return groupedSymbols;
     };
     groupedSymbols.yDotRange = (d) => {
+        if (typeof d === 'undefined') return yDotScale.range();
         yDotScale.range(d);
         return groupedSymbols;
     };
     groupedSymbols.colourProperty = (d) => {
+        if (typeof d === 'undefined') return colourProperty;
         colourProperty = d;
         return groupedSymbols;
     };
@@ -106,10 +107,12 @@ export function draw() {
         return groupedSymbols;
     };
     groupedSymbols.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
         return groupedSymbols;
     };
     groupedSymbols.rem = (d) => {
+        if (typeof d === 'undefined') return rem;
         rem = d;
         return groupedSymbols;
     };

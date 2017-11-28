@@ -77,21 +77,8 @@ function extentMulti(data, columns) {
     return [ext.min, ext.max];
 }
 
-function getRanges(seriesNames, el) { // eslint-disable-line
-    const ranges = [];
-    seriesNames.forEach((d, i) => {
-        ranges.push(+el[seriesNames[i]]);
-    });
-    return ranges;
-}
-
 function getCircles(seriesNames, el, divisor) {
-    const ranges = [];
-    let rangeTotal = 0;
-    seriesNames.forEach((d, i) => {
-        rangeTotal = ((+el[seriesNames[i]]) / divisor);
-        ranges.push(rangeTotal);
-    });
+    const ranges = seriesNames.map((d, i) => Number(el[seriesNames[i]]) / divisor);
 
     const numCircles = d3.range(el.total / divisor);
 
