@@ -38,6 +38,7 @@ const numTicks = 4;// Number of tick on the xAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const fullYear = true; // show dates as full years
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'hori';// hori or vert, alignment of the legend
@@ -187,7 +188,7 @@ parseData.load(dataFile, {
                 .domain(yDomain)
                 .range([0, currentFrame.dimension().height])
                 .align(yAxisAlign)
-                .fullYear(true)
+                .fullYear(fullYear)
                 .interval(interval)
                 .minorAxis(minorAxis)
                 .minorTickSize(currentFrame.rem() * 0.3)
