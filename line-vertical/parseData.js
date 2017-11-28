@@ -43,7 +43,7 @@ export function load(url, options) { // eslint-disable-line
         };
         if (highlightNames.length > 0) { plotData.sort(dataSorter); }
 
-         // Filter data for annotations
+        // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
         // Format the data that is used to draw highlight tonal bands
@@ -88,12 +88,12 @@ export function getSeriesNames(columns) {
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
         const values = columns.map(key => row[key])
-        .map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
+            .map((item) => {
+                if (!item || item === '*') {
+                    return yMin;
+                }
+                return Number(item);
+            });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
