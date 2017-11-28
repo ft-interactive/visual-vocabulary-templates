@@ -1,1 +1,20 @@
-group,item,value,labelDesign,Kevin,1,EP graphics,Cleve,1,EP graphics,Steve,2,EP graphics,Neil,2,Graphics,Liz,3,Stats,Keith,3,Stats,Valentina,3,Graphics,lloyd,4,EP graphics,Bob,4,Graphics,Paul,5,Graphics,Graham,5,EP graphics,Caroline,5,Graphics,Ian,6,Graphics,Alan,6,Design,Kari,6,Stats,Andrew,6,Graphics,Kripa,8,yesEP graphics,Russ,8,yesGraphics,Chris,10,yes
+group,item,value,label
+Design,Kevin,1,
+EP graphics,Cleve,1,
+EP graphics,Steve,2,
+EP graphics,Neil,2,
+Graphics,Liz,3,
+Stats,Keith,3,
+Stats,Valentina,3,
+Graphics,lloyd,4,
+EP graphics,Bob,4,
+Graphics,Paul,5,
+Graphics,Graham,5,
+EP graphics,Caroline,5,
+Graphics,Ian,6,
+Graphics,Alan,6,
+Design,Kari,6,
+Stats,Andrew,6,
+Graphics,Kripa,8,yes
+EP graphics,Russ,8,yes
+Graphics,Chris,10,yes
