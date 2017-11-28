@@ -5,7 +5,6 @@
 import * as d3 from 'd3';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
-import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as treemap from './treemap.js';
 
@@ -94,7 +93,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 parseData.load(dataFile)
-    .then(({ seriesNames, data, plotData }) => {
+    .then(({ seriesNames, plotData }) => {
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
 

@@ -10,8 +10,8 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        const width = plotDim.width;
-        const height = plotDim.height;
+        const width = window.plotDim.width;
+        const height = window.plotDim.height;
 
         const treemap = d3.treemap().size([width, height]).paddingInner(1);
 
@@ -49,11 +49,7 @@ export function draw() {
             .attr('dy', d => d.y0 + rem)
             .attr('font-size', rem)
             .attr('class', 'highlight-label')
-            .text((d) => {
-                if (d.data.highlight) {
-                    return `${d.data.name} ${d.value}`;
-                }
-            });
+            .text(d => (d.data.highlight ? `${d.data.name} ${d.value}` : undefined));
     }
 
     chart.seriesNames = (d) => {
@@ -83,4 +79,3 @@ export function draw() {
 
     return chart;
 }
-

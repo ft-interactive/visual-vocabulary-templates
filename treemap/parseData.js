@@ -16,26 +16,23 @@ export function load(url, options) { // eslint-disable-line
         // make sure all the dates in the date column are a date object
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        let  seriesNames = data.map(d => d.category);
+        let seriesNames = data.map(d => d.category);
         seriesNames = seriesNames.filter((el, i) => seriesNames.indexOf(el) === i);
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        let plotData = [{'name': 'treemap', 'children': buildTree()}]
+        const plotData = [{ name: 'treemap', children: buildTree() }];
 
         function buildTree() {
-            let treeData = seriesNames.map(d => ({
-                name:d,
-                children: getChuldren(d)
+            const treeData = seriesNames.map(d => ({
+                name: d,
+                children: getChuldren(d),
             }));
             return treeData;
         }
 
         function getChuldren(el) {
-            let children = data.filter((d) => {
-                return d.category===el
-            })
-            return children
-
+            const children = data.filter(d => d.category === el);
+            return children;
         }
 
         return {
@@ -67,12 +64,12 @@ export function getSeriesNames(columns) {
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
         const values = columns.map(key => row[key])
-        .map((item) => {
-            if (!item || item === '*') {
-                return yMin;
-            }
-            return Number(item);
-        });
+            .map((item) => {
+                if (!item || item === '*') {
+                    return yMin;
+                }
+                return Number(item);
+            });
         const rowExtent = d3.extent(values);
         if (!acc.max) {
             acc.max = rowExtent[1];
