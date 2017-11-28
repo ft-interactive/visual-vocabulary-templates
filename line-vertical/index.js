@@ -31,10 +31,10 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 0;// sets the minimum value on the yAxis
+const xMin = 0;// sets the minimum value on the xAxis
 const xMax = 0;// sets the maximum value on the xAxis
-const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 3;// Number of tick on the uAxis
+const xAxisHighlight = 0; // sets which tick to highlight on the xAxis
+const numTicks = 4;// Number of tick on the xAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
@@ -53,17 +53,19 @@ const intraday = false;
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 20 })
- // .title('Put headline here') // use this if you need to override the defaults
- // .subtitle("Put headline |here") //use this if you need to override the defaults
- .height(800),
+        .margin({
+            top: 100, left: 15, bottom: 82, right: 20,
+        })
+    // .title('Put headline here') // use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+        .height(800),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
             top: 100, left: 20, bottom: 86, right: 20,
         })
     // .title("Put headline here")
-        .height(2000),
+        .height(1000),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
@@ -81,7 +83,9 @@ const frame = {
         .height(1000),
 
     print: gChartframe.printFrame(sharedConfig)
-        .margin({ top: 40, left: 15, bottom: 35, right: 20 })
+        .margin({
+            top: 40, left: 15, bottom: 35, right: 20,
+        })
         // .title("Put headline here")
         // .width(53.71)// 1 col
         .width(112.25)// 2 col
@@ -110,234 +114,235 @@ const frame = {
 
 // add the frames to the page...
 d3.selectAll('.framed')
-  .each(function addFrames() {
-      const figure = d3.select(this)
-                      .attr('class', 'button-holder');
+    .each(function addFrames() {
+        const figure = d3.select(this)
+            .attr('class', 'button-holder');
 
-      figure.select('svg')
-          .call(frame[figure.node().dataset.frame]);
+        figure.select('svg')
+            .call(frame[figure.node().dataset.frame]);
 
-      const holder = figure.append('div');
+        const holder = figure.append('div');
         holder.append('button')
             .attr('class', 'button')
             .text('Does nothing')
-            .style("float", "left")
-            .style('opacity',0.6)
-            .on('click', function (d) {
-                savePNG(1)
+            .style('float', 'left')
+            .style('opacity', 0.6)
+            .on('click', () => {
+                savePNG(1);
             });
         holder.append('button')
             .attr('class', 'button')
-            .style("float", "left")
-            .style('opacity',0.6)
+            .style('float', 'left')
+            .style('opacity', 0.6)
             .text('Does nothing twice as big')
-            .on('click', function (d) {
-                savePNG(2)
+            .on('click', () => {
+                savePNG(2);
             });
         holder.append('div')
-            .html('<br/>')
+            .html('<br/>');
 
-        function savePNG(scaleFactor) {
-            console.log('Does nothing', scaleFactor);
-            const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
+        function savePNG(scaleFactor) { // eslint-disable-line
+            const exportSVG = figure.select('svg');// eslint-disable-line
+            // saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
         }
-  });
-parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
-.then(({ seriesNames, data, plotData, valueExtent, highlights, annos }) => {
-    Object.keys(frame).forEach((frameName) => {
-        const currentFrame = frame[frameName];
-
-        // define other functions to be called
-        const myYAxis = gAxis.yDate();// sets up yAxis
-        const myYAxis1 = gAxis.yDate();// sets up yAxis
-        const myXAxis = gAxis.xLinear();// sets up xAxis
-        const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-        const myAnnotations = lineChart.drawAnnotations();// sets up annotations
-        const myLegend = gLegend.legend();// sets up the legend
-        // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        let tickSize = currentFrame.dimension().height + (currentFrame.rem() * .75);
-        let minorTickSize = (currentFrame.rem() * .3);
-
-        const myChart = lineChart.draw()
-          .seriesNames(seriesNames)
-          .highlightNames(highlightNames)
-          .markers(markers)
-          .annotate(annotate)
-          .interpolation(interpolation);
-
-        // create a 'g' element at the back of the chart to add time period
-        // highlights after axis have been created
-        const axisHighlight = currentFrame.plot().append('g');
-
-        let yDomain;
-        if (intraday) {
-            yDomain = data.map(d => d.date);
-        } else { yDomain = d3.extent(data, d => d.date); }
-
-        // Set up yAxis for this frame
-        myYAxis
-            .domain(yDomain)
-            .range([0, currentFrame.dimension().height])
-            .align(yAxisAlign)
-            .fullYear(true)
-            .interval(interval)
-            .minorAxis(minorAxis)
-            .minorTickSize(currentFrame.rem() * 0.3)
-            .frameName(frameName)
-            .intraday(intraday);
-
-        currentFrame.plot()
-            .call(myYAxis);
-
-        const yLabelWidth = myYAxis.labelWidth();
-
-        myYAxis.ylabel().selectAll('.tick').remove();
-
-        myYAxis
-            .tickSize(currentFrame.dimension().width - yLabelWidth);
-
-        myYAxis1
-            .domain(yDomain)
-            .range([0, currentFrame.dimension().height])
-            .align('right')
-            .fullYear(true)
-            .interval(interval)
-            .tickSize(currentFrame.dimension().width - yLabelWidth)
-            .minorAxis(minorAxis)
-            .minorTickSize(currentFrame.rem() * 0.3)
-            .frameName(frameName)
-            .intraday(intraday);
-
-        // Draw the yAxis first, this will position the yAxis correctly and
-        // measure the width of the label text
-        currentFrame.plot()
-            .call(myYAxis)
-            .call(myYAxis1);
-
-        // return the value in the variable newMargin
-
-        const newMarginR = myYAxis1.labelWidth() + currentFrame.margin().right;
-        currentFrame.margin({ right: newMarginR });
-
-
-        const newMarginL = myYAxis.labelWidth() + currentFrame.margin().left;
-        // Use newMargin redefine the new margin and range of xAxis
-        currentFrame.margin({ left: newMarginL });
-        myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
-        myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
-        myYAxis1.yLabel().selectAll('.tick text').attr('dx', (currentFrame.rem() / 2));
-        myYAxis1.yLabelMinor().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);;
-
-        d3.select(currentFrame.plot().node().parentNode)
-            .call(currentFrame);
-
-        // axisHighlight.append("rect")
-        //   .attr("width", currentFrame.dimension().width)
-        //   .attr("height",currentFrame.dimension().height)
-        //   .attr("fill","#ededee");
-
-
-        myXAxis
-          .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
-          .range([0, currentFrame.dimension().width])
-          .numTicks(numTicks)
-          .tickSize(tickSize)
-          .xAxisHighlight(xAxisHighlight)
-          .align(xAxisAlign)
-          .frameName(frameName)
-          .invert(invertScale)
-          .logScale(logScale);
-
-
-
-        // Draw the xAxis
-        currentFrame.plot()
-          .call(myXAxis);
-
-        if (xAxisAlign === 'bottom') {
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        }
-        if (xAxisAlign === 'top') {
-            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        }
-      const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
-
-        myChart
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName));
-
-        // Draw the lines
-        currentFrame.plot()
-          .selectAll('lines')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', 'lines')
-          .attr('id', d => d.name)
-          .call(myChart);
-
-        // Set up highlights for this frame
-        myHighlights
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .invertScale(invertScale);
-
-        // Draw the highlights before the lines and xAxis
-        axisHighlight
-          .selectAll('.highlights')
-          .data(highlights)
-          .enter()
-          .append('g')
-          .call(myHighlights);
-
-        // Set up highlights for this frame
-        myAnnotations
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .rem(currentFrame.rem());
-
-        // Draw the annotations before the lines
-        plotAnnotation
-          .selectAll('.annotation')
-          .data(annos)
-          .enter()
-          .append('g')
-          .call(myAnnotations);
-
-
-        // Set up legend for this frame
-        myLegend
-          .frameName(frameName)
-          .seriesNames(seriesNames)
-          .colourPalette((frameName))
-          .rem(myChart.rem())
-          .geometry(legendType)
-          .alignment(legendAlign);
-
-        // Draw the Legend
-        currentFrame.plot()
-          .append('g')
-          .attr('id', 'legend')
-          .selectAll('.legend')
-            .data(() => {
-                if (highlightNames.length > 0) {
-                    return highlightNames;
-                }
-                return seriesNames;
-            })
-            .enter()
-            .append('g')
-            .classed('legend', true)
-            .call(myLegend);
-
-        const legendSelection = currentFrame.plot().select('#legend');
-        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
-        // myYAxis1.yLabel().selectAll('.tick line').remove();
-
     });
+parseData.load(dataFile, {
+    dateFormat, xMin, joinPoints, highlightNames,
+})
+    .then(({
+        seriesNames, data, plotData, valueExtent, highlights, annos,
+    }) => {
+        Object.keys(frame).forEach((frameName) => {
+            const currentFrame = frame[frameName];
+
+            // define other functions to be called
+            const myYAxis = gAxis.yDate();// sets up yAxis
+            const myYAxis1 = gAxis.yDate();// sets up yAxis
+            const myXAxis = gAxis.xLinear();// sets up xAxis
+            const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
+            const myAnnotations = lineChart.drawAnnotations();// sets up annotations
+            const myLegend = gLegend.legend();// sets up the legend
+            // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
+            const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 0.75);
+            // const minorTickSize = (currentFrame.rem() * 0.3);
+
+            const myChart = lineChart.draw()
+                .seriesNames(seriesNames)
+                .highlightNames(highlightNames)
+                .markers(markers)
+                .annotate(annotate)
+                .interpolation(interpolation);
+
+            // create a 'g' element at the back of the chart to add time period
+            // highlights after axis have been created
+            const axisHighlight = currentFrame.plot().append('g');
+
+            let yDomain;
+            if (intraday) {
+                yDomain = data.map(d => d.date);
+            } else { yDomain = d3.extent(data, d => d.date); }
+
+            // Set up yAxis for this frame
+            myYAxis
+                .domain(yDomain)
+                .range([0, currentFrame.dimension().height])
+                .align(yAxisAlign)
+                .fullYear(true)
+                .interval(interval)
+                .minorAxis(minorAxis)
+                .minorTickSize(currentFrame.rem() * 0.3)
+                .frameName(frameName)
+                .intraday(intraday);
+
+            currentFrame.plot()
+                .call(myYAxis);
+
+            const yLabelWidth = myYAxis.labelWidth();
+
+
+            myYAxis
+                .tickSize(currentFrame.dimension().width - yLabelWidth);
+
+            myYAxis1
+                .domain(yDomain)
+                .range([0, currentFrame.dimension().height])
+                .align('right')
+                .fullYear(true)
+                .interval(interval)
+                .tickSize(currentFrame.dimension().width - yLabelWidth)
+                .minorAxis(minorAxis)
+                .minorTickSize(currentFrame.rem() * 0.3)
+                .frameName(frameName)
+                .intraday(intraday);
+
+            myYAxis.yLabel().selectAll('.tick').remove();
+
+            // Draw the yAxis first, this will position the yAxis correctly and
+            // measure the width of the label text
+            currentFrame.plot()
+                .call(myYAxis)
+                .call(myYAxis1);
+
+            // return the value in the variable newMargin
+
+            const newMarginR = myYAxis1.labelWidth() + currentFrame.margin().right;
+            currentFrame.margin({ right: newMarginR });
+
+
+            const newMarginL = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMarginL });
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
+            myYAxis1.yLabel().selectAll('.tick text').attr('dx', (currentFrame.rem() / 2));
+            myYAxis1.yLabelMinor().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
+
+            // axisHighlight.append("rect")
+            //   .attr("width", currentFrame.dimension().width)
+            //   .attr("height",currentFrame.dimension().height)
+            //   .attr("fill","#ededee");
+
+
+            myXAxis
+                .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+                .range([0, currentFrame.dimension().width])
+                .numTicks(numTicks)
+                .tickSize(tickSize)
+                .xAxisHighlight(xAxisHighlight)
+                .align(xAxisAlign)
+                .frameName(frameName)
+                .invert(invertScale)
+                .logScale(logScale);
+
+
+            // Draw the xAxis
+            currentFrame.plot()
+                .call(myXAxis);
+
+            if (xAxisAlign === 'bottom') {
+                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            }
+            if (xAxisAlign === 'top') {
+                myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+            }
+            const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
+            myChart
+                .yScale(myYAxis.scale())
+                .xScale(myXAxis.scale())
+                .plotDim(currentFrame.dimension())
+                .rem(currentFrame.rem())
+                .colourPalette((frameName));
+
+            // Draw the lines
+            currentFrame.plot()
+                .selectAll('lines')
+                .data(plotData)
+                .enter()
+                .append('g')
+                .attr('class', 'lines')
+                .attr('id', d => d.name)
+                .call(myChart);
+
+            // Set up highlights for this frame
+            myHighlights
+                .yScale(myYAxis.scale())
+                .xScale(myXAxis.scale())
+                .invertScale(invertScale);
+
+            // Draw the highlights before the lines and xAxis
+            axisHighlight
+                .selectAll('.highlights')
+                .data(highlights)
+                .enter()
+                .append('g')
+                .call(myHighlights);
+
+            // Set up highlights for this frame
+            myAnnotations
+                .yScale(myYAxis.scale())
+                .xScale(myXAxis.scale())
+                .rem(currentFrame.rem());
+
+            // Draw the annotations before the lines
+            plotAnnotation
+                .selectAll('.annotation')
+                .data(annos)
+                .enter()
+                .append('g')
+                .call(myAnnotations);
+
+
+            // Set up legend for this frame
+            myLegend
+                .frameName(frameName)
+                .seriesNames(seriesNames)
+                .colourPalette((frameName))
+                .rem(myChart.rem())
+                .geometry(legendType)
+                .alignment(legendAlign);
+
+            // Draw the Legend
+            currentFrame.plot()
+                .append('g')
+                .attr('id', 'legend')
+                .selectAll('.legend')
+                .data(() => {
+                    if (highlightNames.length > 0) {
+                        return highlightNames;
+                    }
+                    return seriesNames;
+                })
+                .enter()
+                .append('g')
+                .classed('legend', true)
+                .call(myLegend);
+
+            const legendSelection = currentFrame.plot().select('#legend');
+            legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+        });
     // addSVGSavers('figure.saveable');
     });
