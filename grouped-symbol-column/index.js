@@ -14,10 +14,10 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
-const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 5;// Number of tick on the yAxis
+const yMin = 0; /* sets the minimum value on the yAxis */ // eslint-disable-line
+const yMax = 0; /* sets the maximum value on the yAxis */ // eslint-disable-line
+const yAxisHighlight = 0; /* sets which tick to highlight on the yAxis */ // eslint-disable-line
+const numTicks = 5; /* Number of tick on the yAxis */ // eslint-disable-line
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
@@ -34,83 +34,59 @@ const legendType = 'circ'; // rect, line or circ, geometry of legend marker
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-    .margin({ top: 100, left: 15, bottom: 82, right: 24 })
+        .margin({ top: 100, left: 15, bottom: 82, right: 24 })
     // .title('Put headline here') //use this if you need to override the defaults
     // .subtitle('Put headline |here') //use this if you need to override the defaults
-    .height(400),
+        .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 24 })
+        .margin({ top: 100, left: 20, bottom: 86, right: 24 })
     // .title('Put headline here')
-    .height(550),
+        .height(550),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 86, right: 20 })
+        .margin({ top: 100, left: 20, bottom: 86, right: 20 })
     // .title('Put headline here')
-    .height(550),
+        .height(550),
 
     webL: gChartframe.webFrameL(sharedConfig)
-    .margin({ top: 100, left: 20, bottom: 104, right: 24 })
+        .margin({ top: 100, left: 20, bottom: 104, right: 24 })
     // .title('Put headline here')
-    .height(800),
+        .height(800),
 
     print: gChartframe.printFrame(sharedConfig)
-    .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title('Put headline here')
     /* Print column widths */
-    .width(53.71)// 1 col
+        .width(53.71)// 1 col
     // .width(112.25)// 2 col
     // .width(170.8)// 3 col
     // .width(229.34)// 4 col
     // .width(287.88)// 5 col
     // .width(346.43)// 6 col
     // .width(74)// markets std print
-    .height(69.85), // std print (Use 58.21mm for markets charts that matter)
+        .height(69.85), // std print (Use 58.21mm for markets charts that matter)
 
 
     social: gChartframe.socialFrame(sharedConfig)
-    .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+        .margin({ top: 140, left: 50, bottom: 138, right: 40 })
     // .title('Put headline here')
-    .width(612)
-    .height(612),
+        .width(612)
+        .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
-    .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+        .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
     // .title('Put headline here')
-    };
+};
 
 
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
-        const figure = d3.select(this)
-                        .attr('class', 'button-holder');
+        const figure = d3.select(this);
 
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
-
-        const holder = figure.append('div');
-        holder.append('button')
-            .attr('class', 'button')
-            .text('Does nothing')
-            .style('float', 'left')
-            .style('opacity', 0.6)
-            .on('click', () => savePNG(1));
-
-        holder.append('button')
-            .attr('class', 'button')
-            .style('float', 'left')
-            .style('opacity', 0.6)
-            .text('Does nothing twice as big')
-            .on('click', () => savePNG(2));
-
-        holder.append('div')
-            .html('<br/>');
-
-        function savePNG() {
-            const exportSVG = figure.select('svg');
-            //saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
-        }
     });
 
 parseData.load(dataFile, { sort, sortOn, divisor })

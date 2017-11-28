@@ -26,7 +26,7 @@ export function draw() {
             .enter()
             .append('circle')
             .attr('r', (xDotScale.bandwidth() / 2) * circleSize)
-            .attr('id', (d, i) => `${'circle' + i + '_' + i}`)
+            .attr('id', (d, i) => `${`circle${i}_${i}`}`)
             .attr('cx', (d, i) => xDotScale(i % numberOfColumns))
             .attr('cy', (d, i) => yDotScale(Math.floor(i / numberOfColumns)))
             .attr('fill', (d) => {
