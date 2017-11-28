@@ -32,7 +32,7 @@ const sharedConfig = {
 };
 
 const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 1500;// sets the maximum value on the xAxis
+const xMax = 0;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 3;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
@@ -63,7 +63,7 @@ const frame = {
             top: 100, left: 20, bottom: 86, right: 20,
         })
     // .title("Put headline here")
-        .height(1000),
+        .height(2000),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
@@ -192,7 +192,7 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
 
         const yLabelWidth = myYAxis.labelWidth();
 
-        // myYAxis.ylabel().selectAll('.tick').remove();
+        myYAxis.ylabel().selectAll('.tick').remove();
 
         myYAxis
             .tickSize(currentFrame.dimension().width - yLabelWidth);
@@ -227,6 +227,7 @@ parseData.load(dataFile, { dateFormat, xMin, joinPoints, highlightNames })
         myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
         myYAxis1.yLabel().selectAll('.tick text').attr('dx', (currentFrame.rem() / 2));
+        myYAxis1.yLabelMinor().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);;
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
