@@ -12,16 +12,9 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
-const yAxisHighlight = 10; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
-const xAxisAlign = 'bottom';// alignment of the axis
-const logScale = false;
-const sort = '';// specify 'ascending', 'descending', 'alphabetical'
-const sortOn = 0;// specify column number to sort on (ignore name column)
-const showNumberLabels = false;// show numbers on end of bars
+
+const yAxisAlign = 'left';// alignment of the axis
+const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
@@ -95,7 +88,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile, '', { sort, sortOn })
+parseData.load(dataFile, '')
     .then(({
         seriesNames, plotData, valueExtent, data,
     }) => { // eslint-disable-line no-unused-vars
@@ -113,7 +106,7 @@ parseData.load(dataFile, '', { sort, sortOn })
 
             myYAxis
                 .rangeRound([currentFrame.dimension().height, 0], 0)
-                .domain(seriesNames)
+                .domain(plotData.map(d => d.name))
                 .align(yAxisAlign)
                 .frameName(frameName);
 
@@ -133,14 +126,14 @@ parseData.load(dataFile, '', { sort, sortOn })
                 const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
                 // Use newMargin redefine the new margin and range of xAxis
                 currentFrame.margin({ left: newMargin });
-                myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+                myYAxis.yLabel().attr('transform', 'translate(0,0)');
             }
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
             myXAxis
                 .align(xAxisAlign)
-                .domain(plotData.map(d => d.name))
+                .domain(seriesNames)
                 .rangeRound([0, currentFrame.dimension().width], 0)
                 .frameName(frameName);
 
@@ -149,10 +142,7 @@ parseData.load(dataFile, '', { sort, sortOn })
                 .yScale(myYAxis.scale())
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .colourPalette((frameName))
-                .logScale(logScale)
-                .showNumberLabels(showNumberLabels);
-            // .yScale(myYAxis.yScale())
+                .colourPalette((frameName));
 
             myXAxis
                 .paddingInner(0.5);
@@ -175,13 +165,6 @@ parseData.load(dataFile, '', { sort, sortOn })
                 .append('g')
                 .attr('class', 'columnHolder')
                 .call(myChart);
-
-            // remove ticks if numbers are added to vars
-            if (showNumberLabels) {
-                const clear = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
-                clear.remove();
-            }
-
 
             // Set up legend for this frame
             myLegend

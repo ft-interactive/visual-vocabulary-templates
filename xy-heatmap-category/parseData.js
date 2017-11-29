@@ -13,7 +13,6 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { sort, sortOn } = options;
         const seriesNames = getSeriesNames(data.columns);
 
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
@@ -26,15 +25,6 @@ export function load(url, options) { // eslint-disable-line
             name: d.name,
             groups: getGroups(seriesNames, d),
         }));
-
-        if (sort === 'descending') {
-            plotData.sort((a, b) =>
-                b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
-        } else if (sort === 'ascending') {
-            plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
-        } else if (sort === 'alphabetical') { // Sorts biggest rects to the left
-            plotData.sort((a, b) => a.name.localeCompare(b.name));
-        } // Sorts alphabetically
 
         return {
             valueExtent,
