@@ -1,5 +1,5 @@
-export default {
-    categories: [{
+export default [
+    {
         category: 'Deviation',
         colour: '#E6B00F',
         description: 'Emphasise variations (+/-) from a fixed reference point. Typically the reference point is zero but it can also be a target or a long-term average. Can also be used to show sentiment (positive/neutral/negative)',
@@ -53,5 +53,4 @@ export default {
         description: 'Show the reader volumes or intensity of movement between two or more states or conditions. These might be logical sequences or geographical locations',
         example: 'Movement of funds, trade, migrants, lawsuits, information; relationship graphs',
     },
-    ],
-};
+];

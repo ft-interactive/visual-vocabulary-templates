@@ -1,10 +1,8 @@
 // @flow
 import * as d3 from 'd3';
-import catData from './v2-data.js';
+import plotCategories from './categories.js';
 
 d3.csv('chartTypes.csv', (error, chartData) => {
-    const plotCategories = catData.categories;
-
     const container = d3.select('.container');
 
     window.onresize = redraw;
@@ -48,10 +46,7 @@ d3.csv('chartTypes.csv', (error, chartData) => {
             .append('div');
 
         const chart = chartHolder.selectAll('.chart')
-            .data(() => {
-                const filtered = chartData.filter(d => d.category === lookUp);
-                return filtered;
-            })
+            .data(() => chartData.filter(d => d.category === lookUp))
             .enter();
 
         const div = chart.append('div')
