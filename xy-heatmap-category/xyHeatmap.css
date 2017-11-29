@@ -1,0 +1,17 @@
+.ft-webgraphic-s .grid,
+.ft-webgraphic-m .grid,
+.ft-webgraphic-m-default .grid,
+.ft-webgraphic-l .grid {
+    stroke-width: 1px;
+    stroke: #fff1e5;
+}
+
+.ft-printgraphic .grid {
+    stroke-width: 1px;
+    stroke: #ffffff;
+}
+
+.ft-socialgraphic .grid,
+.ft-videographic .grid {
+    stroke: #212121;
+}

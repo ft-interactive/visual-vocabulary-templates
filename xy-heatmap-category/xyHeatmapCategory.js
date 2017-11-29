@@ -16,44 +16,27 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        const min = yScale.domain()[0];
 
         xScale.paddingInner(0);
         yScale.paddingInner(0);
 
-        parent.attr('transform', d => `translate(${xScale(d.name)},0)`)
+        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
             .attr('width', xScale.bandwidth());
 
         parent.selectAll('rect')
             .data(d => d.groups)
             .enter()
             .append('rect')
-            .attr('class', 'columns')
+            .attr('class', 'grid')
             .attr('x', d => xScale(d.name))
             .attr('width', () => xScale.bandwidth())
-            .attr('y', (d) => {
-                if (logScale) {
-                    return yScale(Math.max(min, d.value));
+            .attr('y', d => yScale(d.name))
+            .attr('height', () => yScale.bandwidth())
+            .attr('fill', (d) => {
+                if (d.value) {
+                    return colourScale(d.value);
                 }
-                return yScale(Math.max(0, d.value));
-            })
-            .attr('height', d => yScale.bandwidth())
-            .attr('fill', d => colourScale(d.name));
-
-        if (showNumberLabels) {
-            parent.selectAll('text')
-                .data(d => d.groups)
-                .enter()
-                .append('text')
-                .html(d => d.value)
-                .attr('class', 'column-label')
-                .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
-                .attr('y', () => yScale(0))
-                .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
-                .attr('font-size', rem)
-                .attr('fill', '#ffffff')
-                .style('text-anchor', 'middle');
-        }
+            });
     }
 
     chart.yScale = (d) => {

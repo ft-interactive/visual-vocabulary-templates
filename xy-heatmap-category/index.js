@@ -3,7 +3,7 @@ import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as columnGroupedChart from './columnGroupedChart.js';
+import * as xyHeatmapCategoryChart from './xyHeatmapCategory.js';
 
 const dataFile = 'data.csv';
 
@@ -90,28 +90,23 @@ d3.selectAll('.framed')
 
 parseData.load(dataFile, '')
     .then(({
-        seriesNames, plotData, valueExtent, data,
+        seriesNames, plotData,
     }) => { // eslint-disable-line no-unused-vars
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
 
             const myXAxis = gAxis.xOrdinal();// sets up yAxis
             const myYAxis = gAxis.yOrdinal();
-            const myChart = columnGroupedChart.draw(); // eslint-disable-line no-unused-vars
+            const myChart = xyHeatmapCategoryChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
 
-            // define other functions to be called
-            const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-
-
             myYAxis
-                .rangeRound([currentFrame.dimension().height, 0], 0)
+                .rangeRound([0, currentFrame.dimension().height], 0)
                 .domain(plotData.map(d => d.name))
                 .align(yAxisAlign)
                 .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
-
             currentFrame.plot()
                 .call(myYAxis);
 
@@ -144,9 +139,6 @@ parseData.load(dataFile, '')
                 .rem(currentFrame.rem())
                 .colourPalette((frameName));
 
-            myXAxis
-                .paddingInner(0.5);
-
             currentFrame.plot()
                 .call(myXAxis);
 
@@ -154,7 +146,7 @@ parseData.load(dataFile, '')
                 myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             }
             if (xAxisAlign === 'top') {
-                myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+                myXAxis.xLabel().attr('transform', `translate(0,0)`);
             }
 
 
@@ -185,6 +177,10 @@ parseData.load(dataFile, '')
                 .append('g')
                 .classed('legend', true)
                 .call(myLegend);
+
+            // remove ticks from x-axis
+            myXAxis.xLabel().selectAll('.tick line').remove();
         });
+
     // addSVGSavers('figure.saveable');
     });
