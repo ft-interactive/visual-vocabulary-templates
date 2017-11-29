@@ -90,7 +90,7 @@ d3.selectAll('.framed')
 
 parseData.load(dataFile, '')
     .then(({
-        seriesNames, plotData,
+        seriesNames, catNames, plotData,
     }) => { // eslint-disable-line no-unused-vars
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -135,6 +135,7 @@ parseData.load(dataFile, '')
             myChart
                 .xScale(myXAxis.scale())
                 .yScale(myYAxis.scale())
+                .catNames(catNames)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
                 .colourPalette(frameName);
@@ -159,7 +160,7 @@ parseData.load(dataFile, '')
 
             // Set up legend for this frame
             myLegend
-                .seriesNames(seriesNames)
+                .seriesNames(catNames)
                 .geometry(legendType)
                 .frameName(frameName)
                 .rem(myChart.rem())
@@ -171,7 +172,7 @@ parseData.load(dataFile, '')
                 .append('g')
                 .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(seriesNames)
+                .data(catNames)
                 .enter()
                 .append('g')
                 .classed('legend', true)

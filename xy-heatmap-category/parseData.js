@@ -17,6 +17,8 @@ export function load(url, options) { // eslint-disable-line
 
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
 
+        const catNames = getCatNames(data, seriesNames);
+
         // Buid the dataset for plotting
         const plotData = data.map(d => ({
             name: d.name,
@@ -28,6 +30,7 @@ export function load(url, options) { // eslint-disable-line
             plotData,
             data,
             groupNames,
+            catNames,
         };
     });
 }
@@ -44,4 +47,22 @@ function getGroups(seriesNames, el) {
         name,
         value: el[name],
     }));
+}
+
+function getCatNames(data, seriesNames) {
+    // look at all the values
+    const allVals = [];
+    // extract unique values used in heatmap
+    data.map((d) => {
+        seriesNames.forEach((e) => {
+            allVals.push(d[e]);
+        });
+    });
+
+    // identify the unique values in the array
+    const filterVals = allVals.filter((v, i) => i === allVals.lastIndexOf(v));
+
+    // remove falsy values
+    const uniqVals = filterVals.map(d => d).filter(d => d !== '');
+    return uniqVals;
 }

@@ -5,6 +5,7 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleBand();
     let seriesNames = [];
+    let catNames = [];
     let logScale = false;
     let yAxisAlign = 'right';
     let rem = 16;
@@ -37,9 +38,13 @@ export function draw() {
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
             .attr('fill', (d) => {
-                if (d.value) {
-                    return colourScale(d.value);
-                }
+                let colourIndex = 0;
+                catNames.forEach((obj, k) => {
+                    if (obj === d.value) {
+                        colourIndex = colourScale.range()[k];
+                    }
+                });
+                return colourIndex;
             });
     }
 
@@ -70,6 +75,12 @@ export function draw() {
     chart.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
+        return chart;
+    };
+
+    chart.catNames = (d) => {
+        if (typeof d === 'undefined') return catNames;
+        catNames = d;
         return chart;
     };
 
