@@ -207,26 +207,31 @@ export function drawHighlights() {
     }
 
     highlights.yScale = (d) => {
+        if (!d) return yScale;
         yScale = d;
         return highlights;
     };
 
     highlights.xScale = (d) => {
+        if (!d) return xScale;
         xScale = d;
         return highlights;
     };
 
     highlights.yRange = (d) => {
+        if (typeof d === 'undefined') return yScale.range();
         yScale.range(d);
         return highlights;
     };
 
     highlights.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.range();
         xScale.range(d);
         return highlights;
     };
 
     highlights.invertScale = (d) => {
+        if (typeof d === 'undefined') return invertScale;
         invertScale = d;
         return highlights;
     };
@@ -255,21 +260,25 @@ export function drawAnnotations() {
     }
 
     annotations.yScale = (d) => {
+        if (!d) return yScale;
         yScale = d;
         return annotations;
     };
 
     annotations.xScale = (d) => {
+        if (!d) return xScale;
         xScale = d;
         return annotations;
     };
 
     annotations.yRange = (d) => {
+        if (typeof d === 'undefined') return yScale.range();
         yScale.range(d);
         return annotations;
     };
 
     annotations.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.range();
         xScale.range(d);
         return annotations;
     };

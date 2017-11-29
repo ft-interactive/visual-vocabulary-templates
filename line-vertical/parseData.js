@@ -133,17 +133,4 @@ export function getlines(d, group, joinPoints) {
         }
     });
     return lineData;
-    // return d.map((el) => {
-    //     if (el[group]) {
-    //         return {
-    //             name: group,
-    //             date: el.date,
-    //             value: +el[group],
-    //             highlight: el.highlight,
-    //             annotate: el.annotate,
-    //         };
-    //     }
-
-    //     return null;
-    // }).filter(i => i);
 }

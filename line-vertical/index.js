@@ -35,8 +35,6 @@ const xMin = 0;// sets the minimum value on the xAxis
 const xMax = 0;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the xAxis
 const numTicks = 4;// Number of tick on the xAxis
-const yAxisAlign = 'left';// alignment of the axis
-const xAxisAlign = 'top';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const fullYear = true; // show dates as full years
 const annotate = true; // show annotations, defined in the 'annotate' column
@@ -116,36 +114,10 @@ const frame = {
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
-        const figure = d3.select(this)
-            .attr('class', 'button-holder');
+        const figure = d3.select(this);
 
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
-
-        const holder = figure.append('div');
-        holder.append('button')
-            .attr('class', 'button')
-            .text('Does nothing')
-            .style('float', 'left')
-            .style('opacity', 0.6)
-            .on('click', () => {
-                savePNG(1);
-            });
-        holder.append('button')
-            .attr('class', 'button')
-            .style('float', 'left')
-            .style('opacity', 0.6)
-            .text('Does nothing twice as big')
-            .on('click', () => {
-                savePNG(2);
-            });
-        holder.append('div')
-            .html('<br/>');
-
-        function savePNG(scaleFactor) { // eslint-disable-line
-            const exportSVG = figure.select('svg');// eslint-disable-line
-            // saveSvgAsPng(exportSVG, 'area-chart.png',{scale: scaleFactor`});
-        }
     });
 parseData.load(dataFile, {
     dateFormat, xMin, joinPoints, highlightNames,
@@ -160,6 +132,7 @@ parseData.load(dataFile, {
             const myYAxis = gAxis.yDate();// sets up yAxis
             const myYAxis1 = gAxis.yDate();// sets up yAxis
             const myXAxis = gAxis.xLinear();// sets up xAxis
+            const myXAxis1 = gAxis.xLinear();// sets up xAxis
             const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
             const myAnnotations = lineChart.drawAnnotations();// sets up annotations
             const myLegend = gLegend.legend();// sets up the legend
@@ -178,16 +151,13 @@ parseData.load(dataFile, {
             // highlights after axis have been created
             const axisHighlight = currentFrame.plot().append('g');
 
-            let yDomain;
-            if (intraday) {
-                yDomain = data.map(d => d.date);
-            } else { yDomain = d3.extent(data, d => d.date); }
+            const yDomain = intraday ? data.map(d => d.date) : d3.extent(data, d => d.date);
 
             // Set up yAxis for this frame
             myYAxis
                 .domain(yDomain)
                 .range([0, currentFrame.dimension().height])
-                .align(yAxisAlign)
+                .align('left')
                 .fullYear(fullYear)
                 .interval(interval)
                 .minorAxis(minorAxis)
@@ -253,7 +223,18 @@ parseData.load(dataFile, {
                 .numTicks(numTicks)
                 .tickSize(tickSize)
                 .xAxisHighlight(xAxisHighlight)
-                .align(xAxisAlign)
+                .align('top')
+                .frameName(frameName)
+                .invert(invertScale)
+                .logScale(logScale);
+
+            myXAxis1
+                .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+                .range([0, currentFrame.dimension().width])
+                .numTicks(numTicks)
+                .tickSize(tickSize)
+                .xAxisHighlight(xAxisHighlight)
+                .align('bottom')
                 .frameName(frameName)
                 .invert(invertScale)
                 .logScale(logScale);
@@ -261,14 +242,12 @@ parseData.load(dataFile, {
 
             // Draw the xAxis
             currentFrame.plot()
-                .call(myXAxis);
+                .call(myXAxis)
+                .call(myXAxis1);
 
-            if (xAxisAlign === 'bottom') {
-                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-            }
-            if (xAxisAlign === 'top') {
-                myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-            }
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+            myXAxis1.xLabel().attr('transform', 'translate(0,0)');
+
             const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
             myChart
@@ -276,7 +255,7 @@ parseData.load(dataFile, {
                 .xScale(myXAxis.scale())
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .colourPalette((frameName));
+                .colourPalette(frameName);
 
             // Draw the lines
             currentFrame.plot()
