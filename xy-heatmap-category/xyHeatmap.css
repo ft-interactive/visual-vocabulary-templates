@@ -15,3 +15,28 @@
 .ft-videographic .grid {
     stroke: #212121;
 }
+
+.ft-socialgraphic .grid{
+    stroke-width: 2px;
+}
+
+.ft-videographic .grid {
+    stroke-width: 4px;
+}
+
+.ft-webgraphic-s .grid.noData,
+.ft-webgraphic-m .grid.noData,
+.ft-webgraphic-m-default .grid.noData,
+.ft-webgraphic-l .grid.noData {
+    fill: #e6d9ce;
+}
+
+.ft-printgraphic .grid.noData {
+    fill: #dddddd;
+}
+
+.ft-socialgraphic .grid.noData,
+.ft-videographic .grid.noData {
+    fill: #ffffff;
+    fill-opacity: 0.2;
+}

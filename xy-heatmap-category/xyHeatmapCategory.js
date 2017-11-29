@@ -16,7 +16,6 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-
         xScale.paddingInner(0);
         yScale.paddingInner(0);
 
@@ -27,7 +26,12 @@ export function draw() {
             .data(d => d.groups)
             .enter()
             .append('rect')
-            .attr('class', 'grid')
+            .attr('class', (d) => {
+                if (d.value) {
+                    return 'grid';
+                }
+                return 'grid noData';
+            })
             .attr('x', d => xScale(d.name))
             .attr('width', () => xScale.bandwidth())
             .attr('y', d => yScale(d.name))

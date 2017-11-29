@@ -137,7 +137,7 @@ parseData.load(dataFile, '')
                 .yScale(myYAxis.scale())
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .colourPalette((frameName));
+                .colourPalette(frameName);
 
             currentFrame.plot()
                 .call(myXAxis);
@@ -146,9 +146,8 @@ parseData.load(dataFile, '')
                 myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             }
             if (xAxisAlign === 'top') {
-                myXAxis.xLabel().attr('transform', `translate(0,0)`);
+                myXAxis.xLabel().attr('transform', 'translate(0,0)');
             }
-
 
             currentFrame.plot()
                 .selectAll('.columnHolder')
