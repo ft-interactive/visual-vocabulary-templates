@@ -34,7 +34,7 @@ const sharedConfig = {
 };
 //Put the user defined variablesin delete where not applicable
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 50;// sets the maximum value on the xAxis
+const yMax = 45;// sets the maximum value on the xAxis
 const divisor = 1
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
@@ -52,7 +52,7 @@ const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
-const dotOpacity = 0.5;
+const dotOpacity = 0.2;
 const partyColours = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
   .range(Object.values(gChartcolour.germanPoliticalParties_bar));
@@ -68,14 +68,14 @@ const frame = {
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 20, bottom: 86, right: 10,
         })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 5,
+            top: 100, left: 20, bottom: 104, right: 10,
         })
     // .title("Put headline here")
         .height(700)
@@ -83,7 +83,7 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 20, bottom: 86, right: 10,
         })
     // .title("Put headline here")
         .height(500),
@@ -91,8 +91,8 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
-  .width(53.71)// 1 col
-  //.width(112.25)// 2 col
+  //.width(53.71)// 1 col
+  .width(112.25)// 2 col
   // .width(170.8)// 3 col
   // .width(229.34)// 4 col
   // .width(287.88)// 5 col
@@ -201,7 +201,16 @@ parseData.load([dotsFile, lineFile], { dateFormat })
           .xScale(xAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette(partyColours);
+          .colourPalette(partyColours)
+          .dotOpacity(dotOpacity);
+
+        currentFrame.plot()
+          .selectAll('dots')
+          .data(dotData)
+          .enter()
+          .append('g')
+          .attr('id', d => d.party)
+          .call(pollDots)
 
         background.append('rect')
           .attr('width', currentFrame.dimension().width)

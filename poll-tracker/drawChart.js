@@ -9,13 +9,28 @@ export function drawDots() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let colourScale = d3.scaleOrdinal()
+    let dotOpacity = 1
     // .range(gChartcolour.lineWeb)
     //.domain(seriesNames);
 
     function dots(parent) {
-        //Your drawing function in here
-
+        console.log('dots')
+        parent.selectAll('circle')
+            .data(d => d.dots)
+            .enter()
+            .append('circle')
+            .attr('cx', d => xScale(d.date))
+            .attr('cy', d => yScale(d.value))
+            .attr('r', rem / 2.5)
+            .attr('fill', d => colourScale(d.name))
+            .attr('opacity', dotOpacity);
     }
+
+    dots.dotOpacity = (d) => {
+        if (!d) return dotOpacity;
+        dotOpacity = d;
+        return dots;
+    };
 
     dots.yScale = (d) => {
         if (!d) return yScale;

@@ -20,7 +20,7 @@ export function load([url, url2], options) { // eslint-disable-line
 
         const data1 = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
-         const { dateFormat } = options; // eslint-disable-line no-unused-vars
+        const { dateFormat } = options; // eslint-disable-line no-unused-vars
         const parseDate = d3.timeParse(dateFormat);    
         data1.forEach((d) => {
             d.date = parseDate(d.date);
@@ -40,11 +40,35 @@ export function load([url, url2], options) { // eslint-disable-line
         console.log('valueExtent1', valueExtent1, 'valueExtent2', valueExtent2)
 
         // Format the dataset that is used to draw the lines
-        const dotData = data1.map(d => ({
-            date: d.date,
-            name: d.name,
-            value: d.value,
-        }));
+        const dotData = seriesNames1.map( (d) => {
+            return {
+                party: d,
+                dots: getDots(data1,d),
+                pollsters: getPolsters(data1.pollsters),
+            }
+        })
+
+        function getDots(d, group) {
+            const dotsData = [];
+            d.forEach((el) => {
+                // console.log(el,i)
+                const column = {};
+                column.name = group;
+                column.date = el.date;
+                column.value = Number(el[group]);
+                column.highlight = el.highlight;
+                column.annotate = el.annotate;
+                column.pollster = el.pollster
+                if (el[group]) {
+                    dotsData.push(column);
+                }
+            });
+            return dotsData;
+        }
+        function getPolsters(pollsters) {
+            console.log('pollsters', pollsters)
+
+        }
 
         const lineData = seriesNames2.map(d => ({
             name: d,
@@ -92,7 +116,7 @@ export function load([url, url2], options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight'];
+    const exclude = ['date','pollster', 'annotate', 'highlight'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
