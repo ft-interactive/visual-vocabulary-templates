@@ -37,9 +37,9 @@ const yMax = 50;// sets the maximum value on the xAxis
 const divisor = 1
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
+const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'fiscal';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -124,7 +124,8 @@ parseData.load([dotsFile, lineFile], { dateFormat })
   .then(({ dotData, lineData, dateExtent, valueExtent}) => {
       Object.keys(frame).forEach((frameName) => {
           const currentFrame = frame[frameName];
-          const yAxis = gAxis.yLinear();
+          const yAxis = gAxis.yLinear();//sets up the yAxis
+          const xAxis = gAxis.xDate();// sets up xAxis
 
           // define other functions to be called
 
@@ -161,6 +162,25 @@ parseData.load([dotsFile, lineFile], { dateFormat })
           }
           d3.select(currentFrame.plot().node().parentNode)
               .call(currentFrame);
+
+          console.log('dateExtent',dateExtent)
+
+          // xAxis
+          //   .domain(dateExtent)
+          //   .range([0, currentFrame.dimension().width])
+          //   .align(xAxisAlign)
+          //   .fullYear(false)
+          //   .interval(interval)
+          //   .tickSize(currentFrame.rem() * 0.75)
+          //   .minorAxis(minorAxis)
+          //   .minorTickSize(currentFrame.rem() * 0.3)
+          //   .fullYear(false)
+          //   .frameName(frameName)
+          //   .intraday(intraday);
+
+          // // Draw the xAxis
+          // currentFrame.plot()
+          //   .call(xAxis);
 
           background.append('rect')
             .attr('width', currentFrame.dimension().width)
