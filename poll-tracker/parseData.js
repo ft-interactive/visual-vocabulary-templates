@@ -10,44 +10,61 @@ import loadData from '@financial-times/load-data';
  * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function load(url, options) { // eslint-disable-line
-    return loadData(url).then((result) => {
-        const data = result.data ? result.data : result;
-        const { yMin, joinPoints, highlightNames, dateFormat } = options; // eslint-disable-line no-unused-vars
-        // make sure all the dates in the date column are a date object
-        const parseDate = d3.timeParse(dateFormat);
-        data.forEach((d) => {
+export function load([url, url2], options) { // eslint-disable-line
+
+    return loadData([ // ... and with multiple files
+        url,
+        url2,
+    ]).then(([result1, result2]) => {
+    // return loadData(url).then((result) => {
+
+        const data1 = result1.data ? result1.data : result1;
+        const data2 = result2.data ? result2.data : result2;
+         const { dateFormat } = options; // eslint-disable-line no-unused-vars
+        const parseDate = d3.timeParse(dateFormat);    
+        data1.forEach((d) => {
+            d.date = parseDate(d.date);
+        });
+        data2.forEach((d) => {
             d.date = parseDate(d.date);
         });
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        const seriesNames = getSeriesNames(data.columns);
+        const seriesNames1 = getSeriesNames(data1.columns);
+        const seriesNames2 = getSeriesNames(data2.columns);
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames);
+        const valueExtent1 = extentMulti(data1, seriesNames1);
+        const valueExtent2 = extentMulti(data2, seriesNames2);
+
+        console.log('valueExtent1', valueExtent1, 'valueExtent2', valueExtent2)
 
         // Format the dataset that is used to draw the lines
-        const plotData = seriesNames.map(d => ({
-            name: d,
-            lineData: getlines(data, d),
+        const dotData = data1.map(d => ({
+            date: d.date,
+            name: d.name,
+            value: d.value,
         }));
 
-        // Sort the data so that the labeled items are drawn on top
-        const dataSorter = function dataSorter(a, b) {
-            if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-                return 1;
-            } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-                return 0;
-            }
-            return -1;
-        };
-        if (highlightNames.length > 0) { plotData.sort(dataSorter); }
+        const lineData = seriesNames2.map(d => ({
+            name: d,
+            linedata: getlines(data2, d),
+        }));
+
+        console.log('dotData', dotData);
+        console.log('lineData', lineData)
+
+        const dateExtent1 = d3.extent(data1, d => d.date);
+        const dateExtent2 = d3.extent(data2, d => d.date);
+        const dateExtent = [Math.min(dateExtent1[0], dateExtent2[0]), Math.max(dateExtent1[1], dateExtent2[1])];
+        const valueExtent = [Math.min(valueExtent1[0], valueExtent2[0]), Math.max(valueExtent1[1], valueExtent2[1])];
+
 
          // Filter data for annotations
-        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+        const annos = data2.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
         // Format the data that is used to draw highlight tonal bands
-        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
 
         boundaries.forEach((d, i) => {
@@ -57,7 +74,11 @@ export function load(url, options) { // eslint-disable-line
         });
 
         return {
-            plotData
+            dotData,
+            lineData,
+            dateExtent,
+            valueExtent,
+
         };
     });
 }
@@ -122,17 +143,4 @@ export function getlines(d, group, joinPoints) {
         }
     });
     return lineData;
-    // return d.map((el) => {
-    //     if (el[group]) {
-    //         return {
-    //             name: group,
-    //             date: el.date,
-    //             value: +el[group],
-    //             highlight: el.highlight,
-    //             annotate: el.annotate,
-    //         };
-    //     }
-
-    //     return null;
-    // }).filter(i => i);
 }

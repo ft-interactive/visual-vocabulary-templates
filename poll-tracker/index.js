@@ -9,7 +9,8 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './drawChart.js';
 
-const dataFile = 'data.csv';
+const dotsFile = 'dotsData.csv';
+const lineFile = 'lineData.csv';
 
 const dateFormat = '%d/%m/%Y';
 /*
@@ -32,9 +33,10 @@ const sharedConfig = {
 };
 //Put the user defined variablesin delete where not applicable
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the xAxis
+const yMax = 50;// sets the maximum value on the xAxis
+const divisor = 1
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
+const numTicks = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'fiscal';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
@@ -49,6 +51,7 @@ const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
+const dotOpacity = 0.5;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -117,10 +120,11 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
-  .then(({ plotData }) => {
+parseData.load([dotsFile, lineFile], { dateFormat })
+  .then(({ dotData, lineData, dateExtent, valueExtent}) => {
       Object.keys(frame).forEach((frameName) => {
           const currentFrame = frame[frameName];
+          const yAxis = gAxis.yLinear();
 
           // define other functions to be called
 
@@ -128,6 +132,35 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
 
           // create a 'g' element at the back of the chart to add time period
           const background = currentFrame.plot().append('g');
+
+          yAxis
+            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+            .divisor(divisor)
+            .range([currentFrame.dimension().height, 0])
+            .tickSize(currentFrame.dimension().width)
+            .numTicks(numTicks)
+            .align(yAxisAlign)
+            .logScale(logScale)
+            .frameName(frameName);
+
+          currentFrame.plot()
+          .call(yAxis);
+
+          // return the value in the variable newMargin
+          if (yAxisAlign === 'right') {
+              const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
+              // Use newMargin redefine the new margin and range of xAxis
+              currentFrame.margin({ right: newMargin });
+              // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+          }
+          if (yAxisAlign === 'left') {
+              const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
+              // Use newMargin redefine the new margin and range of xAxis
+              currentFrame.margin({ left: newMargin });
+              yAxis.yLabel().attr('transform', `translate(${(yAxis.tickSize() - yAxis.labelWidth())},0)`);
+          }
+          d3.select(currentFrame.plot().node().parentNode)
+              .call(currentFrame);
 
           background.append('rect')
             .attr('width', currentFrame.dimension().width)
