@@ -2,7 +2,6 @@
  * General data munging functionality
  */
 
-import * as d3 from 'd3';
 import loadData from '@financial-times/load-data';
 
 /**
@@ -50,14 +49,7 @@ function getGroups(seriesNames, el) {
 }
 
 function getCatNames(data, seriesNames) {
-    // look at all the values
-    const allVals = [];
-    // extract unique values used in heatmap
-    data.map((d) => {
-        seriesNames.forEach((e) => {
-            allVals.push(d[e]);
-        });
-    });
+    const allVals = data.reduce((acc, cur) => acc.concat(seriesNames.map(d => cur[d])), []);
 
     // identify the unique values in the array
     const filterVals = allVals.filter((v, i) => i === allVals.lastIndexOf(v));
