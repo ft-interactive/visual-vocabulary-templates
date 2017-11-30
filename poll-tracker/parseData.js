@@ -56,11 +56,9 @@ export function load([url, url2], options) { // eslint-disable-line
 
         const dateExtent1 = d3.extent(data1, d => d.date);
         const dateExtent2 = d3.extent(data2, d => d.date);
-        console.log('dateExtent1',dateExtent1,'dateExtent2',dateExtent1)
         let dateExtent = dateExtent1.concat(dateExtent2);
         dateExtent = d3.extent(dateExtent);
         const valueExtent = [Math.min(valueExtent1[0], valueExtent2[0]), Math.max(valueExtent1[1], valueExtent2[1])];
-        console.log('dateExtent',dateExtent)
 
          // Filter data for annotations
         const annos = data2.filter(d => (d.annotate !== '' && d.annotate !== undefined));

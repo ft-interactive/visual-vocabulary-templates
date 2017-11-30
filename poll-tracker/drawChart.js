@@ -2,106 +2,71 @@ import * as d3 from 'd3';
 import gChartcolour from 'g-chartcolour';
 
 
-export function draw() {
+export function drawDots() {
     let rem = 10;
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
     let seriesNames = [];
-    let highlightNames = [];
     let yAxisAlign = 'right';
-    let markers = false;
-    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
-    let annotate = false; // eslint-disable-line
-    let interpolation = d3.curveLinear;
-    const colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
+    //.domain(seriesNames);
 
-    function chart(parent) {
+    function dots(parent) {
         //Your drawing function in here
 
     }
 
-    chart.yScale = (d) => {
+    dots.yScale = (d) => {
         if (!d) return yScale;
         yScale = d;
-        return chart;
+        return dots;
     };
 
-    chart.yAxisAlign = (d) => {
+    dots.yAxisAlign = (d) => {
         if (!d) return yAxisAlign;
         yAxisAlign = d;
-        return chart;
+        return dots;
     };
 
-    chart.highlightNames = (d) => {
-        highlightNames = d;
-        return chart;
-    };
-
-    chart.seriesNames = (d) => {
+    dots.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
-        return chart;
+        return dots;
     };
 
-    chart.xScale = (d) => {
+    dots.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
-        return chart;
+        return dots;
     };
 
-    chart.plotDim = (d) => {
+    dots.plotDim = (d) => {
         if (!d) return window.plotDim;
         window.plotDim = d;
-        return chart;
+        return dots;
     };
 
-    chart.rem = (d) => {
+    dots.rem = (d) => {
         if (!d) return rem;
         rem = d;
-        return chart;
+        return dots;
     };
 
-    chart.annotate = (d) => {
-        annotate = d;
-        return chart;
-    };
-
-    chart.markers = (d) => {
-        if (typeof d === 'undefined') return markers;
-        markers = d;
-        return chart;
-    };
-
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
-
-    chart.colourPalette = (d) => {
+    dots.colourPalette = (d) => {
         if (!d) return colourScale;
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            }
-            return chart;
-        }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.lineWeb);
+            colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
-        return chart;
+        return dots;
     };
 
-    return chart;
+    return dots;
 }
 

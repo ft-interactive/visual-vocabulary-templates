@@ -7,7 +7,8 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as lineChart from './drawChart.js';
+import * as drawchart from './drawChart.js';
+import gChartcolour from 'g-chartcolour';
 
 const dotsFile = 'dotsData.csv';
 const lineFile = 'lineData.csv';
@@ -44,7 +45,7 @@ const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
-const minorAxis = true;// turns on or off the minor axis
+const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
@@ -52,6 +53,10 @@ const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 const dotOpacity = 0.5;
+const partyColours = d3.scaleOrdinal()
+  .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
+  .range(Object.values(gChartcolour.germanPoliticalParties_bar));
+
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -123,69 +128,85 @@ d3.selectAll('.framed')
 parseData.load([dotsFile, lineFile], { dateFormat })
   .then(({ dotData, lineData, dateExtent, valueExtent}) => {
       Object.keys(frame).forEach((frameName) => {
-          const currentFrame = frame[frameName];
-          const yAxis = gAxis.yLinear();//sets up the yAxis
-          const xAxis = gAxis.xDate();// sets up xAxis
+        const currentFrame = frame[frameName];
+        const yAxis = gAxis.yLinear();//sets up the yAxis
+        const xAxis = gAxis.xDate();// sets up xAxis
+        const pollDots = drawchart.drawDots(); // eslint-disable-line
 
-          // define other functions to be called
 
-          const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+        // define other functions to be called
 
-          // create a 'g' element at the back of the chart to add time period
-          const background = currentFrame.plot().append('g');
+        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
-          yAxis
-            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-            .divisor(divisor)
-            .range([currentFrame.dimension().height, 0])
-            .tickSize(currentFrame.dimension().width)
-            .numTicks(numTicks)
-            .align(yAxisAlign)
-            .logScale(logScale)
-            .frameName(frameName);
+        // create a 'g' element at the back of the chart to add time period
+        const background = currentFrame.plot().append('g');
 
-          currentFrame.plot()
-          .call(yAxis);
+        yAxis
+          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+          .divisor(divisor)
+          .range([currentFrame.dimension().height, 0])
+          .tickSize(currentFrame.dimension().width)
+          .numTicks(numTicks)
+          .align(yAxisAlign)
+          .logScale(logScale)
+          .frameName(frameName);
 
-          // return the value in the variable newMargin
-          if (yAxisAlign === 'right') {
-              const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
-              // Use newMargin redefine the new margin and range of xAxis
-              currentFrame.margin({ right: newMargin });
-              // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        currentFrame.plot()
+        .call(yAxis);
+
+        // return the value in the variable newMargin
+        if (yAxisAlign === 'right') {
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        }
+        if (yAxisAlign === 'left') {
+            const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
+            yAxis.yLabel().attr('transform', `translate(${(yAxis.tickSize() - yAxis.labelWidth())},0)`);
+        }
+        d3.select(currentFrame.plot().node().parentNode)
+            .call(currentFrame);
+
+        xAxis
+          .domain(dateExtent)
+          .range([0, currentFrame.dimension().width])
+          .align(xAxisAlign)
+          .fullYear(false)
+          .interval(interval)
+          .tickSize(currentFrame.rem() * 0.75)
+          .minorAxis(minorAxis)
+          .minorTickSize(currentFrame.rem() * 0.3)
+          .fullYear(false)
+          .frameName(frameName)
+          .intraday(intraday);
+
+        // Draw the xAxis
+        currentFrame.plot()
+          .call(xAxis);
+
+        if (xAxisAlign === 'bottom') {
+          xAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+          if (minorAxis) {
+            xAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height})`);
           }
-          if (yAxisAlign === 'left') {
-              const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
-              // Use newMargin redefine the new margin and range of xAxis
-              currentFrame.margin({ left: newMargin });
-              yAxis.yLabel().attr('transform', `translate(${(yAxis.tickSize() - yAxis.labelWidth())},0)`);
-          }
-          d3.select(currentFrame.plot().node().parentNode)
-              .call(currentFrame);
+        }
+        if (xAxisAlign === 'top') {
+            xAxis.xLabel().attr('transform', `translate(0,${xAxis.tickSize()})`);
+        }
+        pollDots
+          .yScale(yAxis.scale())
+          .xScale(xAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette(partyColours);
 
-          console.log('dateExtent',dateExtent)
-
-          // xAxis
-          //   .domain(dateExtent)
-          //   .range([0, currentFrame.dimension().width])
-          //   .align(xAxisAlign)
-          //   .fullYear(false)
-          //   .interval(interval)
-          //   .tickSize(currentFrame.rem() * 0.75)
-          //   .minorAxis(minorAxis)
-          //   .minorTickSize(currentFrame.rem() * 0.3)
-          //   .fullYear(false)
-          //   .frameName(frameName)
-          //   .intraday(intraday);
-
-          // // Draw the xAxis
-          // currentFrame.plot()
-          //   .call(xAxis);
-
-          background.append('rect')
-            .attr('width', currentFrame.dimension().width)
-            .attr('height', currentFrame.dimension().height)
-            .attr('fill', '#ededee');
-      });
+        background.append('rect')
+          .attr('width', currentFrame.dimension().width)
+          .attr('height', currentFrame.dimension().height)
+          .attr('fill', '#ededee');
+    });
       // addSVGSavers('figure.saveable');
   });
