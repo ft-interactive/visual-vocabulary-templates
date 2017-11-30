@@ -17,8 +17,6 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-// const yMin = 0;// sets the minimum value on the yAxis
-// const yMax = 0;// sets the maximum value on the xAxis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
 
@@ -116,7 +114,7 @@ parseData.load(dataFile)
                 .plotDim(currentFrame.dimension())
                 .seriesNames(seriesNames)
                 .rem(currentFrame.rem())
-                .colourPalette((frameName));
+                .colourPalette(frameName);
 
             currentFrame.plot()
                 .selectAll('.treemap')
@@ -132,7 +130,7 @@ parseData.load(dataFile)
                 .frameName(frameName)
                 .rem(currentFrame.rem())
                 .alignment(legendAlign)
-                .colourPalette((frameName));
+                .colourPalette(frameName);
 
             currentFrame.plot()
                 .append('g')
@@ -145,7 +143,7 @@ parseData.load(dataFile)
                 .call(myLegend);
 
             const legendSelection = currentFrame.plot().select('#legend');
-        const legheight = (legendSelection.node().getBBox().height); // eslint-disable-line
+            const legheight = legendSelection.node().getBBox().height; // eslint-disable-line
             legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
         });
     // addSVGSavers('figure.saveable');

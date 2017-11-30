@@ -25,14 +25,9 @@ export function load(url, options) { // eslint-disable-line
         function buildTree() {
             const treeData = seriesNames.map(d => ({
                 name: d,
-                children: getChuldren(d),
+                children: data.filter(el => el.category === d)
             }));
             return treeData;
-        }
-
-        function getChuldren(el) {
-            const children = data.filter(d => d.category === el);
-            return children;
         }
 
         return {
@@ -82,44 +77,5 @@ export function extentMulti(d, columns, yMin) {
     }, {});
     return [ext.min, ext.max];
 }
+    
 
-/**
- * Sorts the column information in the dataset into groups according to the column
- * head, so that the line path can be passed as one object to the drawing function
- */
-export function getlines(d, group, joinPoints) {
-    const lineData = [];
-    d.forEach((el) => {
-        // console.log(el,i)
-        const column = {};
-        column.name = group;
-        column.date = el.date;
-        column.value = +el[group];
-        column.highlight = el.highlight;
-        column.annotate = el.annotate;
-        if (el[group]) {
-            lineData.push(column);
-        }
-
-        // if(el[group] == false) {
-        //     lineData.push(null)
-        // }
-        if (el[group] === false && joinPoints === false) {
-            lineData.push(null);
-        }
-    });
-    return lineData;
-    // return d.map((el) => {
-    //     if (el[group]) {
-    //         return {
-    //             name: group,
-    //             date: el.date,
-    //             value: +el[group],
-    //             highlight: el.highlight,
-    //             annotate: el.annotate,
-    //         };
-    //     }
-
-    //     return null;
-    // }).filter(i => i);
-}
