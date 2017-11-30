@@ -37,15 +37,7 @@ export function draw() {
             .attr('width', () => xScale.bandwidth())
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', (d) => {
-                let colourIndex = 0;
-                catNames.forEach((obj, k) => {
-                    if (obj === d.value) {
-                        colourIndex = colourScale.range()[k];
-                    }
-                });
-                return colourIndex;
-            });
+            .attr('fill', d => colourScale.range()[catNames.lastIndexOf(d.value)]);
     }
 
     chart.yScale = (d) => {
@@ -90,29 +82,13 @@ export function draw() {
         return chart;
     };
 
-    chart.xDomain0 = (d) => {
+    chart.xDomain = (d) => {
         xScale.domain(d);
         return chart;
     };
 
-    chart.xRange0 = (d) => {
+    chart.xRange = (d) => {
         xScale.rangeRound(d);
-        return chart;
-    };
-
-    chart.xScale1 = (d) => {
-        if (!d) return xScale1;
-        xScale1 = d;
-        return chart;
-    };
-
-    chart.xDomain1 = (d) => {
-        xScale1.domain(d);
-        return chart;
-    };
-
-    chart.xRange1 = (d) => {
-        xScale1.rangeRound(d);
         return chart;
     };
 
