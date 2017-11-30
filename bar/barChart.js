@@ -30,7 +30,7 @@ export function draw() {
                 if(logScale) {
                     return xScale(Math.min(min, d.value));
                 }                
-                xScale(Math.min(0, d.value))
+                return xScale(Math.min(0, d.value))
                 })
             .attr('width', (d) => {
                 if(logScale) {
