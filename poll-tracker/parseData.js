@@ -60,11 +60,6 @@ export function load(url, options) { // eslint-disable-line
             return dotsData;
         }
 
-        const lineData = seriesNames.map(d => ({
-            name: d,
-            linedata: getlines(data, d),
-        }));
-
         console.log('plotData', plotData);
         
          // Filter data for annotations
@@ -85,8 +80,7 @@ export function load(url, options) { // eslint-disable-line
             dateExtent,
             valueExtent,
             data,
-            pollsters
-
+            pollsters,
         };
     });
 }
@@ -125,37 +119,9 @@ function extentMulti(data, columns) {
     return [ext.min, ext.max];
 }
 
-/**
- * Sorts the column information in the dataset into groups according to the column
- * head, so that the line path can be passed as one object to the drawing function
- */
-export function getlines(d, group, joinPoints) {
-    const lineData = [];
-    d.forEach((el) => {
-        // console.log(el,i)
-        const column = {};
-        column.name = group;
-        column.date = el.date;
-        column.value = +el[group];
-        column.highlight = el.highlight;
-        column.annotate = el.annotate;
-        if (el[group]) {
-            lineData.push(column);
-        }
-
-        // if(el[group] == false) {
-        //     lineData.push(null)
-        // }
-        if (el[group] === false && joinPoints === false) {
-            lineData.push(null);
-        }
-    });
-    return lineData;
-}
 
 function averageData(dateExtent, maxAverage, allData) {
-    //console.log('allData', allData)
-    const lineData = d3.timeDays(Math.max(dateExtent[0],allData[0].date),dateExtent[1])
+    const lineData = d3.timeDays(Math.max(dateExtent[0], allData[0].date), dateExtent[1])
         .map((d) => {
             return {
                 date: d,
@@ -166,11 +132,11 @@ function averageData(dateExtent, maxAverage, allData) {
 
     function getAverage(rollinfDate, maxAverage) {
         let poll = allData.filter((d) =>{
-            return d.date <= rollinfDate
-        })
+            return d.date <= rollinfDate;
+        });
         poll = poll.slice(-maxAverage);
-        const pollValues =  poll.map(d => d.value)
-        const average = d3.mean(pollValues)
-        return average
+        const pollValues = poll.map(d => d.value);
+        const average = d3.mean(pollValues);
+        return average;
     }
 }
