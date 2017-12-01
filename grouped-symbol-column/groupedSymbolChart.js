@@ -99,7 +99,7 @@ export function draw() {
     groupedSymbols.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
             colourScale.range(gChartcolour.categorical_line);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
