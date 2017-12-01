@@ -52,7 +52,7 @@ const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 const dotOpacity = 0.2;
-const maxAverage = 3;
+const maxAverage = 5;
 const partyColours = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
   .range(Object.values(gChartcolour.germanPoliticalParties_bar));

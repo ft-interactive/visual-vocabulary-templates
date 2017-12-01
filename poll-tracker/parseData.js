@@ -155,7 +155,7 @@ export function getlines(d, group, joinPoints) {
 
 function averageData(dateExtent, maxAverage, allData) {
     //console.log('allData', allData)
-    const lineData = d3.timeDays(dateExtent[0],dateExtent[1])
+    const lineData = d3.timeDays(Math.max(dateExtent[0],allData[0].date),dateExtent[1])
         .map((d) => {
             return {
                 date: d,
