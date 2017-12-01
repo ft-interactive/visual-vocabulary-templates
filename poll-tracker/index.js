@@ -10,8 +10,7 @@ import * as parseData from './parseData.js';
 import * as drawchart from './drawChart.js';
 import gChartcolour from 'g-chartcolour';
 
-const dataFile = 'dotsData.csv';
-const lineFile = 'lineData.csv';
+const dataFile = 'bavaria.csv';
 
 const dateFormat = '%d/%m/%Y';
 /*
@@ -34,7 +33,7 @@ const sharedConfig = {
 };
 //Put the user defined variablesin delete where not applicable
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 45;// sets the maximum value on the xAxis
+const yMax = 50;// sets the maximum value on the xAxis
 const divisor = 1
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
@@ -57,6 +56,8 @@ const partyColours = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
   .range(Object.values(gChartcolour.germanPoliticalParties_bar));
 
+console.log(partyColours.range())
+console.log(partyColours.domain())
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {

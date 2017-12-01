@@ -13,7 +13,7 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { dateFormat } = options;
+        const { dateFormat, maxAverage } = options;
     // return loadData(url).then((result) => {
 
         const parseDate = d3.timeParse(dateFormat);    
@@ -37,6 +37,7 @@ export function load(url, options) { // eslint-disable-line
             return {
                 party: d,
                 dots: getDots(data,d),
+                //lines: averageData(getDots(data, d)),
             }
         })
 
@@ -154,7 +155,8 @@ export function getlines(d, group, joinPoints) {
 }
 
 function averageData(allData){
-
+    console.log('allData', allData)
+  // const parties = Object.keys(allData[0]['parties']);
   const parties = Object.keys(allData[0]['parties']);
 
   const uniqueDates = [ ...new Set(allData.map(d => d.surveyPublished))];
