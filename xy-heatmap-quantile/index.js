@@ -18,9 +18,9 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const scaleBreaks = [-40, -20, 0, 20, 40, 60]; // define the ranges for your data
+const scaleBreaks = [-20, 0, 20, 40, 60]; // define the ranges for your data
 const scaleType = 'diverging'; // choose from 'sequentialRed', 'sequentialBlue', 'diverging'
-const startColor = 0;
+let startColor = 0;
 let cScale;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -122,9 +122,15 @@ parseData.load(dataFile, { scaleBreaks })
             default:
             }
 
+            scaleBreaks.forEach((obj, key) => {
+                if (obj === 0) {
+                    startColor = (4 - key);
+                }
+            });
+
             const scaleColours = d3.scaleOrdinal()
                 .domain(scaleBreaks)
-                .range(cScale.slice(startColor, scaleBreaks.length));
+                .range(cScale.slice(startColor, scaleBreaks.length + startColor));
 
             console.log(scaleColours.range());
             console.log(scaleColours.domain());
@@ -166,8 +172,8 @@ parseData.load(dataFile, { scaleBreaks })
                 .yScale(myYAxis.scale())
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .scaleBreaks(scaleBreaks)
-                .colourPalette(frameName, cScale);
+                .startColor(startColor)
+                .colourPalette(frameName, cScale, scaleBreaks);
 
             currentFrame.plot()
                 .call(myXAxis);

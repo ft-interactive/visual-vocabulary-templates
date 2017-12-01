@@ -5,7 +5,7 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleBand();
     let seriesNames = [];
-    let scaleBreaks = [];
+    let startColor = 0;
     let cScale;
     let logScale = false;
     let yAxisAlign = 'right';
@@ -71,9 +71,9 @@ export function draw() {
         return chart;
     };
 
-    chart.scaleBreaks = (d) => {
-        if (typeof d === 'undefined') return scaleBreaks;
-        scaleBreaks = d;
+    chart.startColor = (d) => {
+        if (typeof d === 'undefined') return startColor;
+        startColor = d;
         return chart;
     };
 
@@ -129,16 +129,10 @@ export function draw() {
         return chart;
     };
 
-    chart.colourPalette = (d, type) => {
+    chart.colourPalette = (d, type, scaleBreaks) => {
         if (!d) return colourScale;
-
-        if (d === 'social' || d === 'video') {
-            colourScale.range(type);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(type);
-        } else if (d === 'print') {
-            colourScale.range(type);
-        }
+        console.log(startColor)
+        colourScale.range(type.slice(startColor, scaleBreaks.length + startColor));
         return chart;
     };
 
