@@ -125,15 +125,15 @@ export function getLines(dateExtent, maxAverage, allData) {
             return {
                 date: d,
                 average: getAverage(d, maxAverage),
-            }
+            };
         });
     return lineData;
 
-    function getAverage(rollinfDate, maxAverage) {
+    function getAverage(rollinfDate, max) {
         let poll = allData.filter((d) =>{
             return d.date <= rollinfDate;
         });
-        poll = poll.slice(-maxAverage);
+        poll = poll.slice(-max);
         const pollValues = poll.map(d => d.value);
         const average = d3.mean(pollValues);
         return average;
