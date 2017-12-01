@@ -4,7 +4,7 @@ import gChartcolour from 'g-chartcolour';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as xyHeatmapCategoryChart from './xyHeatmapCategory.js';
+import * as xyHeatmapQuantileChart from './xyHeatmapQuantile.js';
 
 const dataFile = 'data.csv';
 
@@ -18,7 +18,7 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const scaleBreaks = [20, 40, 60, 80, 100]; // define the ranges for your data
+const scaleBreaks = [-40, -20, 0, 20, 40, 60]; // define the ranges for your data
 const scaleType = 'diverging'; // choose from 'sequentialRed', 'sequentialBlue', 'diverging'
 const startColor = 0;
 let cScale;
@@ -93,7 +93,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile, '')
+parseData.load(dataFile, { scaleBreaks })
     .then(({
         seriesNames, plotData,
     }) => { // eslint-disable-line no-unused-vars
@@ -102,9 +102,9 @@ parseData.load(dataFile, '')
 
             const myXAxis = gAxis.xOrdinal();// sets up yAxis
             const myYAxis = gAxis.yOrdinal();
-            const myChart = xyHeatmapCategoryChart.draw(); // eslint-disable-line no-unused-vars
+            const myChart = xyHeatmapQuantileChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
-
+            console.log(plotData);
             // define color scale based on scale type
             switch (scaleType) {
             case 'diverging':
@@ -123,7 +123,7 @@ parseData.load(dataFile, '')
             }
 
             const scaleColours = d3.scaleOrdinal()
-                .domain(d3.range(scaleBreaks.length))
+                .domain(scaleBreaks)
                 .range(cScale.slice(startColor, scaleBreaks.length));
 
             console.log(scaleColours.range());

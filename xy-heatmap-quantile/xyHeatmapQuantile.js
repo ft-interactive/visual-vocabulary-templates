@@ -29,7 +29,7 @@ export function draw() {
             .enter()
             .append('rect')
             .attr('class', (d) => {
-                if (d.value) {
+                if (typeof d.value === 'number') {
                     return 'grid';
                 }
                 return 'grid noData';
@@ -38,7 +38,7 @@ export function draw() {
             .attr('width', () => xScale.bandwidth())
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', d => colourScale(d.name));
+            .attr('fill', d => colourScale.range()[d.scaleCat]);
     }
 
     chart.yScale = (d) => {
