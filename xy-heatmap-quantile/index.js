@@ -20,7 +20,7 @@ const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const scaleBreaks = [20, 40, 60, 80, 100]; // define the ranges for your data
 const scaleType = 'diverging'; // choose from 'sequentialRed', 'sequentialBlue', 'diverging'
-const colourDomain = [0, 1, 2, 3, 4];
+const startColor = 0;
 let cScale;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -105,6 +105,7 @@ parseData.load(dataFile, '')
             const myChart = xyHeatmapCategoryChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
 
+            // define color scale based on scale type
             switch (scaleType) {
             case 'diverging':
                 cScale = gChartcolour.diverging;
@@ -120,9 +121,13 @@ parseData.load(dataFile, '')
 
             default:
             }
+
             const scaleColours = d3.scaleOrdinal()
-                .domain(colourDomain)
-                .range(cScale.slice(0, colourDomain.length));
+                .domain(d3.range(scaleBreaks.length))
+                .range(cScale.slice(startColor, scaleBreaks.length));
+
+            console.log(scaleColours.range());
+            console.log(scaleColours.domain());
 
             myYAxis
                 .rangeRound([0, currentFrame.dimension().height], 0)
