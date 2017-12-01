@@ -5,7 +5,8 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleBand();
     let seriesNames = [];
-    let catNames = [];
+    let scaleBreaks = [];
+    let cScale;
     let logScale = false;
     let yAxisAlign = 'right';
     let rem = 16;
@@ -37,7 +38,7 @@ export function draw() {
             .attr('width', () => xScale.bandwidth())
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', d => colourScale.range()[catNames.lastIndexOf(d.value)]);
+            .attr('fill', d => colourScale(d.name));
     }
 
     chart.yScale = (d) => {
@@ -70,9 +71,9 @@ export function draw() {
         return chart;
     };
 
-    chart.catNames = (d) => {
-        if (typeof d === 'undefined') return catNames;
-        catNames = d;
+    chart.scaleBreaks = (d) => {
+        if (typeof d === 'undefined') return scaleBreaks;
+        scaleBreaks = d;
         return chart;
     };
 
@@ -128,14 +129,15 @@ export function draw() {
         return chart;
     };
 
-    chart.colourPalette = (d) => {
+    chart.colourPalette = (d, type) => {
         if (!d) return colourScale;
+
         if (d === 'social' || d === 'video') {
-            colourScale.range(gChartcolour.lineSocial);
+            colourScale.range(type);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.categorical_bar);
+            colourScale.range(type);
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.barPrint);
+            colourScale.range(type);
         }
         return chart;
     };

@@ -16,7 +16,6 @@ export function load(url, options) { // eslint-disable-line
 
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
 
-        const catNames = getCatNames(data, seriesNames);
 
         // Buid the dataset for plotting
         const plotData = data.map(d => ({
@@ -29,7 +28,6 @@ export function load(url, options) { // eslint-disable-line
             plotData,
             data,
             groupNames,
-            catNames,
         };
     });
 }
@@ -48,13 +46,3 @@ function getGroups(seriesNames, el) {
     }));
 }
 
-function getCatNames(data, seriesNames) {
-    const allVals = data.reduce((acc, cur) => acc.concat(seriesNames.map(d => cur[d])), []);
-
-    // identify the unique values in the array
-    const filterVals = allVals.filter((v, i) => i === allVals.lastIndexOf(v));
-
-    // remove falsy values
-    const uniqVals = filterVals.map(d => d).filter(d => d !== '');
-    return uniqVals;
-}

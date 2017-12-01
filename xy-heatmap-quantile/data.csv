@@ -1,11 +1,11 @@
 name,Col 1,Col 2,Col 3,Col 4,Col 5,Col 6,Col 7,Col 8
-Row 1,cat C,cat C,cat A,cat B,,cat B,cat B,cat A
-Row 2,cat A,cat A,cat A,cat B,cat A,cat B,cat A,cat B
-Row 3,cat A,cat A,cat B,cat B,cat A,cat B,cat A,cat B
-Row 4,cat A,cat A,cat B,cat A,cat B,cat A,cat A,cat B
-Row 5,,cat A,cat A,cat A,cat A,cat B,cat B,cat B
-Row 6,,cat A,cat A,cat A,cat B,cat B,cat A,cat B
-Row 7,cat A,cat A,cat A,cat A,cat B,,cat B,cat A
-Row 8,,cat A,cat A,cat A,cat B,,cat A,cat A
-Row 9,,cat C,,cat A,,,cat C,cat B
-Row 10,,cat C,cat C,cat C,cat C,,cat B,cat B
+Row 1,64,99,65,26,66,62,97,22
+Row 2,46,18,33,93,68,17,80,49
+Row 3,97,23,44,11,76,26,34,15
+Row 4,63,9,89,67,71,6,32,26
+Row 5,38,99,27,7,77,78,3,19
+Row 6,34,73,78,68,82,28,95,38
+Row 7,99,33,13,0,95,5,100,8
+Row 8,99,10,50,1,11,47,66,57
+Row 9,66,80,71,97,90,40,76,42
+Row 10,59,89,3,0,51,63,19,88

@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
+import gChartcolour from 'g-chartcolour';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
@@ -17,6 +18,10 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const scaleBreaks = [20, 40, 60, 80, 100]; // define the ranges for your data
+const scaleType = 'diverging'; // choose from 'sequentialRed', 'sequentialBlue', 'diverging'
+const colourDomain = [0, 1, 2, 3, 4];
+let cScale;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -90,7 +95,7 @@ d3.selectAll('.framed')
 
 parseData.load(dataFile, '')
     .then(({
-        seriesNames, catNames, plotData,
+        seriesNames, plotData,
     }) => { // eslint-disable-line no-unused-vars
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -100,13 +105,32 @@ parseData.load(dataFile, '')
             const myChart = xyHeatmapCategoryChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
 
+            switch (scaleType) {
+            case 'diverging':
+                cScale = gChartcolour.diverging;
+                break;
+
+            case 'sequentialRed':
+                cScale = gChartcolour.sequentialMulti_2;
+                break;
+
+            case 'sequentialBlue':
+                cScale = gChartcolour.sequentialMulti;
+                break;
+
+            default:
+            }
+            const scaleColours = d3.scaleOrdinal()
+                .domain(colourDomain)
+                .range(cScale.slice(0, colourDomain.length));
+
             myYAxis
                 .rangeRound([0, currentFrame.dimension().height], 0)
                 .domain(plotData.map(d => d.name))
                 .align(yAxisAlign)
                 .frameName(frameName);
 
-        const base = currentFrame.plot().append('g'); // eslint-disable-line
+            const base = currentFrame.plot().append('g'); // eslint-disable-line
             currentFrame.plot()
                 .call(myYAxis);
 
@@ -135,10 +159,10 @@ parseData.load(dataFile, '')
             myChart
                 .xScale(myXAxis.scale())
                 .yScale(myYAxis.scale())
-                .catNames(catNames)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .colourPalette(frameName);
+                .scaleBreaks(scaleBreaks)
+                .colourPalette(frameName, cScale);
 
             currentFrame.plot()
                 .call(myXAxis);
@@ -160,19 +184,19 @@ parseData.load(dataFile, '')
 
             // Set up legend for this frame
             myLegend
-                .seriesNames(catNames)
+                .seriesNames(scaleBreaks)
                 .geometry(legendType)
                 .frameName(frameName)
                 .rem(myChart.rem())
                 .alignment(legendAlign)
-                .colourPalette((frameName));
+                .colourPalette(scaleColours);
 
             // Draw the Legend
             currentFrame.plot()
                 .append('g')
                 .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(catNames)
+                .data(scaleBreaks)
                 .enter()
                 .append('g')
                 .classed('legend', true)
