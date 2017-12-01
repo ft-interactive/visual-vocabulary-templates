@@ -16,8 +16,7 @@ export function load(url, options) { // eslint-disable-line
         const { dateFormat, maxAverage } = options;
     // return loadData(url).then((result) => {
 
-        const parseDate = d3.timeParse(dateFormat);    
-        
+        const parseDate = d3.timeParse(dateFormat);
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
@@ -29,18 +28,18 @@ export function load(url, options) { // eslint-disable-line
         const valueExtent = extentMulti(data, seriesNames);
         const dateExtent = d3.extent(data, d => d.date);
 
-        let pollsters = data.map(d => d.pollster)
-            pollsters = pollsters.filter((el, i) => pollsters.indexOf(el) === i);
+        let pollsters = data.map(d => d.pollster);
+        pollsters = pollsters.filter((el, i) => pollsters.indexOf(el) === i);
         console.log('pollsters', pollsters)
 
         // Format the dataset that is used to draw the lines
-        const plotData = seriesNames.map( (d) => {
+        const plotData = seriesNames.map((d) => {
             return {
                 party: d,
-                dots: getDots(data,d),
-                lines: averageData(dateExtent, maxAverage, getDots(data, d)),
-            }
-        })
+                dots: getDots(data, d),
+                lines: getLines(dateExtent, maxAverage, getDots(data, d)),
+            };
+        });
 
         function getDots(d, group) {
             const dotsData = [];
@@ -61,7 +60,7 @@ export function load(url, options) { // eslint-disable-line
         }
 
         console.log('plotData', plotData);
-        
+
          // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
@@ -120,7 +119,7 @@ function extentMulti(data, columns) {
 }
 
 
-function averageData(dateExtent, maxAverage, allData) {
+export function getLines(dateExtent, maxAverage, allData) {
     const lineData = d3.timeDays(Math.max(dateExtent[0], allData[0].date), dateExtent[1])
         .map((d) => {
             return {
