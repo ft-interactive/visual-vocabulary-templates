@@ -18,7 +18,7 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const scaleBreaks = [-20, 0, 20, 40, 60]; // define the ranges for your data
+const scaleBreaks = [-40, -20, 0, 20, 40, 60]; // define the ranges for your data
 const scaleType = 'diverging'; // choose from 'sequentialRed', 'sequentialBlue', 'diverging'
 let startColor = 0;
 let cScale;
