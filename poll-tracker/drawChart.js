@@ -118,30 +118,20 @@ export function drawLines() {
     let interpolation = d3.curveLinear;
     let colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
+    let rem = 10
 
     function chart(parent) {
         const lineData = d3.line()
         .defined(d => d)
         .curve(interpolation)
         .x(d => xScale(d.date))
-        .y(d => yScale(d.value));
+        .y(d => yScale(d.rollingAverage));
 
         parent.append('path')
-            .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlightLine === true) {
-                    return colourScale(d.name);
-                } return colourScale(d.name);
+            .attr('stroke', (d) => {return colourScale(d.party);
             })
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return 0.5;
-                } return 1;
-            })
-            .attr('d', d => lineData(d.lineData));
+            .attr('opacity', 1)
+            .attr('d', d => lineData(d.lines));
 
         if (markers) {
             parent.selectAll('.markers')
@@ -248,24 +238,14 @@ export function drawLines() {
 
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            } else if (d && d.name && d.name === 'scale') {
-                colourScale = d;
-            }
-            return chart;
-        }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.lineWeb);
+            colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };

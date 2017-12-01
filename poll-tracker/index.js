@@ -52,13 +52,10 @@ const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 const dotOpacity = 0.2;
-const maxAverage = 7;
+const maxAverage = 3;
 const partyColours = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
   .range(Object.values(gChartcolour.germanPoliticalParties_bar));
-
-console.log(partyColours.range())
-console.log(partyColours.domain())
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -206,6 +203,13 @@ parseData.load(dataFile, { dateFormat, maxAverage })
           .rem(currentFrame.rem())
           .colourPalette(partyColours)
           .dotOpacity(dotOpacity);
+        
+        trends
+          .yScale(yAxis.scale())
+          .xScale(xAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette(partyColours)
 
         currentFrame.plot()
           .selectAll('dots')
@@ -214,6 +218,14 @@ parseData.load(dataFile, { dateFormat, maxAverage })
           .append('g')
           .attr('id', d => d.party)
           .call(polls)
+
+        currentFrame.plot()
+          .selectAll('dots')
+          .data(plotData)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .call(trends)
 
         // background.append('rect')
         //   .attr('width', currentFrame.dimension().width)
