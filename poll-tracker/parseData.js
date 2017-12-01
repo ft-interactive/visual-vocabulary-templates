@@ -64,6 +64,8 @@ export function load(url, options) { // eslint-disable-line
             name: d,
             linedata: getlines(data, d),
         }));
+
+        console.log('plotData', plotData);
         
          // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
@@ -157,7 +159,7 @@ function averageData(dateExtent, maxAverage, allData) {
         .map((d) => {
             return {
                 date: d,
-                rollingAverage: getAverage(d, maxAverage),
+                average: getAverage(d, maxAverage),
             }
         });
     return lineData;

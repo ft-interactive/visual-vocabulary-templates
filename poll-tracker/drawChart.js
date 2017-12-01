@@ -108,48 +108,24 @@ export function drawDots() {
 export function drawLines() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
-    let seriesNames = [];
-    let highlightNames = [];
     let yAxisAlign = 'right';
-    let markers = false;
-    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
-    let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
     let colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
-    let rem = 10
+    let rem = 10;
 
     function lines(parent) {
         const lineData = d3.line()
         .defined(d => d)
         .curve(interpolation)
         .x(d => xScale(d.date))
-        .y(d => yScale(d.rollingAverage));
+        .y(d => yScale(d.average));
 
         parent.append('path')
             .attr('stroke', (d) => {return colourScale(d.party);
             })
             .attr('opacity', 1)
             .attr('d', d => lineData(d.lines));
-
-        if (markers) {
-            parent.selectAll('.markers')
-        .data((d) => {
-            if (markers) {
-                return d.lineData;
-            }
-
-            return undefined;
-        })
-        .enter()
-        .append('circle')
-        .classed('markers', true)
-        .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        .attr('cx', d => xScale(d.date))
-        .attr('cy', d => yScale(d.value))
-        .attr('r', rem * 0.25)
-        .attr('fill', d => colourScale(d.name));
-        }
     }
 
     lines.yScale = (d) => {
@@ -161,18 +137,6 @@ export function drawLines() {
     lines.yAxisAlign = (d) => {
         if (!d) return yAxisAlign;
         yAxisAlign = d;
-        return lines;
-    };
-
-    lines.highlightNames = (d) => {
-        if (!d) return highlightNames;
-        highlightNames = d;
-        return lines;
-    };
-
-    lines.seriesNames = (d) => {
-        if (typeof d === 'undefined') return seriesNames;
-        seriesNames = d;
         return lines;
     };
 
@@ -191,17 +155,6 @@ export function drawLines() {
     lines.rem = (d) => {
         if (!d) return rem;
         rem = d;
-        return lines;
-    };
-
-    lines.annotate = (d) => {
-        annotate = d;
-        return lines;
-    };
-
-    lines.markers = (d) => {
-        if (typeof d === 'undefined') return markers;
-        markers = d;
         return lines;
     };
 
