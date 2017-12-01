@@ -10,7 +10,7 @@ import * as parseData from './parseData.js';
 import * as drawchart from './drawChart.js';
 import gChartcolour from 'g-chartcolour';
 
-const dotsFile = 'dotsData.csv';
+const dataFile = 'dotsData.csv';
 const lineFile = 'lineData.csv';
 
 const dateFormat = '%d/%m/%Y';
@@ -125,13 +125,13 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load([dotsFile, lineFile], { dateFormat })
-  .then(({ dotData, lineData, dateExtent, valueExtent}) => {
+parseData.load(dataFile, { dateFormat })
+  .then(({ plotData, dateExtent, valueExtent, data, pollsters}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         const yAxis = gAxis.yLinear();//sets up the yAxis
         const xAxis = gAxis.xDate();// sets up xAxis
-        const pollDots = drawchart.drawDots(); // eslint-disable-line
+        const polls = drawchart.drawDots(); // eslint-disable-line
 
 
         // define other functions to be called
@@ -196,7 +196,7 @@ parseData.load([dotsFile, lineFile], { dateFormat })
         if (xAxisAlign === 'top') {
             xAxis.xLabel().attr('transform', `translate(0,${xAxis.tickSize()})`);
         }
-        pollDots
+        polls
           .yScale(yAxis.scale())
           .xScale(xAxis.scale())
           .plotDim(currentFrame.dimension())
@@ -206,11 +206,11 @@ parseData.load([dotsFile, lineFile], { dateFormat })
 
         currentFrame.plot()
           .selectAll('dots')
-          .data(dotData)
+          .data(plotData)
           .enter()
           .append('g')
           .attr('id', d => d.party)
-          .call(pollDots)
+          .call(polls)
 
         background.append('rect')
           .attr('width', currentFrame.dimension().width)

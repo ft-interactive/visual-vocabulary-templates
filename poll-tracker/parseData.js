@@ -10,41 +10,33 @@ import loadData from '@financial-times/load-data';
  * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function load([url, url2], options) { // eslint-disable-line
-
-    return loadData([ // ... and with multiple files
-        url,
-        url2,
-    ]).then(([result1, result2]) => {
+export function load(url, options) { // eslint-disable-line
+    return loadData(url).then((result) => {
+        const data = result.data ? result.data : result;
+        const { dateFormat } = options;
     // return loadData(url).then((result) => {
 
-        const data1 = result1.data ? result1.data : result1;
-        const data2 = result2.data ? result2.data : result2;
-        const { dateFormat } = options; // eslint-disable-line no-unused-vars
         const parseDate = d3.timeParse(dateFormat);    
-        data1.forEach((d) => {
-            d.date = parseDate(d.date);
-        });
-        data2.forEach((d) => {
+        
+        data.forEach((d) => {
             d.date = parseDate(d.date);
         });
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        const seriesNames1 = getSeriesNames(data1.columns);
-        const seriesNames2 = getSeriesNames(data2.columns);
+        const seriesNames = getSeriesNames(data.columns);
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent1 = extentMulti(data1, seriesNames1);
-        const valueExtent2 = extentMulti(data2, seriesNames2);
+        const valueExtent = extentMulti(data, seriesNames);
 
-        console.log('valueExtent1', valueExtent1, 'valueExtent2', valueExtent2)
+        let pollsters = data.map(d => d.pollster)
+            pollsters = pollsters.filter((el, i) => pollsters.indexOf(el) === i);
+        console.log('pollsters', pollsters)
 
         // Format the dataset that is used to draw the lines
-        const dotData = seriesNames1.map( (d) => {
+        const plotData = seriesNames.map( (d) => {
             return {
                 party: d,
-                dots: getDots(data1,d),
-                pollsters: getPolsters(data1.pollsters),
+                dots: getDots(data,d),
             }
         })
 
@@ -65,30 +57,21 @@ export function load([url, url2], options) { // eslint-disable-line
             });
             return dotsData;
         }
-        function getPolsters(pollsters) {
-            console.log('pollsters', pollsters)
 
-        }
-
-        const lineData = seriesNames2.map(d => ({
+        const lineData = seriesNames.map(d => ({
             name: d,
-            linedata: getlines(data2, d),
+            linedata: getlines(data, d),
         }));
 
-        console.log('dotData', dotData);
-        console.log('lineData', lineData)
+        console.log('plotData', plotData);
 
-        const dateExtent1 = d3.extent(data1, d => d.date);
-        const dateExtent2 = d3.extent(data2, d => d.date);
-        let dateExtent = dateExtent1.concat(dateExtent2);
-        dateExtent = d3.extent(dateExtent);
-        const valueExtent = [Math.min(valueExtent1[0], valueExtent2[0]), Math.max(valueExtent1[1], valueExtent2[1])];
-
+        const dateExtent = d3.extent(data, d => d.date);
+        
          // Filter data for annotations
-        const annos = data2.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
         // Format the data that is used to draw highlight tonal bands
-        const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
 
         boundaries.forEach((d, i) => {
@@ -98,12 +81,11 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         return {
-            dotData,
-            lineData,
+            plotData,
             dateExtent,
             valueExtent,
-            data1,
-            data2,
+            data,
+            pollsters
 
         };
     });
