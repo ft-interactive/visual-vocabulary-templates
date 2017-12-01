@@ -16,7 +16,7 @@ export function drawDots() {
     function dots(parent) {
         console.log('dots')
         parent.selectAll('circle')
-            .data(d => d.dots)
+            .data((d) => {return d.dots.filter(el => el.highlight ==="")})
             .enter()
             .append('circle')
             .attr('cx', d => xScale(d.date))
@@ -24,6 +24,27 @@ export function drawDots() {
             .attr('r', rem / 2.5)
             .attr('fill', d => colourScale(d.name))
             .attr('opacity', dotOpacity);
+
+        const highlights = parent.selectAll('.dotHighlight')
+            .data((d) => {return d.dots.filter(el => el.highlight ==="yes")})
+            .enter()
+            .append('g')
+            .attr('class', 'dotHighlight');
+
+        highlights
+            .append('circle')
+            .attr('cx', d => xScale(d.date))
+            .attr('cy', d => yScale(d.value))
+            .attr('r', rem / 2.5)
+            .attr('fill', d => colourScale(d.name))
+            .attr('opacity', 1.0)
+
+        highlights
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.date))
+            .attr('y', d => yScale(d.value) - (rem*.75))
+            .text(d => d.pollster + " " + d.value)
     }
 
     dots.dotOpacity = (d) => {

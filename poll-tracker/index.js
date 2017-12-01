@@ -212,10 +212,10 @@ parseData.load(dataFile, { dateFormat })
           .attr('id', d => d.party)
           .call(polls)
 
-        background.append('rect')
-          .attr('width', currentFrame.dimension().width)
-          .attr('height', currentFrame.dimension().height)
-          .attr('fill', '#ededee');
+        // background.append('rect')
+        //   .attr('width', currentFrame.dimension().width)
+        //   .attr('height', currentFrame.dimension().height)
+        //   .attr('fill', '#ededee');
     });
       // addSVGSavers('figure.saveable');
   });
