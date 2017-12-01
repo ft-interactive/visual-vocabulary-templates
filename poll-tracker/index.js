@@ -52,6 +52,7 @@ const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 const dotOpacity = 0.2;
+const maxAverage = 7;
 const partyColours = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
   .range(Object.values(gChartcolour.germanPoliticalParties_bar));
@@ -126,13 +127,14 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load(dataFile, { dateFormat })
+parseData.load(dataFile, { dateFormat, maxAverage })
   .then(({ plotData, dateExtent, valueExtent, data, pollsters}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         const yAxis = gAxis.yLinear();//sets up the yAxis
         const xAxis = gAxis.xDate();// sets up xAxis
         const polls = drawchart.drawDots(); // eslint-disable-line
+        const trends = drawchart.drawLines(); // eslint-disable-line
 
 
         // define other functions to be called

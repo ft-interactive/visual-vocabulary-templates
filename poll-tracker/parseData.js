@@ -27,6 +27,7 @@ export function load(url, options) { // eslint-disable-line
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
+        const dateExtent = d3.extent(data, d => d.date);
 
         let pollsters = data.map(d => d.pollster)
             pollsters = pollsters.filter((el, i) => pollsters.indexOf(el) === i);
@@ -37,7 +38,7 @@ export function load(url, options) { // eslint-disable-line
             return {
                 party: d,
                 dots: getDots(data,d),
-                //lines: averageData(getDots(data, d)),
+                lines: averageData(dateExtent, maxAverage, getDots(data, d)),
             }
         })
 
@@ -65,8 +66,6 @@ export function load(url, options) { // eslint-disable-line
         }));
 
         console.log('plotData', plotData);
-
-        const dateExtent = d3.extent(data, d => d.date);
         
          // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
@@ -154,65 +153,85 @@ export function getlines(d, group, joinPoints) {
     return lineData;
 }
 
-function averageData(allData){
-    console.log('allData', allData)
-  // const parties = Object.keys(allData[0]['parties']);
-  const parties = Object.keys(allData[0]['parties']);
+function averageData(dateExtent, maxAverage, allData) {
+    //console.log('allData', allData)
+    const lineData = d3.timeDays(dateExtent[0],dateExtent[1])
+        .map((d) => {
+            return {
+                date: d,
+                rollingAverage: getAverage(d, maxAverage),
+            }
+        })
+    return lineData
 
-  const uniqueDates = [ ...new Set(allData.map(d => d.surveyPublished))];
-
-  let weightedAverage = [];
-
-  uniqueDates.forEach(date => {
-    let pastPolls = allData
-      .filter(d => {
-        return ((new Date(d.surveyPublished).getTime() <= new Date(date).getTime()));
-      })
-      .filter(d=>(d != undefined))
-      .filter(d => {
-        let cduResult = d['parties']['CDU/CSU'];
-        return typeof cduResult === 'number' && !Number.isNaN(cduResult);
-      });  //remove dud results at this stage by checking CDU result
-
-    let sevenPollsters = [];
-    let sevenPolls = [];
-    let averages = {};
-    let i = 0;
-
-    for(let i=0; sevenPollsters.length<=6 && i<pastPolls.length; i++){
-      if(sevenPollsters.indexOf(pastPolls[i]['pollster']) < 0){
-        sevenPollsters.push(pastPolls[i]['pollster']);
-        sevenPolls.push(pastPolls[i])
-      }
+    function getAverage(rollinfDate, maxAverage) {
+        let poll = allData.filter((d) =>{
+            return d.date <= rollinfDate
+        })
+        poll = poll.slice(-maxAverage);
+        const pollValues =  poll.map(d => d.value)
+        const average = d3.mean(pollValues)
+        return average
     }
 
-    sevenPolls.forEach(s => {
-      s.daysSince = (new Date(date) - new Date(s.surveyPublished))/(1000*60*60*24);
-      s.weight = Math.max(0,100-Math.pow(s.daysSince,1.354));
-    });
 
-    parties.forEach(p => {
+  // const parties = Object.keys(allData[0]['parties']);
+  // const parties = Object.keys(allData[0]['parties']);
 
-      const weightedPartyTotal = sevenPolls
-        .filter(s => typeof s['parties'][p] === 'number' && !Number.isNaN(s['parties'][p]))
-        .map(s => {
-          return s['parties'][p] * s.weight})
-        .reduce((acc,curr) => (acc + curr), 0);
+  // const uniqueDates = [ ...new Set(allData.map(d => d.surveyPublished))];
 
-      const totalWeight = sevenPolls
-        .map(s => s.weight)
-        .reduce((acc,curr) => (acc+curr), 0);
+  // let weightedAverage = [];
 
-        averages[p] = weightedPartyTotal / totalWeight;
-    });
+  // uniqueDates.forEach(date => {
+  //   let pastPolls = allData
+  //     .filter(d => {
+  //       return ((new Date(d.surveyPublished).getTime() <= new Date(date).getTime()));
+  //     })
+  //     .filter(d=>(d != undefined))
+  //     .filter(d => {
+  //       let cduResult = d['parties']['CDU/CSU'];
+  //       return typeof cduResult === 'number' && !Number.isNaN(cduResult);
+  //     });  //remove dud results at this stage by checking CDU result
 
-    weightedAverage.push({
-      date: date,
-      averages: averages
-    });
+  //   let sevenPollsters = [];
+  //   let sevenPolls = [];
+  //   let averages = {};
+  //   let i = 0;
 
-    return weightedAverage;
-  });
+  //   for(let i=0; sevenPollsters.length<=6 && i<pastPolls.length; i++){
+  //     if(sevenPollsters.indexOf(pastPolls[i]['pollster']) < 0){
+  //       sevenPollsters.push(pastPolls[i]['pollster']);
+  //       sevenPolls.push(pastPolls[i])
+  //     }
+  //   }
 
-  return weightedAverage;
+  //   sevenPolls.forEach(s => {
+  //     s.daysSince = (new Date(date) - new Date(s.surveyPublished))/(1000*60*60*24);
+  //     s.weight = Math.max(0,100-Math.pow(s.daysSince,1.354));
+  //   });
+
+  //   parties.forEach(p => {
+
+  //     const weightedPartyTotal = sevenPolls
+  //       .filter(s => typeof s['parties'][p] === 'number' && !Number.isNaN(s['parties'][p]))
+  //       .map(s => {
+  //         return s['parties'][p] * s.weight})
+  //       .reduce((acc,curr) => (acc + curr), 0);
+
+  //     const totalWeight = sevenPolls
+  //       .map(s => s.weight)
+  //       .reduce((acc,curr) => (acc+curr), 0);
+
+  //       averages[p] = weightedPartyTotal / totalWeight;
+  //   });
+
+  //   weightedAverage.push({
+  //     date: date,
+  //     averages: averages
+  //   });
+
+  //   return weightedAverage;
+  // });
+
+  // return weightedAverage;
 }
