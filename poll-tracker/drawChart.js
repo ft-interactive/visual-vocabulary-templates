@@ -14,7 +14,6 @@ export function drawDots() {
     //.domain(seriesNames);
 
     function dots(parent) {
-        console.log('dots')
         parent.selectAll('circle')
             .data((d) => {return d.dots.filter(el => el.highlight ==="")})
             .enter()
@@ -120,7 +119,7 @@ export function drawLines() {
     // .range(gChartcolour.lineWeb)
     let rem = 10
 
-    function chart(parent) {
+    function lines(parent) {
         const lineData = d3.line()
         .defined(d => d)
         .curve(interpolation)
@@ -153,90 +152,66 @@ export function drawLines() {
         }
     }
 
-    chart.yScale = (d) => {
+    lines.yScale = (d) => {
         if (!d) return yScale;
         yScale = d;
-        return chart;
+        return lines;
     };
 
-    chart.yAxisAlign = (d) => {
+    lines.yAxisAlign = (d) => {
         if (!d) return yAxisAlign;
         yAxisAlign = d;
-        return chart;
+        return lines;
     };
 
-    chart.yDomain = (d) => {
-        if (typeof d === 'undefined') return yScale.domain();
-        yScale.domain(d);
-        return chart;
-    };
-
-    chart.yRange = (d) => {
-        if (typeof d === 'undefined') return yScale.range();
-        yScale.range(d);
-        return chart;
-    };
-
-    chart.highlightNames = (d) => {
+    lines.highlightNames = (d) => {
         if (!d) return highlightNames;
         highlightNames = d;
-        return chart;
+        return lines;
     };
 
-    chart.seriesNames = (d) => {
+    lines.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
-        return chart;
+        return lines;
     };
 
-    chart.xScale = (d) => {
+    lines.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
-        return chart;
+        return lines;
     };
 
-    chart.xDomain = (d) => {
-        if (typeof d === 'undefined') return xScale.domain();
-        xScale.domain(d);
-        return chart;
-    };
-
-    chart.xRange = (d) => {
-        if (typeof d === 'undefined') return xScale.range();
-        xScale.range(d);
-        return chart;
-    };
-
-    chart.plotDim = (d) => {
+    lines.plotDim = (d) => {
         if (!d) return window.plotDim;
         window.plotDim = d;
-        return chart;
+        return lines;
     };
 
-    chart.rem = (d) => {
+    lines.rem = (d) => {
         if (!d) return rem;
         rem = d;
-        return chart;
+        return lines;
     };
 
-    chart.annotate = (d) => {
+    lines.annotate = (d) => {
         annotate = d;
-        return chart;
+        return lines;
     };
 
-    chart.markers = (d) => {
+    lines.markers = (d) => {
         if (typeof d === 'undefined') return markers;
         markers = d;
-        return chart;
+        return lines;
     };
 
-    chart.interpolation = (d) => {
+    lines.interpolation = (d) => {
         if (!d) return interpolation;
         interpolation = d;
-        return chart;
+        return lines;
     };
 
-    chart.colourPalette = (d) => {
+    lines.colourPalette = (d) => {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
@@ -247,10 +222,10 @@ export function drawLines() {
         } else if (d && d.name && d.name === 'scale') {
             colourScale = d;
         }
-        return chart;
+        return lines;
     };
 
-    return chart;
+    return lines;
 }
 
 export function drawHighlights() {

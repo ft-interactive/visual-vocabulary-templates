@@ -64,8 +64,6 @@ export function load(url, options) { // eslint-disable-line
             name: d,
             linedata: getlines(data, d),
         }));
-
-        console.log('plotData', plotData);
         
          // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
