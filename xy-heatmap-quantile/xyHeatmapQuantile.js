@@ -6,7 +6,6 @@ export function draw() {
     let xScale = d3.scaleBand();
     let seriesNames = [];
     let showValues = false;
-    let cScale;
     let logScale = false;
     let yAxisAlign = 'right';
     let rem = 16;
