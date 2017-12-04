@@ -5,7 +5,7 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleBand();
     let seriesNames = [];
-    let startColor = 0;
+    let showValues = false;
     let cScale;
     let logScale = false;
     let yAxisAlign = 'right';
@@ -24,9 +24,12 @@ export function draw() {
         parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
             .attr('width', xScale.bandwidth());
 
-        parent.selectAll('rect')
+        const block = parent.selectAll('g')
             .data(d => d.groups)
             .enter()
+            .append('g');
+
+        block
             .append('rect')
             .attr('class', (d) => {
                 if (typeof d.value === 'number') {
@@ -39,6 +42,18 @@ export function draw() {
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
             .attr('fill', d => colourScale.range()[d.scaleCat]);
+
+        if(showValues) {
+            block
+                .append('text')
+                .attr('class', 'blockValue')
+                .attr('x', d => xScale(d.name))
+                .attr('y', d => yScale(d.name))
+                .attr('dx', (xScale.bandwidth() / 2))
+                .attr('dy', (yScale.bandwidth() / 2) + (rem / 4))
+                .text(d => d.value)
+                .attr('font-size', rem);
+        }
     }
 
     chart.yScale = (d) => {
@@ -71,9 +86,9 @@ export function draw() {
         return chart;
     };
 
-    chart.startColor = (d) => {
-        if (typeof d === 'undefined') return startColor;
-        startColor = d;
+    chart.showValues = (d) => {
+        if (typeof d === 'undefined') return showValues;
+        showValues = d;
         return chart;
     };
 

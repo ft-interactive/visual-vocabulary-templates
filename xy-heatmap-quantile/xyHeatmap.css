@@ -40,3 +40,23 @@
     fill: #ffffff;
     fill-opacity: 0.2;
 }
+
+.ft-webgraphic-s .blockValue,
+.ft-webgraphic-m .blockValue,
+.ft-webgraphic-m-default .blockValue,
+.ft-webgraphic-l .blockValue {
+    fill: #000000;
+    text-anchor: middle;
+}
+
+.ft-printgraphic .blockValue {
+    fill: #000000;
+    text-anchor: middle;
+}
+
+.ft-socialgraphic .blockValue,
+.ft-videographic .blockValue {
+    fill: #ffffff;
+    text-anchor: middle;
+}
+

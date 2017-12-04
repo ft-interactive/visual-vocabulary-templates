@@ -17,6 +17,7 @@ const sharedConfig = {
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const rotateLabels = false;
+const showValues = false;
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const scaleBreaks = [20, 40, 60, 80, 100]; // define the ranges for your data
@@ -158,6 +159,7 @@ parseData.load(dataFile, { scaleBreaks })
                 .yScale(myYAxis.scale())
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
+                .showValues(showValues)
                 .colourPalette(frameName, cScale);
 
             currentFrame.plot()
