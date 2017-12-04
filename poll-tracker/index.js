@@ -10,7 +10,7 @@ import * as parseData from './parseData.js';
 import * as drawchart from './drawChart.js';
 import gChartcolour from 'g-chartcolour';
 
-const dataFile = 'bavaria.csv';
+const dataFile = 'data.csv';
 
 const dateFormat = '%d/%m/%Y';
 /*
@@ -125,9 +125,10 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load(dataFile, { dateFormat, maxAverage })
-  .then(({ plotData, dateExtent, valueExtent, data, pollsters}) => {
+  .then(({ plotData, dateExtent, valueExtent, data, pollsters, highlights}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
+        const myHighlights = drawchart.drawHighlights()
         const yAxis = gAxis.yLinear();//sets up the yAxis
         const xAxis = gAxis.xDate();// sets up xAxis
         const polls = drawchart.drawDots(); // eslint-disable-line
@@ -140,6 +141,8 @@ parseData.load(dataFile, { dateFormat, maxAverage })
 
         // create a 'g' element at the back of the chart to add time period
         const background = currentFrame.plot().append('g');
+        const axisHighlight = currentFrame.plot().append('g');
+
 
         yAxis
           .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
@@ -196,6 +199,9 @@ parseData.load(dataFile, { dateFormat, maxAverage })
         if (xAxisAlign === 'top') {
             xAxis.xLabel().attr('transform', `translate(0,${xAxis.tickSize()})`);
         }
+
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
         polls
           .yScale(yAxis.scale())
           .xScale(xAxis.scale())
@@ -226,6 +232,18 @@ parseData.load(dataFile, { dateFormat, maxAverage })
           .append('g')
           .attr('class', 'lines')
           .call(trends)
+
+        myHighlights
+          .yScale(yAxis.scale())
+          .xScale(xAxis.scale())
+          .invertScale(invertScale);
+
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .call(myHighlights);
 
         // background.append('rect')
         //   .attr('width', currentFrame.dimension().width)

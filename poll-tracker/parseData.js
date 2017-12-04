@@ -80,6 +80,7 @@ export function load(url, options) { // eslint-disable-line
             valueExtent,
             data,
             pollsters,
+            highlights,
         };
     });
 }
