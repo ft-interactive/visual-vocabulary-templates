@@ -139,8 +139,13 @@ export function getLines(dateExtent, maxAverage, allData) {
             return d.value !== "" ||d.value !== undefined
         })
         poll = poll.slice(-max);
+        poll.forEach(s => {
+              let daysSince = (rollinfDate-s.date)/(1000*60*60*24);
+              s.weight = Math.min(0,100-Math.pow(daysSince,1.354));
+            });
         const pollValues = poll.map(d => d.value);
         const average = d3.mean(pollValues);
+        const wieghtedAverage = 0
         return average;
     }
 }
