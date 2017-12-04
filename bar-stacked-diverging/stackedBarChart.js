@@ -7,14 +7,16 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'left';
     let rem = 16;
-    let markers = false; // eslint-disable-line
-    let includeMarker = undefined; // eslint-disable-line
-    let interpolation = d3.curveLinear;
+
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
-        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`);
+        parent
+            .attr('transform', (d) => {
+                const xOffset = (xScale(0) - xScale(d.offset));
+                return `translate(${xOffset}, ${yScale(d.name)})`;
+            });
 
         parent.selectAll('rect')
             .data(d => d.bands)
@@ -87,29 +89,11 @@ export function draw() {
         return chart;
     };
 
-    chart.includeMarker = (d) => {
-        if (typeof d === 'undefined') return includeMarker;
-        includeMarker = d;
-        return chart;
-    };
-
-    chart.markers = (d) => {
-        if (typeof d === 'undefined') return markers;
-        markers = d;
-        return chart;
-    };
-
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
-
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.barPrint);
