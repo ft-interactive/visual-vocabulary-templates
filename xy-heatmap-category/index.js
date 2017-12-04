@@ -15,7 +15,7 @@ const sharedConfig = {
 
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
-const showValues = true;
+const showValues = false;
 const rotateLabels = false;
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -147,10 +147,20 @@ parseData.load(dataFile, '')
                 .call(myXAxis);
 
             if (xAxisAlign === 'bottom') {
-                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height - (currentFrame.rem() / 1.5)})`);
+                if (rotateLabels) {
+                    myXAxis.xLabel().selectAll('.tick text')
+                        .attr('transform', 'rotate(-45)')
+                        .style('text-anchor', 'end');
+                }
             }
             if (xAxisAlign === 'top') {
-                myXAxis.xLabel().attr('transform', 'translate(0,0)');
+                myXAxis.xLabel().attr('transform', `translate(0,${(currentFrame.rem() / 1.5)})`);
+                if (rotateLabels) {
+                    myXAxis.xLabel().selectAll('.tick text')
+                        .attr('transform', 'rotate(-45)')
+                        .style('text-anchor', 'start');
+                }
             }
 
             currentFrame.plot()
