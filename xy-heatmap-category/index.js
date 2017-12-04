@@ -15,6 +15,8 @@ const sharedConfig = {
 
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
+const showValues = true;
+const rotateLabels = false;
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
@@ -138,6 +140,7 @@ parseData.load(dataFile, '')
                 .catNames(catNames)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
+                .showValues(showValues)
                 .colourPalette(frameName);
 
             currentFrame.plot()
