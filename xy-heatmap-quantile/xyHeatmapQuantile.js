@@ -6,13 +6,8 @@ export function draw() {
     let xScale = d3.scaleBand();
     let seriesNames = [];
     let showValues = false;
-    let logScale = false;
     let yAxisAlign = 'right';
     let rem = 16;
-    let markers = false; // eslint-disable-line
-    let includeMarker = undefined; // eslint-disable-line
-    let interpolation = d3.curveLinear;
-    let showNumberLabels = false; // show numbers on end of bars
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -119,39 +114,9 @@ export function draw() {
         return chart;
     };
 
-    chart.includeMarker = (d) => {
-        if (typeof d === 'undefined') return includeMarker;
-        includeMarker = d;
-        return chart;
-    };
-
-    chart.logScale = (d) => {
-        if (typeof d === 'undefined') return logScale;
-        logScale = d;
-        return chart;
-    };
-
-    chart.markers = (d) => {
-        if (typeof d === 'undefined') return markers;
-        markers = d;
-        return chart;
-    };
-
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
-
     chart.colourPalette = (d, type) => {
         if (!d) return colourScale;
         colourScale.range(type);
-        return chart;
-    };
-
-    chart.showNumberLabels = (d) => {
-        if (typeof d === 'undefined') return showNumberLabels;
-        showNumberLabels = d;
         return chart;
     };
 
