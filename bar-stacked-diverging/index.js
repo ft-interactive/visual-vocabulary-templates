@@ -178,7 +178,7 @@ parseData.load(dataFile)
                 .frameName(frameName)
                 .rem(myChart.rem())
                 .alignment(legendAlign)
-                .colourPalette((frameName));
+                .colourPalette(frameName);
 
             // Draw the Legend
             currentFrame.plot()
