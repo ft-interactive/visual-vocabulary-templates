@@ -134,7 +134,10 @@ export function getLines(dateExtent, maxAverage, allData) {
     function getAverage(rollinfDate, max) {
         let poll = allData.filter((d) =>{
             return d.date <= rollinfDate;
-        });
+        })
+        .filter((d) => {
+            return d.value !== "" ||d.value !== undefined
+        })
         poll = poll.slice(-max);
         const pollValues = poll.map(d => d.value);
         const average = d3.mean(pollValues);
