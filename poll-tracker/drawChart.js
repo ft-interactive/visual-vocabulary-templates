@@ -236,6 +236,7 @@ export function drawHighlights() {
 export function drawAnnotations() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let rem = 10
 
     function annotations(parent) {
         parent.append('line')

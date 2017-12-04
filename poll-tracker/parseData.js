@@ -81,6 +81,7 @@ export function load(url, options) { // eslint-disable-line
             data,
             pollsters,
             highlights,
+            annos,
         };
     });
 }

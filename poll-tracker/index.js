@@ -125,7 +125,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load(dataFile, { dateFormat, maxAverage })
-  .then(({ plotData, dateExtent, valueExtent, data, pollsters, highlights}) => {
+  .then(({ plotData, dateExtent, valueExtent, data, pollsters, highlights, annos}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         const myHighlights = drawchart.drawHighlights()
@@ -133,6 +133,8 @@ parseData.load(dataFile, { dateFormat, maxAverage })
         const xAxis = gAxis.xDate();// sets up xAxis
         const polls = drawchart.drawDots(); // eslint-disable-line
         const trends = drawchart.drawLines(); // eslint-disable-line
+        const annotations = drawchart.drawAnnotations();// sets up annotations
+
 
 
         // define other functions to be called
@@ -244,6 +246,20 @@ parseData.load(dataFile, { dateFormat, maxAverage })
           .enter()
           .append('g')
           .call(myHighlights);
+
+        // Set up highlights for this frame
+        annotations
+          .yScale(yAxis.scale())
+          .xScale(xAxis.scale())
+          .rem(currentFrame.rem());
+
+        // Draw the annotations before the lines
+        plotAnnotation
+          .selectAll('.annotation')
+          .data(annos)
+          .enter()
+          .append('g')
+          .call(annotations);
 
         // background.append('rect')
         //   .attr('width', currentFrame.dimension().width)
