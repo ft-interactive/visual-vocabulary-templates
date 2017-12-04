@@ -37,7 +37,7 @@ export function draw() {
             .attr('height', () => yScale.bandwidth())
             .attr('fill', d => colourScale.range()[d.scaleCat]);
 
-        if(showValues) {
+        if (showValues) {
             block
                 .append('text')
                 .attr('class', 'blockValue')
