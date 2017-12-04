@@ -50,9 +50,7 @@ function getGroups(seriesNames, el, scaleBreaks) {
 
 function getScaleCats(el, scaleBreaks) {
     for (let j = 0; j < scaleBreaks.length + 1; j++) {
-
-        if (el <= scaleBreaks[j])  {
-            console.log(scaleBreaks[j], j, el)
+        if (el < scaleBreaks[j]) {
             return j;
         }
 

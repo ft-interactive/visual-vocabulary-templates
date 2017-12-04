@@ -18,9 +18,8 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const scaleBreaks = [-40, -20, 0, 20, 40, 60]; // define the ranges for your data
-const scaleType = 'diverging'; // choose from 'sequentialRed', 'sequentialBlue', 'diverging'
-let startColor = 0;
+const scaleBreaks = [20, 40, 60, 80, 100]; // define the ranges for your data
+const scaleType = 'sequentialRed'; // choose from 'sequentialRed', 'sequentialBlue', 'diverging'
 let cScale;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -104,13 +103,8 @@ parseData.load(dataFile, { scaleBreaks })
             const myYAxis = gAxis.yOrdinal();
             const myChart = xyHeatmapQuantileChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
-            console.log(plotData);
             // define color scale based on scale type
             switch (scaleType) {
-            case 'diverging':
-                cScale = gChartcolour.diverging;
-                break;
-
             case 'sequentialRed':
                 cScale = gChartcolour.sequentialMulti_2;
                 break;
@@ -122,18 +116,9 @@ parseData.load(dataFile, { scaleBreaks })
             default:
             }
 
-            scaleBreaks.forEach((obj, key) => {
-                if (obj === 0) {
-                    startColor = (4 - key);
-                }
-            });
-
             const scaleColours = d3.scaleOrdinal()
                 .domain(scaleBreaks)
-                .range(cScale.slice(startColor, scaleBreaks.length + startColor));
-
-            console.log(scaleColours.range());
-            console.log(scaleColours.domain());
+                .range(cScale);
 
             myYAxis
                 .rangeRound([0, currentFrame.dimension().height], 0)
@@ -172,8 +157,7 @@ parseData.load(dataFile, { scaleBreaks })
                 .yScale(myYAxis.scale())
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .startColor(startColor)
-                .colourPalette(frameName, cScale, scaleBreaks);
+                .colourPalette(frameName, cScale);
 
             currentFrame.plot()
                 .call(myXAxis);

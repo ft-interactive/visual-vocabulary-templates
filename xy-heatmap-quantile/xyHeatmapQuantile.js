@@ -129,10 +129,9 @@ export function draw() {
         return chart;
     };
 
-    chart.colourPalette = (d, type, scaleBreaks) => {
+    chart.colourPalette = (d, type) => {
         if (!d) return colourScale;
-        console.log(startColor)
-        colourScale.range(type.slice(startColor, scaleBreaks.length + startColor));
+        colourScale.range(type);
         return chart;
     };
 
