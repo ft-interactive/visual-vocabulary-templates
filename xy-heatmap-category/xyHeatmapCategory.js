@@ -125,7 +125,7 @@ export function draw() {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.barPrint);
