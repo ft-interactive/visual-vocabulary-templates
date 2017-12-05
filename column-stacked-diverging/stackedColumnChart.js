@@ -7,15 +7,15 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
-    let markers = false; // eslint-disable-line
-    let includeMarker = undefined; // eslint-disable-line
-    let interpolation = d3.curveLinear;
-    const colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
-        parent.attr('transform', d => `translate(${xScale(d.name)},0)`)
-            .attr('width', xScale.bandwidth());
+        parent
+            .attr('transform', (d) => {
+                const yOffset = (yScale(0) - yScale(d.offset));
+                return `translate(${xScale(d.name)}, ${yOffset})`;
+            });
 
         parent.selectAll('rect')
             .data(d => d.bands)
@@ -88,32 +88,16 @@ export function draw() {
         return chart;
     };
 
-    chart.includeMarker = (d) => {
-        if (typeof d === 'undefined') return includeMarker;
-        includeMarker = d;
-        return chart;
-    };
-
-    chart.markers = (d) => {
-        if (typeof d === 'undefined') return markers;
-        markers = d;
-        return chart;
-    };
-
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
-
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.barPrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };

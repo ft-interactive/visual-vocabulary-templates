@@ -13,14 +13,15 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { sort } = options;
         const seriesNames = getSeriesNames(data.columns);
 
+        const rowValueExtents = [];
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames);
+        const valueExtent = extentMulti(data, seriesNames, rowValueExtents);
+
 
         // function that calculates the position of each rectangle in the stack
-        const getStacks = function getStacks(el) {
+        const getStacks = function getStacks(el, key) {
             let posCumulative = 0;
             let negCumulative = 0;
             let baseY = 0;
@@ -31,11 +32,15 @@ export function load(url, options) { // eslint-disable-line
                     posCumulative += (+el[name]);
                     baseY = posCumulative;
                 }
-                if (el[name] < 0) {
+                if (el[name] < 0 && i > 0) {
                     baseY1 = negCumulative;
                     negCumulative += (+el[name]);
                     baseY = negCumulative;
-                    if (i < 1) { baseY = 0; baseY1 = negCumulative; }
+                }
+                // set the first bar at minimum value position
+                if (i < 1) {
+                    baseY = rowValueExtents[key][0] - Number(el[name]);
+                    baseY1 = rowValueExtents[key][0];
                 }
                 return {
                     name,
@@ -47,26 +52,12 @@ export function load(url, options) { // eslint-disable-line
             return stacks;
         };
 
-        const plotData = data.map(d => ({
+        const plotData = data.map((d, i) => ({
             name: d.name,
-            bands: getStacks(d),
-            total: d3.sum(getStacks(d), stack => stack.value),
+            bands: getStacks(d, i),
+            offset: (getStacks(d, i)[Math.floor(getStacks(d, i).length / 2)].value) / 2,
+            total: d3.sum(getStacks(d, i), stack => stack.value),
         }));
-
-        switch (sort) {
-        case 'descending':
-            plotData.sort((a, b) => b.total - a.total);// Sorts biggest rects to the left
-            break;
-        case 'ascending':
-            plotData.sort((a, b) => a.total - b.total);// Sorts biggest rects to the right
-            break;
-
-        case 'alphabetical':
-            plotData.sort((a, b) => a.name.localeCompare(b.name));
-            break;
-        default:
-            break;
-        }
 
         const columnNames = data.map(d => d.name); // create an array of the column names
 
@@ -95,11 +86,12 @@ function getMaxMin(values) {
 }
 
 // a function to work out the extent of values in an array accross multiple properties...
-function extentMulti(data, columns) {
+function extentMulti(data, columns, rowValueExtents) {
     const ext = data.reduce((acc, row) => {
         const values = columns.map(key => +row[key]);
         const maxMin = getMaxMin(values);
         const rowExtent = maxMin;
+        rowValueExtents.push(rowExtent);
         if (!acc.max) {
             acc.max = rowExtent[1];
             acc.min = rowExtent[0];
