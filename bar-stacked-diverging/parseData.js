@@ -86,14 +86,6 @@ function getMaxMin(values) {
     return [cumulativeMin, cumulativeMax];
 }
 
-function extentRows(data, columns) {
-    let maxMin;
-    const extR = data.reduce((obj, row) => {
-        const values = columns.map(key => +row[key]);
-        maxMin = getMaxMin(values);
-    });
-    return maxMin;
-}
 // a function to work out the extent of values in an array accross multiple properties...
 function extentMulti(data, columns, rowValueExtents) {
     const ext = data.reduce((acc, row) => {
