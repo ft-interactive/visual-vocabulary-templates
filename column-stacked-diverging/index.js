@@ -21,7 +21,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = '';// specify 'ascending', 'descending', 'alphabetical'
+const invertLegend = true; // reverse order of legend items
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -93,7 +93,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile, '', { sort })
+parseData.load(dataFile, { invertLegend })
     .then(({ valueExtent, seriesNames, plotData }) => {
     // define chart
     const myChart = stackedColumnChart.draw() // eslint-disable-line

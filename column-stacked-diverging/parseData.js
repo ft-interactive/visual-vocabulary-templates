@@ -13,7 +13,9 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
+        const { invertLegend } = options;
         const seriesNames = getSeriesNames(data.columns);
+        console.log(invertLegend)
 
         const rowValueExtents = [];
         // Use the seriesNames array to calculate the minimum and max values in the dataset
@@ -58,6 +60,10 @@ export function load(url, options) { // eslint-disable-line
             offset: (getStacks(d, i)[Math.floor(getStacks(d, i).length / 2)].value) / 2,
             total: d3.sum(getStacks(d, i), stack => stack.value),
         }));
+
+        if (invertLegend) {
+            seriesNames.reverse();
+        }
 
         const columnNames = data.map(d => d.name); // create an array of the column names
 
