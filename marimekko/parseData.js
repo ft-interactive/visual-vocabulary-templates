@@ -50,16 +50,17 @@ export function load(url, options) { // eslint-disable-line
 
         const plotData = data.map(d => ({
             name: d.name,
+            size: d.size,
             bands: getStacks(d),
             total: d3.sum(getStacks(d), stack => stack.value),
         }));
 
         switch (sort) {
         case 'descending':
-            plotData.sort((a, b) => b.total - a.total);// Sorts biggest rects to the left
+            plotData.sort((a, b) => b.size - a.size);// Sorts biggest rects to the left
             break;
         case 'ascending':
-            plotData.sort((a, b) => a.total - b.total);// Sorts biggest rects to the right
+            plotData.sort((a, b) => a.size - b.size);// Sorts biggest rects to the right
             break;
 
         case 'alphabetical':
@@ -69,6 +70,7 @@ export function load(url, options) { // eslint-disable-line
             break;
         }
 
+        console.log(plotData);
         const columnNames = data.map(d => d.name); // create an array of the column names
 
         return {
@@ -84,7 +86,7 @@ export function load(url, options) { // eslint-disable-line
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['name']; // adjust column headings to match your dataset
+    const exclude = ['name', 'size']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
