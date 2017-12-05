@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Spine - Visual Vocabulary</title>
+    <title>Pyramid - Visual Vocabulary</title>
     <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
     <link rel="stylesheet" href="//ig.ft.com/visual-vocabulary/styles.css"/>
     <link rel="stylesheet" href="./bar.css"/>
@@ -13,16 +13,14 @@
 </head>
 <body>
 
-    <h1>Spine chart</h1>
-    <p>Standard bar charts display the ranks of values much more easily when sorted into order</p>
+    <h1>Pyramid chart</h1>
+    <p>A standard way for showing the age and sex breakdown of a population distribution; effectively, back to back histograms</p>
     <p><b>Some useful settings in the index.js</b>
         <ul>
             <li><b>xMin</b> and <b>xMax</b> – use these to set the lower and upper values of the x-axis</li>
-            <li><b>numTicksx</b> – set the number of scale lines on the y-axis</li>
-            <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
-            <li><b>sort</b> – use this to sort the columns into order, your options are – 'ascending', 'descending'</li>
-            <li><b>sortOn</b> – use this to sort the column groups into order – specify the column number to sort on (ignore name column)</li>
-            <li><b>numbers</b> – set to <b>true</b> to show values at the end of the bars and remove x-axis</li>
+            <li><b>numTicks</b> – set the number of scale lines on the y-axis</li>
+            <li><b>catLabel</b> – label your bar categories</li>
+            <li><b>showNumberLabels</b> – set to <b>true</b> to show values at the end of the bars and remove x-axis</li>
         </ul>
     <hr>
     <p class="section-heading">Non-responsive chart</p>

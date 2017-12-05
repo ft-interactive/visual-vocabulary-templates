@@ -14,7 +14,6 @@ export function fromCSV(url, options) {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
             else {
-                const { sort, sortOn } = options;
                 // automatically calculate the seriesnames excluding the "marker" and "annotate column"
                 const seriesNames = getSeriesNames(data.columns);
                 const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
@@ -23,13 +22,6 @@ export function fromCSV(url, options) {
 
                 // Buid the dataset for plotting
                 const plotData = data;
-
-                if (sort === 'descending') {
-                    plotData.sort((a, b) =>
-                        b[seriesNames[sortOn]] - a[seriesNames[sortOn]]);// Sorts biggest rects to the left
-                } else if (sort === 'ascending') {
-                    plotData.sort((a, b) => a[seriesNames[sortOn]] - b[seriesNames[sortOn]]);
-                } // Sorts biggest rects to the left
 
                 resolve({
                     groupNames,

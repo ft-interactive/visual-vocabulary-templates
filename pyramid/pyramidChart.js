@@ -42,10 +42,10 @@ export function draw() {
             parent.append('text')
                 .html(d => +d[seriesNames[1]])
                 .attr('y', d => yScale(d.name) + (yScale.bandwidth() / 2) + (rem / 2.5))
-                .attr('x', xScaleL(0) + (rem * 1.3))
+                .attr('x', xScaleR(0) + (rem / 2))
                 .attr('class', 'highlight-label')
                 .attr('font-size', rem)
-                .style('text-anchor', 'end');
+                .style('text-anchor', 'start');
         }
     }
 

@@ -1,1 +1,10 @@
-name,ABC inc,123 LimitedNumber of employees,40,30Male,15,20Female,25,20Aged 20-30,29,30Part time, 5,7Production,10,5Sales,5,8Admin,5,5Delivery,20,7
+name,Male,Female
+0-9,40,30
+10-19,15,20
+20-29,25,20
+30-39,29,30
+40-49, 5,7
+50-59,10,5
+60-69,5,8
+70-79,5,5
+80+,20,7
