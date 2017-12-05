@@ -200,7 +200,7 @@ parseData.load(dataFile, '', { sort })
 
             // Set up legend for this frame
             myLegend
-                .seriesNames(seriesNames.reverse())
+                .seriesNames(seriesNames)
                 .geometry(legendType)
                 .frameName(frameName)
                 .rem(myChart.rem())
