@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
+import gChartcolour from 'g-chartcolour';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
@@ -20,7 +21,6 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const sort = '';// specify 'ascending', 'descending', 'alphabetical' - default is order of input file
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -103,6 +103,24 @@ parseData.load(dataFile)
             const myChart = stackedBarChart.draw(); // eslint-disable-line
             const myLegend = gLegend.legend();
 
+            const divergingScaleColours = d3.scaleOrdinal();
+            let setColourScale;
+
+            // check number of categories to determine the right palette
+            const getColourScale = function getColourScale(series) {
+                if (series.length === 5) {
+                    setColourScale = gChartcolour.diverging_5;
+                } else if (series.length === 3) {
+                    setColourScale = gChartcolour.diverging_3;
+                } else {
+                    setColourScale = gChartcolour.categorical_bar;
+                }
+                return setColourScale;
+            };
+
+            divergingScaleColours
+                .range(getColourScale(seriesNames));
+
             // define other functions to be called
             const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 1.4);// Used when drawing the xAxis ticks
 
@@ -159,7 +177,7 @@ parseData.load(dataFile)
                 .xRange([0, currentFrame.dimension().width])
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .colourPalette((frameName))
+                .colourPalette(divergingScaleColours)
                 .xScale(myXAxis.scale())
                 .yScale(myYAxis.scale());
 
@@ -178,7 +196,7 @@ parseData.load(dataFile)
                 .frameName(frameName)
                 .rem(myChart.rem())
                 .alignment(legendAlign)
-                .colourPalette(frameName);
+                .colourPalette(divergingScaleColours);
 
             // Draw the Legend
             currentFrame.plot()

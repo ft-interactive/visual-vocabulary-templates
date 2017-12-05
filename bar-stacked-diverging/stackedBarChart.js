@@ -8,7 +8,7 @@ export function draw() {
     let yAxisAlign = 'left';
     let rem = 16;
 
-    const colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
@@ -97,6 +97,8 @@ export function draw() {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.barPrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };
