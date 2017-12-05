@@ -19,7 +19,7 @@ const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const legendAlign = 'hori';// hori or vert, alignment of the legend
+const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const sort = '';// specify 'ascending', 'descending', 'alphabetical'
 
@@ -200,7 +200,7 @@ parseData.load(dataFile, '', { sort })
 
             // Set up legend for this frame
             myLegend
-                .seriesNames(seriesNames)
+                .seriesNames(seriesNames.reverse())
                 .geometry(legendType)
                 .frameName(frameName)
                 .rem(myChart.rem())
