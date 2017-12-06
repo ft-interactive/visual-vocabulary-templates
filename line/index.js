@@ -287,6 +287,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .data(highlights)
           .enter()
           .append('g')
+          .attr('class', 'highlights')
           .call(myHighlights);
 
         // Set up highlights for this frame
