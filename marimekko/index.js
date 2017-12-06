@@ -17,7 +17,6 @@ const xMax = 0;// sets the maximum value on the yAxis
 const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
-const invertScale = true;
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -111,9 +110,7 @@ parseData.load(dataFile, { sort })
                 .align(yAxisAlign)
                 .domain([totalSize, 0])
                 .range([currentFrame.dimension().height, 0])
-                // .invert(invertScale)
                 .frameName(frameName);
-                console.log(totalSize)
 
             myXAxis
                 .align(xAxisAlign)
@@ -193,6 +190,8 @@ parseData.load(dataFile, { sort })
                 .append('g')
                 .classed('legend', true)
                 .call(myLegend);
+
+            myYAxis.yLabel().remove();
         });
     // addSVGSavers('figure.saveable');
     });

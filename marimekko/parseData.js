@@ -28,7 +28,6 @@ export function load(url, options) { // eslint-disable-line
         // function that calculates the position of each rectangle in the stack
         const getSizes = function getStacks(el, key) {
             sizeCumulative = key === 0 ? 0 : sizeCumulative += Number(data[key - 1].size);
-
             return sizeCumulative;
         };
 

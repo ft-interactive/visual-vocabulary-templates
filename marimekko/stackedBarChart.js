@@ -14,10 +14,9 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        parent.attr('transform', function (d, i) {
-            let offset = Number(i * 2);
-            console.log(offset)
-            return 'translate(0,' + (yScale(d.yPos) + offset) + ')';
+        parent.attr('transform', (d, i) => {
+            const offset = Math.round(Number(i * (rem / 10)));
+            return `translate(0, ${yScale(d.yPos) + offset})`;
         });
 
         parent.selectAll('rect')
