@@ -44,7 +44,7 @@ const frame = {
             top: 100, left: 0, bottom: 86, right: 10,
         })
     // .title("Put headline here")
-        .height(1000),
+        .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({

@@ -60,6 +60,22 @@ export function load(url, options) { // eslint-disable-line
             return stacks;
         };
 
+
+        switch (sort) {
+        case 'descending':
+            data.sort((a, b) => b.size - a.size);// Sorts biggest rects to the left
+            break;
+        case 'ascending':
+            data.sort((a, b) => a.size - b.size);// Sorts biggest rects to the right
+            break;
+
+        case 'alphabetical':
+            data.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        default:
+            break;
+        }
+
         const plotData = data.map((d, i) => ({
             name: d.name,
             size: Number(d.size),
@@ -67,21 +83,6 @@ export function load(url, options) { // eslint-disable-line
             bands: getStacks(d),
             total: d3.sum(getStacks(d), stack => stack.value),
         }));
-
-        switch (sort) {
-        case 'descending':
-            plotData.sort((a, b) => b.size - a.size);// Sorts biggest rects to the left
-            break;
-        case 'ascending':
-            plotData.sort((a, b) => a.size - b.size);// Sorts biggest rects to the right
-            break;
-
-        case 'alphabetical':
-            plotData.sort((a, b) => a.name.localeCompare(b.name));
-            break;
-        default:
-            break;
-        }
 
         console.log(plotData);
         const columnNames = data.map(d => d.name); // create an array of the column names
