@@ -17,7 +17,8 @@ const sharedConfig = {
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 40;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 5;// Number of tick on the uAxis
+const numTicks = 5;// Number of tick on the xAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const catLabel = 'Age'; // define the categories
@@ -129,6 +130,7 @@ parseData.fromCSV(dataFile, '')
                 .tickSize(currentFrame.dimension().height)
                 .invert(true)
                 .numTicks(numTicks)
+                .divisor(divisor)
                 .xAxisHighlight(xAxisHighlight)
                 .frameName(frameName);
 
@@ -141,6 +143,7 @@ parseData.fromCSV(dataFile, '')
                 .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
                 .tickSize(currentFrame.dimension().height)
                 .numTicks(numTicks)
+                .divisor(divisor)
                 .frameName(frameName);
 
             currentFrame.plot()
