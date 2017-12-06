@@ -23,21 +23,30 @@ export function load(url, options) { // eslint-disable-line
         // identify total size - used for y axis
         const totalSize = d3.sum(data, d => d.size);
 
+        let sizeCumulative = 0;
+
         // function that calculates the position of each rectangle in the stack
+        const getSizes = function getStacks(el, key) {
+            sizeCumulative = key === 0 ? 0 : sizeCumulative += Number(data[key - 1].size);
+
+            return sizeCumulative;
+        };
+
         const getStacks = function getStacks(el) {
             let posCumulative = 0;
             let negCumulative = 0;
             let baseX = 0;
             let baseX1 = 0;
+
             const stacks = seriesNames.map((name, i) => {
                 if (el[name] > 0) {
                     baseX1 = posCumulative;
-                    posCumulative += (+el[name]);
+                    posCumulative += Number(el[name]);
                     baseX = posCumulative;
                 }
                 if (el[name] < 0) {
                     baseX1 = negCumulative;
-                    negCumulative += (+el[name]);
+                    negCumulative += Number(el[name]);
                     baseX = negCumulative;
                     if (i < 1) { baseX = 0; baseX1 = negCumulative; }
                 }
@@ -46,15 +55,16 @@ export function load(url, options) { // eslint-disable-line
                     size: Number(el.size),
                     x: +baseX,
                     x1: +baseX1,
-                    value: +el[name],
+                    value: Number(el[name]),
                 };
             });
             return stacks;
         };
 
-        const plotData = data.map(d => ({
+        const plotData = data.map((d, i) => ({
             name: d.name,
             size: Number(d.size),
+            yPos: getSizes(d, i),
             bands: getStacks(d),
             total: d3.sum(getStacks(d), stack => stack.value),
         }));

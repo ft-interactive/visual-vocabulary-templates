@@ -14,14 +14,17 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        // parent.attr('transform', d => `translate(0, ${yScale(d.name)})`);
+        parent.attr('transform', function (d, i) {
+            let offset = Number(i * 2);
+            console.log(offset)
+            return 'translate(0,' + (yScale(d.yPos) + offset) + ')';
+        });
 
         parent.selectAll('rect')
             .data(d => d.bands)
             .enter()
             .append('rect')
             .attr('height', d => yScale(d.size))
-            // .attr('y', d => yScale(d.name))
             .attr('x', d => xScale(Math.min(d.x, d.x1)))
             .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
             .attr('fill', d => colourScale(d.name));
