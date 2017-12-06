@@ -3,7 +3,7 @@ import gChartcolour from 'g-chartcolour';
 
 export function draw() {
     let xScale = d3.scaleLinear();
-    let yScale = d3.scaleBand();
+    let yScale = d3.scaleLinear();
     let seriesNames = [];
     let yAxisAlign = 'left';
     let rem = 16;
@@ -14,14 +14,14 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`);
+        // parent.attr('transform', d => `translate(0, ${yScale(d.name)})`);
 
         parent.selectAll('rect')
             .data(d => d.bands)
             .enter()
             .append('rect')
-            .attr('height', yScale.bandwidth())
-            .attr('y', d => yScale(d.name))
+            .attr('height', d => yScale(d.size))
+            // .attr('y', d => yScale(d.name))
             .attr('x', d => xScale(Math.min(d.x, d.x1)))
             .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
             .attr('fill', d => colourScale(d.name));

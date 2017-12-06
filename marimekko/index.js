@@ -25,33 +25,43 @@ const sort = '';// specify 'ascending', 'descending', 'alphabetical' - default i
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-        .margin({ top: 100, left: 15, bottom: 82, right: 20 })
+        .margin({
+            top: 100, left: 15, bottom: 82, right: 20,
+        })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 86, right: 24 })
+        .margin({
+            top: 100, left: 20, bottom: 86, right: 24,
+        })
     // .title("Put headline here")
         .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 86, right: 24 })
+        .margin({
+            top: 100, left: 20, bottom: 86, right: 24,
+        })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 104, right: 24 })
+        .margin({
+            top: 100, left: 20, bottom: 104, right: 24,
+        })
     // .title("Put headline here")
         .height(700)
         .fullYear(true),
 
     print: gChartframe.printFrame(sharedConfig)
-        .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+        .margin({
+            top: 40, left: 7, bottom: 35, right: 7,
+        })
     // .title("Put headline here")
         /* Print column widths */
         .width(53.71)// 1 col
-        //.width(112.25)// 2 col
+        // .width(112.25)// 2 col
         // .width(170.8)// 3 col
         // .width(229.34)// 4 col
         // .width(287.88)// 5 col
@@ -60,13 +70,17 @@ const frame = {
         .height(69.85), // std print (Use 58.21mm for markets charts that matter)
 
     social: gChartframe.socialFrame(sharedConfig)
-        .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+        .margin({
+            top: 140, left: 50, bottom: 138, right: 40,
+        })
     // .title("Put headline here")
         .width(612)
         .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
-        .margin({ left: 207, right: 207, bottom: 210, top: 233 }),
+        .margin({
+            left: 207, right: 207, bottom: 210, top: 233,
+        }),
     // .title("Put headline here")
 };
 
@@ -80,102 +94,102 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { sort })
-.then(({ valueExtent, plotData, seriesNames }) => {
-    Object.keys(frame).forEach((frameName) => {
-        const currentFrame = frame[frameName];
+    .then(({ valueExtent, plotData, seriesNames, totalSize }) => {
+        Object.keys(frame).forEach((frameName) => {
+            const currentFrame = frame[frameName];
 
-        const myXAxis = gAxis.xLinear();// sets up yAxis
-        const myYAxis = gAxis.yOrdinal();
-        const myChart = stackedBarChart.draw(); // eslint-disable-line
-        const myLegend = gLegend.legend();
+            const myXAxis = gAxis.xLinear();// sets up yAxis
+            const myYAxis = gAxis.yLinear();
+            const myChart = stackedBarChart.draw(); // eslint-disable-line
+            const myLegend = gLegend.legend();
 
-        // define other functions to be called
-        const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 1.4);// Used when drawing the xAxis ticks
+            // define other functions to be called
+            const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 1.4);// Used when drawing the xAxis ticks
 
-        myYAxis
-            .align(yAxisAlign)
-            .domain(plotData.map(d => d.name))
-            .rangeRound([0, tickSize], 10)
-            .frameName(frameName);
+            myYAxis
+                .align(yAxisAlign)
+                .domain([totalSize, 0])
+                .range([currentFrame.dimension().height, 0])
+                .frameName(frameName);
 
-        myXAxis
-            .align(xAxisAlign)
-            .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
-            .numTicks(numTicks)
-            .xAxisHighlight(xAxisHighlight)
-            .frameName(frameName);
+            myXAxis
+                .align(xAxisAlign)
+                .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+                .numTicks(numTicks)
+                .xAxisHighlight(xAxisHighlight)
+                .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
-        currentFrame.plot()
-            .call(myYAxis);
+            currentFrame.plot()
+                .call(myYAxis);
 
-        // return the value in the variable newMargin
-        if (yAxisAlign === 'right') {
-            const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
-            // Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({ right: newMargin });
-            myYAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
-        }
-        if (yAxisAlign === 'left') {
-            const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
-            // Use newMargin redefine the new margin and range of xAxis
-            currentFrame.margin({ left: newMargin });
+            // return the value in the variable newMargin
+            if (yAxisAlign === 'right') {
+                const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+                // Use newMargin redefine the new margin and range of xAxis
+                currentFrame.margin({ right: newMargin });
+                myYAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+            }
+            if (yAxisAlign === 'left') {
+                const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+                // Use newMargin redefine the new margin and range of xAxis
+                currentFrame.margin({ left: newMargin });
             // myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize()-myYAxis.labelWidth())},0)`);
-        }
+            }
 
-        d3.select(currentFrame.plot().node().parentNode)
-            .call(currentFrame);
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
 
-        myXAxis
-            .range([0, currentFrame.dimension().width])
-            .tickSize(tickSize);
+            myXAxis
+                .range([0, currentFrame.dimension().width])
+                .tickSize(tickSize);
 
-        currentFrame.plot()
-            .call(myXAxis);
+            currentFrame.plot()
+                .call(myXAxis);
 
-        if (xAxisAlign === 'bottom') {
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        }
-        if (xAxisAlign === 'top') {
-            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        }
+            if (xAxisAlign === 'bottom') {
+                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            }
+            if (xAxisAlign === 'top') {
+                myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+            }
 
-        myChart
-            .xRange([0, currentFrame.dimension().width])
-            .plotDim(currentFrame.dimension())
-            .rem(currentFrame.rem())
-            .colourPalette((frameName))
-            .xScale(myXAxis.scale())
-            .yScale(myYAxis.scale());
+            myChart
+                .xRange([0, currentFrame.dimension().width])
+                .plotDim(currentFrame.dimension())
+                .rem(currentFrame.rem())
+                .colourPalette((frameName))
+                .xScale(myXAxis.scale())
+                .yScale(myYAxis.scale());
 
-        currentFrame.plot()
-            .selectAll('.columnHolder')
-            .data(plotData)
-            .enter()
-            .append('g')
-            .attr('class', d => `${d.name}_columnHolder`)
-            .call(myChart);
+            currentFrame.plot()
+                .selectAll('.columnHolder')
+                .data(plotData)
+                .enter()
+                .append('g')
+                .attr('class', d => `${d.name}_columnHolder`)
+                .call(myChart);
 
-        // Set up legend for this frame
-        myLegend
-            .seriesNames(seriesNames)
-            .geometry(legendType)
-            .frameName(frameName)
-            .rem(myChart.rem())
-            .alignment(legendAlign)
-            .colourPalette((frameName));
+            // Set up legend for this frame
+            myLegend
+                .seriesNames(seriesNames)
+                .geometry(legendType)
+                .frameName(frameName)
+                .rem(myChart.rem())
+                .alignment(legendAlign)
+                .colourPalette((frameName));
 
-        // Draw the Legend
-        currentFrame.plot()
-            .append('g')
-            .attr('id', 'legend')
-            .selectAll('.legend')
-            .data(seriesNames)
-            .enter()
-            .append('g')
-            .classed('legend', true)
-            .call(myLegend);
-    });
+            // Draw the Legend
+            currentFrame.plot()
+                .append('g')
+                .attr('id', 'legend')
+                .selectAll('.legend')
+                .data(seriesNames)
+                .enter()
+                .append('g')
+                .classed('legend', true)
+                .call(myLegend);
+        });
     // addSVGSavers('figure.saveable');
-});
+    });

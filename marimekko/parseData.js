@@ -20,6 +20,9 @@ export function load(url, options) { // eslint-disable-line
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
 
+        // identify total size - used for y axis
+        const totalSize = d3.sum(data, d => d.size);
+
         // function that calculates the position of each rectangle in the stack
         const getStacks = function getStacks(el) {
             let posCumulative = 0;
@@ -40,6 +43,7 @@ export function load(url, options) { // eslint-disable-line
                 }
                 return {
                     name,
+                    size: Number(el.size),
                     x: +baseX,
                     x1: +baseX1,
                     value: +el[name],
@@ -50,7 +54,7 @@ export function load(url, options) { // eslint-disable-line
 
         const plotData = data.map(d => ({
             name: d.name,
-            size: d.size,
+            size: Number(d.size),
             bands: getStacks(d),
             total: d3.sum(getStacks(d), stack => stack.value),
         }));
@@ -77,6 +81,7 @@ export function load(url, options) { // eslint-disable-line
             valueExtent,
             columnNames,
             seriesNames,
+            totalSize,
             plotData,
             data,
         };
