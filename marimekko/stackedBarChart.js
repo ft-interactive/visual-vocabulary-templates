@@ -15,7 +15,7 @@ export function draw() {
 
     function chart(parent) {
         parent.attr('transform', (d, i) => {
-            const offset = Math.round(Number(i * (rem / 10)));
+            const offset = Number(i * (rem / 10));
             return `translate(0, ${yScale(d.yPos) + offset})`;
         });
 

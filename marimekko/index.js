@@ -44,7 +44,7 @@ const frame = {
             top: 100, left: 0, bottom: 86, right: 10,
         })
     // .title("Put headline here")
-        .height(500),
+        .height(1000),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
@@ -170,12 +170,10 @@ parseData.load(dataFile, { sort })
 
             // return the value in the variable newMargin
             const newMarginR = labelWidthR + currentFrame.margin().right;
-            // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ right: newMarginR });
-            rightLabel.attr('transform', `translate(${currentFrame.dimension().width - labelWidthL},0)`);
+            rightLabel.attr('transform', `translate(${currentFrame.dimension().width - labelWidthL}, 0)`);
 
             const newMarginL = labelWidthL + currentFrame.margin().left + (currentFrame.rem() / 2);
-            // Use newMargin redefine the new margin and range of xAxis
             currentFrame.margin({ left: newMarginL });
 
             d3.select(currentFrame.plot().node().parentNode)
