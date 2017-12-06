@@ -14,10 +14,11 @@ const sharedConfig = {
 };
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the yAxis
+const divisor = 1;// formatting for '000 and millions
 const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
-const xAxisAlign = 'top';// alignment of the axis
+const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const sort = '';// specify 'ascending', 'descending', 'alphabetical' - default is order of input file
@@ -103,7 +104,8 @@ parseData.load(dataFile, { sort })
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
-            .frameName(frameName);
+            .frameName(frameName)
+            .divisor(divisor);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
@@ -134,9 +136,6 @@ parseData.load(dataFile, { sort })
         currentFrame.plot()
             .call(myXAxis);
 
-        if (xAxisAlign === 'bottom') {
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        }
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
