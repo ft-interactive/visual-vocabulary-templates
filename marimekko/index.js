@@ -16,7 +16,6 @@ const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the yAxis
 const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
-const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -110,7 +109,7 @@ parseData.load(dataFile, { sort })
             const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 2);// Used when drawing the xAxis ticks
 
             myYAxis
-                .align(yAxisAlign)
+                // .align(yAxisAlign)
                 .domain([totalSize, 0])
                 .range([currentFrame.dimension().height, 0])
                 .frameName(frameName);
