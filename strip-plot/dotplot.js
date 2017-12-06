@@ -5,6 +5,8 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleLinear();
     let groupNames = [];
+    let geometry = '';
+    let setHighlight;
     let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
         .domain(groupNames);
@@ -24,26 +26,42 @@ export function draw() {
                 .attr('x2', d => xScale(d.max));
         }
 
-        parent.selectAll('circle')
-            .data(d => d.values)
-            .enter()
-            .append('circle')
-            .attr('id', d => d.name)
-            .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
-            .attr('cx', d => xScale(d.value))
-            .attr('r', rem * 0.5)
-            .attr('fill', d => colourScale(d.group));
+        if (geometry === 'circle') {
+            parent.selectAll('circle')
+                .data(d => d.values)
+                .enter()
+                .append('circle')
+                .attr('id', d => d.name)
+                .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
+                .attr('cx', d => xScale(d.value))
+                .attr('r', rem * 0.5)
+                .attr('fill', d => colourScale(d.group));
+        } else {
+            parent.selectAll('rect')
+                .data(d => d.values)
+                .enter()
+                .append('rect')
+                .attr('id', d => d.name)
+                .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.25))
+                .attr('x', d => xScale(d.value))
+                .attr('height', yScale.bandwidth() * 0.5)
+                .attr('width', rem / 5)
+                .attr('fill', (d) => {
+                    setHighlight = d.highlight === 'yes' ? colourScale(d.group) : colourScale.range()[5];
+                    return setHighlight;
+                });
+        }
 
         parent.selectAll('text')
             .data(d => d.values.filter(el => el.highlight === 'yes'))
             .enter()
             .append('text')
-                .attr('id', d => currentFrame + d.name)
-                .attr('class', 'xAxis text')
-                .attr('text-anchor', 'middle')
-                .attr('x', d => xScale(d.value))
-                .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
-                .text(d => `${d.name} ${d.value}`);
+            .attr('id', d => currentFrame + d.name)
+            .attr('class', 'xAxis text')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.value))
+            .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
+            .text(d => `${d.name} ${d.value}`);
     }
 
     dots.frameName = (d) => {
@@ -57,15 +75,20 @@ export function draw() {
         return dots;
     };
     dots.yScale = (d) => {
+        if (!d) return yScale;
         yScale = d;
         return dots;
     };
+
     dots.yDomain = (d) => {
+        if (typeof d === 'undefined') return yScale.domain();
         yScale.domain(d);
         return dots;
     };
+
     dots.yRange = (d) => {
-        yScale.rangeRound(d);
+        if (typeof d === 'undefined') return yScale.range();
+        yScale.range(d);
         return dots;
     };
     dots.xScale = (d) => {
@@ -73,16 +96,26 @@ export function draw() {
         xScale = d;
         return dots;
     };
+
     dots.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain(d);
         xScale.domain(d);
         return dots;
     };
 
     dots.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.range(d);
         xScale.range(d);
         return dots;
     };
+
+    dots.geometry = (d) => {
+        if (typeof d === 'undefined') return geometry;
+        geometry = d;
+        return dots;
+    };
     dots.colourProperty = (d) => {
+        if (!d) return colourProperty;
         colourProperty = d;
         return dots;
     };
@@ -97,10 +130,12 @@ export function draw() {
         return dots;
     };
     dots.groupNames = (d) => {
+        if (!d) return groupNames;
         groupNames = d;
         return dots;
     };
     dots.rem = (d) => {
+        if (!d) return rem;
         rem = d;
         return dots;
     };
@@ -149,15 +184,19 @@ export function drawQuartiles() {
         return quants;
     };
     quants.yScale = (d) => {
+        if (!d) return yScale;
         yScale = d;
         return quants;
     };
     quants.yDomain = (d) => {
+        if (typeof d === 'undefined') return yScale.domain();
         yScale.domain(d);
         return quants;
     };
+
     quants.yRange = (d) => {
-        yScale.rangeRound(d);
+        if (typeof d === 'undefined') return yScale.range();
+        yScale.range(d);
         return quants;
     };
     quants.xScale = (d) => {
@@ -165,16 +204,26 @@ export function drawQuartiles() {
         xScale = d;
         return quants;
     };
+
     quants.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return quants;
     };
 
     quants.xRange = (d) => {
-        xScale.range(d);
+        if (typeof d === 'undefined') return xScale.rangeRound();
+        xScale.rangeRound(d);
+        return quants;
+    };
+
+    quants.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.rangeRound();
+        xScale.rangeRound(d);
         return quants;
     };
     quants.colourProperty = (d) => {
+        if (!d) return colourProperty;
         colourProperty = d;
         return quants;
     };
