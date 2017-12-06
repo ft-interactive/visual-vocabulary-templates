@@ -33,6 +33,7 @@ const sharedConfig = {
 
 const xMin = 0;// sets the minimum value on the xAxis
 const xMax = 0;// sets the maximum value on the xAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the xAxis
 const numTicks = 4;// Number of tick on the xAxis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
@@ -226,7 +227,8 @@ parseData.load(dataFile, {
                 .align('top')
                 .frameName(frameName)
                 .invert(invertScale)
-                .logScale(logScale);
+                .logScale(logScale)
+                .divisor(divisor);
 
             myXAxis1
                 .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
@@ -237,7 +239,8 @@ parseData.load(dataFile, {
                 .align('bottom')
                 .frameName(frameName)
                 .invert(invertScale)
-                .logScale(logScale);
+                .logScale(logScale)
+                .divisor(divisor);
 
 
             // Draw the xAxis
