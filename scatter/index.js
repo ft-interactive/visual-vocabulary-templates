@@ -23,10 +23,12 @@ const sharedConfig = {
 const xVar = 'var a';// these should be series (column) names from your data
 const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
 const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
+const divisorX = 1;// sets the formatting on linear axis for ’000s and millions
 
 const yVar = 'var b';
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
+const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
@@ -143,7 +145,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .range([currentFrame.dimension().height, 0])
             .align(yAxisAlign)
             .tickSize(tickSize)
-            .frameName(frameName);
+            .frameName(frameName)
+            .divisor(divisorY);
 
         currentFrame.plot()
             .call(myYAxis);
@@ -171,7 +174,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .tickSize(currentFrame.rem() * 0.75)
             .range([0, currentFrame.dimension().width])
             .align(xAxisAlign)
-            .frameName(frameName);
+            .frameName(frameName)
+            .divisor(divisorX);
 
         // call axes
         currentFrame.plot()
