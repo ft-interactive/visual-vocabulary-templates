@@ -30,8 +30,10 @@ const sharedConfig = {
 };
 const yMinL = 0;// sets the minimum value on the yAxis
 const yMaxL = 10;// sets the maximum value on the yAxis
+const divisorL = 1// formatting for '000 and millions
 const yMinR = 0;// sets the minimum value on the yAxis
 const yMaxR = 200;// sets the maximum value on the yAxis
+const divisorR = 1// formatting for '000 and millions
 const yAxisHighlight = 100; /* sets which tick to highlight on the yAxis */ // eslint-disable-line no-unused-vars
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 5;// Number of tick on the uAxis
@@ -176,7 +178,8 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
           .numTicks(numTicksL)
           .align('left')
           .logScale(logScaleL)
-          .frameName(frameName);
+          .frameName(frameName)
+          .divisor(divisorL);
 
         yAxisR
            .domain([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
@@ -186,7 +189,8 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
            .align('right')
            .invert(invertScaleR)
            .logScale(logScaleR)
-           .frameName(frameName);
+           .frameName(frameName)
+            .divisor(divisorR);
 
         currentFrame.plot()
           .call(yAxisL);

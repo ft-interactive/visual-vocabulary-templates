@@ -177,7 +177,7 @@ export function drawHighlights() {
 
     function highlights(parent) {
         parent.append('rect')
-        .attr('class', 'highlights')
+        // .attr('class', 'highlights')
         .attr('x', d => xScale(d.begin))
         .attr('width', d => xScale(d.end) - xScale(d.begin))
         .attr('y', () => {

@@ -42,6 +42,7 @@ const numTicksy = 8;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the y axis
 const xAxisAlign = 'bottom';
 const logScale  = false
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 
 // const legendAlign = 'vert';// hori or vert, alignment of the legend
 
@@ -134,7 +135,8 @@ parseData.load(dataURL)
           .yAxisHighlight(yAxisHighlight)
           .align(yAxisAlign)
           .frameName(frameName)
-          .logScale(logScale);
+          .logScale(logScale)
+          .divisor(divisor);
 
         myChart.yScale(myYAxis.scale())
 

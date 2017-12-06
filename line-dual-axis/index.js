@@ -33,8 +33,10 @@ const sharedConfig = {
 
 const yMinL = 0;// sets the minimum value on the yAxisL
 const yMaxL = 0;// sets the maximum value on the xAxisL
+const divisorL = 1;// sets the formatting on linear axis for ’000s and millions
 const yMinR = 0;// sets the minimum value on the yAxisR
 const yMaxR = 0;// sets the maximum value on the xAxisR
+const divisorR = 1;// sets the formatting on linear axis for ’000s and millions
 const doubleScale = 1;
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 6;// Number of tick on the uAxis
@@ -181,7 +183,8 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
           .numTicks(numTicksL)
           .tickSize(currentFrame.rem() * 2)
           .align('left')
-          .frameName(frameName);
+          .frameName(frameName)
+          .divisor(divisorL);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
@@ -194,7 +197,8 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
           .numTicks(numTicksR)
           .tickSize(currentFrame.rem() * 2)
           .align('right')
-          .frameName(frameName);
+          .frameName(frameName)
+          .divisor(divisorR);
 
         currentFrame.plot()
           .call(yAxisR);

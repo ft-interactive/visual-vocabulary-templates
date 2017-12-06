@@ -1,0 +1,26 @@
+.ft-webgraphic-s .highlight-label,
+.ft-webgraphic-m .highlight-label,
+.ft-webgraphic-m-default .highlight-label,
+.ft-webgraphic-l .highlight-label {
+    fill: #66605C;
+}
+
+.ft-printgraphic .highlight-label {
+    fill: #000000;
+}
+
+.ft-socialgraphic .highlight-label,
+.ft-videographic .highlight-label {
+    fill: #ffffff;
+    fill-opacity: 0.5;
+}
+
+.axisTotal {
+    font-weight: 600;
+
+}
+.ft-socialgraphic .axisTotal text,
+.ft-videographic .axisTotal text
+{
+    opacity: 0.8;
+}

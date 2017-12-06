@@ -16,6 +16,7 @@ const sharedConfig = {
 
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 1000;// sets the maximum value on the xAxis
+const divisor = 1 //formatting for '000 and m illionst'
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
 const colourProperty = 'name';
@@ -120,7 +121,8 @@ parseData.load(dataFile, { sort, sortOn })
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
             .frameName(frameName)
-            .logScale(logScale);
+            .logScale(logScale)
+            .divisor(divisor);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 

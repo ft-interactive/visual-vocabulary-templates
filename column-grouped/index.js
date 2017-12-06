@@ -14,6 +14,7 @@ const sharedConfig = {
 };
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the yAxis
+const divisor = 1// formatting for '000 and millions
 const yAxisHighlight = 10; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
@@ -105,7 +106,8 @@ parseData.load(dataFile, '', { sort, sortOn })
             .yAxisHighlight(yAxisHighlight)
             .align(yAxisAlign)
             .logScale(logScale)
-            .frameName(frameName);
+            .frameName(frameName)
+            .divisor(divisor);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 

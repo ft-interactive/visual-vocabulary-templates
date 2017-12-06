@@ -14,6 +14,7 @@ const sharedConfig = {
 };
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the yAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksx = 5;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
@@ -109,7 +110,9 @@ parseData.load(dataFile, { total })
             .scale(myChart.xScale())
             .numTicks(numTicksx)
             .tickSize(tickSize)
-            .xAxisHighlight(xAxisHighlight);
+            .xAxisHighlight(xAxisHighlight)
+            .frameName(frameName)
+            .divisor(divisor);
 
 
         myXAxis
