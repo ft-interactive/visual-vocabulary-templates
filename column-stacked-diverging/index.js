@@ -16,7 +16,8 @@ const sharedConfig = {
 const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
+const numTicksy = 5; // Number of tick on the xAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -127,7 +128,7 @@ parseData.load(dataFile, { invertLegend })
                 .range(getColourScale(seriesNames));
 
             // define other functions to be called
-            const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+            const tickSize = currentFrame.dimension().width; // Used when drawing the yAxis ticks
 
             myChart
                 .yRange([currentFrame.dimension().height, 0])
@@ -140,6 +141,7 @@ parseData.load(dataFile, { invertLegend })
                 .numTicks(numTicksy)
                 .tickSize(tickSize)
                 .yAxisHighlight(yAxisHighlight)
+                .divisor(divisor)
                 .align(myChart.yAxisAlign());
 
             myYAxis
