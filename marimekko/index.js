@@ -15,7 +15,8 @@ const sharedConfig = {
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 0;// sets the maximum value on the yAxis
 const xAxisHighlight = 100; // sets which tick to highlight on the yAxis
-const numTicks = 5;// Number of tick on the uAxis
+const numTicks = 5;// Number of tick on the xAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisAlign = 'top';// alignment of the axis
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
@@ -121,7 +122,8 @@ parseData.load(dataFile, { sort })
                 .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
                 .numTicks(numTicks)
                 .xAxisHighlight(xAxisHighlight)
-                .frameName(frameName);
+                .frameName(frameName)
+                .divisor(divisor);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
 
