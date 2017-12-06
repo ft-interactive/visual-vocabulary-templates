@@ -16,6 +16,7 @@ const sharedConfig = {
 
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 200;// sets the maximum value on the xAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 4;// Number of tick on the uAxis
 const colourProperty = 'name';
@@ -110,7 +111,8 @@ parseData.load(dataURL, { sort, sortOn })
             .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
-            .frameName(frameName);
+            .frameName(frameName)
+            .divisor(divisor);
 
         // console.log(xMin,xMax,valueExtent, xAxis.domain)
 
