@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import gChartcolour from 'g-chartcolour';
 
 export function draw() {
     let yScale = d3.scaleBand();
@@ -93,11 +92,13 @@ export function draw() {
     };
 
     chart.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return chart;
     };
 
     chart.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.rangeRound();
         xScale.rangeRound(d);
         return chart;
     };

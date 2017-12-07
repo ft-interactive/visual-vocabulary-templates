@@ -103,7 +103,7 @@ parseData.load(dataFile, { scaleBreaks })
 
             const myXAxis = gAxis.xOrdinal();// sets up yAxis
             const myYAxis = gAxis.yOrdinal();
-            const myChart = xyHeatmapQuantileChart.draw(); // eslint-disable-line no-unused-vars
+            const myChart = xyHeatmapQuantileChart.draw();
             const myLegend = gLegend.legend();
             // define color scale based on scale type
             switch (scaleType) {
@@ -213,6 +213,4 @@ parseData.load(dataFile, { scaleBreaks })
             // remove ticks from x-axis
             myXAxis.xLabel().selectAll('.tick line').remove();
         });
-
-    // addSVGSavers('figure.saveable');
     });
