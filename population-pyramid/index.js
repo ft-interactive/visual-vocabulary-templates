@@ -16,7 +16,8 @@ const sharedConfig = {
 
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 40;// sets the maximum value on the xAxis
-const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
+const xAxisHighlight = 0; // sets which tick to highlight on the xAxis
+const invertScale = true;
 const numTicks = 5;// Number of tick on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const colourProperty = 'name';
@@ -113,6 +114,7 @@ parseData.fromCSV(dataFile, '')
                 .align(yAxisAlign)
                 .domain(plotData.map(d => d.name))
                 .rangeRound([0, currentFrame.dimension().height], 10)
+                .invert(invertScale)
                 .frameName(frameName);
 
             currentFrame.plot()
