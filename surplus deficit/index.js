@@ -206,7 +206,8 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette(frameName)
-            .yAxisHighlight(yAxisHighlight);
+            .yAxisHighlight(yAxisHighlight)
+            .frameName(frameName);
 
 
         // Draw the lines

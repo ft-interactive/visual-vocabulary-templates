@@ -9,21 +9,56 @@ export function draw() {
     let seriesNames = [];
     let yAxisAlign = 'right';
     let yAxisHighlight = 0;
+    let frameName;
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
+        const width = window.plotDim.width;
+        const height = window.plotDim.height;
+        console.log(width,height)
         const area = d3.area()
             .x(d => xScale(d.data.date))
             .y0(d => yScale(yAxisHighlight))
             .y1(d => yScale(d[1]));
 
-        parent.append('path')
+        parent.append('mask')
+            .attr('id', frameName + 'chartMask')
+            .append('path')
             .attr('d', area)
-            .style('fill', 'white');
+            .style('fill', 'white')
+            .attr('opacity', 0.5);
+
+        parent.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', width)
+        .attr('height', d => yScale(yAxisHighlight))
+        .attr('fill', 'green')
+        .attr('mask', 'url(#' + frameName + 'chartMask)');
+
+        parent.append('rect')
+        .attr('x', 0)
+        .attr('y', d => yScale(yAxisHighlight))
+        .attr('width', width)
+        .attr('height', d =>height-yScale(yAxisHighlight))
+        .attr('fill', 'red')
+        .attr('mask', 'url(#' + frameName + 'chartMask)');
+
     }
+
+    chart.plotDim = (d) => {
+        if (!d) return window.plotDim;
+        window.plotDim = d;
+        return chart;
+    };
+    chart.frameName = (d) => {
+        if (!d) returnframeName;
+        frameName= d;
+        return chart;
+    };
 
     chart.yAxisHighlight = (d) => {
         if (!d) return yAxisHighlight;
