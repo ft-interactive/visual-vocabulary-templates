@@ -17,7 +17,7 @@ export function draw() {
     function chart(parent) {
         const width = window.plotDim.width;
         const height = window.plotDim.height;
-        console.log(width,height)
+
         const area = d3.area()
             .x(d => xScale(d.data.date))
             .y0(d => yScale(yAxisHighlight))
