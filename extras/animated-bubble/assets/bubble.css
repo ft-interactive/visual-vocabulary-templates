@@ -1,0 +1,58 @@
+.webFrameM_counter {
+	text-anchor:middle;
+	font-size:148px;
+	font-weight:500;
+	fill:#66605C;
+	opacity:0.3;
+}
+.socialFrame_counter {
+	text-anchor:middle;
+	font-size:96px;
+	font-weight:500;
+	fill:#ffffff;
+	opacity:0.3;
+}
+
+.webFrameM_label {
+	text-anchor:middle;
+	font-size:18px;
+	fill:#66605C;
+}
+.socialFrame_label {
+	text-anchor:middle;
+	font-size:24px;
+	fill:#ffffff;
+}
+
+.webFrameM_xlabel {
+	text-anchor:middle;
+	font-size:18px;
+	fill:#66605C;
+}
+.socialFrame_xlabel {
+	text-anchor:middle;
+	font-size:24px;
+	fill:#ffffff;
+	opacity:0.5;
+}
+
+.webFrameM_keylabel {
+	font-size:16px;
+	fill:#66605C;
+}
+.socialFrame_keylabel {
+	font-size:22px;
+	fill:#ffffff;
+}
+
+.webFrameM_sizekey {
+	fill-opacity:0;
+	stroke-width:1px;
+	stroke:#66605C;;
+}
+.socialFrame_sizekey {
+	fill-opacity:0;
+	stroke-width:1px;
+	stroke:#ffffff;
+}
+
