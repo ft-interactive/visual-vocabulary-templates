@@ -145,7 +145,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
 
         // create a 'g' element behind the chart and in front of the highlights
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
-        
+        console.log(valueExtent)
         myYAxis
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
             .range([currentFrame.dimension().height, 0])
