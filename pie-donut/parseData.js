@@ -2,6 +2,7 @@
  * General data munging functionality
  */
 
+import * as d3 from 'd3';
 import loadData from '@financial-times/load-data';
 
 /**
@@ -16,9 +17,13 @@ export function load(url, options) { // eslint-disable-line
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
 
+        // identify total size - used for y axis
+        const totalSize = d3.sum(data, d => d.value);
+
         return {
             seriesNames,
             data,
+            totalSize,
         };
     });
 }

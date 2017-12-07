@@ -5,12 +5,14 @@ import 'd3-selection-multi';
 export function draw() {
     let rem = 10;
     const colourScale = d3.scaleOrdinal();
-        // .domain(['group']);
+    // .domain(['group']);
     let colourProperty = 'group'; // eslint-disable-line no-unused-vars
     const setPalette = false; // eslint-disable-line no-unused-vars
     const includeLabel = true; // eslint-disable-line no-unused-vars
     let seriesNames = []; // eslint-disable-line no-unused-vars
     let radius;
+    let smallRadius;
+    let totalSize;
     let frameName;
     let setHighlight;
 
@@ -19,8 +21,8 @@ export function draw() {
         const currentFame = frameName;
 
         const path = d3.arc()
-                    .outerRadius(radius)
-                    .innerRadius(0);
+            .outerRadius(radius)
+            .innerRadius(smallRadius);
 
         const valueLabel = d3.arc()
             .outerRadius(radius - rem)
@@ -56,16 +58,16 @@ export function draw() {
             .attr('fill', () => colourScale.range()[0]);
 
         parent.append('text')
-              .attr('transform', d => `translate(${valueLabel.centroid(d)})`)
-              .attr('dy', '0.35em')
-              .attr('class', 'pie-value')
-              .text(d => d.data.value);
+            .attr('transform', d => `translate(${valueLabel.centroid(d)})`)
+            .attr('dy', '0.35em')
+            .attr('class', 'pie-value')
+            .text(d => d.data.value);
 
         parent.append('text')
-              .attr('transform', d => `translate(${nameLabel.centroid(d)})`)
-              .attr('dy', '0.35em')
-              .attr('class', 'pie-name')
-              .text(d => d.data.name);
+            .attr('transform', d => `translate(${nameLabel.centroid(d)})`)
+            .attr('dy', '0.35em')
+            .attr('class', 'pie-name')
+            .text(d => d.data.name);
     }
 
     chart.seriesNames = (d) => {
@@ -75,7 +77,20 @@ export function draw() {
     };
 
     chart.radius = (d) => {
+        if (!d) return radius;
         radius = d;
+        return chart;
+    };
+
+    chart.smallRadius = (d) => {
+        if (!d) return radius;
+        smallRadius = d;
+        return chart;
+    };
+
+    chart.totalSize = (d) => {
+        if (!d) return totalSize;
+        totalSize = d;
         return chart;
     };
 
@@ -83,7 +98,7 @@ export function draw() {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
@@ -94,7 +109,7 @@ export function draw() {
     chart.colourPicker = (d) => {
         if (d === 'social' || d === 'video' || d === 'print') {
             setHighlight = 1;
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
             setHighlight = 4;
         }
         return chart;
