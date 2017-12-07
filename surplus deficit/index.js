@@ -4,6 +4,7 @@
 
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
+import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as drawChart from './drawChart.js';
@@ -45,6 +46,10 @@ const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect';// rect, line or circ, geometry of legend marker
 const minorAxis = false;// turns on or off the minor axis
 const logScale = false;
+const chartColour = d3.scaleOrdinal()
+    .domain(Object.keys(gChartcolour.categorical_line))
+    .range(Object.values(gChartcolour.categorical_line));
+
 /* eslint-enable */
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -205,7 +210,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
             .xScale(myXAxis.scale())
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
-            .colourPalette(frameName)
+            .colourPalette(chartColour)
             .yAxisHighlight(yAxisHighlight)
             .frameName(frameName);
 

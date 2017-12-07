@@ -12,8 +12,7 @@ export function draw() {
     let frameName;
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
-    const colourScale = d3.scaleOrdinal()
-        .domain(seriesNames);
+    let colourScale = d3.scaleOrdinal();
 
     function chart(parent) {
         const width = window.plotDim.width;
@@ -36,7 +35,7 @@ export function draw() {
         .attr('y', 0)
         .attr('width', width)
         .attr('height', d => yScale(yAxisHighlight))
-        .attr('fill', 'green')
+        .attr('fill', colourScale(3))
         .attr('mask', 'url(#' + frameName + 'chartMask)');
 
         parent.append('rect')
@@ -44,7 +43,7 @@ export function draw() {
         .attr('y', d => yScale(yAxisHighlight))
         .attr('width', width)
         .attr('height', d =>height-yScale(yAxisHighlight))
-        .attr('fill', 'red')
+        .attr('fill', colourScale(7))
         .attr('mask', 'url(#' + frameName + 'chartMask)');
 
     }
@@ -130,9 +129,11 @@ export function draw() {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.categorical_bar);
+            colourScale.range(gChartcolour.categorical_line);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };
