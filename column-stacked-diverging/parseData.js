@@ -15,7 +15,7 @@ export function load(url, options) { // eslint-disable-line
         const data = result.data ? result.data : result;
         const { invertLegend } = options;
         const seriesNames = getSeriesNames(data.columns);
-        console.log(invertLegend)
+        console.log(invertLegend);
 
         const rowValueExtents = [];
         // Use the seriesNames array to calculate the minimum and max values in the dataset
