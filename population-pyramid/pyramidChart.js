@@ -13,7 +13,6 @@ export function draw() {
     let showNumberLabels = false;// show numbers on end of bars
 
     function bars(parent) {
-
         parent.append('rect')
             .attr('class', 'bars')
             .attr('y', d => yScale(d.name))
