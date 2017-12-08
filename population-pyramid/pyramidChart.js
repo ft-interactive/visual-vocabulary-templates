@@ -63,13 +63,14 @@ export function draw() {
         return bars;
     };
     bars.colourProperty = (d) => {
+        if (!d) return colourProperty;
         colourProperty = d;
         return bars;
     };
     bars.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.barPrint);
@@ -78,10 +79,12 @@ export function draw() {
     };
 
     bars.seriesNames = (d) => {
+        if (!d) return seriesNames;
         seriesNames = d;
         return bars;
     };
     bars.rem = (d) => {
+        if (!d) return rem;
         rem = d;
         return bars;
     };

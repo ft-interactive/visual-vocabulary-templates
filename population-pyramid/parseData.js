@@ -9,7 +9,7 @@ import * as d3 from 'd3';
  * @param  {String} url Path to CSV file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, options) {
+export function fromCSV(url, options) { // eslint-disable-line
     return new Promise((resolve, reject) => {
         d3.csv(url, (error, data) => {
             if (error) reject(error);
@@ -57,9 +57,3 @@ function extentMulti(data, columns) {
     return [ext.min, ext.max];
 }
 
-function getGroups(seriesNames, el) {
-    return seriesNames.map(name => ({
-        name,
-        value: +el[name],
-    }));
-}

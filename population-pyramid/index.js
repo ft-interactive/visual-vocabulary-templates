@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import * as gAxis from 'g-axis';
-import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as pyramidChart from './pyramidChart.js';
