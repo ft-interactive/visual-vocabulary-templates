@@ -151,7 +151,6 @@ parseData.load(dataURL).then(({ seriesNames, data, totalSize }) => {
             .attr('class', 'arc')
             .attr('transform', `translate(${currentFrame.dimension().width / 2},${currentFrame.dimension().height / 2} )`)
             .call(myChart);
-
     });
     // addSVGSavers('figure.saveable');
 });
