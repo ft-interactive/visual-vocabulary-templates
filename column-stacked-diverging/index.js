@@ -13,8 +13,8 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the yAxis
+const yMin = -15;// sets the minimum value on the yAxis
+const yMax = 20;// sets the maximum value on the yAxis
 const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
 const numTicksy = 5; // Number of tick on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
@@ -219,6 +219,8 @@ parseData.load(dataFile, { invertLegend })
                 .append('g')
                 .classed('legend', true)
                 .call(myLegend);
+
+            // myXAxis.xLabel().selectAll('.tick line').remove();
         });
     // addSVGSavers('figure.saveable');
     });
