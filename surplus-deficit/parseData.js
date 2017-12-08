@@ -42,7 +42,6 @@ export function load(url, options) { // eslint-disable-line
                 highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
-        console.log(highlights);
 
         return {
             data,
@@ -64,21 +63,6 @@ export function load(url, options) { // eslint-disable-line
 function getSeriesNames(columns) {
     const exclude = ['date', 'annotate', 'highlight'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
-}
-
-/**
- * Calculates the extent of multiple columns
- * @param  {[type]} d       [description]
- * @param  {[type]} columns [description]
- * @param  {[type]} yMin    [description]
- * @return {[type]}         [description]
- */
-// a function that calculates the cumulative ma min values of the dataset
-function getMaxMin(values) {
-    const cumulativeMax = d3.sum(values.filter(d => (d > 0)));
-    const cumulativeMin = d3.sum(values.filter(d => (d < 0)));
-    // console.log(cumulativeMax,cumulativeMin)
-    return [cumulativeMin, cumulativeMax];
 }
 
 // a function to work out the extent of values in an array accross multiple properties...

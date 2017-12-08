@@ -1,11 +1,11 @@
 import * as d3 from 'd3';
 import gChartcolour from 'g-chartcolour';
 
-let rem = 10;
 
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let rem = 10;
     let seriesNames = [];
     let yAxisAlign = 'right';
     let yAxisHighlight = 0;
@@ -29,23 +29,24 @@ export function draw() {
             .attr('id', `${frameName}chartMask`)
             .append('path')
             .attr('d', area)
-            .style('fill', 'white')
-            .attr('opacity', 0.5);
+            .style('fill', 'white');
 
         parent.append('rect')
             .attr('x', 0)
             .attr('y', 0)
             .attr('width', width)
-            .attr('height', d => yScale(yAxisHighlight))
+            .attr('height', yScale(yAxisHighlight))
             .attr('fill', colourScale(3))
+            .attr('opacity', 0.5)
             .attr('clip-path', `url(#${frameName}chartMask)`);
 
         parent.append('rect')
             .attr('x', 0)
-            .attr('y', d => yScale(yAxisHighlight))
+            .attr('y', yScale(yAxisHighlight))
             .attr('width', width)
-            .attr('height', d => height - yScale(yAxisHighlight))
+            .attr('height',  height - yScale(yAxisHighlight))
             .attr('fill', colourScale(7))
+            .attr('opacity', 0.5)
             .attr('clip-path', `url(#${frameName}chartMask)`);
     }
 
@@ -197,6 +198,7 @@ export function drawHighlights() {
 export function drawAnnotations() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let rem = 10;
 
     function annotations(parent) {
         parent.append('line')
