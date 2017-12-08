@@ -45,6 +45,8 @@ export function load(url, options) { // eslint-disable-line
             };
         });
 
+        console.log(plotData);
+
         if (sort === 'descending') {
             plotData.sort((a, b) =>
             // console.log("sortON=",sortOn)
