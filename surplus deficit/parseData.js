@@ -28,6 +28,7 @@ export function load(url, options) { // eslint-disable-line
 
         plotData.order(d3.stackOrderNone);
         plotData.offset(d3.stackOffsetNone);
+
         // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
         // Use the seriesNames array to calculate the minimum and max values in the dataset
@@ -41,6 +42,7 @@ export function load(url, options) { // eslint-disable-line
                 highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+        console.log(highlights)
 
         return {
             data,
