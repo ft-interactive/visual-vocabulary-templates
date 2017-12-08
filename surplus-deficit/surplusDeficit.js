@@ -23,10 +23,10 @@ export function draw() {
             .y0(d => yScale(yAxisHighlight))
             .y1(d => yScale(d[1]));
 
-        const defs = parent.append('defs')
+        const defs = parent.append('defs');
 
         defs.append('clipPath')
-            .attr('id', frameName + 'chartMask')
+            .attr('id', `${frameName}chartMask`)
             .append('path')
             .attr('d', area)
             .style('fill', 'white')
@@ -38,7 +38,7 @@ export function draw() {
             .attr('width', width)
             .attr('height', d => yScale(yAxisHighlight))
             .attr('fill', colourScale(3))
-            .attr('clip-path', 'url(#' + frameName + 'chartMask)');
+            .attr('clip-path', `url(#${frameName}chartMask)`);
 
         parent.append('rect')
             .attr('x', 0)
@@ -46,7 +46,7 @@ export function draw() {
             .attr('width', width)
             .attr('height', d => height - yScale(yAxisHighlight))
             .attr('fill', colourScale(7))
-            .attr('clip-path', 'url(#' + frameName + 'chartMask)');
+            .attr('clip-path', `url(#${frameName}chartMask)`);
     }
 
     chart.plotDim = (d) => {
@@ -163,7 +163,7 @@ export function drawHighlights() {
                 return yScale.range()[1];
             }
             return yScale.range()[0];
-        })
+        });
     }
 
     highlights.yScale = (d) => {

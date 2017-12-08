@@ -7,7 +7,7 @@ import gChartframe from 'g-chartframe';
 import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as drawChart from './drawChart.js';
+import * as drawChart from './surplusDeficit.js';
 
 const dataFile = 'data.csv';
 
@@ -80,7 +80,7 @@ const frame = {
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
         .width(53.71)// 1 col
-        //.width(112.25)// 2 col
+        // .width(112.25)// 2 col
         // .width(170.8)// 3 col
         // .width(229.34)// 4 col
         // .width(287.88)// 5 col
@@ -108,9 +108,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile, { dateFormat }).then(({data, seriesNames, plotData, annos, valueExtent,highlights }) => {
-
-
+parseData.load(dataFile, { dateFormat }).then(({ data, seriesNames, plotData, annos, valueExtent, highlights }) => {
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
 
@@ -239,6 +237,5 @@ parseData.load(dataFile, { dateFormat }).then(({data, seriesNames, plotData, ann
             .enter()
             .append('g')
             .call(myAnnotations);
-
     });
 });
