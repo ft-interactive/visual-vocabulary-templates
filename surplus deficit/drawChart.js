@@ -55,7 +55,7 @@ export function draw() {
         return chart;
     };
     chart.frameName = (d) => {
-        if (!d) return frameName;
+        if (typeof d === 'undefined') return frameName;
         frameName = d;
         return chart;
     };
