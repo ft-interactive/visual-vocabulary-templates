@@ -28,20 +28,18 @@ export function load(url, options) { // eslint-disable-line
             let baseX = 0;
             let baseX1 = 0;
             const stacks = seriesNames.map((name, i) => {
-                if (el[name] > 0) {
+                if (i < 1) {
+                // set the first bar at minimum value position
+                    baseX = rowValueExtents[key][0] - Number(el[name]);
+                    [baseX1] = rowValueExtents[key];
+                } else if (el[name] > 0) {
                     baseX1 = posCumulative;
                     posCumulative += (+el[name]);
                     baseX = posCumulative;
-                }
-                if (el[name] < 0 && i > 0) {
+                } else if (el[name] < 0 && i > 0) {
                     baseX1 = negCumulative;
                     negCumulative += (+el[name]);
                     baseX = negCumulative;
-                }
-                // set the first bar at minimum value position
-                if (i < 1) {
-                    baseX = rowValueExtents[key][0] - Number(el[name]);
-                    baseX1 = rowValueExtents[key][0];
                 }
                 return {
                     name,

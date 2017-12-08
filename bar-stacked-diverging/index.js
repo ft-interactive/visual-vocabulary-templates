@@ -150,8 +150,7 @@ parseData.load(dataFile)
                 // Use newMargin redefine the new margin and range of xAxis
                 currentFrame.margin({ right: newMargin });
                 myYAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
-            }
-            if (yAxisAlign === 'left') {
+            } else if (yAxisAlign === 'left') {
                 const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
                 // Use newMargin redefine the new margin and range of xAxis
                 currentFrame.margin({ left: newMargin });
