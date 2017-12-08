@@ -1,31 +1,37 @@
 import * as d3 from 'd3';
-import * as gChartcolour from 'g-chartcolour';
+import gChartcolour from 'g-chartcolour';
 
 export function draw() {
-    let yScale;
-    let xScale;
+    let xScale = d3.scaleLinear();
+    let yScale = d3.scaleLinear();
     let seriesNames = [];
-    let yAxisAlign = 'right';
+    let yAxisAlign = 'left';
     let rem = 16;
     let markers = false; // eslint-disable-line
-    let includeMarker = false; // eslint-disable-line
-    let interpolation = false;
-
-    // let interpolation =d3.curveLinear
+    let includeMarker = undefined; // eslint-disable-line
+    let interpolation = d3.curveLinear;
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
-    function chart(parent) { /** Main rendering function here **/ } // eslint-disable-line
+    function chart(parent) {
+        parent.attr('transform', (d, i) => {
+            const offset = Number(i * (rem / 10));
+            return `translate(0, ${yScale(d.yPos) + offset})`;
+        });
+
+        parent.selectAll('rect')
+            .data(d => d.bands)
+            .enter()
+            .append('rect')
+            .attr('height', d => yScale(d.size))
+            .attr('x', d => xScale(Math.min(d.x, d.x1)))
+            .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
+            .attr('fill', d => colourScale(d.name));
+    }
 
     chart.yScale = (d) => {
         if (!d) return yScale;
         yScale = d;
-        return chart;
-    };
-
-    chart.yAxisAlign = (d) => {
-        if (!d) return yAxisAlign;
-        yAxisAlign = d;
         return chart;
     };
 
@@ -38,6 +44,12 @@ export function draw() {
     chart.yRange = (d) => {
         if (typeof d === 'undefined') return yScale.range();
         yScale.range(d);
+        return chart;
+    };
+
+    chart.yAxisAlign = (d) => {
+        if (!d) return yAxisAlign;
+        yAxisAlign = d;
         return chart;
     };
 
@@ -61,7 +73,7 @@ export function draw() {
 
     chart.xRange = (d) => {
         if (typeof d === 'undefined') return xScale.range();
-        xScale.range(d);
+        xScale.rangeRound(d);
         return chart;
     };
 
@@ -99,10 +111,10 @@ export function draw() {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webL') {
-            colourScale.range(gChartcolour.lineWeb);
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+            colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.linePrint);
+            colourScale.range(gChartcolour.barPrint);
         }
         return chart;
     };

@@ -8,87 +8,87 @@
   var watermarkPathLight = '<path fill="#FFF" fill-opacity="0.2" id="logo" d="M1.502 1.5h97.996v98h-97.996v-98zm46.127 23.686h1.866l-.287-9.762h-36.988v1.675c1.18.063 2.074.151 2.68.263.606.112 1.148.359 1.627.742s.797.909.957 1.579c.159.67.239 1.595.239 2.775v30.193c0 1.18-.08 2.097-.239 2.747-.16.654-.479 1.181-.957 1.562-.479.383-1.037.639-1.675.766-.638.128-1.547.208-2.728.239v1.723h20.958v-1.723c-1.468-.031-2.568-.111-3.302-.239-.734-.127-1.372-.383-1.914-.766-.542-.382-.893-.908-1.053-1.562-.16-.65-.239-1.567-.239-2.747v-14.451h3.302c2.967 0 5.136.454 6.507 1.364 1.372.908 2.281 2.623 2.728 5.144h1.675v-15.647h-1.675c-.287 1.627-.71 2.84-1.268 3.637-.558.798-1.443 1.372-2.656 1.723-1.212.352-2.982.527-5.311.527h-3.302v-14.021c0-.894.16-1.491.479-1.794.319-.304.973-.455 1.962-.455h6.699c2.201 0 3.972.096 5.312.287s2.448.566 3.326 1.125c.877.558 1.539 1.212 1.985 1.961.447.75.877 1.795 1.292 3.135zm42.107 0h2.249l-.909-9.762h-38.805l-.909 9.762h2.249c.702-2.393 1.658-4.075 2.871-5.049 1.212-.973 2.982-1.459 5.312-1.459h5.454v33.974c0 1.18-.079 2.097-.239 2.747-.159.654-.502 1.181-1.028 1.562-.526.383-1.141.639-1.843.766-.701.128-1.738.208-3.109.239v1.723h21.341v-1.723c-1.372-.031-2.417-.111-3.135-.239-.718-.127-1.34-.383-1.866-.766-.526-.382-.869-.908-1.028-1.562-.159-.65-.239-1.567-.239-2.747v-33.974h5.455c2.328 0 4.099.486 5.311 1.459 1.21.973 2.167 2.656 2.868 5.049z"/>';
 
   function chartFrame(configObject){
-    var axisAlign = 'right',
-      backgroundColour,
-      containerClass='g-chartframe',
+  	var axisAlign = 'right',
+  		backgroundColour,
+  		containerClass='g-chartframe',
 
-      copyright = 'Â© FT',
-      copyrightStyle = false,
+  		copyright = '© FT',
+  		copyrightStyle = false,
 
-      goalposts = false,  //goalpost is the bit at the top and bottom of pritn charts
-      blackbar = false,   //blackbar the short black bar above web graphics
+  		goalposts = false, 	//goalpost is the bit at the top and bottom of pritn charts
+  		blackbar = false, 	//blackbar the short black bar above web graphics
 
-      fullYear = false,
-      graphicHeight = 400,
-      graphicWidth = 500,
+  		fullYear = false,
+  		graphicHeight = 400,
+  		graphicWidth = 500,
 
-      margin = {
-        top:100,
-        left:1,
-        bottom:20,
-        right:20
-      },
-      plot,
-      rem = 18,
-      subtitle = 'some supporting information, units perhaps',
-      subtitleLineHeight = 20,
-      subtitlePosition = {x:1, y:67},
-      subtitleStyle={},
+  		margin = {
+  			top:100,
+  			left:1,
+  			bottom:20,
+  			right:20
+  		},
+  		plot,
+  		rem = 18,
+  		subtitle = 'some supporting information, units perhaps',
+  		subtitleLineHeight = 16,
+  		subtitlePosition = {x:1, y:59},
+  		subtitleStyle={},
 
-      source = 'Source: research|FT Graphic Tom Pearson',
-      sourceLineHeight = 16,
-      sourcePosition = {x:1},
-      sourcePlotYOffset = 46,
-      sourceStyle={},
+  		source = 'Source: research|FT Graphic Tom Pearson',
+  		sourceLineHeight = 16,
+  		sourcePosition = {x:1},
+  		sourcePlotYOffset = 46,
+  		sourceStyle={},
 
-      title = 'Title: A description of the charts purpose',
-      titleLineHeight = 32,
-      titlePosition = {x:1, y:34},
-      titleStyle={},
+  		title = 'Title: A description of the charts purpose',
+  		titleLineHeight = 20,
+  		titlePosition = {x:1, y:34},
+  		titleStyle={},
 
       transition = 0.2,
 
-      watermarkLocation = 'icons.svg#ft-logo',
-      watermarkMarkup = '',
-      watermarkOffset = 0,
-      watermarkSize = 58,
+  		watermarkLocation = 'icons.svg#ft-logo',
+  		watermarkMarkup = '',
+  		watermarkOffset = 0,
+  		watermarkSize = 58,
 
-      units = 'px';
+  		units = 'px';
 
 
-    var convertFrom = {
-      mm: function(x){return (x * 2.83464480558843); },
-      px: function(x){return x; },
-    };
+  	var convertFrom = {
+  		mm: function(x){return (x * 2.83464480558843); },
+  		px: function(x){return x; },
+  	};
 
-    function attributeStyle(parent, style){
-        Object.keys(style).forEach(function(attribute){
-            parent.attr(attribute, style[attribute]);
-        });
-    }
+  	function attributeStyle(parent, style){
+  	    Object.keys(style).forEach(function(attribute){
+  	        parent.attr(attribute, style[attribute]);
+  	    });
+  	}
 
-    function frame(p){
+  	function frame(p){
 
   //overall graphic properties
-      p.attr('class', containerClass)
-        .attr('font-family','MetricWeb,sans-serif');
-        console.log(p)
-      if (p.node().nodeName.toLowerCase() == 'svg') {
-        p.transition(transition)
+  		p.attr('class', containerClass)
+  			.attr('font-family','MetricWeb,sans-serif');
+  			console.log(p)
+  		if (p.node().nodeName.toLowerCase() == 'svg') {
+  			p.transition(transition)
           .attr('width', graphicWidth)
           .attr('height', graphicHeight)
           .attr('viewBox', ['0 0', graphicWidth, graphicHeight].join(' '));
 
-        p.selectAll('title')
+  			p.selectAll('title')
           .data([title])
           .enter()
           .append('title');
 
-        p.selectAll('title').text(title);
-      }
+  			p.selectAll('title').text(title);
+  		}
 
   //background
-      if(backgroundColour !== undefined){
+  		if(backgroundColour !== undefined){
         p.selectAll('rect.chart-background')
           .data([backgroundColour])
           .enter()
@@ -97,23 +97,23 @@
 
         p.selectAll('rect.chart-background')
           .transition(transition)
-          .attr('x', 0)
-          .attr('y', 0)
-          .attr('width', graphicWidth)
-          .attr('height', graphicHeight)
-          .attr('fill', backgroundColour);
-      };
+  				.attr('x', 0)
+  				.attr('y', 0)
+  				.attr('width', graphicWidth)
+  				.attr('height', graphicHeight)
+  				.attr('fill', backgroundColour);
+  		};
 
-  //  'blackbar' (the short black bar above web graphics)
-      if(blackbar) {
-        p.append('rect')
-          .attr('width', 60)
-          .attr('height', 4)
-          .style('fill', blackbar)
-      }
+  //	'blackbar' (the short black bar above web graphics)
+  		if(blackbar) {
+  			p.append('rect')
+  				.attr('width', 60)
+  				.attr('height', 4)
+  				.style('fill', blackbar)
+  		}
 
   // 'goalposts' (the bit at the top and the bottom of print charts)
-      if(goalposts){
+  		if(goalposts){
         var goalpostPaths = [
           'M 0, '+graphicHeight+' L '+graphicWidth+', ' + graphicHeight,
           'M 0, 15 L 0, 0 L '+graphicWidth+', 0 L '+graphicWidth+', 15',
@@ -124,13 +124,13 @@
           .enter()
           .append('path').attr('class','chart-goalposts');
 
-        p.selectAll('path.chart-goalposts')
+  			p.selectAll('path.chart-goalposts')
           .transition(transition)
-          .attr('d',function(d){ return d; })
-          .attr('stroke-width', 1)
+  				.attr('d',function(d){ return d; })
+  				.attr('stroke-width', 1)
           .attr('fill','none')
-          .attr('stroke', goalposts);
-      }
+  				.attr('stroke', goalposts);
+  		}
 
   //title
       var titleLineCount = title.split('|').length;
@@ -232,15 +232,15 @@
       var sourceLineCount = source.split('|').length;
       // copyright
       if(copyrightStyle) {
-        p.selectAll('text.chart-copyright')
-          .data([copyright])
-          .enter()
-          .append('text')
-          .attr('class', 'chart-copyright')
-          .append('tspan')
-            .html(function(d){ return d; })
-            .attr('x', sourcePosition.x)
-            .attr('y', function(d) { 
+      	p.selectAll('text.chart-copyright')
+  	      .data([copyright])
+  	      .enter()
+  	      .append('text')
+  	      .attr('class', 'chart-copyright')
+  	      .append('tspan')
+  	      	.html(function(d){ return d; })
+  	      	.attr('x', sourcePosition.x)
+  	      	.attr('y', function(d) { 
               if(sourceLineCount > 1) {
                 return (graphicHeight - (margin.bottom - sourcePlotYOffset) + (sourceLineHeight * 1.25) + (sourceLineCount * sourceLineHeight * 1.2));
               } else {
@@ -250,32 +250,36 @@
 
               
             .call(attributeStyle, copyrightStyle);
-      }
+  		}
 
   // set chart margin.top
 
-      if(containerClass === 'ft-webgraphic-s' || containerClass === 'ft-webgraphic-m' || containerClass === 'ft-webgraphic-l') {
+      if(containerClass === 'ft-webgraphic-s') {
         margin.top = (titlePosition.y + (titleLineCount * titleLineHeight) + (subtitleLineCount * subtitleLineHeight) + 24)
+      } else if(containerClass === 'ft-webgraphic-m') {
+        margin.top = (titlePosition.y + (titleLineCount * titleLineHeight) + (subtitleLineCount * subtitleLineHeight) + 23)
+      } else if(containerClass === 'ft-webgraphic-l') {
+        margin.top = (titlePosition.y + (titleLineCount * titleLineHeight) + (subtitleLineCount * subtitleLineHeight) + 17)
       } else {
         margin.top = (titlePosition.y + (titleLineCount * titleLineHeight) + (subtitleLineCount * subtitleLineHeight) + (rem/3))
       }
 
   //watermark
 
-      p.selectAll('g.chart-watermark')
+  		p.selectAll('g.chart-watermark')
         .data([0])
         .enter()
         .append('g').attr('class','chart-watermark')
         .html(watermarkMarkup)
-        .attr('transform', 'translate('+(graphicWidth-watermarkSize -watermarkOffset)+','+(graphicHeight-watermarkSize-watermarkOffset)+') scale('+watermarkSize/100+') ');
+  			.attr('transform', 'translate('+(graphicWidth-watermarkSize -watermarkOffset)+','+(graphicHeight-watermarkSize-watermarkOffset)+') scale('+watermarkSize/100+') ');
 
-      p.selectAll('g.chart-watermark')
+  		p.selectAll('g.chart-watermark')
         .html(watermarkMarkup)
         .transition()
-        .attr('transform', 'translate('+(graphicWidth-watermarkSize -watermarkOffset)+','+(graphicHeight-watermarkSize-watermarkOffset)+') scale('+watermarkSize/100+') ');
+  			.attr('transform', 'translate('+(graphicWidth-watermarkSize -watermarkOffset)+','+(graphicHeight-watermarkSize-watermarkOffset)+') scale('+watermarkSize/100+') ');
 
   //plot area (where you put the chart itself)
-      p.selectAll('g.chart-plot')
+  		p.selectAll('g.chart-plot')
         .data([0])
         .enter()
         .append('g')
@@ -285,228 +289,228 @@
       plot = p.selectAll('g.chart-plot');
 
       plot.transition(transition)
-        .attr('transform','translate(' + margin.left + ',' + margin.top + ')');
-    }
+  			.attr('transform','translate(' + margin.left + ',' + margin.top + ')');
+  	}
 
 
   //Setters and getters
 
-    frame.axisAlign = function(x){
-      if(x == undefined) return axisAlign;
-      axisAlign = x;
-      return frame;
-    };
+  	frame.axisAlign = function(x){
+  		if(x == undefined) return axisAlign;
+  		axisAlign = x;
+  		return frame;
+  	};
 
-    frame.backgroundColour = function(x){
-      if(x == undefined) return backgroundColour;
-      backgroundColour = x;
-      return frame;
-    };
+  	frame.backgroundColour = function(x){
+  		if(x == undefined) return backgroundColour;
+  		backgroundColour = x;
+  		return frame;
+  	};
 
-    frame.blackbar = function(x){
-      if(x == undefined) return blackbar;
-      blackbar = x;
-      return frame;
-    }
+  	frame.blackbar = function(x){
+  		if(x == undefined) return blackbar;
+  		blackbar = x;
+  		return frame;
+  	}
 
-    frame.containerClass = function(x){
-      if(x == undefined) return containerClass;
-      containerClass = x;
-      return frame;
-    };
+  	frame.containerClass = function(x){
+  		if(x == undefined) return containerClass;
+  		containerClass = x;
+  		return frame;
+  	};
 
-    frame.copyright = function(x){
-      if(x == undefined) return copyright;
-      copyright = x;
-      return frame;
-    };
+  	frame.copyright = function(x){
+  		if(x == undefined) return copyright;
+  		copyright = x;
+  		return frame;
+  	};
 
-    frame.copyrightStyle = function(x){
-      if(x == undefined) return copyrightStyle;
-      copyrightStyle = x;
-      return frame;
-    };
+  	frame.copyrightStyle = function(x){
+  		if(x == undefined) return copyrightStyle;
+  		copyrightStyle = x;
+  		return frame;
+  	};
 
-    frame.dimension = function(){
-      return {
-        width:graphicWidth-(margin.left+margin.right),
-        height:graphicHeight-(margin.top+margin.bottom)
-      };
-    };
+  	frame.dimension = function(){
+  		return {
+  			width:graphicWidth-(margin.left+margin.right),
+  			height:graphicHeight-(margin.top+margin.bottom)
+  		};
+  	};
 
-    frame.fullYear = function(x){
-      if(x == undefined) return fullYear;
-      fullYear = x;
-      return frame;
-    }
-    
-    frame.goalposts = function(x){
-      if(x == undefined) return goalposts;
-      goalposts = x;
-      return frame;
-    }
+  	frame.fullYear = function(x){
+  		if(x == undefined) return fullYear;
+  		fullYear = x;
+  		return frame;
+  	}
+  	
+  	frame.goalposts = function(x){
+  		if(x == undefined) return goalposts;
+  		goalposts = x;
+  		return frame;
+  	}
 
-    frame.height = function(x){
-      if(x == undefined) return graphicHeight;
-      graphicHeight = convertFrom[units](x);
-      return frame;
-    };
+  	frame.height = function(x){
+  		if(x == undefined) return graphicHeight;
+  		graphicHeight = convertFrom[units](x);
+  		return frame;
+  	};
 
-    frame.margin = function(x){
-      if(x == undefined) return margin;
-      Object.keys(x).forEach(function(k){
-        margin[k] = x[k];
-      });
-      return frame;
-    };
+  	frame.margin = function(x){
+  		if(x == undefined) return margin;
+  		Object.keys(x).forEach(function(k){
+  			margin[k] = x[k];
+  		});
+  		return frame;
+  	};
 
-    frame.plot = function(){
-      return plot;
-    };
+  	frame.plot = function(){
+  		return plot;
+  	};
 
-    frame.rem = function(x){
-      if(x == undefined) return rem;
-      rem = x;
-      return frame;
-    };
+  	frame.rem = function(x){
+  		if(x == undefined) return rem;
+  		rem = x;
+  		return frame;
+  	};
 
-    frame.source = function(x){
-      if(x == undefined) return source;
-      source = x;
-      return frame;
-    };
+  	frame.source = function(x){
+  		if(x == undefined) return source;
+  		source = x;
+  		return frame;
+  	};
 
-    frame.sourceLineHeight = function(x){
-      if(x == undefined) return sourceLineHeight;
-      sourceLineHeight = x;
-      return frame;
-    };
+  	frame.sourceLineHeight = function(x){
+  		if(x == undefined) return sourceLineHeight;
+  		sourceLineHeight = x;
+  		return frame;
+  	};
 
-    frame.sourcePlotYOffset = function(x){
+  	frame.sourcePlotYOffset = function(x){
       if(x == undefined) return sourcePlotYOffset;
       sourcePlotYOffset = x;
       return frame;
     };
 
-    frame.sourceStyle = function(x){
-      if(x == undefined) return sourceStyle;
-      sourceStyle = x;
-      return frame;
-    };
+  	frame.sourceStyle = function(x){
+  		if(x == undefined) return sourceStyle;
+  		sourceStyle = x;
+  		return frame;
+  	};
 
-    frame.sourceX = function(x){
-      if(x == undefined) return sourcePosition.x;
-      sourcePosition.x = x;
-      return frame;
-    };
+  	frame.sourceX = function(x){
+  		if(x == undefined) return sourcePosition.x;
+  		sourcePosition.x = x;
+  		return frame;
+  	};
 
-    frame.sourceY = function(x){
-      if(x == undefined) return sourcePosition.y;
-      sourcePosition.y = x;
-      return frame;
-    };
+  	frame.sourceY = function(x){
+  		if(x == undefined) return sourcePosition.y;
+  		sourcePosition.y = x;
+  		return frame;
+  	};
 
-    frame.subtitle = function(x){
-      if(x == undefined) return subtitle;
-      subtitle = x;
-      return frame;
-    };
+  	frame.subtitle = function(x){
+  		if(x == undefined) return subtitle;
+  		subtitle = x;
+  		return frame;
+  	};
 
-    frame.subtitleLineHeight = function(x){
-      if(x == undefined) return subtitleLineHeight;
-      subtitleLineHeight = x;
-      return frame;
-    };
+  	frame.subtitleLineHeight = function(x){
+  		if(x == undefined) return subtitleLineHeight;
+  		subtitleLineHeight = x;
+  		return frame;
+  	};
 
-    frame.subtitleStyle = function(x){
-      if(x == undefined) return subtitleStyle;
-      subtitleStyle = x;
-      return frame;
-    };
+  	frame.subtitleStyle = function(x){
+  		if(x == undefined) return subtitleStyle;
+  		subtitleStyle = x;
+  		return frame;
+  	};
 
-    frame.subtitleX = function(x){
-      if(x == undefined) return subtitlePosition.x;
-      subtitlePosition.x = x;
-      return frame;
-    };
+  	frame.subtitleX = function(x){
+  		if(x == undefined) return subtitlePosition.x;
+  		subtitlePosition.x = x;
+  		return frame;
+  	};
 
-    frame.subtitleY = function(x){
-      if(x == undefined) return subtitlePosition.y;
-      subtitlePosition.y = x;
-      return frame;
-    };
+  	frame.subtitleY = function(x){
+  		if(x == undefined) return subtitlePosition.y;
+  		subtitlePosition.y = x;
+  		return frame;
+  	};
 
-    frame.title = function(x){
-      if(x == undefined) return title;
-      title = x;
-      return frame;
-    };
+  	frame.title = function(x){
+  		if(x == undefined) return title;
+  		title = x;
+  		return frame;
+  	};
 
-    frame.titleStyle = function(x){
-      if(x == undefined) return titleStyle;
-      titleStyle = x;
-      return frame;
-    };
+  	frame.titleStyle = function(x){
+  		if(x == undefined) return titleStyle;
+  		titleStyle = x;
+  		return frame;
+  	};
 
-    frame.titleLineHeight = function(x){
-      if(x == undefined) return titleLineHeight;
-      titleLineHeight = x;
-      return frame;
-    };
+  	frame.titleLineHeight = function(x){
+  		if(x == undefined) return titleLineHeight;
+  		titleLineHeight = x;
+  		return frame;
+  	};
 
-    frame.titleX = function(x){
-      if(x == undefined) return titlePosition.x;
-      titlePosition.x = x;
-      return frame;
-    };
+  	frame.titleX = function(x){
+  		if(x == undefined) return titlePosition.x;
+  		titlePosition.x = x;
+  		return frame;
+  	};
 
-    frame.titleY = function(x){
-      if(x == undefined) return titlePosition.y;
-      titlePosition.y = x;
-      return frame;
-    };
+  	frame.titleY = function(x){
+  		if(x == undefined) return titlePosition.y;
+  		titlePosition.y = x;
+  		return frame;
+  	};
 
-    frame.units = function(x){
-      if(x == undefined) return units
-      units = x;
-      return frame;
-    };
+  	frame.units = function(x){
+  		if(x == undefined) return units
+  		units = x;
+  		return frame;
+  	};
 
-    frame.watermark = function(x){
-      if(x == undefined) return watermarkMarkup;
-      watermarkLocation = '';
-      watermarkMarkup = x;
-      return frame;
-    };
+  	frame.watermark = function(x){
+  		if(x == undefined) return watermarkMarkup;
+  		watermarkLocation = '';
+  		watermarkMarkup = x;
+  		return frame;
+  	};
 
-    frame.watermarkOffset = function(x){
-      if(x == undefined) return watermarkOffset;
-      watermarkOffset = x;
-      return frame;
-    };
+  	frame.watermarkOffset = function(x){
+  		if(x == undefined) return watermarkOffset;
+  		watermarkOffset = x;
+  		return frame;
+  	};
 
-    frame.watermarkLocation = function(x){
-      if(x == undefined) return watermarkLocation;
-      watermarkMarkup = '';
-      watermarkLocation = x;
-      return frame;
-    };
+  	frame.watermarkLocation = function(x){
+  		if(x == undefined) return watermarkLocation;
+  		watermarkMarkup = '';
+  		watermarkLocation = x;
+  		return frame;
+  	};
 
-    frame.watermarkSize = function(x){
-      if(x == undefined) return watermarkSize;
-      watermarkSize = x;
-      return frame;
-    };
+  	frame.watermarkSize = function(x){
+  		if(x == undefined) return watermarkSize;
+  		watermarkSize = x;
+  		return frame;
+  	};
 
-    frame.width = function(x){
-      if(!x) return graphicWidth;
-      graphicWidth = convertFrom[units](x);
-      return frame;
-    };
+  	frame.width = function(x){
+  		if(!x) return graphicWidth;
+  		graphicWidth = convertFrom[units](x);
+  		return frame;
+  	};
 
     frame.attrs = function(x){
       if(x===undefined)return {
-        axisAlign:axisAlign,
+      	axisAlign:axisAlign,
         containerClass:containerClass,
         copyright:copyright,
         copyrightStyle:copyrightStyle,
@@ -548,7 +552,7 @@
       frame.attrs(configObject);
     }
 
-    return frame;
+  	return frame;
   }
 
   function isFunction(functionToCheck) {
@@ -571,15 +575,14 @@
       .margin({bottom:90, right:5, left:15})
       .rem(14)
       .titleStyle({
-        'font-size':28,
+        'font-size':24,
         'font-family': 'MetricWeb,sans-serif',
-        'font-weight': 600,
-        'fill':'#000',
+        'fill':'#33302E',
       })
-      .titleLineHeight(32)
-      .subtitleLineHeight(20)
+      .titleLineHeight(24)
+      .subtitleLineHeight(16)
       .subtitleStyle({
-        'font-size':18,
+        'font-size':14,
         'font-family': 'MetricWeb,sans-serif',
         'fill': '#66605C',
       })
@@ -614,19 +617,17 @@
       .margin({bottom:95, right:5, left:20})
       .rem(16)
       .titleStyle({
-        'font-size':28,
+        'font-size':24,
         'font-family': 'MetricWeb,sans-serif',
-        'font-weight': 600,
-        'fill':'#000',
+        'fill':'#33302E',
       })
-      .titleLineHeight(32)
-      .subtitleLineHeight(20)
+      .titleLineHeight(24)
+      .subtitleLineHeight(18)
       .subtitleStyle({
-        'font-size':18,
+        'font-size':16,
         'font-family': 'MetricWeb,sans-serif',
         'fill': '#66605C',
       })
-      .subtitleY(66)
       .sourceLineHeight(14)
       .sourcePlotYOffset(37)
       .sourceStyle({
@@ -658,16 +659,15 @@
       // .watermarkOffset(-28)
       .margin({bottom:105, right:5, left:20})
       .rem(18)
-      .titleY(34)
+      .titleY(38)
       .titleStyle({
         'font-size':28,
         'font-family': 'MetricWeb,sans-serif',
-        'font-weight': 600,
-        'fill':'#000',
+        'fill':'#33302E',
       })
-      .titleLineHeight(32)
+      .titleLineHeight(28)
       .subtitleLineHeight(20)
-      .subtitleY(67)
+      .subtitleY(63)
       .subtitleStyle({
         'font-size':18,
         'font-family': 'MetricWeb,sans-serif',
@@ -821,7 +821,7 @@
       return f;
   }
 
-  var version = "0.4.26";
+  var version = "0.4.24";
 
   exports.version = version;
   exports.frame = chartFrame;
