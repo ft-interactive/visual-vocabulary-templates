@@ -19,8 +19,37 @@ export function load(url, options) { // eslint-disable-line
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
+        // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
 
-        return data;
+        // create stack data object
+        const plotData = d3.stack();
+        plotData.keys(seriesNames);
+
+        plotData.order(d3.stackOrderNone);
+        plotData.offset(d3.stackOffsetNone);
+        // Filter data for annotations
+        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
+        // Format the data that is used to draw highlight tonal bands
+        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const highlights = [];
+
+        boundaries.forEach((d, i) => {
+            if (d.highlight === 'begin') {
+                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
+            }
+        });
+
+        return {
+            data,
+            seriesNames,
+            plotData,
+            annos,
+            valueExtent,
+            highlights,
+        }
     });
 }
 
@@ -30,7 +59,7 @@ export function load(url, options) { // eslint-disable-line
  * @param  {[type]} columns [description]
  * @return {[type]}         [description]
  */
-export function getSeriesNames(columns) {
+function getSeriesNames(columns) {
     const exclude = ['date', 'annotate', 'highlight'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
@@ -52,7 +81,7 @@ function getMaxMin(values) {
 
 // a function to work out the extent of values in an array accross multiple properties...
 // a function to work out the extent of values in an array accross multiple properties...
-export function extentMulti(data, columns) {
+function extentMulti(data, columns) {
     const ext = data.reduce((acc, row) => {
         const values = columns.map(key => +row[key]);
         const rowExtent = d3.extent(values);
@@ -68,39 +97,3 @@ export function extentMulti(data, columns) {
     return [ext.min, ext.max];
 }
 
-/**
- * Sorts the column information in the dataset into groups according to the column
- * head, so that the line path can be passed as one object to the drawing function
- */
-export function getlines(d, group) {
-    const values = [];
-    d.forEach((el) => {
-        // console.log(el,i)
-        const column = {};
-        column.name = group;
-        column.date = el.date;
-        column.value = +el[group];
-        column.highlight = el.highlight;
-        column.annotate = el.annotate;
-        if (el[group]) {
-            values.push(column);
-        }
-        if (el[group] === false) {
-            values.push(null);
-        }
-    });
-    return values;
-    // return d.map((el) => {
-    //     if (el[group]) {
-    //         return {
-    //             name: group,
-    //             date: el.date,
-    //             value: +el[group],
-    //             highlight: el.highlight,
-    //             annotate: el.annotate,
-    //         };
-    //     }
-
-    //     return null;
-    // }).filter(i => i);
-}

@@ -108,22 +108,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile, { dateFormat }).then((data) => {
-    // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-    const seriesNames = parseData.getSeriesNames(data.columns);
+parseData.load(dataFile, { dateFormat }).then(({data, seriesNames, plotData, annos, valueExtent,highlights }) => {
 
-    // create stack data object
-    const plotData = d3.stack();
-    plotData.keys(seriesNames);
-
-    plotData.order(d3.stackOrderNone);
-    plotData.offset(d3.stackOffsetNone);
-
-    // Filter data for annotations
-    const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
-
-    // Use the seriesNames array to calculate the minimum and max values in the dataset
-    const valueExtent = parseData.extentMulti(data, seriesNames);
 
     // Define the chart x and x domains.
     // yDomain will automatically overwrite the user defined min and max if the domain is too small
@@ -134,6 +120,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         // define other functions to be called
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
+        const myHighlights = drawChart.drawHighlights();// sets up highlight tonal bands
         // const myHighlights = drawChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = drawChart.drawAnnotations();// sets up annotations
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
@@ -144,8 +131,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
 
 
         // create a 'g' element behind the chart and in front of the highlights
-        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
-        console.log(valueExtent)
+        const axisHighlight = currentFrame.plot().append('g');
         myYAxis
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
             .range([currentFrame.dimension().height, 0])
@@ -195,6 +181,8 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         currentFrame.plot()
             .call(myXAxis);
 
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
         if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             if (minorAxis) {
@@ -213,6 +201,20 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
             .colourPalette(chartColour)
             .yAxisHighlight(yAxisHighlight)
             .frameName(frameName);
+
+        // Set up highlights for this frame
+        myHighlights
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale());
+
+        // Draw the highlights before the lines and xAxis
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .attr('class', 'highlights')
+          .call(myHighlights);
 
 
         // Draw the lines
