@@ -39,6 +39,7 @@ svg {
 .ft-socialgraphic .axis text,
 .ft-videographic .axis text {
     opacity: 0.5;
+    fill: #ffffff;
 }
 
 .ft-webgraphic-s .highlighted-label,
