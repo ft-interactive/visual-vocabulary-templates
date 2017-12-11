@@ -3,7 +3,7 @@ import * as gAxis from 'g-axis';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
-import * as dotPlot from './dotplot.js';
+import * as boxPlot from './boxPlot.js';
 
 
 const dataURL = 'data.csv';
@@ -109,8 +109,8 @@ parseData.load(dataURL, { sort, sortOn })
             // define other functions to be called
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
-            const myChart = dotPlot.draw();
-            const myQuartiles = dotPlot.drawQuartiles();
+            const myChart = boxPlot.draw();
+            const myQuartiles = boxPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
             const tickSize = currentFrame.dimension().height; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
             // const plotDim=currentFrame.dimension(); // useful variable to carry the current frame dimensions
