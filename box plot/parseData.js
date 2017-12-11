@@ -17,16 +17,14 @@ export function load(url, options) { // eslint-disable-line
 
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
-        console.log('seriesNames', seriesNames)
-        const allGroups = data.map(d => d.group);
-        // create an array of the group names
-        const groupNames = allGroups.filter((el, i) => allGroups.indexOf(el) === i);
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
+
         // Buid the dataset for plotting
         const plotData = seriesNames.map((d) => {
             const values = data.map((el) => {return el[d]})
-                .filter((d) => {return d !==""});
+                .filter((d) => {return d !==""})
+                .map((d) => {return Number(d)});
             // Create an array of just the values to extract min, max and quartiles
             values.sort((a, b) => parseFloat(a) - parseFloat(b));
             const quantiles = [];
@@ -49,7 +47,7 @@ export function load(url, options) { // eslint-disable-line
                 quartiles: quantiles
             };
         });
-        console.log(plotData);
+
         return {
             valueExtent,
             seriesNames,

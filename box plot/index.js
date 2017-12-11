@@ -8,21 +8,21 @@ import * as boxPlot from './boxPlot.js';
 const dataURL = 'data.csv';
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Boxplot rect geometry',
+    subtitle: '’000, mean: true, lines: true',
     source: 'Source not yet added',
 };
 
-const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 200;// sets the maximum value on the xAxis
-const divisor = 1;// sets the formatting on linear axis for ’000s and millions
+const xMin = 10000;// sets the minimum value on the yAxis
+const xMax = 90000;// sets the maximum value on the xAxis
+const divisor = 10000;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 4;// Number of tick on the uAxis
+const numTicks = 8;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
-const mean = true;
+const mean = false;
 const geometry = 'rect'; // set the geometry of the data options are 'circle' or 'rect'
 
 
