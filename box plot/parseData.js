@@ -29,6 +29,14 @@ export function load(url, options) { // eslint-disable-line
             console.log('values', values)
             // Create an array of just the values to extract min, max and quartiles
             values.sort((a, b) => parseFloat(a) - parseFloat(b));
+            const quantiles = [];
+            for (let i = 1; i < 4; i += 1) {
+                const qData = {};
+                qData.name = `q${i}`;
+                qData.value = d3.quantile(values, (i / 4));
+                qData.group = d;
+                quantiles.push(qData);
+            }
             return {
                 group: d,
                 values,
@@ -37,7 +45,8 @@ export function load(url, options) { // eslint-disable-line
                 q3: d3.quantile(values, .75),
                 min: Number(d3.min(values)),
                 max: Number(d3.max(values)),
-                mean:'to come'
+                mean:'to come',
+                quartiles: quantiles
             };
         });
         console.log(plotData);

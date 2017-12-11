@@ -28,7 +28,7 @@
 .ft-webgraphic-m .boxplot line,
 .ft-webgraphic-m-default .boxplot line,
 .ft-webgraphic-l .boxplot line{
-	stroke-width: 1;
+	stroke-width: 0.6;
 	stroke: #000000;
 }
 
@@ -48,4 +48,5 @@
 	stroke: #FFFFFF;
 	stroke-opacity: 0.5
 }
+
 
