@@ -1,6 +1,4 @@
-/**
- * Global styles for Visual Vocabulary Templates
- */
+/* overall text style for each chart frame*/
 
 .section-heading {
     background-color: #00757F;
@@ -9,14 +7,6 @@
     font-weight: 600;
     font-size: 20px;
     padding: 8px 8px 5px;
-}
-
-figure {
-    width: fit-content;
-}
-
-.button-holder {
-    margin-bottom: 50px;
 }
 
 svg {
@@ -239,10 +229,6 @@ svg {
     stroke: #000000;
     stroke-width: 0.6px;
 }
-.ft-printgraphic .xAxis.baseline line{
-    stroke: #000000;
-    stroke-width: 0.3px;
-}
 .ft-socialgraphic .baseline line{
     stroke: #FFFFFF;
     stroke-width: 2px;
@@ -353,7 +339,7 @@ svg {
 .ft-webgraphic-m .highlights,
 .ft-webgraphic-m-default .highlights,
 .ft-webgraphic-l .highlights {
-    fill: #FCE6D6;
+    fill: #F2DFCE;
 }
 
 .ft-printgraphic .highlights{
@@ -364,7 +350,6 @@ svg {
     fill: #ffffff;
     opacity: 0.2;
 }
-
 .ft-videographic .highlights{
     fill: #ffffff;
     opacity: 0.2;
@@ -413,7 +398,6 @@ svg {
     font-size: 9.6px;
     fill: #000000;
 }
-
 .ft-socialgraphic .timeline-label,
 .ft-socialgraphic .legend text {
     font-family: metric;
@@ -421,7 +405,6 @@ svg {
     fill: #FFFFFF;
     font-size: 28px;
 }
-
 .ft-videographic .timeline-label,
 .ft-videographic .legend text{
     font-family: metric;
@@ -442,20 +425,4 @@ svg text{
 
 ul {
   line-height: 24px;
-}
-
-.button {
-    border-radius: 10px;
-    background-color: #00757F;
-    color: #fff;
-    font-family: Metric;
-    font-weight: 600;
-    font-size: 20px;
-    height: 25px;
-    margin-top: 2px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    border-width: 0px;
-    padding-top: 3px;
-    cursor: pointer;
 }

@@ -2,53 +2,31 @@ import * as d3 from 'd3';
 import gChartcolour from 'g-chartcolour';
 
 export function draw() {
-    let yScale = d3.scaleBand();
-    let xScale = d3.scaleBand();
+    let xScale = d3.scaleLinear();
+    let yScale = d3.scaleLinear();
     let seriesNames = [];
-    let showValues = false;
-    let catNames = [];
-    let yAxisAlign = 'right';
+    let yAxisAlign = 'left';
     let rem = 16;
+    let markers = false; // eslint-disable-line
+    let includeMarker = undefined; // eslint-disable-line
+    let interpolation = d3.curveLinear;
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
-        xScale.paddingInner(0);
-        yScale.paddingInner(0);
+        parent.attr('transform', (d, i) => {
+            const offset = Number(i * (rem / 10));
+            return `translate(0, ${yScale(d.yPos) + offset})`;
+        });
 
-        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
-            .attr('width', xScale.bandwidth());
-
-        const block = parent.selectAll('g')
-            .data(d => d.groups)
+        parent.selectAll('rect')
+            .data(d => d.bands)
             .enter()
-            .append('g');
-
-        block
             .append('rect')
-            .attr('class', (d) => {
-                if (d.value) {
-                    return 'grid';
-                }
-                return 'grid noData';
-            })
-            .attr('x', d => xScale(d.name))
-            .attr('width', () => xScale.bandwidth())
-            .attr('y', d => yScale(d.name))
-            .attr('height', () => yScale.bandwidth())
-            .attr('fill', d => colourScale.range()[catNames.lastIndexOf(d.value)]);
-
-        if (showValues) {
-            block
-                .append('text')
-                .attr('class', 'blockValue')
-                .attr('x', d => xScale(d.name))
-                .attr('y', d => yScale(d.name))
-                .attr('dx', (xScale.bandwidth() / 2))
-                .attr('dy', (yScale.bandwidth() / 2) + (rem / 4))
-                .text(d => d.value)
-                .attr('font-size', rem);
-        }
+            .attr('height', d => yScale(d.size))
+            .attr('x', d => xScale(Math.min(d.x, d.x1)))
+            .attr('width', d => Math.abs(xScale(d.value) - xScale(0)))
+            .attr('fill', d => colourScale(d.name));
     }
 
     chart.yScale = (d) => {
@@ -81,18 +59,6 @@ export function draw() {
         return chart;
     };
 
-    chart.catNames = (d) => {
-        if (typeof d === 'undefined') return catNames;
-        catNames = d;
-        return chart;
-    };
-
-    chart.showValues = (d) => {
-        if (typeof d === 'undefined') return showValues;
-        showValues = d;
-        return chart;
-    };
-
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
@@ -100,11 +66,13 @@ export function draw() {
     };
 
     chart.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return chart;
     };
 
     chart.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.range();
         xScale.rangeRound(d);
         return chart;
     };
@@ -121,11 +89,29 @@ export function draw() {
         return chart;
     };
 
+    chart.includeMarker = (d) => {
+        if (typeof d === 'undefined') return includeMarker;
+        includeMarker = d;
+        return chart;
+    };
+
+    chart.markers = (d) => {
+        if (typeof d === 'undefined') return markers;
+        markers = d;
+        return chart;
+    };
+
+    chart.interpolation = (d) => {
+        if (!d) return interpolation;
+        interpolation = d;
+        return chart;
+    };
+
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
-        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.barPrint);

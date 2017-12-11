@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FT boiler-frame</title>
+
+    <link rel="stylesheet" href="assets/styles.css"/>
+    <link rel="stylesheet" href="assets/origami-fonts.css" />
+    <link rel="stylesheet" href="assets/bubble.css" />
+    <script src="assets/d3.v4.js"></script>
+    <script src="assets/g-chartframe.js"></script>
+    <script src="assets/g-chartcolour.js"></script>
+    <script src="assets/g-axis.js"></script>
+    <script src="assets/g-legend.js"></script>
+
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+
+d3.json("data.json",function(data){
+
+    //configure the chart frame
+    //webFrameS/webFrameM/webFrameL/socialFrame/printFrame/videoFrame
+    const frameConfig = {
+        chartType:'socialFrame',
+        title:'Animated bubble chart',
+        subtitle:'Life expectancy (years)',
+        source:'Source: Gapminder',
+        xAlign:"bottom",
+        yAlign:"left",
+        height:800,
+        width:800,//comment the width out for web frames
+        margin:{top:0,left:20,right:80,bottom:160}
+    }
+
+    //configure the bubble chart
+    //x,y,z are var names from data file
+    const bubbleConfig = {
+        "x":"GDP per capita ($US 2017, PPP)",
+        "y":"Life Expectancy",
+        "z":"Population",
+        "maxCircle":40,
+        "xScale":[0,14000],
+        "yScale":[0,80],
+        "semilog":false,
+        "ticksX":4,
+        "ticksY":6,
+        "scale":true,
+        "sizeKeyValues":[10000000,50000000],
+        "color":true,
+        "animate":true,
+        "speed":500,
+        "delay":2000,
+        "index":0
+    }
+
+    let legendAlign = "hori"//hori or vert, alignment of the legend
+    let legendType = 'circ'
+
+    ///////DATA WRANGLING///////
+
+    //establish max values
+    let minX,maxX,minY,maxY,maxZ=0;
+    let cats = [];
+    data.entities.forEach(function(d){
+        minX = d3.min([minX,d3.min(d[bubbleConfig.x])]);
+        maxX = d3.max([maxX,d3.max(d[bubbleConfig.x])]);
+        minY = d3.min([minY,d3.min(d[bubbleConfig.y])]);
+        maxY = d3.max([maxY,d3.max(d[bubbleConfig.y])]);
+        maxZ = d3.max([maxZ,d3.max(d[bubbleConfig.z])]);
+        cats.push(d.group)
+    })
+
+    minX = d3.min([minX,bubbleConfig.xScale[0]])
+    maxX = d3.max([maxX,bubbleConfig.xScale[1]])
+    minY = d3.min([minY,bubbleConfig.yScale[0]])
+    maxY = d3.max([maxY,bubbleConfig.yScale[1]])
+
+    //extract group names for colour coding
+    const groups = d3.map(cats, function(d){return d}).keys()
+
+    //sort the data so smaller bubbles will draw in front
+    data.entities.sort(function(x, y){
+        return d3.descending(x[bubbleConfig.z][0],y[bubbleConfig.z][0]);
+    })
+
+    //BASIC CHART ELEMENTS//
+    //creates chart frame
+    const svg = d3.select("body").append("svg")
+    const chartFrame = createFrame(frameConfig.chartType)
+    svg.call(chartFrame);
+
+    //basic colour palettes
+    const seqColors = gChartcolour.sequentialMulti
+    const divColors = gChartcolour.diverging;
+    const lineColors = getLineColors(frameConfig.chartType)
+    const barColors = getBarColors(frameConfig.chartType)
+
+    //plot dimensions
+    const plot = chartFrame.plot().append("g");
+    const w = chartFrame.dimension().width;
+    const h = chartFrame.dimension().height;
+    const rem = chartFrame.rem();
+    const anno = chartFrame.plot().append("g").attr("class","annotations-holder");
+
+    //MAIN DRAWING CODE//
+    
+
+    plot.append("text")
+        .attr("class",frameConfig.chartType+"_xlabel")
+        .attr("x",w/2)
+        .attr("y",h+(3*rem))
+        .text(bubbleConfig.x)
+
+    //SCALES
+    let xScale;
+    if (bubbleConfig.semilog){
+        xScale = d3.scaleLog()
+        .domain([100,maxX])
+        .range([0,w]);
+    }   else  {
+        xScale = d3.scaleLinear()
+        .domain([minX,maxX])
+        .range([0,w]);
+    }
+
+    const yScale = d3.scaleLinear()
+        .domain([minY,maxY])
+        .range([h,0]);
+
+    const zScale = d3.scaleSqrt()
+        .domain([0, maxZ])
+        .range([0, bubbleConfig.maxCircle]);
+
+    const colorScale = d3.scaleOrdinal()
+        .domain(groups)
+        .range(lineColors)
+
+    //AXES
+    const yAxis = gAxis.yLinear()
+        .domain(yScale.domain())
+        .range([h,0])
+        .tickSize(w)
+        .numTicks(bubbleConfig.ticksY)
+        .align(frameConfig.yAlign)
+    plot.call(yAxis);
+
+    const xAxis = gAxis.xLinear()
+        .domain(xScale.domain())
+        .range([0,w])
+        .tickSize(rem/2)
+        .numTicks(bubbleConfig.ticksX)
+        .align(frameConfig.xAlign)
+    if (bubbleConfig.semilog){
+        xAxis.logScale(true)
+    }
+    plot.call(xAxis);
+
+    //nudge axes into their correct positions based on axis options
+    if (frameConfig.xAlign == "bottom" ){
+        xAxis.xLabel().attr('transform', `translate(0,${chartFrame.dimension().height})`);
+    }
+    if (frameConfig.xAlign == "top"){
+        xAxis.xLabel().attr('transform', `translate(0,${xAxis.tickSize()})`);
+    }
+    if (frameConfig.yAlign == 'right' ){
+            let newMargin = yAxis.labelWidth()+chartFrame.margin().right
+            chartFrame.margin({right:newMargin});
+        }
+    if (frameConfig.yAlign == 'left' ){
+            let newMargin = yAxis.labelWidth()+chartFrame.margin().left
+            chartFrame.margin({left:newMargin});
+            yAxis.yLabel().attr('transform', `translate(${(yAxis.tickSize()-yAxis.labelWidth())},0)`);
+        }
+    d3.select(chartFrame.plot().node().parentNode)
+            .call(chartFrame);
+
+    //put in background year counter if needed
+    if (bubbleConfig.animate){
+        plot.append("text")
+            .attr("id","timeText")
+            .attr("class",frameConfig.chartType+"_counter")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",h*0.65)
+            .text(data.dates[bubbleConfig.index])
+    }
+
+    //create color key when needed
+    if (bubbleConfig.color){
+
+        const myLegend = gLegend.legend();
+
+        myLegend
+          .seriesNames(groups)
+          .geometry(legendType)
+          .rem(rem)
+          .alignment(legendAlign)
+          .colourPalette(frameConfig.chartType.split("Frame")[0].toLowerCase()); 
+
+        chartFrame.plot()
+          .append("g")
+          .attr("id","legend")
+          .selectAll(".legend")
+          .data(groups)
+          .enter()
+          .append("g")
+          .classed("legend",true)
+          .call(myLegend)
+    }
+
+    if (bubbleConfig.scale){
+
+        const commas = d3.format(',');
+        const keyValues = bubbleConfig.sizeKeyValues//need to manually specify really
+        const scaleKey = plot.append("g").attr("id","keySize")
+
+            scaleKey.selectAll("circle")
+                .data(keyValues)
+                .enter()
+                .append("circle")
+                .attr("r",function(d){return zScale(d)})
+                .attr("cy",function(d,i){
+                    if (i==0){
+                        return h/2;
+                    }   else{
+                        return h/2+(zScale(keyValues[0])-zScale(keyValues[1]))
+                    }
+                })
+                .attr("class",frameConfig.chartType+"_sizekey")
+
+            scaleKey.selectAll("line")
+                .data(keyValues)
+                .enter()
+                .append("line")
+                .attr("x2",zScale(keyValues[1])+(rem/1.5))
+                .attr("y1",function(d,i){
+                    if (i==0){
+                        return h/2-zScale(d);
+                    }   else{
+                        return h/2+(zScale(keyValues[0])-zScale(keyValues[1]))-zScale(d)
+                    }
+                })
+                .attr("y2",function(d,i){
+                    if (i==0){
+                        return h/2-zScale(d);
+                    }   else{
+                        return h/2+(zScale(keyValues[0])-zScale(keyValues[1]))-zScale(d)
+                    }
+                })
+                .attr("class",frameConfig.chartType+"_sizekey")
+
+            scaleKey.selectAll("text")
+                .data(keyValues)
+                .enter()
+                .append("text")
+                .attr("x",zScale(keyValues[1])+rem)
+                .attr("y",function(d,i){
+                    if (i==0){
+                        return h/2-zScale(d)+(rem/4);
+                    }   else{
+                        return h/2+(zScale(keyValues[0])-zScale(keyValues[1]))-zScale(d)+(rem/4)
+                    }
+                })
+                .attr("class",frameConfig.chartType+"_keylabel")
+                .text(function(d){
+                    return commas(d);
+                })
+
+            scaleKey.append("text")
+                .attr("class",frameConfig.chartType+"_keylabel")
+                .text(bubbleConfig.z.toUpperCase())
+                .attr("y",h/2-(zScale(keyValues[1])*2))
+    }
+
+    d3.select("#keySize")
+        .on('mouseover', pointer)
+        .call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended));
+
+
+    //CREATE BUBBLES
+    var circles = plot.append("g").attr("id","circles")
+
+    circles.selectAll("circle")
+        .data(data.entities)
+        .enter()
+        .append("circle")
+        .attr("id",function(d){
+            return d.name
+        })
+        .attr("cx",function(d){
+            return xScale(d[bubbleConfig.x][bubbleConfig.index])
+        })
+        .attr("cy",function(d){
+            return yScale(d[bubbleConfig.y][bubbleConfig.index])
+        })
+        .attr("r",function(d){
+            if (bubbleConfig.scale==true){
+                return zScale(d[bubbleConfig.z][bubbleConfig.index])
+            }   else    {
+                return rem/4;
+            }
+        })
+        .attr("fill",function(d){
+            if (bubbleConfig.color==true){
+                return colorScale(d.group)
+            }   else{
+                return barColors[0]
+            }
+        })
+
+    //label text
+    circles.selectAll("text")
+        .data(data.entities)
+        .enter()
+        .append("text")
+        .attr("id",function(d){
+            return "label"+d.name
+        })
+        .attr("class",frameConfig.chartType+"_label")
+        .attr("x",function(d){
+            return xScale(d[bubbleConfig.x][bubbleConfig.index])
+        })
+        .attr("y",function(d){
+            if (d.label=="bottom"){
+                if (bubbleConfig.scale==true){
+                    return (yScale(d[bubbleConfig.y][bubbleConfig.index]) + zScale(d[bubbleConfig.z][bubbleConfig.index]))+rem
+                }   else    {
+                    return yScale(d[bubbleConfig.y][bubbleConfig.index])+rem
+                }
+            }
+            if (d.label=="top"){
+                if (bubbleConfig.scale==true){
+                    return (yScale(d[bubbleConfig.y][bubbleConfig.index]) - zScale(d[bubbleConfig.z][bubbleConfig.index]))-(rem/2)
+                }   else    {
+                    return yScale(d[bubbleConfig.y][bubbleConfig.index])-(rem/2)
+                }
+            }
+        })
+        .text(function(d){
+            return d.name
+        })
+
+    //ANIMATION
+    if (bubbleConfig.animate){
+
+
+        let delay = setTimeout(function(){
+
+
+        
+        
+
+
+
+        var timeout = setInterval(function(){
+            if (bubbleConfig.index<data.dates.length-1){
+                bubbleConfig.index++
+            }   else    {
+                clearTimeout(timeout);
+            }
+
+        //transition circles
+        circles.selectAll("circle")
+                .transition()
+                .duration(bubbleConfig.speed)
+                .ease(d3.easeLinear)
+                .attr("cx",function(d,i){
+            return xScale(d[bubbleConfig.x][bubbleConfig.index])
+            })
+            .attr("cy",function(d,i){
+            return yScale(d[bubbleConfig.y][bubbleConfig.index])
+            })
+            .attr("r",function(d){
+            if (bubbleConfig.scale==true){
+                return zScale(d[bubbleConfig.z][bubbleConfig.index])
+            }   else    {
+                return rem/4;
+            }
+            })
+
+        circles.selectAll("text")
+            .transition()
+            .duration(bubbleConfig.speed)
+            .ease(d3.easeLinear)
+            .attr("x",function(d){
+            return xScale(d[bubbleConfig.x][bubbleConfig.index])
+            })
+            .attr("y",function(d){
+                if (d.label=="bottom"){
+                    if (bubbleConfig.scale==true){
+                        return (yScale(d[bubbleConfig.y][bubbleConfig.index]) + zScale(d[bubbleConfig.z][bubbleConfig.index]))+rem
+                    }   else    {
+                        return yScale(d[bubbleConfig.y][bubbleConfig.index])+rem
+                    }
+                }
+                if (d.label=="top"){
+                    if (bubbleConfig.scale==true){
+                        return (yScale(d[bubbleConfig.y][bubbleConfig.index]) - zScale(d[bubbleConfig.z][bubbleConfig.index]))-(rem/2)
+                    }   else    {
+                        return yScale(d[bubbleConfig.y][bubbleConfig.index])-(rem/2)
+                    }
+                }
+            })
+
+        d3.select("#timeText").text(data.dates[bubbleConfig.index])
+        }, bubbleConfig.speed);
+
+
+
+    },bubbleConfig.delay)
+    }  
+
+    //END OF YOUR CUSTOM VIZ CODE
+
+    function createFrame(chartType){
+        let frame;
+        switch(frameConfig.chartType) {
+            case "socialFrame":
+                frame = gChartframe.socialFrame(frameConfig);
+                break;
+            case "printFrame":
+                frame = gChartframe.printFrame(frameConfig);
+                break;
+            case "webFrameS":
+                frame = gChartframe.webFrameS(frameConfig);
+                break;
+            case "webFrameM":
+                frame = gChartframe.webFrameM(frameConfig);
+                break;
+            case "webFrameL":
+                frame = gChartframe.webFrameL(frameConfig);
+                break;
+            case "videoFrame":
+                frame = gChartframe.videoFrame(frameConfig);
+                break;
+        }
+        return frame;
+    }
+
+    function getLineColors(chartType){
+        let colors;
+        switch(frameConfig.chartType) {
+            case "socialFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            case "printFrame":
+                colors = gChartcolour.linePrint;
+                break;
+            case "videoFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            default:
+                colors = gChartcolour.categorical_line;
+        }
+        return colors;
+    }
+
+    function getBarColors(chartType){
+        let colors;
+        switch(frameConfig.chartType) {
+            case "socialFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            case "printFrame":
+                colors = gChartcolour.linePrint;
+                break;
+            case "videoFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            default:
+                colors = gChartcolour.categorical_bar;
+        }
+        return colors;
+    }
+
+
+    function pointer() {this.style.cursor = 'pointer';}
+
+    function dragstarted() {d3.select(this).raise().classed('active', true);}
+
+    function dragged() {d3.select(this).attr('transform', `translate(${d3.event.x}, ${d3.event.y})`);}
+
+    function dragended() {d3.select(this).classed('active', false);}
+
+
+
+})
+</script>
+</html>

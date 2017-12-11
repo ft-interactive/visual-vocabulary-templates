@@ -1,12 +1,10 @@
 import * as d3 from 'd3';
-import gChartcolour from 'g-chartcolour';
 
 export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleBand();
     let seriesNames = [];
     let showValues = false;
-    let catNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
     const colourScale = d3.scaleOrdinal()
@@ -27,7 +25,7 @@ export function draw() {
         block
             .append('rect')
             .attr('class', (d) => {
-                if (d.value) {
+                if (typeof d.value === 'number') {
                     return 'grid';
                 }
                 return 'grid noData';
@@ -36,7 +34,7 @@ export function draw() {
             .attr('width', () => xScale.bandwidth())
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', d => colourScale.range()[catNames.lastIndexOf(d.value)]);
+            .attr('fill', d => colourScale.range()[d.scaleCat]);
 
         if (showValues) {
             block
@@ -81,12 +79,6 @@ export function draw() {
         return chart;
     };
 
-    chart.catNames = (d) => {
-        if (typeof d === 'undefined') return catNames;
-        catNames = d;
-        return chart;
-    };
-
     chart.showValues = (d) => {
         if (typeof d === 'undefined') return showValues;
         showValues = d;
@@ -100,11 +92,13 @@ export function draw() {
     };
 
     chart.xDomain = (d) => {
+        if (typeof d === 'undefined') return xScale.domain();
         xScale.domain(d);
         return chart;
     };
 
     chart.xRange = (d) => {
+        if (typeof d === 'undefined') return xScale.rangeRound();
         xScale.rangeRound(d);
         return chart;
     };
@@ -121,15 +115,9 @@ export function draw() {
         return chart;
     };
 
-    chart.colourPalette = (d) => {
+    chart.colourPalette = (d, type) => {
         if (!d) return colourScale;
-        if (d === 'social' || d === 'video') {
-            colourScale.range(gChartcolour.lineSocial);
-        } else if (['webS', 'webM', 'webMDefault', 'webL'].includes(d)) {
-            colourScale.range(gChartcolour.categorical_bar);
-        } else if (d === 'print') {
-            colourScale.range(gChartcolour.barPrint);
-        }
+        colourScale.range(type);
         return chart;
     };
 

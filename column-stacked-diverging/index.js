@@ -1,9 +1,10 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
+import gChartcolour from 'g-chartcolour';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as xyHeatmapCategoryChart from './xyHeatmapCategory.js';
+import * as stackedColumnChart from './stackedColumnChart.js';
 
 const dataFile = 'data.csv';
 
@@ -12,13 +13,16 @@ const sharedConfig = {
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-
-const yAxisAlign = 'left';// alignment of the axis
-const xAxisAlign = 'top';// alignment of the axis
-const showValues = false;
-const rotateLabels = false;
-const legendAlign = 'hori';// hori or vert, alignment of the legend
+const yMin = -15;// sets the minimum value on the yAxis
+const yMax = 20;// sets the maximum value on the yAxis
+const yAxisHighlight = 100; // sets which tick to highlight on the yAxis
+const numTicksy = 5; // Number of tick on the xAxis
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
+const yAxisAlign = 'right';// alignment of the axis
+const xAxisAlign = 'bottom';// alignment of the axis
+const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const invertLegend = true; // reverse order of legend items
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -58,13 +62,13 @@ const frame = {
         })
     // .title("Put headline here")
         .width(53.71)// 1 col
-    // .width(112.25)// 2 col
-    // .width(170.8)// 3 col
-    // .width(229.34)// 4 col
-    // .width(287.88)// 5 col
-    // .width(346.43)// 6 col
-    // .width(74)// markets std print
-        .height(69.85), //  std print (Use 58.21mm for markets charts that matter)
+        // .width(112.25)// 2 col
+        // .width(170.8)// 3 col
+        // .width(229.34)// 4 col
+        // .width(287.88)// 5 col
+        // .width(346.43)// 6 col
+        // .width(74)// markets std print
+        .height(69.85), // std print (use 58.21mm for markets charts that matter)
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
@@ -90,25 +94,64 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile, '')
-    .then(({
-        seriesNames, catNames, plotData,
-    }) => { // eslint-disable-line no-unused-vars
+parseData.load(dataFile, { invertLegend })
+    .then(({ valueExtent, seriesNames, plotData }) => {
+    // define chart
+    const myChart = stackedColumnChart.draw() // eslint-disable-line
+            .seriesNames(seriesNames)
+            .yAxisAlign(yAxisAlign);
+
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
 
             const myXAxis = gAxis.xOrdinal();// sets up yAxis
-            const myYAxis = gAxis.yOrdinal();
-            const myChart = xyHeatmapCategoryChart.draw(); // eslint-disable-line no-unused-vars
+            const myYAxis = gAxis.yLinear();
+            const myChart = stackedColumnChart.draw(); // eslint-disable-line
             const myLegend = gLegend.legend();
 
+            const divergingScaleColours = d3.scaleOrdinal();
+            let setColourScale;
+
+            // check number of categories to determine the right palette
+            const getColourScale = function getColourScale(series) {
+                if (series.length === 5) {
+                    setColourScale = gChartcolour.diverging_5;
+                } else if (series.length === 3) {
+                    setColourScale = gChartcolour.diverging_3;
+                } else {
+                    setColourScale = gChartcolour.categorical_bar;
+                }
+                return setColourScale;
+            };
+
+            divergingScaleColours
+                .range(getColourScale(seriesNames));
+
+            // define other functions to be called
+            const tickSize = currentFrame.dimension().width; // Used when drawing the yAxis ticks
+
+            myChart
+                .yRange([currentFrame.dimension().height, 0])
+                .plotDim(currentFrame.dimension())
+                .rem(currentFrame.rem())
+                .colourPalette(divergingScaleColours);
+
             myYAxis
-                .rangeRound([0, currentFrame.dimension().height], 0)
-                .domain(plotData.map(d => d.name))
+                .scale(myChart.yScale())
+                .numTicks(numTicksy)
+                .tickSize(tickSize)
+                .yAxisHighlight(yAxisHighlight)
+                .divisor(divisor)
+                .align(myChart.yAxisAlign());
+
+            myYAxis
                 .align(yAxisAlign)
+                .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+                .numTicks(numTicksy)
                 .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
+
             currentFrame.plot()
                 .call(myYAxis);
 
@@ -123,77 +166,61 @@ parseData.load(dataFile, '')
                 const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
                 // Use newMargin redefine the new margin and range of xAxis
                 currentFrame.margin({ left: newMargin });
-                myYAxis.yLabel().attr('transform', 'translate(0,0)');
+                myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
             }
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
             myXAxis
                 .align(xAxisAlign)
-                .domain(seriesNames)
-                .rangeRound([0, currentFrame.dimension().width], 0)
+                .domain(plotData.map(d => d.name))
+                .rangeRound([0, currentFrame.dimension().width], 10)
                 .frameName(frameName);
 
             myChart
-                .xScale(myXAxis.scale())
-                .yScale(myYAxis.scale())
-                .catNames(catNames)
-                .plotDim(currentFrame.dimension())
-                .rem(currentFrame.rem())
-                .showValues(showValues)
-                .colourPalette(frameName);
+                .xScale(myXAxis.scale());
 
             currentFrame.plot()
                 .call(myXAxis);
 
             if (xAxisAlign === 'bottom') {
-                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height - (currentFrame.rem() / 1.5)})`);
-                if (rotateLabels) {
-                    myXAxis.xLabel().selectAll('.tick text')
-                        .attr('transform', 'rotate(-45)')
-                        .style('text-anchor', 'end');
-                }
+                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             }
             if (xAxisAlign === 'top') {
-                myXAxis.xLabel().attr('transform', `translate(0,${(currentFrame.rem() / 1.5)})`);
-                if (rotateLabels) {
-                    myXAxis.xLabel().selectAll('.tick text')
-                        .attr('transform', 'rotate(-45)')
-                        .style('text-anchor', 'start');
-                }
+                myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
             }
+
 
             currentFrame.plot()
                 .selectAll('.columnHolder')
                 .data(plotData)
                 .enter()
                 .append('g')
-                .attr('class', 'columnHolder')
+                .attr('class', d => `${d.name}_columnHolder`)
                 .call(myChart);
+
 
             // Set up legend for this frame
             myLegend
-                .seriesNames(catNames)
+                .seriesNames(seriesNames)
                 .geometry(legendType)
                 .frameName(frameName)
                 .rem(myChart.rem())
                 .alignment(legendAlign)
-                .colourPalette((frameName));
+                .colourPalette(divergingScaleColours);
 
             // Draw the Legend
             currentFrame.plot()
                 .append('g')
                 .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(catNames)
+                .data(seriesNames)
                 .enter()
                 .append('g')
                 .classed('legend', true)
                 .call(myLegend);
 
-            // remove ticks from x-axis
-            myXAxis.xLabel().selectAll('.tick line').remove();
+            // myXAxis.xLabel().selectAll('.tick line').remove();
         });
-
     // addSVGSavers('figure.saveable');
     });
