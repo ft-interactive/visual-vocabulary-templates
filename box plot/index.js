@@ -23,7 +23,7 @@ const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
-const geometry = 'rect'; // set the geometry of the data options are 'circle' or 'rect'
+const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -167,7 +167,8 @@ parseData.load(dataURL)
                 .rem(currentFrame.rem())
                 .lines(lines)
                 .geometry(geometry)
-                .frameName(frameName);
+                .frameName(frameName)
+                .seriesNames(seriesNames);
 
             // Draw unhighlighted circles first
             currentFrame.plot()

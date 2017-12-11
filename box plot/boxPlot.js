@@ -5,7 +5,7 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleLinear();
     let geometry = '';
-    let seriesNames;
+    let seriesNames = [];
     let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
     let rem = 10;
@@ -44,9 +44,41 @@ export function draw() {
             .attr('height', yScale.bandwidth()/2)
             .attr('x', d => xScale(Math.max(0, d.q1)))
             .attr('width', d => Math.abs(xScale(d.q3) - xScale(d.q1)))
-            .attr('fill','#ffffff')
+            .attr('fill',d => colourScale(0))
+        }
+        if(geometry ==='circle') {
+            parent.append('line')
+                .attr("class", 'line')
+                .attr("x1", d => xScale(d.min))
+                .attr("y1", d => yScale(d.group))
+                .attr("x2", d => xScale(d.max))
+                .attr("y2", d => yScale(d.group))
+            
+            parent.append('circle')
+                .attr('cx', d => xScale(d.min))
+                .attr('cy', d => yScale(d.group))
+                .attr('r', rem/2)
+                .attr('fill',d => colourScale(0))
+            
+            parent.append('circle')
+                .attr('cx', d => xScale(d.max))
+                .attr('cy', d => yScale(d.group))
+                .attr('r', rem/2)
+                .attr('fill',d => colourScale(0))
 
-        } 
+            parent.append('circle')
+                .attr('cx', d => xScale(d.q1))
+                .attr('cy', d => yScale(d.group))
+                .attr('r', rem/2)
+                .attr('fill',d => colourScale(0))
+
+            parent.append('circle')
+                .attr('cx', d => xScale(d.q3))
+                .attr('cy', d => yScale(d.group))
+                .attr('r', rem/2)
+                .attr('fill',d => colourScale(0))
+
+        }
         
     }
 
