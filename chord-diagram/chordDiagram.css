@@ -2,6 +2,11 @@
 	cursor: pointer;
 }
 
+.ribbons {
+    fill-opacity: 0.6;
+    stroke-opacity: 0.6;
+}
+
 .ft-webgraphic-s .arc path,
 .ft-webgraphic-m .arc path,
 .ft-webgraphic-m-default .arc path,

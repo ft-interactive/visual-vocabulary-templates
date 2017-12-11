@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 import * as gLegend from 'g-legend'; // eslint-disable-line no-unused-vars
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
-import * as pieChart from './pieChart.js';
+import * as chordDiagram from './chordDiagram.js';
 
 const dataURL = 'data.csv';
 
@@ -16,13 +16,13 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const donut = true; // set to true to turn on donut and display total
+const divisor = 10;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({
-            top: 100, left: 50, bottom: 62, right: 50,
+            top: 100, left: 5, bottom: 62, right: 5,
         })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
@@ -31,18 +31,18 @@ const frame = {
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 100, bottom: 62, right: 100,
+            top: 100, left: 10, bottom: 62, right: 10,
         })
     // .title("Put headline here")
-        .height(500)
+        .height(700)
         .sourcePlotYOffset(28),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 150, bottom: 86, right: 150,
+            top: 100, left: 10, bottom: 86, right: 10,
         })
     // .title("Put headline here")
-        .height(500),
+        .height(700),
 
 
     webL: gChartframe.webFrameL(sharedConfig)
@@ -92,16 +92,16 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataURL).then(({ seriesNames, data, totalSize }) => {
+parseData.load(dataURL).then(({ seriesNames, plotData }) => {
     // Use the seriesNames array to calculate the minimum and max values in the dataset
 
     const valueFormat = d => d3.format(',')(d); // eslint-disable-line no-unused-vars
-    const pie = d3.pie()
-        .value(d => d.value);
-
+    const chord = d3.chord()
+        .padAngle(0.05)
+        .sortSubgroups(d3.descending);
 
     // define chart
-    const myChart = pieChart.draw()
+    const myChart = chordDiagram.draw()
         .seriesNames(seriesNames);
     // .plotDim(currentFrame.dimension())
     // .rem(currentFrame.rem())
@@ -110,46 +110,23 @@ parseData.load(dataURL).then(({ seriesNames, data, totalSize }) => {
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
-        const formatNumber = d3.format(',');
-        let smallRadius = 0;
 
-        const radius = Math.min(currentFrame.dimension().width, currentFrame.dimension().height) / 2;
-
-        if (donut) {
-            smallRadius = Math.min(currentFrame.dimension().width, currentFrame.dimension().height) / 4;
-
-            const total = currentFrame.plot()
-                .append('g')
-                .attr('transform', `translate(${(currentFrame.dimension().width / 2)}, ${(currentFrame.dimension().height / 2) - (currentFrame.rem() / 2)})`);
-
-            total
-                .append('text')
-                .attr('class', 'total-label')
-                .text('Total');
-
-            total
-                .append('text')
-                .attr('class', 'total-size')
-                .text(formatNumber(totalSize))
-                .attr('transform', `translate(0, ${(currentFrame.rem() * 1.5)})`);
-        }
+        const outerRadius = Math.min(currentFrame.dimension().width, currentFrame.dimension().height) / 2;
+        const innerRadius = outerRadius * 0.9;
 
         myChart
             .rem(currentFrame.rem())
-            .radius(radius)
-            .smallRadius(smallRadius)
+            .outerRadius(outerRadius)
+            .innerRadius(innerRadius)
             .colourPalette(frameName)
-            .totalSize(totalSize)
+            .divisor(divisor)
             .frameName(frameName); // set colour palette
 
 
         currentFrame.plot()
-            .selectAll('g.arc')
-            .data(pie(data))
-            .enter()
             .append('g')
-            .attr('class', 'arc')
             .attr('transform', `translate(${currentFrame.dimension().width / 2},${currentFrame.dimension().height / 2} )`)
+            .datum(chord(plotData))
             .call(myChart);
     });
     // addSVGSavers('figure.saveable');
