@@ -23,7 +23,7 @@ const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
-const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
+const geometry = 'rect'; // set the geometry of the data options are 'circle' or 'rect'
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -104,7 +104,6 @@ parseData.load(dataURL)
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
             const myChart = boxPlot.draw();
-            const myQuartiles = boxPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
             const tickSize = currentFrame.dimension().height; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
             // const plotDim=currentFrame.dimension(); // useful variable to carry the current frame dimensions
@@ -168,7 +167,6 @@ parseData.load(dataURL)
                 .rem(currentFrame.rem())
                 .lines(lines)
                 .geometry(geometry)
-                .seriesNames(seriesNames)
                 .frameName(frameName);
 
             // Draw unhighlighted circles first
@@ -177,6 +175,7 @@ parseData.load(dataURL)
                 .data(plotData)
                 .enter()
                 .append('g')
+                .attr('class','boxplot')
                 .call(myChart);
 
             // Then draw highlighted circles so that they are on top

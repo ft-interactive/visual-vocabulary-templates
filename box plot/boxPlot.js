@@ -5,62 +5,26 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleLinear();
     let geometry = '';
-    let seriesNames
+    let seriesNames;
     let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
-        .domain(seriesNames);
     let rem = 10;
     let lines = false;
     let frameName;
 
 
     function dots(parent) {
-        const currentFrame = frameName;
+        parent.attr('transform', d => `translate(0,${yScale.bandwidth()/2})`);
 
-        if (lines) {
-            parent.append('line')
-                .attr('y1', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
-                .attr('x1', d => xScale(d.min))
-                .attr('y2', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
-                .attr('x2', d => xScale(d.max));
-        }
-
-        if (geometry === 'circle') {
-            parent.selectAll('circle')
-                .data(d => d.values)
-                .enter()
-                .append('circle')
-                .attr('id', d => d.name)
-                .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
-                .attr('cx', d => xScale(d.value))
-                .attr('r', rem * 0.5)
-                .attr('fill', d => colourScale(d.group));
-        } else {
-            parent.selectAll('rect')
-                .data(d => d.values)
-                .enter()
-                .append('rect')
-                .attr('id', d => d.name)
-                .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.25))
-                .attr('x', d => xScale(d.value))
-                .attr('height', yScale.bandwidth() * 0.5)
-                .attr('width', rem / 5)
-                .attr('fill', (d) => {
-                    setHighlight = d.highlight === 'yes' ? colourScale(d.group) : colourScale.range()[5];
-                    return setHighlight;
-                });
-        }
-
-        parent.selectAll('text')
-            .data(d => d.values.filter(el => el.highlight === 'yes'))
-            .enter()
-            .append('text')
-            .attr('id', d => currentFrame + d.name)
-            .attr('class', 'xAxis text')
-            .attr('text-anchor', 'middle')
-            .attr('x', d => xScale(d.value))
-            .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
-            .text(d => `${d.name} ${d.value}`);
+        if(geometry ==='rect') {
+            parent.append("line")
+            .attr("class", 'line')
+            .attr("x1", function(d,i) {return xScale(d.min)})
+            .attr("y1", function(d) { return yScale(d.group)})
+            .attr("x2", function(d,i) {return xScale(d.max)})
+            .attr("y2", function(d) { return yScale(d.group)})
+        } 
+        
     }
 
     dots.frameName = (d) => {
