@@ -245,6 +245,7 @@ parseData.load(dataFile, { dateFormat, maxAverage })
           .data(highlights)
           .enter()
           .append('g')
+          .attr('class', 'highlights')
           .call(myHighlights);
 
         // Set up highlights for this frame
