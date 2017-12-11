@@ -50,9 +50,9 @@ export function draw() {
 
         groupTick
             .append('text')
-            .attr('x', 8)
+            .attr('x', d => (d.angle > Math.PI ? (rem / 3) : (rem / 1.5)))
             .attr('dy', (rem / 3))
-            .attr('transform', d => (d.angle > Math.PI ? 'rotate(180) translate(-16)' : null))
+            .attr('transform', d => (d.angle > Math.PI ? `rotate(180) translate(${-rem})` : null))
             // .attr('transform', (d) => {
             //     const tickAngle = d.angle > Math.PI ? `rotate(180) translate(${-rem}` : null;
             //     return tickAngle;
