@@ -1,0 +1,203 @@
+.arc {
+	cursor: pointer;
+}
+
+.ft-webgraphic-s .arc path,
+.ft-webgraphic-m .arc path,
+.ft-webgraphic-m-default .arc path,
+.ft-webgraphic-l .arc path {
+	stroke-width: 1px;
+	stroke: #fff1e0;
+	cursor: pointer;
+}
+
+.ft-printgraphic .arc path {
+	stroke-width: 1px;
+	stroke: #ffffff;
+}
+
+.ft-socialgraphic .arc path {
+	stroke-width: 2px;
+	stroke: #212121;
+}
+
+.ft-videographic .arc path {
+	stroke-width: 4px;
+	stroke: #212121;
+}
+
+
+.ft-webgraphic-s .pie-value,
+.ft-webgraphic-m .pie-value,
+.ft-webgraphic-m-default .pie-value,
+.ft-webgraphic-l .pie-value {
+	font-family: metric;
+	fill: #ffffff;
+	text-anchor: middle;
+}
+
+.ft-printgraphic .pie-value {
+	font-family: metric;
+	font-size: 9.6px;
+	font-weight: 600px;
+	fill: #ffffff;
+}
+
+.ft-socialgraphic .pie-value,
+.ft-videographic .pie-value {
+ 	font-family: metric;
+    text-anchor: middle;
+    fill: #ffffff;
+}
+
+.ft-webgraphic-s .pie-value,
+.ft-webgraphic-s .pie-name {
+	font-size: 14px;
+}
+
+.ft-webgraphic-m .pie-value,
+.ft-webgraphic-m .pie-name {
+	font-size: 16px;
+}
+
+.ft-webgraphic-m-default .pie-value,
+.ft-webgraphic-m-default .pie-name {
+	font-size: 20px;
+}
+
+.ft-webgraphic-l .pie-value,
+.ft-webgraphic-l .pie-name {
+	font-size: 18px;
+}
+
+.ft-socialgraphic .pie-value,
+.ft-socialgraphic .pie-name {
+	font-size: 28px;
+}
+
+.ft-videographic .pie-value,
+.ft-videographic .pie-name {
+	font-size: 48px;
+}
+
+.ft-webgraphic-s .pie-name,
+.ft-webgraphic-s .total-label,
+.ft-webgraphic-s .total-size,
+.ft-webgraphic-m .pie-name,
+.ft-webgraphic-m .total-label,
+.ft-webgraphic-m .total-size,
+.ft-webgraphic-m-default .pie-name,
+.ft-webgraphic-m-default .total-label,
+.ft-webgraphic-m-default .total-size,
+.ft-webgraphic-l .pie-name,
+.ft-webgraphic-l .total-label,
+.ft-webgraphic-l .total-size {
+	font-family: metric;
+	fill: #66605C;
+	text-anchor: middle;
+	font-weight: 400;
+}
+
+.ft-webgraphic-s .pie-name.highlight,
+.ft-webgraphic-m .pie-name.highlight,
+.ft-webgraphic-m-default .pie-name.highlight,
+.ft-webgraphic-l .pie-name.highlight {
+	font-weight: 500;
+	fill: #000000;
+}
+
+.ft-printgraphic .pie-name,
+.ft-printgraphic .total-label,
+.ft-printgraphic .total-size {
+ 	font-family: metric;
+	fill: #000000;
+    text-anchor: middle;
+	font-size: 9.6px;
+	font-weight: 400;
+}
+
+.ft-printgraphic .pie-name.highlight {
+	font-weight: 600;
+}
+
+.ft-socialgraphic .pie-name,
+.ft-socialgraphic .total-label,
+.ft-socialgraphic .total-size,
+.ft-videographic .pie-name,
+.ft-videographic .total-label,
+.ft-videographic .total-size {
+ 	font-family: metric;
+    text-anchor: middle;
+    fill: #ffffff;
+    fill-opacity: 0.7;
+	font-weight: 400;
+}
+.ft-socialgraphic .pie-name.highlight,
+.ft-videographic .pie-name.highlight {
+	font-weight: 600;
+	fill-opacity: 1;
+}
+
+.ft-webgraphic-s .total-label {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.ft-webgraphic-s .total-size {
+    font-size: 24px;
+}
+
+.ft-webgraphic-m .total-label {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.ft-webgraphic-m .total-size {
+    font-size: 28px;
+}
+
+.ft-webgraphic-m-default .total-label {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.ft-webgraphic-m-default .total-size {
+    font-size: 32px;
+}
+
+.ft-webgraphic-l .total-label {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.ft-webgraphic-l .total-size {
+    font-size: 36px;
+}
+
+.ft-printgraphic .total-label {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.ft-printgraphic .total-size {
+    font-size: 12px;
+}
+
+.ft-socialgraphic .total-label {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.ft-socialgraphic .total-size {
+    font-size: 42px;
+}
+
+.ft-videographic .total-label {
+    font-size: 60px;
+    font-weight: 600;
+}
+
+.ft-videographic .total-size {
+    font-size: 72px;
+}
+
