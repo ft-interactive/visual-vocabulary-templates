@@ -50,9 +50,9 @@ const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAft
 const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
-const intraday = false;
-const dotOpacity = 0.2;
-const maxAverage = 5;
+const intraday = false;// Use to manage 'dead space' such as non trading days are not included in the dataset
+const dotOpacity = 0.2;// Opacity of the poll dots
+const maxAverage = 3;// Pevious number of surveys used for each point(day) of the line chart to calculate the rolling average
 const partyColours = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
   .range(Object.values(gChartcolour.germanPoliticalParties_bar));

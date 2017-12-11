@@ -30,7 +30,7 @@ export function load(url, options) { // eslint-disable-line
 
         let pollsters = data.map(d => d.pollster);
         pollsters = pollsters.filter((el, i) => pollsters.indexOf(el) === i);
-        console.log('pollsters', pollsters)
+
 
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map((d) => {
@@ -58,10 +58,7 @@ export function load(url, options) { // eslint-disable-line
             });
             return dotsData;
         }
-
-        console.log('plotData', plotData);
-
-         // Filter data for annotations
+        // Filter data for annotations
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
         // Format the data that is used to draw highlight tonal bands
