@@ -7,6 +7,15 @@
     stroke-opacity: 0.6;
 }
 
+.ribbons .highlight {
+    opacity: 1;
+    fill-opacity: 0.8;
+}
+
+.ribbons .faded {
+    opacity: 0.2
+}
+
 .ft-webgraphic-s .arc path,
 .ft-webgraphic-m .arc path,
 .ft-webgraphic-m-default .arc path,

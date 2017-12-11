@@ -35,7 +35,8 @@ export function draw() {
         group
             .append('path')
             .attr('d', arc)
-            .style('fill', d => colourScale(d.index));
+            .style('fill', d => colourScale(d.index))
+            .on('click', fade());
 
         const groupTick = group.selectAll('.baseline')
             .data(d => groupTicks(d, divisor))
@@ -50,13 +51,9 @@ export function draw() {
 
         groupTick
             .append('text')
-            .attr('x', d => (d.angle > Math.PI ? (rem / 3) : (rem / 1.5)))
+            .attr('x', d => (d.angle > Math.PI ? (rem / 2.5) : (rem / 1.75)))
             .attr('dy', (rem / 3))
             .attr('transform', d => (d.angle > Math.PI ? `rotate(180) translate(${-rem})` : null))
-            // .attr('transform', (d) => {
-            //     const tickAngle = d.angle > Math.PI ? `rotate(180) translate(${-rem}` : null;
-            //     return tickAngle;
-            // })
             .style('text-anchor', (d) => {
                 const textAnchor = d.angle > Math.PI ? 'end' : null;
                 return textAnchor;
@@ -76,9 +73,20 @@ export function draw() {
 
         // Returns an array of tick angles and values for a given group and step.
         function groupTicks(d, step) {
-            console.log(d);
             const k = (d.endAngle - d.startAngle) / d.value;
             return d3.range(0, d.value, step).map(value => ({ value, angle: (value * k) + d.startAngle }));
+        }
+
+        function fade() {
+            return function setOpacity(g, i) {
+                d3.selectAll('.ribbons path')
+                    .classed('faded', false)
+                    .classed('highlight', true);
+                d3.selectAll('.ribbons path')
+                    .filter(d => d.source.index !== i && d.target.index !== i)
+                    .classed('faded', true)
+                    .classed('highlight', false);
+            };
         }
     }
 
