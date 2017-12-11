@@ -38,6 +38,14 @@ export function draw() {
                 .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/4))
                 .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/4))
 
+            parent.append('rect')
+            .attr('class', 'bars')
+            .attr('y', d => yScale(d.group) - (yScale.bandwidth()/4))
+            .attr('height', yScale.bandwidth()/2)
+            .attr('x', d => xScale(Math.max(0, d.q1)))
+            .attr('width', d => Math.abs(xScale(d.q3) - xScale(d.q1)))
+            .attr('fill','#ffffff')
+
         } 
         
     }
