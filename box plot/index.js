@@ -16,7 +16,7 @@ const sharedConfig = {
 
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 200;// sets the maximum value on the xAxis
-const divisor = 10000;// sets the formatting on linear axis for ’000s and millions
+const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 4;// Number of tick on the uAxis
 const colourProperty = 'name';
@@ -104,7 +104,6 @@ parseData.load(dataURL)
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
             const myChart = boxPlot.draw();
-            const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
             const tickSize = currentFrame.dimension().height; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
             // const plotDim=currentFrame.dimension(); // useful variable to carry the current frame dimensions
 
@@ -178,9 +177,6 @@ parseData.load(dataURL)
                 .append('g')
                 .attr('class','boxplot')
                 .call(myChart);
-
-            // Then draw highlighted circles so that they are on top
-
         });
-    // addSVGSavers('figure.saveable');
+
     });

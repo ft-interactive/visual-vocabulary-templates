@@ -26,7 +26,6 @@ export function load(url, options) { // eslint-disable-line
         const plotData = seriesNames.map((d) => {
             const values = data.map((el) => {return el[d]})
                 .filter((d) => {return d !==""});
-            console.log('values', values)
             // Create an array of just the values to extract min, max and quartiles
             values.sort((a, b) => parseFloat(a) - parseFloat(b));
             const quantiles = [];
