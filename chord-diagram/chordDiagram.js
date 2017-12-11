@@ -35,6 +35,7 @@ export function draw() {
         group
             .append('path')
             .attr('d', arc)
+            .attr('id', (d, i) => seriesNames[i])
             .style('fill', d => colourScale(d.index))
             .on('click', fade());
 
@@ -68,6 +69,7 @@ export function draw() {
             .enter()
             .append('path')
             .attr('d', ribbon)
+            .attr('id', d => `from ${seriesNames[d.source.index]} to ${seriesNames[d.target.index]}`)
             .style('fill', d => colourScale(d.target.index))
             .style('stroke', d => d3.rgb(colourScale(d.target.index)).darker());
 
