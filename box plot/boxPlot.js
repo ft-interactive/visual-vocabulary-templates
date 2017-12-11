@@ -10,6 +10,7 @@ export function draw() {
     const colourScale = d3.scaleOrdinal()
     let rem = 10;
     let lines = false;
+    let mean = false;
     let frameName;
 
 
@@ -56,15 +57,26 @@ export function draw() {
                 .attr("x2", d => xScale(d.q2))
                 .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/4))
                 .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/4))
+            if (mean) {
+                parent.append('line')
+                    .attr("class", 'line')
+                    .attr("x1", d => xScale(d.mean))
+                    .attr("x2", d => xScale(d.mean))
+                    .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/4))
+                    .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/4))
+                    .style('stroke', colourScale.range()[2])
+            }
         }
 
         if(geometry ==='circle') {
-            parent.append('line')
-                .attr("class", 'line')
-                .attr("x1", d => xScale(d.min))
-                .attr("y1", d => yScale(d.group))
-                .attr("x2", d => xScale(d.max))
-                .attr("y2", d => yScale(d.group))
+            if(lines) {
+                parent.append('line')
+                    .attr("class", 'line')
+                    .attr("x1", d => xScale(d.min))
+                    .attr("y1", d => yScale(d.group))
+                    .attr("x2", d => xScale(d.max))
+                    .attr("y2", d => yScale(d.group))
+            }
 
             parent.selectAll('circle')
                 .data((d) => {return d.quartiles})
@@ -87,6 +99,14 @@ export function draw() {
                 .attr('cy', d => yScale(d.group))
                 .attr('r', rem/2)
                 .attr('fill',d => colourScale.range()[0])
+            if (mean) {
+                 parent.append('circle')
+                    .attr('cx', d => xScale(d.mean))
+                    .attr('cy', d => yScale(d.group))
+                    .attr('r', rem/2)
+                    .attr('fill',d => colourScale.range()[2])
+
+            }
         }
         
     }
@@ -104,6 +124,11 @@ export function draw() {
     dots.lines = (d) => {
         if (d === undefined) return lines;
         lines = d;
+        return dots;
+    };
+    dots.mean = (d) => {
+        if (d === undefined) return mean;
+        mean = d;
         return dots;
     };
     dots.yScale = (d) => {

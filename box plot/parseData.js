@@ -4,6 +4,7 @@
 
 import * as d3 from 'd3';
 import loadData from '@financial-times/load-data';
+import * as simpleStats from 'simple-statistics';
 
 /**
  * Parses data file and returns structured data
@@ -44,7 +45,7 @@ export function load(url, options) { // eslint-disable-line
                 q3: d3.quantile(values, .75),
                 min: Number(d3.min(values)),
                 max: Number(d3.max(values)),
-                mean:'to come',
+                mean: d3.mean(values),
                 quartiles: quantiles
             };
         });

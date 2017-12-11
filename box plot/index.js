@@ -5,7 +5,6 @@ import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as boxPlot from './boxPlot.js';
 
-
 const dataURL = 'data.csv';
 
 const sharedConfig = {
@@ -23,7 +22,8 @@ const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
-const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
+const mean = true;
+const geometry = 'rect'; // set the geometry of the data options are 'circle' or 'rect'
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -167,7 +167,8 @@ parseData.load(dataURL)
                 .lines(lines)
                 .geometry(geometry)
                 .frameName(frameName)
-                .seriesNames(seriesNames);
+                .seriesNames(seriesNames)
+                .mean(mean);
 
             // Draw unhighlighted circles first
             currentFrame.plot()
