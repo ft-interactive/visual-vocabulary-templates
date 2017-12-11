@@ -17,12 +17,27 @@ export function draw() {
         parent.attr('transform', d => `translate(0,${yScale.bandwidth()/2})`);
 
         if(geometry ==='rect') {
-            parent.append("line")
-            .attr("class", 'line')
-            .attr("x1", function(d,i) {return xScale(d.min)})
-            .attr("y1", function(d) { return yScale(d.group)})
-            .attr("x2", function(d,i) {return xScale(d.max)})
-            .attr("y2", function(d) { return yScale(d.group)})
+            parent.append('line')
+                .attr("class", 'line')
+                .attr("x1", d => xScale(d.min))
+                .attr("y1", d => yScale(d.group))
+                .attr("x2", d => xScale(d.max))
+                .attr("y2", d => yScale(d.group))
+
+            parent.append('line')
+                .attr("class", 'line')
+                .attr("x1", d => xScale(d.min))
+                .attr("x2", d => xScale(d.min))
+                .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/4))
+                .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/4))
+
+            parent.append('line')
+                .attr("class", 'line')
+                .attr("x1", d => xScale(d.max))
+                .attr("x2", d => xScale(d.max))
+                .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/4))
+                .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/4))
+
         } 
         
     }
