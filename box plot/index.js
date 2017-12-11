@@ -23,11 +23,7 @@ const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;
-const quantiles = false;
-const logscale = false;
 const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
-const sort = '';
-const sortOn = 0;
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -99,10 +95,8 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataURL, { sort, sortOn })
-    .then(({
-        groupNames, plotData, valueExtent, data,
-    }) => { // eslint-disable-line no-unused-vars
+parseData.load(dataURL)
+  .then(({valueExtent, seriesNames, plotData, data}) => { // eslint-disable-line no-unused-vars
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -123,7 +117,6 @@ parseData.load(dataURL, { sort, sortOn })
 
             xAxis
                 .align(xAxisAlign)
-                .logScale(logscale)
                 .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
                 .numTicks(numTicks)
                 .xAxisHighlight(xAxisHighlight)
@@ -145,7 +138,8 @@ parseData.load(dataURL, { sort, sortOn })
                 currentFrame.margin({ right: newMargin });
                 yAxis.yLabel()
                     .attr('transform', `translate(${currentFrame.dimension().width + yAxis.labelWidth()},${0})`);
-            } else {
+            }
+            else {
                 const newMargin = yAxis.labelWidth() + currentFrame.margin().left;
                 // Use newMargin re define the new margin and range of xAxis
                 currentFrame.margin({ left: newMargin });
@@ -169,69 +163,24 @@ parseData.load(dataURL, { sort, sortOn })
             // .paddingInner(0.06)
                 .colourProperty(colourProperty)
                 .colourPalette((frameName))
-                .groupNames(groupNames)
                 .yScale(yAxis.scale())
                 .xScale(xAxis.scale())
                 .rem(currentFrame.rem())
                 .lines(lines)
                 .geometry(geometry)
+                .seriesNames(seriesNames)
                 .frameName(frameName);
-
-            myQuartiles
-            // .paddingInner(0.06)
-                .colourProperty(colourProperty)
-                .colourPalette((frameName))
-                .groupNames(groupNames)
-                .yScale(yAxis.scale())
-                .xScale(xAxis.scale())
-                .rem(currentFrame.rem())
-                .quantiles(quantiles)
-                .frameName(frameName);
-
-            const dots = plotData.map(d => ({
-                group: d.group,
-                min: d.min,
-                max: d.max,
-                values: d.values.filter(el => el.highlight === ''),
-            }));
-            const highlights = plotData.map(d => ({
-                group: d.group,
-                values: d.values.filter(el => el.highlight === 'yes'),
-            }),
-                // d.values = d.values.filter(el => el.highlight === 'yes');
-                // return d;
-            );
 
             // Draw unhighlighted circles first
             currentFrame.plot()
-                .selectAll('.dotholder')
-                .data(dots)
+                .selectAll('.g')
+                .data(plotData)
                 .enter()
                 .append('g')
-                .attr('class', 'dotholder baseline')
                 .call(myChart);
-
-            // Ensure that the linking lines are not drawn a second time
-            myChart.lines(false);
 
             // Then draw highlighted circles so that they are on top
-            currentFrame.plot()
-                .selectAll('.dotHighlight')
-                .data(highlights)
-                .enter()
-                .append('g')
-                .attr('class', 'dotHighlight axis xAxis')
-                .call(myChart);
 
-            if (quantiles) {
-                currentFrame.plot()
-                    .selectAll('.quantiles')
-                    .data(plotData)
-                    .enter()
-                    .append('g')
-                    .attr('class', 'quantiles dotHighlight axis xAxis')
-                    .call(myQuartiles);
-            }
         });
     // addSVGSavers('figure.saveable');
     });

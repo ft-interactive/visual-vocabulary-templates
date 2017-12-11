@@ -125,7 +125,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load(dataFile, { dateFormat, maxAverage })
-  .then(({ plotData, dateExtent, valueExtent, data, pollsters, highlights, annos}) => {
+  .then(({ valueExtent, seriesNames, plotData, data}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         const myHighlights = drawchart.drawHighlights()

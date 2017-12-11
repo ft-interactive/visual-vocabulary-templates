@@ -13,7 +13,6 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { sort, sortOn } = options;
 
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
@@ -33,25 +32,16 @@ export function load(url, options) { // eslint-disable-line
             return {
                 group: d,
                 values,
-                q1: d3.quantile(values, (1)),
-                min: d3.min(values),
-                max: d3.max(values),
+                q1: d3.quantile(values, .25),
+                q2: d3.quantile(values, .5),
+                q3: d3.quantile(values, .75),
+                min: Number(d3.min(values)),
+                max: Number(d3.max(values)),
+                mean:'to come'
             };
         });
-
         console.log(plotData);
-
-        if (sort === 'descending') {
-            plotData.sort((a, b) =>
-            // console.log("sortON=",sortOn)
-            // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
-                b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
-        } else if (sort === 'ascending') {
-            plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
-        } // Sorts biggest rects to the left
-
         return {
-            groupNames,
             valueExtent,
             seriesNames,
             plotData,
