@@ -17,31 +17,25 @@ export function load(url, options) { // eslint-disable-line
 
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
+        console.log('seriesNames', seriesNames)
         const allGroups = data.map(d => d.group);
         // create an array of the group names
         const groupNames = allGroups.filter((el, i) => allGroups.indexOf(el) === i);
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
         // Buid the dataset for plotting
-        const plotData = groupNames.map((d) => {
-            const values = data.filter(el => el.group === d);
+        const plotData = seriesNames.map((d) => {
+            const values = data.map((el) => {return el[d]})
+                .filter((d) => {return d !==""});
+            console.log('values', values)
             // Create an array of just the values to extract min, max and quartiles
-            const dotValues = values.map(item => Number(item.value));
-            dotValues.sort((a, b) => parseFloat(a) - parseFloat(b));
-            const quantiles = [];
-            for (let i = 1; i < 4; i += 1) {
-                const qData = {};
-                qData.name = `q${i}`;
-                qData.value = d3.quantile(dotValues, (i / 4));
-                qData.group = d;
-                quantiles.push(qData);
-            }
+            values.sort((a, b) => parseFloat(a) - parseFloat(b));
             return {
                 group: d,
                 values,
-                quantiles,
-                min: d3.min(dotValues),
-                max: d3.max(dotValues),
+                q1: d3.quantile(values, (1)),
+                min: d3.min(values),
+                max: d3.max(values),
             };
         });
 
@@ -68,7 +62,7 @@ export function load(url, options) { // eslint-disable-line
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['name', 'size', 'group', 'highlight'];
+    const exclude = [];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
