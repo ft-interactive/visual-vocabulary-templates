@@ -41,86 +41,49 @@
 }
 
 
-.ft-webgraphic-s .pie-value,
-.ft-webgraphic-m .pie-value,
-.ft-webgraphic-m-default .pie-value,
-.ft-webgraphic-l .pie-value {
-	font-family: metric;
-	fill: #ffffff;
-	text-anchor: middle;
-}
-
-.ft-printgraphic .pie-value {
-	font-family: metric;
-	font-size: 9.6px;
-	font-weight: 600px;
-	fill: #ffffff;
-}
-
-.ft-socialgraphic .pie-value,
-.ft-videographic .pie-value {
- 	font-family: metric;
-    text-anchor: middle;
-    fill: #ffffff;
-}
-
-.ft-webgraphic-s .pie-value,
-.ft-webgraphic-s .pie-name {
+.ft-webgraphic-s .chord-name {
 	font-size: 14px;
 }
 
-.ft-webgraphic-m .pie-value,
-.ft-webgraphic-m .pie-name {
+.ft-webgraphic-m .chord-name {
 	font-size: 16px;
 }
 
-.ft-webgraphic-m-default .pie-value,
-.ft-webgraphic-m-default .pie-name {
+.ft-webgraphic-m-default .chord-name {
 	font-size: 20px;
 }
 
-.ft-webgraphic-l .pie-value,
-.ft-webgraphic-l .pie-name {
+.ft-webgraphic-l .chord-name {
 	font-size: 18px;
 }
 
-.ft-socialgraphic .pie-value,
-.ft-socialgraphic .pie-name {
+.ft-socialgraphic .chord-name {
 	font-size: 28px;
 }
 
-.ft-videographic .pie-value,
-.ft-videographic .pie-name {
+.ft-videographic .chord-name {
 	font-size: 48px;
 }
 
-.ft-webgraphic-s .pie-name,
-.ft-webgraphic-s .total-label,
-.ft-webgraphic-s .total-size,
-.ft-webgraphic-m .pie-name,
-.ft-webgraphic-m .total-label,
-.ft-webgraphic-m .total-size,
-.ft-webgraphic-m-default .pie-name,
-.ft-webgraphic-m-default .total-label,
-.ft-webgraphic-m-default .total-size,
-.ft-webgraphic-l .pie-name,
-.ft-webgraphic-l .total-label,
-.ft-webgraphic-l .total-size {
+.ft-webgraphic-s .chord-name,
+.ft-webgraphic-m .chord-name,
+.ft-webgraphic-m-default .chord-name,
+.ft-webgraphic-l .chord-name {
 	font-family: metric;
 	fill: #66605C;
 	text-anchor: middle;
 	font-weight: 400;
 }
 
-.ft-webgraphic-s .pie-name.highlight,
-.ft-webgraphic-m .pie-name.highlight,
-.ft-webgraphic-m-default .pie-name.highlight,
-.ft-webgraphic-l .pie-name.highlight {
-	font-weight: 500;
+.ft-webgraphic-s .chord-name .highlight,
+.ft-webgraphic-m .chord-name .highlight,
+.ft-webgraphic-m-default .chord-name .highlight,
+.ft-webgraphic-l .chord-name .highlight {
+	font-weight: 600;
 	fill: #000000;
 }
 
-.ft-printgraphic .pie-name,
+.ft-printgraphic .chord-name,
 .ft-printgraphic .total-label,
 .ft-printgraphic .total-size {
  	font-family: metric;
@@ -130,14 +93,14 @@
 	font-weight: 400;
 }
 
-.ft-printgraphic .pie-name.highlight {
+.ft-printgraphic .chord-name .highlight {
 	font-weight: 600;
 }
 
-.ft-socialgraphic .pie-name,
+.ft-socialgraphic .chord-name,
 .ft-socialgraphic .total-label,
 .ft-socialgraphic .total-size,
-.ft-videographic .pie-name,
+.ft-videographic .chord-name,
 .ft-videographic .total-label,
 .ft-videographic .total-size {
  	font-family: metric;
@@ -146,8 +109,8 @@
     fill-opacity: 0.7;
 	font-weight: 400;
 }
-.ft-socialgraphic .pie-name.highlight,
-.ft-videographic .pie-name.highlight {
+.ft-socialgraphic .chord-name .highlight,
+.ft-videographic .chord-name .highlight {
 	font-weight: 600;
 	fill-opacity: 1;
 }

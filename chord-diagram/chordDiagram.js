@@ -14,6 +14,7 @@ export function draw() {
     let innerRadius;
     let frameName;
     let divisor;
+    let showLabels;
     // let setHighlight;
 
 
@@ -39,13 +40,31 @@ export function draw() {
             .style('fill', d => colourScale(d.index))
             .on('click', fade());
 
+        if (showLabels) {
+            const groupLabel = group
+                .append('g')
+                .attr('class', 'chord-name')
+                .attr('transform', d => `rotate(${((((d.endAngle - d.startAngle) / 2) + d.startAngle) * (180 / Math.PI)) - 90}) translate(${(outerRadius + (rem * 1.5))},0)`);
+
+            groupLabel
+                .append('text')
+                .attr('x', d => (((d.endAngle - d.startAngle) / 2) > Math.PI ? (rem / 2.5) : (rem / 1.75)))
+                .attr('dy', (rem / 3))
+                .attr('transform', d => ((((d.endAngle - d.startAngle) / 2) + d.startAngle) > Math.PI ? `rotate(180) translate(${-rem})` : null))
+                .style('text-anchor', (d) => {
+                    const textAnchor = (((d.endAngle - d.startAngle) / 2) + d.startAngle) > Math.PI ? 'end' : 'start';
+                    return textAnchor;
+                })
+                .text(d => seriesNames[d.index]);
+        }
+
+
         const groupTick = group.selectAll('.baseline')
             .data(d => groupTicks(d, divisor))
             .enter()
             .append('g')
             .attr('class', 'axis baseline tick')
             .attr('transform', d => `rotate(${(d.angle * (180 / Math.PI)) - 90}) translate(${outerRadius},0)`);
-            // .attr('transform', d => `rotate((${d.angle} * 180 / Math.PI - 90)) translate(${outerRadius}, 0)`);
 
         groupTick.append('line')
             .attr('x2', (rem / 2));
@@ -88,6 +107,11 @@ export function draw() {
                     .filter(d => d.source.index !== i && d.target.index !== i)
                     .classed('faded', true)
                     .classed('highlight', false);
+                d3.selectAll('.chord-name text')
+                    .classed('highlight', true);
+                d3.selectAll('.chord-name text')
+                    .filter(d => d.index !== i && d.index !== i)
+                    .classed('highlight', false);
             };
         }
     }
@@ -95,6 +119,12 @@ export function draw() {
     chart.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
+        return chart;
+    };
+
+    chart.showLabels = (d) => {
+        if (typeof d === 'undefined') return showLabels;
+        showLabels = d;
         return chart;
     };
 

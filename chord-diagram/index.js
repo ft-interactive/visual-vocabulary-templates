@@ -16,7 +16,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const divisor = 10;
+const divisor = 10; // use this to set the tick division
+const showLabels = true; // show/hide group labels
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -120,6 +121,7 @@ parseData.load(dataURL).then(({ seriesNames, plotData }) => {
             .innerRadius(innerRadius)
             .colourPalette(frameName)
             .divisor(divisor)
+            .showLabels(showLabels)
             .frameName(frameName); // set colour palette
 
 
