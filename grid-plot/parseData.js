@@ -14,19 +14,16 @@ export function load(url, options) { // eslint-disable-line
         const data = result.data ? result.data : result;
         const seriesNames = getSeriesNames(data.columns);
         const plotData = [];
-        let ranges = 0;
+        const ranges = 0;
 
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
 
         // Buid the dataset for plotting
-        const newData = data.map(d => ({
-            name: d.name,
-            value: d[seriesNames],
-            gridCats: getGridCats(seriesNames, d, ranges),
+        const newData = data.map(() => ({
+            gridCats: getGridCats(seriesNames, data, ranges),
         }));
 
         plotData.push(newData);
-        console.log(newData);
         return {
             seriesNames,
             plotData,
@@ -41,23 +38,25 @@ function getSeriesNames(columns) {
     const exclude = ['name']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
-    const stackIndex = [0];
 
-function getGridCats(seriesNames, el, ranges) {
-    const circleCat = [];
+function getGridCats(seriesNames, data, ranges) {
+    const stackIndex = [0];
+    const gridCat = [];
     const gridSize = d3.range(100);
 
-    ranges += Number(el[seriesNames]);
-
-
-    // stackIndex.push(ranges);
-    // ranges = ranges += ranges;
-
-
-    console.log(ranges);
-    gridSize.forEach((obj, key) => {
-        if (el[seriesNames]) {
-
-        }
+    data.forEach((d) => {
+        ranges += Number(d[seriesNames]);
+        stackIndex.push(ranges);
     });
+
+    data.forEach((d, i) => {
+        gridSize.forEach((obj, key) => {
+            if (key >= stackIndex[i] && key < stackIndex[i + 1]) {
+                gridCat.push(d.name);
+            }
+        });
+    });
+    return gridCat.map(name => ({
+        name,
+    }));
 }

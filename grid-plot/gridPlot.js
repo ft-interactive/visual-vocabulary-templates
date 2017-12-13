@@ -22,24 +22,17 @@ export function draw() {
         //     .attr('width', xScale.bandwidth());
 
         const block = parent.selectAll('g')
-            .data(d => d[0].grid)
+            .data(d => d[0].gridCats)
             .enter()
             .append('g');
 
         block
             .append('rect')
-            .attr('x', (d, i) => {
-                console.log(i)
-                for (j; j < 10; j++) {
-                    // xPos = j;
-                    console.log(j)
-                    // return xScale(xPos);
-                }
-            })
+            .attr('x', (d, i) => xScale(Math.floor(i % 10)))
             .attr('width', () => xScale.bandwidth())
-            .attr('y', (d, i) => yScale(i))
+            .attr('y', (d, i) => yScale(Math.floor(i / 10)))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', 'grey');
+            .attr('fill', d => colourScale(d.name));
 
         if (showValues) {
             block

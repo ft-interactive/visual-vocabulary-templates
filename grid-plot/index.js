@@ -106,6 +106,7 @@ parseData.load(dataFile, '')
                 .rangeRound([0, currentFrame.dimension().height], 0)
                 .domain(d3.range(10))
                 .align(yAxisAlign)
+                .invert(true)
                 .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
