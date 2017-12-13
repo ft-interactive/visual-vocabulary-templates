@@ -49,12 +49,15 @@ function getGridCats(seriesNames, data, ranges) {
         stackIndex.push(ranges);
     });
 
-    data.forEach((d, i) => {
-        gridSize.forEach((obj, key) => {
+    gridSize.forEach((obj, key) => {
+        data.forEach((d, i) => {
             if (key >= stackIndex[i] && key < stackIndex[i + 1]) {
                 gridCat.push(d.name);
             }
         });
+        if (key >= stackIndex[stackIndex.length - 1]) {
+            gridCat.push('empty');
+        }
     });
     return gridCat.map(name => ({
         name,

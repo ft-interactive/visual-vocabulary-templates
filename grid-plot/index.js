@@ -101,7 +101,6 @@ parseData.load(dataFile, '')
             const myYAxis = gAxis.yOrdinal();
             const myChart = gridPlotChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
-            console.log(plotData);
             myYAxis
                 .rangeRound([0, currentFrame.dimension().height], 0)
                 .domain(d3.range(10))
@@ -140,7 +139,6 @@ parseData.load(dataFile, '')
                 .yScale(myYAxis.scale())
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .showValues(showValues)
                 .colourPalette(frameName);
 
             currentFrame.plot()

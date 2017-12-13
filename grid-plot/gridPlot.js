@@ -5,12 +5,8 @@ export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleBand();
     let seriesNames = [];
-    let showValues = false;
-    let catNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
-    let xPos = 0;
-    let j = 0;
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -28,23 +24,15 @@ export function draw() {
 
         block
             .append('rect')
+            .attr('class', 'grid')
             .attr('x', (d, i) => xScale(Math.floor(i % 10)))
             .attr('width', () => xScale.bandwidth())
             .attr('y', (d, i) => yScale(Math.floor(i / 10)))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', d => colourScale(d.name));
-
-        if (showValues) {
-            block
-                .append('text')
-                .attr('class', 'blockValue')
-                .attr('x', d => xScale(d.name))
-                .attr('y', d => yScale(d.name))
-                .attr('dx', (xScale.bandwidth() / 2))
-                .attr('dy', (yScale.bandwidth() / 2) + (rem / 4))
-                .text(d => d.value)
-                .attr('font-size', rem);
-        }
+            .attr('fill', (d) => {
+                const cScale = d.name === 'empty' ? colourScale.range()[5] : colourScale(d.name);
+                return cScale;
+            });
     }
 
     chart.yScale = (d) => {
@@ -74,18 +62,6 @@ export function draw() {
     chart.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
-        return chart;
-    };
-
-    chart.catNames = (d) => {
-        if (typeof d === 'undefined') return catNames;
-        catNames = d;
-        return chart;
-    };
-
-    chart.showValues = (d) => {
-        if (typeof d === 'undefined') return showValues;
-        showValues = d;
         return chart;
     };
 
