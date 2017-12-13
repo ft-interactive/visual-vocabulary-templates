@@ -3,7 +3,7 @@ import gChartframe from 'g-chartframe';
 import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
-import * as xyHeatmapCategoryChart from './xyHeatmapCategory.js';
+import * as gridPlotChart from './gridPlot.js';
 
 const dataFile = 'data.csv';
 
@@ -99,7 +99,7 @@ parseData.load(dataFile, '')
 
             const myXAxis = gAxis.xOrdinal();// sets up yAxis
             const myYAxis = gAxis.yOrdinal();
-            const myChart = xyHeatmapCategoryChart.draw(); // eslint-disable-line no-unused-vars
+            const myChart = gridPlotChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
 
             myYAxis
