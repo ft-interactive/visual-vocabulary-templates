@@ -92,7 +92,7 @@ d3.selectAll('.framed')
 
 parseData.load(dataFile, '')
     .then(({
-        seriesNames, catNames, plotData,
+       seriesNames, groupNames, plotData,
     }) => { // eslint-disable-line no-unused-vars
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -101,10 +101,10 @@ parseData.load(dataFile, '')
             const myYAxis = gAxis.yOrdinal();
             const myChart = gridPlotChart.draw(); // eslint-disable-line no-unused-vars
             const myLegend = gLegend.legend();
-
+            console.log(plotData);
             myYAxis
                 .rangeRound([0, currentFrame.dimension().height], 0)
-                .domain(plotData.map(d => d.name))
+                .domain(d3.range(10))
                 .align(yAxisAlign)
                 .frameName(frameName);
 
@@ -130,14 +130,13 @@ parseData.load(dataFile, '')
 
             myXAxis
                 .align(xAxisAlign)
-                .domain(seriesNames)
+                .domain(d3.range(10))
                 .rangeRound([0, currentFrame.dimension().width], 0)
                 .frameName(frameName);
 
             myChart
                 .xScale(myXAxis.scale())
                 .yScale(myYAxis.scale())
-                .catNames(catNames)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
                 .showValues(showValues)
@@ -173,7 +172,7 @@ parseData.load(dataFile, '')
 
             // Set up legend for this frame
             myLegend
-                .seriesNames(catNames)
+                .seriesNames(groupNames)
                 .geometry(legendType)
                 .frameName(frameName)
                 .rem(myChart.rem())
@@ -185,7 +184,7 @@ parseData.load(dataFile, '')
                 .append('g')
                 .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(catNames)
+                .data(groupNames)
                 .enter()
                 .append('g')
                 .classed('legend', true)

@@ -9,6 +9,8 @@ export function draw() {
     let catNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
+    let xPos = 0;
+    let j = 0;
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -16,27 +18,28 @@ export function draw() {
         xScale.paddingInner(0);
         yScale.paddingInner(0);
 
-        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
-            .attr('width', xScale.bandwidth());
+        // parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
+        //     .attr('width', xScale.bandwidth());
 
         const block = parent.selectAll('g')
-            .data(d => d.groups)
+            .data(d => d[0].grid)
             .enter()
             .append('g');
 
         block
             .append('rect')
-            .attr('class', (d) => {
-                if (d.value) {
-                    return 'grid';
+            .attr('x', (d, i) => {
+                console.log(i)
+                for (j; j < 10; j++) {
+                    // xPos = j;
+                    console.log(j)
+                    // return xScale(xPos);
                 }
-                return 'grid noData';
             })
-            .attr('x', d => xScale(d.name))
             .attr('width', () => xScale.bandwidth())
-            .attr('y', d => yScale(d.name))
+            .attr('y', (d, i) => yScale(i))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', d => colourScale.range()[catNames.lastIndexOf(d.value)]);
+            .attr('fill', 'grey');
 
         if (showValues) {
             block
