@@ -21,7 +21,7 @@ export function load(url, options) { // eslint-disable-line
         const valueExtent = extentMulti(data, seriesNames);
 
         // Buid the dataset for plotting
-        const plotData = seriesNames.map((d) => {
+        const plotData = seriesNames.map((d,i) => {
             const values = data.map((el) => {return el[d]})
                 .filter((d) => {return d !==""})
                 .map((d) => {return Number(d)});
@@ -35,6 +35,15 @@ export function load(url, options) { // eslint-disable-line
                 qData.group = d;
                 quantiles.push(qData);
             }
+
+            console.log(seriesNames[i])
+            console.log("Min: "+ Number(d3.min(values)))
+            console.log("Max: "+ Number(d3.max(values)))
+            console.log("Q25: "+ d3.quantile(values, .25))
+            console.log("Q50MED: "+ d3.quantile(values, .5))
+            console.log("Q75: "+ d3.quantile(values, .75))
+            console.log("Mean: "+ d3.mean(values))
+
             return {
                 group: d,
                 values,

@@ -16,7 +16,6 @@ export function draw() {
 
     function dots(parent) {
         parent.attr('transform', d => `translate(0,${yScale.bandwidth()/2})`);
-
         if(geometry ==='rect') {
             parent.append('line')
                 .attr("class", 'line')
