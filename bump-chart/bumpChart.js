@@ -11,9 +11,8 @@ export function draw() {
     let markers = false;
     let columns = true;
     let interpolation = d3.curveMonotoneX;
-    const colourScale = d3.scaleOrdinal()
-    // .range(gChartcolour.lineWeb)
-    .domain(seriesNames);
+    let colourScale = d3.scaleOrdinal()
+        .domain(seriesNames);
 
     function chart(parent) {
         //Your drawing function in here
@@ -29,10 +28,9 @@ export function draw() {
                     return colourScale.range()[0];
                 }
                 if (highlightNames.length > 0 && d.highlightLine === true) {
-                    console.log(colourScale(d.name));
-                    return colourScale(d.name);
+                    return colourScale(d.item);
                 } 
-                return colourScale(d.name);
+                return colourScale(d.item);
             })
             .attr('opacity', (d) => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {
@@ -115,6 +113,8 @@ export function draw() {
                 colourScale.range(gChartcolour.mutedFirstLineWeb);
             } else if (d === 'print') {
                 colourScale.range(gChartcolour.mutedFirstLinePrint);
+            } else if (d && d.name && d.name === 'scale') {
+                colourScale = d;
             }
             return chart;
         }

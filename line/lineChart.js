@@ -31,7 +31,8 @@ export function draw() {
                 }
                 if (highlightNames.length > 0 && d.highlightLine === true) {
                     return colourScale(d.name);
-                } return colourScale(d.name);
+                } 
+                return colourScale(d.name);
             })
             .attr('opacity', (d) => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {

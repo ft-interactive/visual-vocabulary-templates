@@ -34,7 +34,7 @@ const numbers = false;
 const rects = false;
 const xAxisAlign = 'top';// alignment of the axis
 const markers = false;// show dots on lines
-const highlightNames = ['Real Madrid', 'Arsenal']; // create an array names you want to highlight eg. ['series1','series2']
+const highlightNames = ['Real Madrid', 'Arsenal', 'Bayern Munich']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveMonotoneX;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 // const invertScale = false;
 
@@ -107,7 +107,7 @@ d3.selectAll('.framed')
   });
 
 parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
-  .then(({ seriesNames, data, plotData, valueExtent, terminusLabels, paths }) => {
+  .then(({ seriesNames, data, plotData, valueExtent, terminusLabels, paths, highlightPaths }) => {
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
 
@@ -117,8 +117,16 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
 
             const tickSize = 0;
 
+            const seriesArray = paths.map(d => d.item);
+
             const myChart = bumpChart.draw()
+                .seriesNames(seriesArray)            
                 .highlightNames(highlightNames)
+                .interpolation(interpolation);
+
+            const myHighLines = bumpChart.draw()
+                .seriesNames(seriesArray)                        
+                .highlightNames(highlightNames)            
                 .interpolation(interpolation);
 
             const highlightedLines = colourPalette(frameName);
@@ -198,6 +206,13 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
                 .colourPalette((frameName));
+            
+            myHighLines
+                .yScale(myYAxis.scale())
+                .xScale(myXAxis.scale())
+                .plotDim(currentFrame.dimension())
+                .rem(currentFrame.rem())
+                .colourPalette(highlightedLines);
                 
             // Draw the lines
             currentFrame.plot()
@@ -208,6 +223,15 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
                 .attr('class', 'lines')
                 .attr('id', d => d.item)
                 .call(myChart);
+
+            currentFrame.plot()
+                .selectAll('.lines.highlighlines')
+                .data(highlightPaths)
+                .enter()
+                .append('g')
+                .attr('class', 'lines highlighlines')
+                .attr('id', d => d.item)
+                .call(myHighLines);
 
       });
       // addSVGSavers('figure.saveable');
