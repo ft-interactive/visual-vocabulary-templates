@@ -23,21 +23,49 @@ export function draw() {
             .y(d => yScale(d.pos) + yScale.bandwidth() / 2);
             
         parent.append('path')
-            .attr('stroke', (d) => {
+            .attr('stroke', d => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return colourScale.range()[0];
+                    d.strokeColour = colourScale.range()[0];
+                    return d.strokeColour;
                 }
                 if (highlightNames.length > 0 && d.highlightLine === true) {
-                    return colourScale(d.item);
+                    d.strokeColour = colourScale(d.item);
+                    return d.strokeColour;
                 } 
-                return colourScale(d.item);
+                d.strokeColour = colourScale(d.item);
+                return d.strokeColour;
             })
-            .attr('opacity', (d) => {
+            .attr('opacity', d => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {
                     return 0.5;
                 } return 1;
             })
-            .attr('d', d => lineData(d.pathData));
+            .attr('d', d => lineData(d.pathData))
+            .call(function() {
+                parent.append('circle')
+                    .attr("r", rem / 6)
+                    .attr("cx", d => {
+                        let x = d.indexStart;
+                        return xScale(xScale.domain()[x]) + xScale.bandwidth() / 2;
+                    })
+                    .attr("cy", d => {
+                        let y = d.pos
+                        return yScale(y) + yScale.bandwidth() / 2;
+                    })
+                    .attr("fill", d => d.strokeColour);
+                parent.append('circle')
+                    .attr('r', rem / 6)
+                    .attr("cx", d => {
+                        let x = d.indexEnd;
+                        return xScale(xScale.domain()[x]) + xScale.bandwidth() / 2;
+                    })
+                    .attr("cy", d => {
+                        let y = d.posEnd;
+                        return yScale(y) + yScale.bandwidth() / 2;
+                    })
+                    .attr("fill", d => d.strokeColour);                    
+            });
+        
 
         if (columns) {
             // draw background columns
