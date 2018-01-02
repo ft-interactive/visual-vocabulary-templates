@@ -9,8 +9,7 @@ export function draw() {
     let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
-    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
-    let annotate = false; // eslint-disable-line
+    let columns = true;
     let interpolation = d3.curveLinear;
     const colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
@@ -19,6 +18,9 @@ export function draw() {
     function chart(parent) {
         //Your drawing function in here
 
+        if (columns) {
+
+        }
     }
 
     chart.yScale = (d) => {
@@ -62,11 +64,6 @@ export function draw() {
         return chart;
     };
 
-    chart.annotate = (d) => {
-        annotate = d;
-        return chart;
-    };
-
     chart.markers = (d) => {
         if (typeof d === 'undefined') return markers;
         markers = d;
@@ -78,6 +75,12 @@ export function draw() {
         interpolation = d;
         return chart;
     };
+
+    chart.columns = (d) => {
+        if (!d) return columns;
+        columns = d;
+        return chart;
+    }
 
     chart.colourPalette = (d) => {
         if (!d) return colourScale;

@@ -31,17 +31,16 @@ const yMin = 1;// sets the minimum value on the yAxis
 const yMax = 20;// sets the maximum value on the xAxis
 const numbers = false;
 const rects = false;
-const yAxisAlign = 'right';// alignment of the axis
-const xAxisAlign = 'bottom';// alignment of the axis
+const xAxisAlign = 'top';// alignment of the axis
 const markers = false;// show dots on lines
 const highlightNames = ['Real Madrid']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const invertScale = false;
+// const invertScale = false;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-    .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+    .margin({ top: 100, left: 20, bottom: 82, right: 5 })
     // .title('Put headline here') // use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
     .height(400),
@@ -72,7 +71,7 @@ const frame = {
     .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
     .width(53.71)// 1 col
-    //.width(112.25)// 2 col
+    // .width(112.25)// 2 col
     // .width(170.8)// 3 col
     // .width(229.34)// 4 col
     // .width(287.88)// 5 col
@@ -99,27 +98,76 @@ const frame = {
 // add the frames to the page...
 d3.selectAll('.framed')
   .each(function addFrames() {
-      const figure = d3.select(this)
-        .attr('class', 'button-holder');
+        const figure = d3.select(this)
+            .attr('class', 'button-holder');
 
-      figure.select('svg')
-          .call(frame[figure.node().dataset.frame]);
+        figure.select('svg')
+            .call(frame[figure.node().dataset.frame]);
   });
 
 parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
-  .then(({ plotData }) => {
-      Object.keys(frame).forEach((frameName) => {
-          const currentFrame = frame[frameName];
+  .then(({ seriesNames, data, plotData, valueExtent, terminusLabels, paths }) => {
+        Object.keys(frame).forEach((frameName) => {
+            const currentFrame = frame[frameName];
 
-          // define other functions to be called
+            const myYAxis = gAxis.yOrdinal();// sets up yAxis
+            const myYAxisRight = gAxis.yOrdinal();// sets up yAxisRight          
+            const myXAxis = gAxis.xOrdinal();// sets up xAxis
 
-          // create a 'g' element at the back of the chart to add time period
-          const background = currentFrame.plot().append('g');
+            const tickSize = 0;
 
-          background.append('rect')
-            .attr('width', currentFrame.dimension().width)
-            .attr('height', currentFrame.dimension().height)
-            .attr('fill', '#ededee');
+            const myChart = bumpChart.draw();
+
+            myYAxis
+                .domain(terminusLabels.map(d => d.pos))
+                .rangeRound([0, currentFrame.dimension().height])
+                .tickSize(tickSize)
+                .align('left')
+                .frameName(frameName);
+                // .invert(invertScale)
+            
+            currentFrame.plot()
+                .call(myYAxis);
+
+            const newMarginYLeft = myYAxis.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of yAxis
+            currentFrame.margin({ left: newMarginYLeft });
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
+
+            // Create second y axis for end labels
+            myYAxisRight
+                .domain(terminusLabels.map(d => d.endLabel))
+                .rangeRound([0, currentFrame.dimension().height])
+                .tickSize(tickSize)
+                .align('right')
+                .frameName(frameName);
+
+            currentFrame.plot()
+                .call(myYAxisRight);
+
+            const newMarginYRight = myYAxisRight.labelWidth() + currentFrame.margin().right;
+            currentFrame.margin({ right: newMarginYRight });
+            // myYAxisRight.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+            myYAxisRight.yLabel().attr('transform', `translate(${currentFrame.dimension().width + myYAxisRight.labelWidth()},0)`);            
+            myYAxisRight.yLabel().attr('text-anchor', 'start');
+
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
+
+            myXAxis
+                .domain(seriesNames)
+                .rangeRound([0, currentFrame.dimension().width])
+                .align(xAxisAlign)
+                .tickSize(tickSize)
+                .frameName(frameName)
+
+            currentFrame.plot()
+                .call(myXAxis);
+
+
       });
       // addSVGSavers('figure.saveable');
   });

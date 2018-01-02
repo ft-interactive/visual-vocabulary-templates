@@ -34,7 +34,7 @@ export function load(url, options) { // eslint-disable-line
             return {
                 pos: d.pos,
                 startLabel: d.pos + ": " + d[seriesNames[0]],
-                endlabel: d.pos + ": " + d[seriesNames[last]]
+                endLabel: d.pos + ": " + d[seriesNames[last]]
             }
         });
 
