@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
+import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as bumpChart from './bumpChart.js';
@@ -33,8 +34,8 @@ const numbers = false;
 const rects = false;
 const xAxisAlign = 'top';// alignment of the axis
 const markers = false;// show dots on lines
-const highlightNames = ['Real Madrid']; // create an array names you want to highlight eg. ['series1','series2']
-const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
+const highlightNames = ['Real Madrid', 'Arsenal']; // create an array names you want to highlight eg. ['series1','series2']
+const interpolation = d3.curveMonotoneX;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 // const invertScale = false;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
@@ -116,7 +117,31 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
 
             const tickSize = 0;
 
-            const myChart = bumpChart.draw();
+            const myChart = bumpChart.draw()
+                .highlightNames(highlightNames)
+                .interpolation(interpolation);
+
+            const highlightedLines = colourPalette(frameName);
+
+            function colourPalette(d) {
+                const newPalette = d3.scaleOrdinal();
+                if (d === 'social' || d === 'video') {
+                    newPalette
+                    .domain(highlightNames)
+                    .range(Object.values(gChartcolour.lineSocial));
+                }
+                if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+                    newPalette
+                    .domain(highlightNames)
+                    .range(Object.values(gChartcolour.lineWeb));
+                }
+                if (d === 'print') {
+                    newPalette
+                    .domain(highlightNames)
+                    .range(Object.values(gChartcolour.linePrint));
+                }
+                return newPalette;
+            }
 
             myYAxis
                 .domain(terminusLabels.map(d => d.pos))
@@ -167,6 +192,22 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
             currentFrame.plot()
                 .call(myXAxis);
 
+            myChart
+                .yScale(myYAxis.scale())
+                .xScale(myXAxis.scale())
+                .plotDim(currentFrame.dimension())
+                .rem(currentFrame.rem())
+                .colourPalette((frameName));
+                
+            // Draw the lines
+            currentFrame.plot()
+                .selectAll('.lines')
+                .data(paths)
+                .enter()
+                .append('g')
+                .attr('class', 'lines')
+                .attr('id', d => d.item)
+                .call(myChart);
 
       });
       // addSVGSavers('figure.saveable');

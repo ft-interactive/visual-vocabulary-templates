@@ -28,6 +28,8 @@ export function load(url, options) { // eslint-disable-line
         const max = Math.max(yMax, d3.max(data, d => +d.pos));
         const valueExtent = [min, max];
 
+        const isLineHighlighted = (el) => highlightNames.some(d => d === el);        
+
         // Get terminus labels
         const terminusLabels = data.map(d => {
             let last = seriesNames.length - 1;
@@ -55,8 +57,6 @@ export function load(url, options) { // eslint-disable-line
         });
         terminus = terminus.filter(d => d.next != undefined);
 
-        console.log(plotData);
-
         // Create array of paths
         let paths = terminus.map(d => ({
             item: d.item,
@@ -64,23 +64,26 @@ export function load(url, options) { // eslint-disable-line
             indexEnd: endIndex(d.item, seriesNames.indexOf(d.group) + 1, plotData),
             pathData: getPaths(d.item, seriesNames.indexOf(d.group), endIndex(d.item, seriesNames.indexOf(d.group), plotData) + 1, plotData),
             pos: d.pos,
-            posEnd: ""
+            posEnd: "",
+            highlightLine: isLineHighlighted(d.item)
         }));
         paths.forEach(d => {
             let last = +d.pathData.length - 1;
             d.posEnd = d.pathData[last].pos;
         });
 
+        const highlightPaths = paths.filter(d => d.highlightLine === true);
+
         // Sort the data so that the labeled items are drawn on top
-        // const dataSorter = function dataSorter(a, b) {
-        //     if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-        //         return 1;
-        //     } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-        //         return 0;
-        //     }
-        //     return -1;
-        // };
-        // if (highlightNames.length > 0) { plotData.sort(dataSorter); }
+        const dataSorter = function dataSorter(a, b) {
+            if (highlightNames.indexOf(a.item) > highlightNames.indexOf(b.item)) {
+                return 1;
+            } else if (highlightNames.indexOf(a.item) === highlightNames.indexOf(b.item)) {
+                return 0;
+            }
+            return -1;
+        };
+        if (highlightNames.length > 0) { plotData.sort(dataSorter); }
 
         return {
             seriesNames,
@@ -88,7 +91,8 @@ export function load(url, options) { // eslint-disable-line
             plotData,
             valueExtent,
             terminusLabels,
-            paths
+            paths,
+            highlightPaths
         };
     });
 }
@@ -147,7 +151,7 @@ function endIndex(item, start, plotData) {
         let lookup = plotData[i];
         let test = lookup.rankings.every(el => {
             end = i;
-            return (el.item == item && el.next == undefined);
+            return !(el.item == item && el.next == undefined);
         });
         if(!test) { break };
     }

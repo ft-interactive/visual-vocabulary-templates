@@ -10,16 +10,39 @@ export function draw() {
     let yAxisAlign = 'right';
     let markers = false;
     let columns = true;
-    let interpolation = d3.curveLinear;
+    let interpolation = d3.curveMonotoneX;
     const colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
 
     function chart(parent) {
         //Your drawing function in here
+        const lineData = d3.line()
+            .defined(d => d)
+            .curve(interpolation)
+            .x(d => xScale(d.group) + xScale.bandwidth() / 2)
+            .y(d => yScale(d.pos) + yScale.bandwidth() / 2);
+            
+        parent.append('path')
+            .attr('stroke', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return colourScale.range()[0];
+                }
+                if (highlightNames.length > 0 && d.highlightLine === true) {
+                    console.log(colourScale(d.name));
+                    return colourScale(d.name);
+                } 
+                return colourScale(d.name);
+            })
+            .attr('opacity', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return 0.5;
+                } return 1;
+            })
+            .attr('d', d => lineData(d.pathData));
 
         if (columns) {
-
+            // draw background columns
         }
     }
 
@@ -36,6 +59,7 @@ export function draw() {
     };
 
     chart.highlightNames = (d) => {
+        if (!d) return highlightNames;
         highlightNames = d;
         return chart;
     };
