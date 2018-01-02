@@ -190,7 +190,8 @@ parseData.load(dataFile, '')
                 .call(myLegend);
 
             // remove ticks from x-axis
-            myXAxis.xLabel().selectAll('.tick line').remove();
+            myXAxis.xLabel().selectAll('.tick').remove();
+            myYAxis.yLabel().selectAll('.tick').remove();
         });
 
     // addSVGSavers('figure.saveable');

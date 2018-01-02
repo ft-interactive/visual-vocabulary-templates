@@ -24,15 +24,15 @@ export function draw() {
 
         block
             .append('rect')
-            .attr('class', 'grid')
+            .attr('class', (d) => {
+                const emptyFill = d.name === 'empty' ? 'grid noData' : 'grid';
+                return emptyFill;
+            })
             .attr('x', (d, i) => xScale(Math.floor(i % 10)))
             .attr('width', () => xScale.bandwidth())
             .attr('y', (d, i) => yScale(Math.floor(i / 10)))
             .attr('height', () => yScale.bandwidth())
-            .attr('fill', (d) => {
-                const cScale = d.name === 'empty' ? colourScale.range()[5] : colourScale(d.name);
-                return cScale;
-            });
+            .attr('fill', d => colourScale(d.name));
     }
 
     chart.yScale = (d) => {
