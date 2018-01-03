@@ -13,17 +13,16 @@ export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
         const seriesNames = getSeriesNames(data.columns);
-        const plotData = [];
         const ranges = 0;
 
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
 
         // Buid the dataset for plotting
-        const newData = seriesNames.map(d => ({
+        const plotData = seriesNames.map(d => ({
+            name: d,
             gridCats: getGridCats(d, data, ranges),
         }));
 
-        plotData.push(newData);
         return {
             seriesNames,
             plotData,

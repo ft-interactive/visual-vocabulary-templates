@@ -4,11 +4,11 @@ import gChartcolour from 'g-chartcolour';
 export function draw() {
     let yScale = d3.scaleBand();
     let xScale = d3.scaleBand();
-    let seriesNames = [];
+    let groupNames = [];
     let yAxisAlign = 'right';
     let rem = 16;
     const colourScale = d3.scaleOrdinal()
-        .domain(seriesNames);
+        .domain(groupNames);
 
     function chart(parent) {
         xScale.paddingInner(0);
@@ -17,10 +17,11 @@ export function draw() {
         // parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
         //     .attr('width', xScale.bandwidth());
 
-        const block = parent.selectAll('g')
-            .data(d => d[0].gridCats)
+        const block = parent.selectAll('.block')
+            .data(d => d.gridCats)
             .enter()
-            .append('g');
+            .append('g')
+            .attr('class', 'block');
 
         block
             .append('rect')
@@ -33,6 +34,13 @@ export function draw() {
             .attr('y', (d, i) => yScale(Math.floor(i / 10)))
             .attr('height', () => yScale.bandwidth())
             .attr('fill', d => colourScale(d.name));
+
+        // add titles for each chart
+        parent.append('text')
+            .attr('class', 'chart-label')
+            .attr('dy', -5)
+            .attr('dx', (xScale.bandwidth() * 5) + (rem / 3))
+            .text(d => d.name);
     }
 
     chart.yScale = (d) => {
@@ -62,6 +70,12 @@ export function draw() {
     chart.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
+        return chart;
+    };
+
+    chart.groupNames = (d) => {
+        if (typeof d === 'undefined') return groupNames;
+        groupNames = d;
         return chart;
     };
 

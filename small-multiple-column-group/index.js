@@ -127,7 +127,7 @@ parseData.fromCSV(dataFile, { yMin, dataDivisor })
             const heightOfSmallCharts = ((currentFrame.dimension().height / currentFrame.numberOfRows()) - (currentFrame.rem() * 2.5));
 
             const tickSize = widthOfSmallCharts;// Used when drawing the yAxis ticks
-
+            console.log(plotData);
             // draw the chart holders
             const chart = currentFrame.plot()
                 .selectAll('g')
@@ -233,7 +233,7 @@ parseData.fromCSV(dataFile, { yMin, dataDivisor })
                 .rem(myChart.rem())
                 .geometry(legendType)
                 .alignment(legendAlign);
-
+                console.log(columnNames)
             // Draw the Legend
             currentFrame.plot()
                 .append('g')
