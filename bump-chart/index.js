@@ -180,10 +180,12 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
             currentFrame.plot()
                 .call(myYAxisRight);
 
+            // Add id to add extra styles to right labels
+            myYAxisRight.yLabel().attr('id', 'endLabels');
+
             const newMarginYRight = myYAxisRight.labelWidth() + currentFrame.margin().right;
             currentFrame.margin({ right: newMarginYRight });
-            // myYAxisRight.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
-            myYAxisRight.yLabel().attr('transform', `translate(${currentFrame.dimension().width + myYAxisRight.labelWidth()},0)`);
+            myYAxisRight.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
             myYAxisRight.yLabel().attr('text-anchor', 'start');
 
             d3.select(currentFrame.plot().node().parentNode)

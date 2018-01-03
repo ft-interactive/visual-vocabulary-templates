@@ -16,3 +16,7 @@
     fill: #000000;
     fill-opacity: 0.5;
 }
+
+#endLabels text {
+    text-anchor: start;
+}
