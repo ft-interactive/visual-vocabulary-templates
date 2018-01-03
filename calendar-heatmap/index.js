@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
-import * as gLegend from 'g-legend';
-import * as gAxis from 'g-axis';
+import gChartcolour from 'g-chartcolour';
+// import * as gLegend from 'g-legend';
+// import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as calendarHeatmap from './calendarHeatmap.js';
 
@@ -31,11 +32,13 @@ const sharedConfig = {
 // const xAxisAlign = 'top';// alignment of the axis
 // const showValues = false;
 // const rotateLabels = false;
-const legendAlign = 'hori';// hori or vert, alignment of the legend
-const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+// const legendAlign = 'hori';// hori or vert, alignment of the legend
+// const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
 const fiscal = false; // should be true if you want to disply financial years
-const breaks = [20, 40, 60, 80, 100];
+const scaleBreaks = [20, 40, 60, 80, 100];
+const scaleType = 'sequentialBlue';
+let colourScale;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -109,107 +112,70 @@ d3.selectAll('.framed')
 
 parseData.load(dataFile, { fiscal, dateFormat })
     .then(({
-        plotData, data
-    }) => { // eslint-disable-line no-unused-vars
+        plotData, data, // eslint-disable-line no-unused-vars
+    }) => {
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
 
-            // const myXAxis = gAxis.xOrdinal();// sets up yAxis
-            // const myYAxis = gAxis.yOrdinal();
-            const myChart = calendarHeatmap.draw(); // eslint-disable-line no-unused-vars
-            const myLegend = gLegend.legend();
+            const myChart = calendarHeatmap.draw();
+            // const myLegend = gLegend.legend();
 
-            // myYAxis
-            //     .rangeRound([0, currentFrame.dimension().height], 0)
-            //     .domain(plotData.map(d => d.name))
-            //     .align(yAxisAlign)
-            //     .frameName(frameName);
+            switch (scaleType) {
+            case 'sequentialRed':
+                colourScale = gChartcolour.sequentialMulti_2;
+                break;
 
-        // const base = currentFrame.plot().append('g'); // eslint-disable-line
-        //     currentFrame.plot()
-        //         .call(myYAxis);
-        //
-        //     // return the value in the variable newMargin
-        //     if (yAxisAlign === 'right') {
-        //         const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
-        //         // Use newMargin redefine the new margin and range of xAxis
-        //         currentFrame.margin({ right: newMargin });
-        //     // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
-        //     }
-        //     if (yAxisAlign === 'left') {
-        //         const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
-        //         // Use newMargin redefine the new margin and range of xAxis
-        //         currentFrame.margin({ left: newMargin });
-        //         myYAxis.yLabel().attr('transform', 'translate(0,0)');
-        //     }
-        //     d3.select(currentFrame.plot().node().parentNode)
-        //         .call(currentFrame);
-        //
-        //     myXAxis
-        //         .align(xAxisAlign)
-        //         .domain(seriesNames)
-        //         .rangeRound([0, currentFrame.dimension().width], 0)
-        //         .frameName(frameName);
-        //
-        //     myChart
-        //         .xScale(myXAxis.scale())
-        //         .yScale(myYAxis.scale())
-        //         .catNames(catNames)
-        //         .plotDim(currentFrame.dimension())
-        //         .rem(currentFrame.rem())
-        //         .showValues(showValues)
-        //         .colourPalette(frameName);
-        //
-        //     currentFrame.plot()
-        //         .call(myXAxis);
-        //
-        //     if (xAxisAlign === 'bottom') {
-        //         myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height - (currentFrame.rem() / 1.5)})`);
-        //         if (rotateLabels) {
-        //             myXAxis.xLabel().selectAll('.tick text')
-        //                 .attr('transform', 'rotate(-45)')
-        //                 .style('text-anchor', 'end');
-        //         }
-        //     }
-        //     if (xAxisAlign === 'top') {
-        //         myXAxis.xLabel().attr('transform', `translate(0,${(currentFrame.rem() / 1.5)})`);
-        //         if (rotateLabels) {
-        //             myXAxis.xLabel().selectAll('.tick text')
-        //                 .attr('transform', 'rotate(-45)')
-        //                 .style('text-anchor', 'start');
-        //         }
-        //     }
-        //
-        //     currentFrame.plot()
-        //         .selectAll('.columnHolder')
-        //         .data(plotData)
-        //         .enter()
-        //         .append('g')
-        //         .attr('class', 'columnHolder')
-        //         .call(myChart);
-        //
-        //     // Set up legend for this frame
-        //     myLegend
-        //         .seriesNames(catNames)
-        //         .geometry(legendType)
-        //         .frameName(frameName)
-        //         .rem(myChart.rem())
-        //         .alignment(legendAlign)
-        //         .colourPalette((frameName));
-        //
-        //     // Draw the Legend
-        //     currentFrame.plot()
-        //         .append('g')
-        //         .attr('id', 'legend')
-        //         .selectAll('.legend')
-        //         .data(catNames)
-        //         .enter()
-        //         .append('g')
-        //         .classed('legend', true)
-        //         .call(myLegend);
-        //
-        //     // remove ticks from x-axis
-        //     myXAxis.xLabel().selectAll('.tick line').remove();
+            case 'sequentialBlue':
+                colourScale = gChartcolour.sequentialMulti;
+                break;
+
+            default:
+            }
+
+            const scaleColours = d3.scaleOrdinal()
+                .domain(scaleBreaks)
+                .range(colourScale);
+
+            // Remove repeated variable
+            const cellSize = currentFrame.dimension().width / 54;
+            const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+            myChart
+                .plotDim(currentFrame.dimension())
+                .rem(currentFrame.rem())
+                .colourPalette(colourScale);
+
+            const years = currentFrame.plot()
+                .selectAll('.year')
+                .data(plotData)
+                .enter()
+                .append('g')
+                .attr('class', 'year')
+                .call(myChart);
+
+            // Append label for each year
+            years.append('text')
+                .attr('class', 'year-label')
+                .attr('y', currentFrame.rem())
+                .text((d) => {
+                    if (fiscal) {
+                        return `Year ending ${d.key}`;
+                    }
+                    return d.key;
+                });
+
+            const dayLabels = years
+                .append('g')
+                .attr('id', 'dayLabels');
+
+            days.forEach((day, i) => {
+                dayLabels.append('text')
+                    .attr('class', 'weekday-labels')
+                    // Remove magic number
+                    .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
+                    .attr('dy', '0.9em')
+                    .text(day);
+            });
         });
 
     // addSVGSavers('figure.saveable');
