@@ -28,47 +28,47 @@ export function load(url, options) { // eslint-disable-line
         const max = Math.max(yMax, d3.max(data, d => +d.pos));
         const valueExtent = [min, max];
 
-        const isLineHighlighted = (el) => highlightNames.some(d => d === el);        
+        const isLineHighlighted = (el) => { highlightNames.some(d => d === el); };
 
         // Get terminus labels
-        const terminusLabels = data.map(d => {
-            let last = seriesNames.length - 1;
+        const terminusLabels = data.map((d) => {
+            const last = seriesNames.length - 1;
             return {
                 pos: d.pos,
-                startLabel: d.pos + ": " + d[seriesNames[0]],
-                endLabel: d.pos + ": " + d[seriesNames[last]]
-            }
+                startLabel: `${d.pos}: ${d[seriesNames[0]]}`,
+                endLabel: `${d.pos}: ${d[seriesNames[last]]}`,
+            };
         });
 
-        let plotData = seriesNames.map((d,i) => ({
+        const plotData = seriesNames.map((d, i) => ({
             group: d,
             index: i + 1,
-            rankings: getGroups(d, i, data, seriesNames)
+            rankings: getGroups(d, i, data, seriesNames),
         }));
 
         let terminus = [];
-        let items = []; 
-        plotData.forEach(d => {
-            let start = d.rankings.filter(el => {
+        const items = [];
+        plotData.forEach((d) => {
+            const start = d.rankings.filter((el) => {
                 items.push(el.item);
-                return (el.prev==undefined);
+                return (el.prev === undefined);
             });
             terminus.push.apply(terminus, start);
         });
-        terminus = terminus.filter(d => d.next != undefined);
+        terminus = terminus.filter(d => d.next !== undefined);
 
         // Create array of paths
-        let paths = terminus.map(d => ({
+        const paths = terminus.map(d => ({
             item: d.item,
             indexStart: seriesNames.indexOf(d.group),
             indexEnd: endIndex(d.item, seriesNames.indexOf(d.group) + 1, plotData),
             pathData: getPaths(d.item, seriesNames.indexOf(d.group), endIndex(d.item, seriesNames.indexOf(d.group), plotData) + 1, plotData),
             pos: d.pos,
-            posEnd: "",
-            highlightLine: isLineHighlighted(d.item)
+            posEnd: '',
+            highlightLine: isLineHighlighted(d.item),
         }));
-        paths.forEach(d => {
-            let last = +d.pathData.length - 1;
+        paths.forEach((d) => {
+            const last = +d.pathData.length - 1;
             d.posEnd = d.pathData[last].pos;
         });
 
@@ -92,7 +92,7 @@ export function load(url, options) { // eslint-disable-line
             valueExtent,
             terminusLabels,
             paths,
-            highlightPaths
+            highlightPaths,
         };
     });
 }
@@ -112,48 +112,48 @@ export function getSeriesNames(columns) {
  * For a group (e.g. a year) get the positions for each of the items in that  year
  */
 function getGroups(group, index, data, seriesNames) {
-    let rankings = [];
-    data.forEach((el,i) => {
-        let column = new Object();
+    const rankings = [];
+    data.forEach((el) => {
+        const column = {};
         column.pos = +el.pos;
         column.group = group;
         column.prevGroup = seriesNames[index - 1];
         column.nextGroup = seriesNames[index + 1];
         column.item = el[group];
-        column.prev = relPositions("prev", el[group], index - 1, data, seriesNames);
-        column.next = relPositions("next", el[group], index + 1, data, seriesNames);
+        column.prev = relPositions('prev', el[group], index - 1, data, seriesNames);
+        column.next = relPositions('next', el[group], index + 1, data, seriesNames);
         column.status = column.prev - column.pos;
         rankings.push(column);
-    }); 
+    });
     return rankings;
 }
 
 function relPositions(trace, item, i, data, seriesNames) {
-    let lookup = seriesNames[i];
-    const prev = data.find(d => d[lookup] == item);
+    const lookup = seriesNames[i];
+    const prev = data.find(d => d[lookup] === item);
     // Checks to see if undefined Nan etc
     if (!prev) return prev;
     return +prev.pos;
 }
 
 function getPaths(item, indexStart, indexEnd, plotData) {
-    let plotArray = [];
-    for (var i = indexStart; i < indexEnd; i++) {
-        let points = plotData[i].rankings.filter(d => d.item == item);
+    const plotArray = [];
+    for (let i = indexStart; i < indexEnd; i += 1) {
+        const points = plotData[i].rankings.filter(d => d.item === item);
         plotArray.push.apply(plotArray, points);
     }
     return (plotArray);
 }
 
 function endIndex(item, start, plotData) {
-    var end = 0;
-    for (var i = start; i < plotData.length; i++) {
-        let lookup = plotData[i];
-        let test = lookup.rankings.every(el => {
+    let end = 0;
+    for (let i = start; i < plotData.length; i += 1) {
+        const lookup = plotData[i];
+        const test = lookup.rankings.every((el) => {
             end = i;
             return !(el.item == item && el.next == undefined);
         });
-        if(!test) { break };
+        if (!test) { break; }
     }
     return end;
 }

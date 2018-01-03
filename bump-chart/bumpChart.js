@@ -9,21 +9,20 @@ export function draw() {
     let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
-    let columns = true;
+    let showRects = true;
     let interpolation = d3.curveMonotoneX;
     let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
-        //Your drawing function in here
         const lineData = d3.line()
             .defined(d => d)
             .curve(interpolation)
-            .x(d => xScale(d.group) + xScale.bandwidth() / 2)
-            .y(d => yScale(d.pos) + yScale.bandwidth() / 2);
-            
+            .x(d => xScale(d.group) + (xScale.bandwidth() / 2))
+            .y(d => yScale(d.pos) + (yScale.bandwidth() / 2));
+
         parent.append('path')
-            .attr('stroke', d => {
+            .attr('stroke', (d) => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {
                     d.strokeColour = colourScale.range()[0];
                     return d.strokeColour;
@@ -31,43 +30,43 @@ export function draw() {
                 if (highlightNames.length > 0 && d.highlightLine === true) {
                     d.strokeColour = colourScale(d.item);
                     return d.strokeColour;
-                } 
+                }
                 d.strokeColour = colourScale(d.item);
                 return d.strokeColour;
             })
-            .attr('opacity', d => {
+            .attr('opacity', (d) => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {
                     return 0.5;
                 } return 1;
             })
             .attr('d', d => lineData(d.pathData))
-            .call(function() {
-                parent.append('circle')
-                    .attr("r", rem / 6)
-                    .attr("cx", d => {
-                        let x = d.indexStart;
-                        return xScale(xScale.domain()[x]) + xScale.bandwidth() / 2;
-                    })
-                    .attr("cy", d => {
-                        let y = d.pos
-                        return yScale(y) + yScale.bandwidth() / 2;
-                    })
-                    .attr("fill", d => d.strokeColour);
+            .call(() => {
                 parent.append('circle')
                     .attr('r', rem / 6)
-                    .attr("cx", d => {
-                        let x = d.indexEnd;
-                        return xScale(xScale.domain()[x]) + xScale.bandwidth() / 2;
+                    .attr('cx', (d) => {
+                        const x = xScale.domain()[d.indexStart];
+                        return xScale(x) + (xScale.bandwidth() / 2);
                     })
-                    .attr("cy", d => {
-                        let y = d.posEnd;
-                        return yScale(y) + yScale.bandwidth() / 2;
+                    .attr('cy', (d) => {
+                        const y = d.pos;
+                        return yScale(y) + (yScale.bandwidth() / 2);
                     })
-                    .attr("fill", d => d.strokeColour);                    
+                    .attr('fill', d => d.strokeColour);
+                parent.append('circle')
+                    .attr('r', rem / 6)
+                    .attr('cx', (d) => {
+                        const x = xScale.domain()[d.indexEnd];
+                        return xScale(x) + (xScale.bandwidth() / 2);
+                    })
+                    .attr('cy', (d) => {
+                        const y = d.posEnd;
+                        return yScale(y) + (yScale.bandwidth() / 2);
+                    })
+                    .attr('fill', d => d.strokeColour);
             });
-        
 
-        if (columns) {
+
+        if (showRects) {
             // draw background columns
         }
     }
@@ -126,11 +125,11 @@ export function draw() {
         return chart;
     };
 
-    chart.columns = (d) => {
-        if (!d) return columns;
-        columns = d;
+    chart.showRects = (d) => {
+        if (!d) return showRects;
+        showRects = d;
         return chart;
-    }
+    };
 
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
@@ -158,4 +157,3 @@ export function draw() {
 
     return chart;
 }
-
