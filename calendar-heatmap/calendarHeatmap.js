@@ -2,9 +2,9 @@ import * as d3 from 'd3';
 // import gChartcolour from 'g-chartcolour';
 
 export function draw() {
-    let yScale = d3.scaleBand();
-    let xScale = d3.scaleBand();
-    let yAxisAlign = 'left';
+    // let yScale = d3.scaleBand();
+    // let xScale = d3.scaleBand();
+    // let yAxisAlign = 'left';
     let rem = 16;
     let fiscal = false;
     const colourScale = d3.scaleOrdinal();
@@ -103,18 +103,20 @@ function monthPath(t0, fiscal, cellSize) {
     let w1;
 
     if (fiscal) {
-        w0 = getFiscalWeek(t0);
-        w1 = getFiscalWeek(t1);
+        w0 = +getFiscalWeek(t0);
+        w1 = +getFiscalWeek(t1);
         if (w0 > w1) { w0 = 0; }
     } else {
-        w0 = getWeekOfYear(t0);
-        w1 = getWeekOfYear(t1);
+        w0 = +getWeekOfYear(t0);
+        w1 = +getWeekOfYear(t1);
     }
 
     let d0 = t0.getDay();
     const d1 = t1.getDay();
 
-    if (w0 === 0) { d0 = 0; }
+    if (w0 === 0) {
+        d0 = 0;
+    }
 
     w0 = parseInt(w0, 10);
     w1 = parseInt(w1, 10);
@@ -130,7 +132,10 @@ function getWeekOfYear(e) {
     return d3.timeFormat('%U')(e);
 }
 
-function getFiscalWeek(e, parseDate) {
+function getFiscalWeek(e) {
+    // will need to refactor this to somewhere cellSize
+    const parseDate = d3.timeParse('%d/%m/%Y');
+
     const startDate = `06/04/${e.getFullYear()}`;
     const week = getWeekOfYear(e);
     const startWeek = getWeekOfYear(parseDate(startDate));

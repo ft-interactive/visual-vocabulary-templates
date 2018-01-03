@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
 import gChartcolour from 'g-chartcolour';
-// import * as gLegend from 'g-legend';
+import * as gLegend from 'g-legend';
 // import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as calendarHeatmap from './calendarHeatmap.js';
@@ -32,10 +32,10 @@ const sharedConfig = {
 // const xAxisAlign = 'top';// alignment of the axis
 // const showValues = false;
 // const rotateLabels = false;
-// const legendAlign = 'hori';// hori or vert, alignment of the legend
-// const legendType = 'rect'; // rect, line or circ, geometry of legend marker
+const legendAlign = 'hori';// hori or vert, alignment of the legend
+const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
-const fiscal = false; // should be true if you want to disply financial years
+const fiscal = true; // should be true if you want to disply financial years
 const scaleBreaks = [20, 40, 60, 80, 100];
 const scaleType = 'sequentialBlue';
 let colourScale;
@@ -118,7 +118,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
             const currentFrame = frame[frameName];
 
             const myChart = calendarHeatmap.draw();
-            // const myLegend = gLegend.legend();
+            const myLegend = gLegend.legend();
 
             switch (scaleType) {
             case 'sequentialRed':
@@ -177,6 +177,25 @@ parseData.load(dataFile, { fiscal, dateFormat })
                     .attr('dy', '0.9em')
                     .text(day);
             });
+
+            myLegend
+                .seriesNames(scaleBreaks)
+                .geometry(legendType)
+                .frameName(frameName)
+                .rem(myChart.rem())
+                .alignment(legendAlign)
+                .colourPalette(scaleColours);
+
+            // Draw the Legend
+            currentFrame.plot()
+                .append('g')
+                .attr('id', 'legend')
+                .selectAll('.legend')
+                .data(scaleBreaks)
+                .enter()
+                .append('g')
+                .classed('legend', true)
+                .call(myLegend);
         });
 
     // addSVGSavers('figure.saveable');
