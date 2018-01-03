@@ -2,12 +2,13 @@ import * as d3 from 'd3';
 // import gChartcolour from 'g-chartcolour';
 
 export function draw() {
-    // let yScale = d3.scaleBand();
-    // let xScale = d3.scaleBand();
-    // let yAxisAlign = 'left';
     let rem = 16;
     let fiscal = false;
-    const colourScale = d3.scaleOrdinal();
+    let scaleBreaks = [];
+    let colourPalette = [];
+    const cScale = d3.scaleThreshold()
+        .domain(scaleBreaks)
+        .range(colourPalette);
 
     function chart(parent) {
         const cellSize = window.plotDim.width / 54;
@@ -40,10 +41,14 @@ export function draw() {
                 return getWeekOfYear(d.date) * cellSize;
             })
             .attr('y', (d) => {
-                const getDayOfWeek = d3.timeFormat('%u');
-                return getDayOfWeek(d.date) * cellSize;
+                return +d.date.getDay() * cellSize;
             })
-            .style('fill', d => colourScale(d.value));
+            .style('fill', (d) => {
+                return cScale(d.value);
+            })
+            .on('mouseover', (d) => {
+                console.log(`date: ${d.date} value: ${d.value}`);
+            });
 
         // Make this optional?
         parent
@@ -87,9 +92,17 @@ export function draw() {
         return chart;
     };
 
+    chart.scaleBreaks = (d) => {
+        if (typeof d === 'undefined') return scaleBreaks;
+        scaleBreaks = d;
+        cScale.domain(d);
+        return chart;
+    };
+
     chart.colourPalette = (d) => {
-        if (!d) return colourScale;
-        colourScale.range(d);
+        if (!d) return colourPalette;
+        colourPalette = d;
+        cScale.range(d);
         return chart;
     };
 

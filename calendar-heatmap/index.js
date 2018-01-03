@@ -35,10 +35,10 @@ const sharedConfig = {
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
-const fiscal = true; // should be true if you want to disply financial years
+const fiscal = false; // should be true if you want to disply financial years
 const scaleBreaks = [20, 40, 60, 80, 100];
 const scaleType = 'sequentialBlue';
-let colourScale;
+let colourRange;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -122,19 +122,21 @@ parseData.load(dataFile, { fiscal, dateFormat })
 
             switch (scaleType) {
             case 'sequentialRed':
-                colourScale = gChartcolour.sequentialMulti_2;
+                colourRange = gChartcolour.sequentialMulti_2;
                 break;
 
             case 'sequentialBlue':
-                colourScale = gChartcolour.sequentialMulti;
+                colourRange = gChartcolour.sequentialMulti;
                 break;
 
             default:
             }
 
-            const scaleColours = d3.scaleOrdinal()
+            console.log(colourRange);
+
+            const colourScale = d3.scaleOrdinal()
                 .domain(scaleBreaks)
-                .range(colourScale);
+                .range(colourRange);
 
             // Remove repeated variable
             const cellSize = currentFrame.dimension().width / 54;
@@ -144,7 +146,8 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .fiscal(fiscal)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .colourPalette(colourScale);
+                .scaleBreaks(scaleBreaks)
+                .colourPalette(colourRange);
 
             const years = currentFrame.plot()
                 .selectAll('.year')
@@ -184,7 +187,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .frameName(frameName)
                 .rem(myChart.rem())
                 .alignment(legendAlign)
-                .colourPalette(scaleColours);
+                .colourPalette(colourScale);
 
             // Draw the Legend
             currentFrame.plot()
