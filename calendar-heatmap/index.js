@@ -141,6 +141,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
             const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
             myChart
+                .fiscal(fiscal)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
                 .colourPalette(colourScale);
