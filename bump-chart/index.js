@@ -27,8 +27,6 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 1;// sets the minimum value on the yAxis
-const yMax = 20;// sets the maximum value on the xAxis
 const columns = true;
 const xAxisAlign = 'top';// alignment of the axis
 const markers = true;// show dots on lines
@@ -104,7 +102,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
+parseData.load(dataFile, { dateFormat, highlightNames })
     .then(({ seriesNames, data, plotData, valueExtent, terminusLabels, paths, highlightPaths }) => {
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -164,7 +162,7 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
             const newMarginYLeft = myYAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of yAxis
             currentFrame.margin({ left: newMarginYLeft });
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - (myYAxis.labelWidth() / 2))},0)`);
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
@@ -203,20 +201,22 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
 
             const xScale = myXAxis.scale();
 
-            const bgColumns = currentFrame.plot()
-                .selectAll('.columns')
-                .data(plotData)
-                .enter()
-                .append('g')
-                .attr('class', 'columns')
-                .attr('id', d => d.item)
-                .attr('transform', d => `translate(${xScale(d.group)})`);
+            if (columns) {
+                const bgColumns = currentFrame.plot()
+                    .selectAll('.columns')
+                    .data(plotData)
+                    .enter()
+                    .append('g')
+                    .attr('class', 'columns')
+                    .attr('id', d => d.item)
+                    .attr('transform', d => `translate(${xScale(d.group)})`);
 
-            bgColumns
-                .append('rect')
-                .attr('class', 'column')
-                .attr('width', myXAxis.bandwidth())
-                .attr('height', currentFrame.dimension().height);
+                bgColumns
+                    .append('rect')
+                    .attr('class', 'column')
+                    .attr('width', myXAxis.bandwidth())
+                    .attr('height', currentFrame.dimension().height);
+            }
 
             myChart
                 .yScale(myYAxis.scale())

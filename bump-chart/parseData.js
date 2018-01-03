@@ -13,7 +13,7 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const { yMin, yMax, highlightNames, dateFormat } = options; // eslint-disable-line no-unused-vars
+        const { highlightNames, dateFormat } = options; // eslint-disable-line no-unused-vars
 
         // Automatically calculate the seriesnames excluding the "pos" column
         const seriesNames = getSeriesNames(data.columns);
@@ -24,8 +24,8 @@ export function load(url, options) { // eslint-disable-line
         // console.log(seriesDates);
 
         // Calculate the minimum and max values in the dataset
-        const min = Math.min(yMin, d3.min(data, d => +d.pos));
-        const max = Math.max(yMax, d3.max(data, d => +d.pos));
+        const min = d3.min(data, d => +d.pos);
+        const max = d3.max(data, d => +d.pos);
         const valueExtent = [min, max];
 
         const isLineHighlighted = (el) => highlightNames.some(d => d === el);
