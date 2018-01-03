@@ -9,7 +9,6 @@ export function draw() {
     let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
-    let showRects = true;
     let interpolation = d3.curveMonotoneX;
     let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
@@ -41,34 +40,31 @@ export function draw() {
             })
             .attr('d', d => lineData(d.pathData))
             .call(() => {
-                parent.append('circle')
-                    .attr('r', rem / 6)
-                    .attr('cx', (d) => {
-                        const x = xScale.domain()[d.indexStart];
-                        return xScale(x) + (xScale.bandwidth() / 2);
-                    })
-                    .attr('cy', (d) => {
-                        const y = d.pos;
-                        return yScale(y) + (yScale.bandwidth() / 2);
-                    })
-                    .attr('fill', d => d.strokeColour);
-                parent.append('circle')
-                    .attr('r', rem / 6)
-                    .attr('cx', (d) => {
-                        const x = xScale.domain()[d.indexEnd];
-                        return xScale(x) + (xScale.bandwidth() / 2);
-                    })
-                    .attr('cy', (d) => {
-                        const y = d.posEnd;
-                        return yScale(y) + (yScale.bandwidth() / 2);
-                    })
-                    .attr('fill', d => d.strokeColour);
+                if (markers) {
+                    parent.append('circle')
+                        .attr('r', rem / 6)
+                        .attr('cx', (d) => {
+                            const x = xScale.domain()[d.indexStart];
+                            return xScale(x) + (xScale.bandwidth() / 2);
+                        })
+                        .attr('cy', (d) => {
+                            const y = d.pos;
+                            return yScale(y) + (yScale.bandwidth() / 2);
+                        })
+                        .attr('fill', d => d.strokeColour);
+                    parent.append('circle')
+                        .attr('r', rem / 6)
+                        .attr('cx', (d) => {
+                            const x = xScale.domain()[d.indexEnd];
+                            return xScale(x) + (xScale.bandwidth() / 2);
+                        })
+                        .attr('cy', (d) => {
+                            const y = d.posEnd;
+                            return yScale(y) + (yScale.bandwidth() / 2);
+                        })
+                        .attr('fill', d => d.strokeColour);
+                }
             });
-
-
-        if (showRects) {
-            // draw background columns
-        }
     }
 
     chart.yScale = (d) => {
@@ -122,12 +118,6 @@ export function draw() {
     chart.interpolation = (d) => {
         if (!d) return interpolation;
         interpolation = d;
-        return chart;
-    };
-
-    chart.showRects = (d) => {
-        if (!d) return showRects;
-        showRects = d;
         return chart;
     };
 

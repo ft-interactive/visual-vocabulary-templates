@@ -29,9 +29,9 @@ const sharedConfig = {
 
 const yMin = 1;// sets the minimum value on the yAxis
 const yMax = 20;// sets the maximum value on the xAxis
-const showRects = false;
+const columns = true;
 const xAxisAlign = 'top';// alignment of the axis
-const markers = false;// show dots on lines
+const markers = true;// show dots on lines
 const highlightNames = ['Real Madrid', 'Arsenal', 'Bayern Munich']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveMonotoneX;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 // const invertScale = false;
@@ -118,12 +118,13 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
             const seriesArray = paths.map(d => d.item);
 
             const myChart = bumpChart.draw()
-                .showRects(showRects)
+                .markers(markers)
                 .seriesNames(seriesArray)
                 .highlightNames(highlightNames)
                 .interpolation(interpolation);
 
             const myHighLines = bumpChart.draw()
+                .markers(markers)
                 .seriesNames(seriesArray)
                 .highlightNames(highlightNames)
                 .interpolation(interpolation);
@@ -197,6 +198,23 @@ parseData.load(dataFile, { yMin, yMax, dateFormat, highlightNames })
 
             currentFrame.plot()
                 .call(myXAxis);
+
+            const xScale = myXAxis.scale();
+
+            const bgColumns = currentFrame.plot()
+                .selectAll('.columns')
+                .data(plotData)
+                .enter()
+                .append('g')
+                .attr('class', 'columns')
+                .attr('id', d => d.item)
+                .attr('transform', d => `translate(${xScale(d.group)})`);
+
+            bgColumns
+                .append('rect')
+                .attr('class', 'column')
+                .attr('width', myXAxis.bandwidth())
+                .attr('height', currentFrame.dimension().height);
 
             myChart
                 .yScale(myYAxis.scale())

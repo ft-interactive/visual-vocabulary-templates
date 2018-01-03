@@ -1,0 +1,18 @@
+.ft-webgraphic-s .column,
+.ft-webgraphic-m .column,
+.ft-webgraphic-m-default .column,
+.ft-webgraphic-l .column {
+    fill: #000000;
+    fill-opacity: 0.1;
+}
+
+.ft-printgraphic .column {
+    fill: #000000;
+    fill-opacity: 0.1;
+}
+
+.ft-socialgraphic .column,
+.ft-videographic .column {
+    fill: #000000;
+    fill-opacity: 0.5;
+}

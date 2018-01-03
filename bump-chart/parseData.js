@@ -28,7 +28,7 @@ export function load(url, options) { // eslint-disable-line
         const max = Math.max(yMax, d3.max(data, d => +d.pos));
         const valueExtent = [min, max];
 
-        const isLineHighlighted = (el) => { highlightNames.some(d => d === el); };
+        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
 
         // Get terminus labels
         const terminusLabels = data.map((d) => {
@@ -114,7 +114,7 @@ export function getSeriesNames(columns) {
 function getGroups(group, index, data, seriesNames) {
     const rankings = [];
     data.forEach((el) => {
-        const column = {};
+        const column = new Object();
         column.pos = +el.pos;
         column.group = group;
         column.prevGroup = seriesNames[index - 1];

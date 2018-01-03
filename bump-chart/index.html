@@ -5,6 +5,7 @@
 
     <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
     <link rel="stylesheet" href="https://ig.ft.com/visual-vocabulary/styles.css"/>
+    <link rel="stylesheet" href="./bumpChart.css"/>
     <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
 </head>
 <body>
@@ -14,16 +15,9 @@
     <p><b>Some useful settings in the index.js</b>
         <ul>
             <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
-            <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
-            <li><b>annotate</b> – set to 'true' will display annotations in your dataset's 'annotate' column</li>
+            <li><b>columns</b> – set to 'true' will display background columns for each time period (e.g. year)</li>
+            <li><b>markers</b> – set to 'true' will display dots at the ends of each line</li>
             <li><b>highlightNames</b> – put the column names of the data you want to highlight, all other series will be muted</li>
-            <li><b>interval</b> – options available are "century","jubilee" (50 years), decade", "lustrum" (5 years), "years","months","days"</li>
-        </ul>
-    </p>
-     <p><b>Column headings in the csv</b>
-        <ul>
-            <li><b>annotate</b> – use this column to create annotations for a particular point in time</li>
-            <li><b>highlight</b> – use this column to define highlight bands in the background of your chart, add 'begin' where you want the band to start and 'end' where you want it to finish. You can have as many highlights as you want.</li>
         </ul>
     </p>
     <p>Please make sure than the <b>blue line</b> is on top as this is the primary line colour</p>
