@@ -13,8 +13,6 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const showValues = false;
-const rotateLabels = false;
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
@@ -22,7 +20,7 @@ const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({
-            top: 100, left:0, bottom: 82, right: 5,
+            top: 100, left: 0, bottom: 82, right: 5,
         })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
