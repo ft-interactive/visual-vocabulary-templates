@@ -19,8 +19,8 @@ export function load(url, options) { // eslint-disable-line
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
 
         // Buid the dataset for plotting
-        const newData = data.map(() => ({
-            gridCats: getGridCats(seriesNames, data, ranges),
+        const newData = seriesNames.map(d => ({
+            gridCats: getGridCats(d, data, ranges),
         }));
 
         plotData.push(newData);

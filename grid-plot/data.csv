@@ -1,5 +1,5 @@
-name,Per cent
-UK,51
-US,30
-Italy,12
-Spain,4
+name,UK,France,Germany,Italy,Spain,US
+Apples,51,21,44,12,5,22
+Pears,30,7,18,8,9,28
+Oranges,12,44,17,37,64,34
+Lemons,4,28,21,43,20,16
