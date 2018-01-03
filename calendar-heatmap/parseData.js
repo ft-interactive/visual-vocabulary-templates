@@ -2,6 +2,7 @@
  * General data munging functionality
  */
 
+import * as d3 from 'd3';
 import loadData from '@financial-times/load-data';
 
 /**
@@ -12,49 +13,67 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const seriesNames = getSeriesNames(data.columns);
+        const { fiscal, dateFormat } = options;
 
-        const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
+        const parseDate = d3.timeParse(dateFormat);
 
-        const catNames = getCatNames(data, seriesNames);
+        const fiscalPlot = data.map((d) => {
+            const parsedDate = parseDate(d.date);
+            return {
+                date: parsedDate,
+                value: +d.value,
+                fyear: getFiscalYear(parsedDate, parseDate),
+                fweek: getFiscalWeek(parsedDate, parseDate),
+            };
+        });
 
-        // Buid the dataset for plotting
-        const plotData = data.map(d => ({
-            name: d.name,
-            groups: getGroups(seriesNames, d),
-        }));
+        let plotData;
+        if (fiscal) {
+            plotData = d3.nest()
+                .key(d => d.fyear)
+                .entries(fiscalPlot);
+        } else {
+            const parsedData = data.map(d => ({
+                date: parseDate(d.date),
+                value: +d.value,
+            }));
+            plotData = d3.nest()
+                .key(d => getFullYear(d.date))
+                .entries(parsedData);
+        }
 
         return {
-            seriesNames,
             plotData,
             data,
-            groupNames,
-            catNames,
         };
     });
 }
 
-
-// a function that returns the columns headers from the top of the dataset, excluding specified
-function getSeriesNames(columns) {
-    const exclude = ['name']; // adjust column headings to match your dataset
-    return columns.filter(d => (exclude.indexOf(d) === -1));
+function getFullYear(e) {
+    return d3.timeFormat('%Y')(e);
 }
 
-function getGroups(seriesNames, el) {
-    return seriesNames.map(name => ({
-        name,
-        value: el[name],
-    }));
+function getFiscalYear(e, parseDate) {
+    const startDate = `06/04/${getFullYear(e)}`;
+
+    if (e >= parseDate(startDate)) {
+        return +getFullYear(e) + 1;
+    }
+    return +getFullYear(e);
 }
 
-function getCatNames(data, seriesNames) {
-    const allVals = data.reduce((acc, cur) => acc.concat(seriesNames.map(d => cur[d])), []);
+function getFiscalWeek(e, parseDate) {
+    const getWeekOfYear = d3.timeFormat('%U');
 
-    // identify the unique values in the array
-    const filterVals = allVals.filter((v, i) => i === allVals.lastIndexOf(v));
+    const startDate = `06/04/${getFullYear(e)}`;
+    const week = getWeekOfYear(e);
+    const startWeek = getWeekOfYear(parseDate(startDate));
 
-    // remove falsy values
-    const uniqVals = filterVals.map(d => d).filter(d => d !== '');
-    return uniqVals;
+    let fweek;
+    if (e >= parseDate(startDate)) {
+        fweek = week - startWeek;
+    } else {
+        fweek = 52 - (startWeek - week);
+    }
+    return fweek;
 }

@@ -13,42 +13,42 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        xScale.paddingInner(0);
-        yScale.paddingInner(0);
-
-        parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
-            .attr('width', xScale.bandwidth());
-
-        const block = parent.selectAll('g')
-            .data(d => d.groups)
-            .enter()
-            .append('g');
-
-        block
-            .append('rect')
-            .attr('class', (d) => {
-                if (d.value) {
-                    return 'grid';
-                }
-                return 'grid noData';
-            })
-            .attr('x', d => xScale(d.name))
-            .attr('width', () => xScale.bandwidth())
-            .attr('y', d => yScale(d.name))
-            .attr('height', () => yScale.bandwidth())
-            .attr('fill', d => colourScale.range()[catNames.lastIndexOf(d.value)]);
-
-        if (showValues) {
-            block
-                .append('text')
-                .attr('class', 'blockValue')
-                .attr('x', d => xScale(d.name))
-                .attr('y', d => yScale(d.name))
-                .attr('dx', (xScale.bandwidth() / 2))
-                .attr('dy', (yScale.bandwidth() / 2) + (rem / 4))
-                .text(d => d.value)
-                .attr('font-size', rem);
-        }
+        // xScale.paddingInner(0);
+        // yScale.paddingInner(0);
+        //
+        // parent.attr('transform', d => `translate(0, ${yScale(d.name)})`)
+        //     .attr('width', xScale.bandwidth());
+        //
+        // const block = parent.selectAll('g')
+        //     .data(d => d.groups)
+        //     .enter()
+        //     .append('g');
+        //
+        // block
+        //     .append('rect')
+        //     .attr('class', (d) => {
+        //         if (d.value) {
+        //             return 'grid';
+        //         }
+        //         return 'grid noData';
+        //     })
+        //     .attr('x', d => xScale(d.name))
+        //     .attr('width', () => xScale.bandwidth())
+        //     .attr('y', d => yScale(d.name))
+        //     .attr('height', () => yScale.bandwidth())
+        //     .attr('fill', d => colourScale.range()[catNames.lastIndexOf(d.value)]);
+        //
+        // if (showValues) {
+        //     block
+        //         .append('text')
+        //         .attr('class', 'blockValue')
+        //         .attr('x', d => xScale(d.name))
+        //         .attr('y', d => yScale(d.name))
+        //         .attr('dx', (xScale.bandwidth() / 2))
+        //         .attr('dy', (yScale.bandwidth() / 2) + (rem / 4))
+        //         .text(d => d.value)
+        //         .attr('font-size', rem);
+        // }
     }
 
     chart.yScale = (d) => {
