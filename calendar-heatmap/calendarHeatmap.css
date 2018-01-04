@@ -25,6 +25,18 @@
     fill: #000000;
 }
 
+.ft-webgraphic-s .month-labels,
+.ft-webgraphic-m .month-labels,
+.ft-webgraphic-m-default .month-labels {
+    font-size: 12px;
+    fill: #000000;
+}
+
+.ft-webgraphic-l .month-labels {
+    font-size: 16px;
+    fill: #000000;
+}
+
 .ft-webgraphic-s .year-labels,
 .ft-webgraphic-m .year-labels,
 .ft-webgraphic-m-default .year-labels {

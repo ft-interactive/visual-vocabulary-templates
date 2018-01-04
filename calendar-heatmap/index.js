@@ -138,7 +138,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
 
             myChart
                 .fiscal(fiscal)
-                .clipYear(true)
+                .clipYear(clipYear)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
                 .scaleBreaks(scaleBreaks)
@@ -175,25 +175,42 @@ parseData.load(dataFile, { fiscal, dateFormat })
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
+            // Calculate cell size and pass this to the chart
             const cellSize = currentFrame.dimension().width / 56;
-
             myChart.cellSize(cellSize);
 
             years.call(myChart);
 
-            const dayLabels = years
+            const dayLabelsLeft = years
                 .append('g')
-                .attr('class', 'dayLabels');
+                .attr('class', 'dayLabelsLeft');
+            const dayLabelsRight = years
+                .append('g')
+                .attr('class', 'dayLabelsRight');
 
             days.forEach((day, i) => {
-                dayLabels.append('text')
+                dayLabelsLeft.append('text')
                     .attr('class', 'weekday-labels')
-                    // Remove magic number
                     .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
                     .attr('dy', '0.9em')
+                    .attr('text-anchor', 'end')
+                    .text(day);
+                dayLabelsRight.append('text')
+                    .attr('class', 'weekday-labels')
+                    .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
+                    .attr('dy', '0.9em')
+                    .attr('text-anchor', 'start')
                     .text(day);
             });
-            dayLabels.attr('transform', `translate(${-currentFrame.margin().left},0)`);
+
+            let dayLabelsWidth = 0;
+            dayLabelsLeft.each(function getMaxLabelWidth() {
+                dayLabelsWidth = Math.max(this.getBBox().width, dayLabelsWidth);
+            });
+
+            dayLabelsLeft.attr('transform', `translate(${-currentFrame.margin().left + dayLabelsWidth},0)`);
+            dayLabelsRight.attr('transform', `translate(${cellSize * 54},0)`);
+
             // Get the bounding boxes of month outlines
             const boundingBoxes = [];
             const mp = currentFrame.plot()
