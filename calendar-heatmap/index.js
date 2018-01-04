@@ -31,7 +31,7 @@ const sharedConfig = {
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
-const fiscal = true; // should be true if you want to disply financial years
+const fiscal = false; // should be true if you want to disply financial years
 const scaleBreaks = [20, 40, 60, 80, 100];
 const scaleType = 'sequentialBlue';
 let colourRange;
@@ -240,7 +240,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .append('g')
                 .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(scaleBreaks.map(d => d))
+                .data(scaleBreaks.map(d => `up to ${d}`))
                 .enter()
                 .append('g')
                 .classed('legend', true)
