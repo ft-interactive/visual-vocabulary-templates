@@ -1,9 +1,58 @@
-.weekday-labels, .year-labels, .month-labels {
+.ft-webgraphic-s .months,
+.ft-webgraphic-m .months,
+.ft-webgraphic-m-default .months,
+.ft-webgraphic-l .months,
+.ft-printgraphic .months {
+    stroke: #000000;
+    fill: none;
+}
+
+.ft-socialgraphic .months,
+.ft-videographic .months {
+    stroke: #ffffff;
+    opacity: 0.5;
+}
+
+.ft-webgraphic-s .weekday-labels,
+.ft-webgraphic-m .weekday-labels,
+.ft-webgraphic-m-default .weekday-labels {
     font-size: 12px;
     fill: #000000;
 }
 
-.months {
-    stroke: #000000;
-    fill: none;
+.ft-webgraphic-l .weekday-labels {
+    font-size: 16px;
+    fill: #000000;
+}
+
+.ft-webgraphic-s .year-labels,
+.ft-webgraphic-m .year-labels,
+.ft-webgraphic-m-default .year-labels {
+    font-size: 12px;
+    fill: #000000;
+}
+
+.ft-webgraphic-l .year-labels {
+    font-size: 16px;
+    fill: #000000;
+}
+
+.ft-printgraphic .weekday-labels,
+.ft-printgraphic .year-labels {
+    font-size: 9.6px;
+	stroke: #000000;
+}
+
+.ft-socialgraphic .weekday-labels,
+.ft-socialgraphic .year-labels {
+    font-size: 12px;
+	fill: #ffffff;
+    opacity: 0.5;
+}
+
+.ft-videographic .weekday-labels,
+.ft-videographic .year-labels {
+    font-size: 30px;
+    fill: #ffffff;
+    opacity: 0.5;
 }

@@ -38,17 +38,9 @@ export function draw() {
                 }
                 return getWeekOfYear(d.date) * cellSize;
             })
-            .attr('y', (d) => {
-                return +d.date.getDay() * cellSize;
-            })
-            .style('fill', (d) => {
-                return cScale(d.value);
-            })
-            .on('mouseover', (d) => {
-                console.log(`date: ${d.date} value: ${d.value}`);
-            });
+            .attr('y', d => +d.date.getDay() * cellSize)
+            .style('fill', d => cScale(d.value));
 
-        // Make this optional?
         parent
             .append('g')
             .attr('class', 'monthOutlines')
