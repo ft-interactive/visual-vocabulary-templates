@@ -32,6 +32,7 @@ const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
 const fiscal = false; // should be true if you want to disply financial years
+const clipYear = true;
 const scaleBreaks = [20, 40, 60, 80, 100];
 const scaleType = 'sequentialBlue';
 let colourRange;
@@ -137,6 +138,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
 
             myChart
                 .fiscal(fiscal)
+                .clipYear(true)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
                 .scaleBreaks(scaleBreaks)

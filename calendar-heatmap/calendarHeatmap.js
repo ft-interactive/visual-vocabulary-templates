@@ -7,6 +7,7 @@ export function draw() {
     let scaleBreaks = [];
     let colourPalette = [];
     let cellSize = 10;
+    let clipYear = true;
     const cScale = d3.scaleThreshold()
         .domain(scaleBreaks)
         .range(colourPalette);
@@ -61,7 +62,7 @@ export function draw() {
             .append('path')
             .attr('class', 'months')
             .attr('transform', `translate(0, ${rem * 1.5})`)
-            .attr('d', d => monthPath(d, fiscal, cellSize));
+            .attr('d', d => monthPath(d, fiscal, cellSize, clipYear));
     }
 
     chart.plotDim = (d) => {
@@ -79,6 +80,12 @@ export function draw() {
     chart.cellSize = (d) => {
         if (!d) return cellSize;
         cellSize = d;
+        return chart;
+    };
+
+    chart.clipYear = (d) => {
+        if (typeof d === 'undefined') return clipYear;
+        clipYear = d;
         return chart;
     };
 
@@ -105,7 +112,7 @@ export function draw() {
     return chart;
 }
 
-function monthPath(t0, fiscal, cellSize) {
+function monthPath(t0, fiscal, cellSize, clipYear) {
     const t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0);
     let w0;
     let w1;
@@ -122,7 +129,7 @@ function monthPath(t0, fiscal, cellSize) {
     let d0 = +t0.getDay();
     const d1 = +t1.getDay();
 
-    if (w0 === 0) {
+    if (w0 === 0 && !clipYear) {
         d0 = 0;
     }
 
