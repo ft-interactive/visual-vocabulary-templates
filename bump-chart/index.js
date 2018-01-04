@@ -103,7 +103,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { dateFormat, highlightNames })
-    .then(({ seriesNames, data, plotData, valueExtent, terminusLabels, paths, highlightPaths }) => {
+    .then(({ seriesNames, data, plotData, valueExtent, terminusLabels, paths, highlightPaths }) => { // eslint-disable-line
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
 

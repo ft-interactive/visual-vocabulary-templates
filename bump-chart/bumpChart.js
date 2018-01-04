@@ -38,33 +38,35 @@ export function draw() {
                     return 0.5;
                 } return 1;
             })
-            .attr('d', d => lineData(d.pathData))
-            .call(() => {
-                if (markers) {
-                    parent.append('circle')
-                        .attr('r', rem / 6)
-                        .attr('cx', (d) => {
-                            const x = xScale.domain()[d.indexStart];
-                            return xScale(x) + (xScale.bandwidth() / 2);
-                        })
-                        .attr('cy', (d) => {
-                            const y = d.pos;
-                            return yScale(y) + (yScale.bandwidth() / 2);
-                        })
-                        .attr('fill', d => d.strokeColour);
-                    parent.append('circle')
-                        .attr('r', rem / 6)
-                        .attr('cx', (d) => {
-                            const x = xScale.domain()[d.indexEnd];
-                            return xScale(x) + (xScale.bandwidth() / 2);
-                        })
-                        .attr('cy', (d) => {
-                            const y = d.posEnd;
-                            return yScale(y) + (yScale.bandwidth() / 2);
-                        })
-                        .attr('fill', d => d.strokeColour);
-                }
-            });
+            .attr('d', d => lineData(d.pathData));
+
+        if (markers) {
+            // This is used to place markers
+            const dates = xScale.domain();
+
+            parent.append('circle')
+                .attr('r', rem / 6)
+                .attr('cx', (d) => {
+                    const x = dates[d.indexStart];
+                    return xScale(x) + (xScale.bandwidth() / 2);
+                })
+                .attr('cy', (d) => {
+                    const y = d.pos;
+                    return yScale(y) + (yScale.bandwidth() / 2);
+                })
+                .attr('fill', d => d.strokeColour);
+            parent.append('circle')
+                .attr('r', rem / 6)
+                .attr('cx', (d) => {
+                    const x = dates[d.indexEnd];
+                    return xScale(x) + (xScale.bandwidth() / 2);
+                })
+                .attr('cy', (d) => {
+                    const y = d.posEnd;
+                    return yScale(y) + (yScale.bandwidth() / 2);
+                })
+                .attr('fill', d => d.strokeColour);
+        }
     }
 
     chart.yScale = (d) => {

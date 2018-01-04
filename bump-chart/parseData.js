@@ -28,8 +28,6 @@ export function load(url, options) { // eslint-disable-line
         const max = d3.max(data, d => +d.pos);
         const valueExtent = [min, max];
 
-        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
-
         // Get terminus labels
         const terminusLabels = data.map((d) => {
             const last = seriesNames.length - 1;
@@ -53,7 +51,7 @@ export function load(url, options) { // eslint-disable-line
                 items.push(el.item);
                 return (el.prev === undefined);
             });
-            terminus.push.apply(terminus, start);
+            terminus.push(...start);
         });
         terminus = terminus.filter(d => d.next !== undefined);
 
@@ -65,7 +63,7 @@ export function load(url, options) { // eslint-disable-line
             pathData: getPaths(d.item, seriesNames.indexOf(d.group), endIndex(d.item, seriesNames.indexOf(d.group), plotData) + 1, plotData),
             pos: d.pos,
             posEnd: '',
-            highlightLine: isLineHighlighted(d.item),
+            highlightLine: isLineHighlighted(d.item, highlightNames),
         }));
         paths.forEach((d) => {
             const last = +d.pathData.length - 1;
@@ -114,7 +112,7 @@ export function getSeriesNames(columns) {
 function getGroups(group, index, data, seriesNames) {
     const rankings = [];
     data.forEach((el) => {
-        const column = new Object();
+        const column = {};
         column.pos = +el.pos;
         column.group = group;
         column.prevGroup = seriesNames[index - 1];
@@ -140,7 +138,7 @@ function getPaths(item, indexStart, indexEnd, plotData) {
     const plotArray = [];
     for (let i = indexStart; i < indexEnd; i += 1) {
         const points = plotData[i].rankings.filter(d => d.item === item);
-        plotArray.push.apply(plotArray, points);
+        plotArray.push(...points);
     }
     return (plotArray);
 }
@@ -149,11 +147,18 @@ function endIndex(item, start, plotData) {
     let end = 0;
     for (let i = start; i < plotData.length; i += 1) {
         const lookup = plotData[i];
-        const test = lookup.rankings.every((el) => {
-            end = i;
-            return !(el.item == item && el.next == undefined);
-        });
+        end = i;
+        const test = lookup.rankings.every(el => isNotEqualToItemAndNotLastElement(el, item));
         if (!test) { break; }
     }
     return end;
+}
+
+// Helper for endIndex
+function isNotEqualToItemAndNotLastElement(el, item) {
+    return !(el.item === item && el.next === undefined);
+}
+
+function isLineHighlighted(line, highlightNames) {
+    return highlightNames.some(d => d === line);
 }
