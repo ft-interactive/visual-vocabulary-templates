@@ -6,17 +6,16 @@ export function draw() {
     let fiscal = false;
     let scaleBreaks = [];
     let colourPalette = [];
+    let cellSize = 10;
     const cScale = d3.scaleThreshold()
         .domain(scaleBreaks)
         .range(colourPalette);
 
     function chart(parent) {
-        const cellSize = window.plotDim.width / 54;
-
         parent
-            .attr('id', d => `calendar-${d.key}`)
+            .attr('id', d => `calendar_${d.key}`)
             .attr('transform', (d, i) => {
-                const calendarOffset = (i * ((cellSize * 7) + (rem * 2)));
+                const calendarOffset = (i * ((cellSize * 7) + (rem * 2))) - (rem * 1.3);
                 return `translate(0, ${calendarOffset})`;
             });
 
@@ -24,14 +23,13 @@ export function draw() {
         parent
             .append('g')
             .attr('transform', `translate(0,${rem * 1.5})`)
-            .attr('id', 'alldays')
-            .selectAll('.day')
+            .attr('class', 'dayHolder')
+            .selectAll('.days')
             .data(d => d.values)
             .enter()
             .append('rect')
-            // Need to do something with date
-            // .attr('id', d => d.date)
-            .attr('class', 'day')
+            .attr('id', d => `date: ${d.date} value: ${d.value}`)
+            .attr('class', 'days')
             .attr('width', cellSize)
             .attr('height', cellSize)
             .attr('x', (d) => {
@@ -53,8 +51,8 @@ export function draw() {
         // Make this optional?
         parent
             .append('g')
-            .attr('id', 'monthOutlines')
-            .selectAll('.month')
+            .attr('class', 'monthOutlines')
+            .selectAll('.months')
             .data((d) => {
                 if (fiscal) {
                     return d3.timeMonths(
@@ -69,7 +67,7 @@ export function draw() {
             })
             .enter()
             .append('path')
-            .attr('class', 'month')
+            .attr('class', 'months')
             .attr('transform', `translate(0, ${rem * 1.5})`)
             .attr('d', d => monthPath(d, fiscal, cellSize));
     }
@@ -83,6 +81,12 @@ export function draw() {
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
+        return chart;
+    };
+
+    chart.cellSize = (d) => {
+        if (!d) return cellSize;
+        cellSize = d;
         return chart;
     };
 
@@ -110,8 +114,7 @@ export function draw() {
 }
 
 function monthPath(t0, fiscal, cellSize) {
-    const t1 = new Date(t0.getFullYear(), t0.getMonth(), 0);
-
+    const t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0);
     let w0;
     let w1;
 
@@ -124,8 +127,8 @@ function monthPath(t0, fiscal, cellSize) {
         w1 = +getWeekOfYear(t1);
     }
 
-    let d0 = t0.getDay();
-    const d1 = t1.getDay();
+    let d0 = +t0.getDay();
+    const d1 = +t1.getDay();
 
     if (w0 === 0) {
         d0 = 0;

@@ -1,9 +1,9 @@
-.weekday-labels, .year-label {
+.weekday-labels, .year-labels, .month-labels {
     font-size: 12px;
     fill: #000000;
 }
 
-.month {
+.months {
     stroke: #000000;
     fill: none;
 }

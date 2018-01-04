@@ -132,20 +132,19 @@ parseData.load(dataFile, { fiscal, dateFormat })
             default:
             }
 
-            console.log(colourRange);
-
             const colourScale = d3.scaleOrdinal()
                 .domain(scaleBreaks)
                 .range(colourRange);
 
-            // Remove repeated variable
-            const cellSize = currentFrame.dimension().width / 54;
+            const cellSize = currentFrame.dimension().width / 56;
             const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
             myChart
                 .fiscal(fiscal)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
+                .cellSize(cellSize)
                 .scaleBreaks(scaleBreaks)
                 .colourPalette(colourRange);
 
@@ -154,12 +153,11 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .data(plotData)
                 .enter()
                 .append('g')
-                .attr('class', 'year')
-                .call(myChart);
+                .attr('class', 'year');
 
             // Append label for each year
-            years.append('text')
-                .attr('class', 'year-label')
+            const yearLabels = years.append('text')
+                .attr('class', 'year-labels')
                 .attr('y', currentFrame.rem())
                 .text((d) => {
                     if (fiscal) {
@@ -170,7 +168,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
 
             const dayLabels = years
                 .append('g')
-                .attr('id', 'dayLabels');
+                .attr('class', 'dayLabels');
 
             days.forEach((day, i) => {
                 dayLabels.append('text')
@@ -179,6 +177,59 @@ parseData.load(dataFile, { fiscal, dateFormat })
                     .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
                     .attr('dy', '0.9em')
                     .text(day);
+            });
+
+            // We're not using an axis so need to caluclate max label width
+            let labelWidth = 0;
+            yearLabels.each(function getMaxLabelWidth() {
+                labelWidth = Math.max(this.getBBox().width, labelWidth);
+            });
+            // Add option to specify where labels are
+            const newMargin = labelWidth;
+            currentFrame.margin({ left: newMargin });
+            yearLabels.attr('transform', `translate(${-currentFrame.margin().left},0)`);
+            dayLabels.attr('transform', `translate(${-currentFrame.margin().left},0)`);
+
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
+            //
+
+            years.call(myChart);
+
+            // Get the bounding boxes of month outlines
+            const boundingBoxes = [];
+            const mp = currentFrame.plot()
+                .select('.monthOutlines')
+                .node()
+                .childNodes;
+            for (let i = 0; i < mp.length; i += 1) {
+                boundingBoxes.push(mp[i].getBBox());
+            }
+            const monthX = [];
+            boundingBoxes.forEach((d) => {
+                const boxCentre = d.width / 2;
+                monthX.push(d.x + boxCentre);
+            });
+
+            const monthLabels = years
+                .append('g')
+                .attr('class', 'monthLabels');
+
+            months.forEach((d, i) => {
+                monthLabels.append('text')
+                    .attr('class', 'month-labels')
+                    .attr('x', () => {
+                        if (fiscal && i < 3) {
+                            return monthX[i + 9];
+                        }
+                        if (fiscal && i > 2) {
+                            return monthX[i - 3];
+                        }
+                        // console.log(d, monthX[i]);
+                        return monthX[i];
+                    })
+                    .attr('y', myChart.rem())
+                    .text(d);
             });
 
             myLegend
@@ -194,11 +245,15 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .append('g')
                 .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(scaleBreaks)
+                .data(scaleBreaks.map(d => d))
                 .enter()
                 .append('g')
                 .classed('legend', true)
                 .call(myLegend);
+
+            const legendSelection = currentFrame.plot().select('#legend');
+            const legendWidth = (legendSelection.node().getBBox().width); // eslint-disable-line
+            legendSelection.attr('transform', `translate(${currentFrame.dimension().width - legendWidth - currentFrame.rem()},${-currentFrame.rem() * 2})`);
         });
 
     // addSVGSavers('figure.saveable');
