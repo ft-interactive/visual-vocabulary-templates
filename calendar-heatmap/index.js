@@ -28,14 +28,10 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-// const yAxisAlign = 'left';// alignment of the axis
-// const xAxisAlign = 'top';// alignment of the axis
-// const showValues = false;
-// const rotateLabels = false;
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
-const fiscal = false; // should be true if you want to disply financial years
+const fiscal = true; // should be true if you want to disply financial years
 const scaleBreaks = [20, 40, 60, 80, 100];
 const scaleType = 'sequentialBlue';
 let colourRange;
@@ -136,7 +132,6 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .domain(scaleBreaks)
                 .range(colourRange);
 
-            const cellSize = currentFrame.dimension().width / 56;
             const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -144,7 +139,6 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .fiscal(fiscal)
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
-                .cellSize(cellSize)
                 .scaleBreaks(scaleBreaks)
                 .colourPalette(colourRange);
 
@@ -166,6 +160,25 @@ parseData.load(dataFile, { fiscal, dateFormat })
                     return d.key;
                 });
 
+            // We're not using an axis so need to caluclate max label width
+            let labelWidth = 0;
+            yearLabels.each(function getMaxLabelWidth() {
+                labelWidth = Math.max(this.getBBox().width, labelWidth);
+            });
+            // Add option to specify where labels are
+            const newMargin = labelWidth;
+            currentFrame.margin({ left: newMargin });
+            yearLabels.attr('transform', `translate(${-currentFrame.margin().left},0)`);
+
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
+
+            const cellSize = currentFrame.dimension().width / 56;
+
+            myChart.cellSize(cellSize);
+
+            years.call(myChart);
+
             const dayLabels = years
                 .append('g')
                 .attr('class', 'dayLabels');
@@ -178,24 +191,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
                     .attr('dy', '0.9em')
                     .text(day);
             });
-
-            // We're not using an axis so need to caluclate max label width
-            let labelWidth = 0;
-            yearLabels.each(function getMaxLabelWidth() {
-                labelWidth = Math.max(this.getBBox().width, labelWidth);
-            });
-            // Add option to specify where labels are
-            const newMargin = labelWidth;
-            currentFrame.margin({ left: newMargin });
-            yearLabels.attr('transform', `translate(${-currentFrame.margin().left},0)`);
             dayLabels.attr('transform', `translate(${-currentFrame.margin().left},0)`);
-
-            d3.select(currentFrame.plot().node().parentNode)
-                .call(currentFrame);
-            //
-
-            years.call(myChart);
-
             // Get the bounding boxes of month outlines
             const boundingBoxes = [];
             const mp = currentFrame.plot()
@@ -225,7 +221,6 @@ parseData.load(dataFile, { fiscal, dateFormat })
                         if (fiscal && i > 2) {
                             return monthX[i - 3];
                         }
-                        // console.log(d, monthX[i]);
                         return monthX[i];
                     })
                     .attr('y', myChart.rem())
