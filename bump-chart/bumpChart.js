@@ -20,6 +20,12 @@ export function draw() {
             .x(d => xScale(d.group) + (xScale.bandwidth() / 4))
             .y(d => yScale(d.pos) + (yScale.bandwidth() / 2));
 
+        parent.attr('opacity', (d) => {
+            if (highlightNames.length > 0 && d.highlightLine === false) {
+                return 0.5;
+            } return 1;
+        });
+
         parent.append('path')
             .attr('stroke', (d) => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {
@@ -32,11 +38,6 @@ export function draw() {
                 }
                 d.strokeColour = colourScale(d.item);
                 return d.strokeColour;
-            })
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return 0.5;
-                } return 1;
             })
             .attr('d', d => lineData(d.pathData));
 
