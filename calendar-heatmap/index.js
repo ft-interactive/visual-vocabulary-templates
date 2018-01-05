@@ -31,17 +31,17 @@ const sharedConfig = {
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 
-const fiscal = false; // should be true if you want to disply financial years
-const clipYear = true;
-const scaleBreaks = [20, 40, 60, 80, 100];
-const scaleType = 'sequentialBlue';
+const fiscal = false;// should be true if you want to disply financial years
+const clipYear = true;// if true clip to the year otherwise the front of the year is flat
+const scaleBreaks = [20, 40, 60, 80, 100];// set breaks for the colour scale
+const scaleType = 'sequentialRed';// set the colour scale to 'sequentialBlue' or 'sequentialRed'
 let colourRange;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({
-            top: 100, left: 15, bottom: 82, right: 5,
+            top: 100, left: 0, bottom: 82, right: 0,
         })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
@@ -49,21 +49,21 @@ const frame = {
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 0, bottom: 86, right: 0,
         })
     // .title("Put headline here")
         .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 0, bottom: 86, right: 0,
         })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 5,
+            top: 100, left: 0, bottom: 104, right: 0,
         })
     // .title("Put headline here")
         .height(700)
@@ -71,17 +71,18 @@ const frame = {
 
     print: gChartframe.printFrame(sharedConfig)
         .margin({
-            top: 40, left: 7, bottom: 35, right: 7,
+            top: 40, left: 0, bottom: 35, right: 0,
         })
     // .title("Put headline here")
-        .width(53.71)// 1 col
+    // .width(53.71)// 1 col
     // .width(112.25)// 2 col
-    // .width(170.8)// 3 col
-    // .width(229.34)// 4 col
+    .width(170.8)// 3 col
+        // .width(229.34)// 4 col
     // .width(287.88)// 5 col
     // .width(346.43)// 6 col
     // .width(74)// markets std print
-        .height(69.85), //  std print (Use 58.21mm for markets charts that matter)
+    // .height(69.85), //  std print (Use 58.21mm for markets charts that matter)
+        .height(100),
 
     // social: gChartframe.socialFrame(sharedConfig)
     //     .margin({
@@ -133,7 +134,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .domain(scaleBreaks)
                 .range(colourRange);
 
-            const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
             myChart
@@ -168,16 +169,15 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 labelWidth = Math.max(this.getBBox().width, labelWidth);
             });
             // Add option to specify where labels are
-            // const newMargin = labelWidth;
-            const newMargin = labelWidth + currentFrame.margin().left;
+            const newMargin = (labelWidth * 1.5) + currentFrame.margin().left;
             currentFrame.margin({ left: newMargin });
-            yearLabels.attr('transform', `translate(${-labelWidth},0)`);
+            yearLabels.attr('transform', `translate(${-labelWidth * 1.5},0)`);
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
             // Calculate cell size and pass this to the chart
-            const cellSize = currentFrame.dimension().width / 56;
+            const cellSize = Math.min(currentFrame.dimension().width / 56, currentFrame.dimension().height / 24);
             myChart.cellSize(cellSize);
 
             years.call(myChart);
@@ -194,13 +194,13 @@ parseData.load(dataFile, { fiscal, dateFormat })
                     .attr('class', 'weekday-labels')
                     .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
                     .attr('dy', '0.9em')
-                    .attr('text-anchor', 'end')
+                    .attr('text-anchor', 'start')
                     .text(day);
                 dayLabelsRight.append('text')
                     .attr('class', 'weekday-labels')
                     .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
                     .attr('dy', '0.9em')
-                    .attr('text-anchor', 'start')
+                    .attr('text-anchor', 'end')
                     .text(day);
             });
 
@@ -209,8 +209,8 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 dayLabelsWidth = Math.max(this.getBBox().width, dayLabelsWidth);
             });
 
-            dayLabelsLeft.attr('transform', `translate(${-labelWidth + dayLabelsWidth},0)`);
-            dayLabelsRight.attr('transform', `translate(${cellSize * 54},0)`);
+            dayLabelsLeft.attr('transform', `translate(${-labelWidth * 1.5},0)`);
+            dayLabelsRight.attr('transform', `translate(${cellSize * 56},0)`);
 
             // Get the bounding boxes of month outlines
             const boundingBoxes = [];
@@ -260,7 +260,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .append('g')
                 .attr('id', 'legend')
                 .selectAll('.legend')
-                .data(scaleBreaks.map(d => `up to ${d}`))
+                .data(scaleBreaks)
                 .enter()
                 .append('g')
                 .classed('legend', true)

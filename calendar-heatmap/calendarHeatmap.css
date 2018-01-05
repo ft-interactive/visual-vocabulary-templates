@@ -3,7 +3,7 @@
 .ft-webgraphic-m-default .months,
 .ft-webgraphic-l .months,
 .ft-printgraphic .months {
-    stroke: #000000;
+    stroke: #66605c;
     fill: none;
 }
 
@@ -67,4 +67,16 @@
     font-size: 30px;
     fill: #ffffff;
     opacity: 0.5;
+}
+
+.ft-webgraphic-s .days,
+.ft-webgraphic-m .days,
+.ft-webgraphic-m-default .days,
+.ft-webgraphic-l .days {
+    stroke: #e6d9ce;
+}
+
+.ft-printgraphic .months {
+    stroke: #ffffff;
+    stroke-width: 0.5px;
 }
