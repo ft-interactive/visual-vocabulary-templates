@@ -18,11 +18,6 @@ export function load(url, options) { // eslint-disable-line
         // Automatically calculate the seriesnames excluding the "pos" column
         const seriesNames = getSeriesNames(data.columns);
 
-        // make sure all the dates in the seriesnames are a date object? convert to another format?
-        // const parseDate = d3.timeParse(dateFormat);
-        // const seriesDates = seriesNames.map(d => parseDate(d));
-        // console.log(seriesDates);
-
         // Calculate the minimum and max values in the dataset
         const min = d3.min(data, d => +d.pos);
         const max = d3.max(data, d => +d.pos);

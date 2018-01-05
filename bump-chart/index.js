@@ -127,6 +127,7 @@ parseData.load(dataFile, { dateFormat, highlightNames })
                 .highlightNames(highlightNames)
                 .interpolation(interpolation);
 
+            // Create a second colour palette for highlighted lines
             const highlightedLines = colourPalette(frameName);
 
             function colourPalette(d) {
@@ -162,7 +163,7 @@ parseData.load(dataFile, { dateFormat, highlightNames })
             const newMarginYLeft = myYAxis.labelWidth() + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of yAxis
             currentFrame.margin({ left: newMarginYLeft });
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - (myYAxis.labelWidth() / 2))},0)`);
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
@@ -189,6 +190,8 @@ parseData.load(dataFile, { dateFormat, highlightNames })
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
+            const xScale = myXAxis.scale();
+
             myXAxis
                 .domain(seriesNames)
                 .rangeRound([0, currentFrame.dimension().width])
@@ -199,17 +202,19 @@ parseData.load(dataFile, { dateFormat, highlightNames })
             currentFrame.plot()
                 .call(myXAxis);
 
-            const xScale = myXAxis.scale();
+            myXAxis.xLabel().attr('transform', `translate(${-xScale.bandwidth() / 4},0)`);
 
             if (columns) {
                 const bgColumns = currentFrame.plot()
+                    .append('g')
+                    .attr('class', 'columnsContainer')
                     .selectAll('.columns')
                     .data(plotData)
                     .enter()
                     .append('g')
                     .attr('class', 'columns')
                     .attr('id', d => d.item)
-                    .attr('transform', d => `translate(${xScale(d.group)})`);
+                    .attr('transform', d => `translate(${xScale(d.group) - (xScale.bandwidth() / 4)},0)`);
 
                 bgColumns
                     .append('rect')
@@ -234,6 +239,8 @@ parseData.load(dataFile, { dateFormat, highlightNames })
 
             // Draw the lines
             currentFrame.plot()
+                .append('g')
+                .attr('class', 'seriesLines')
                 .selectAll('.lines')
                 .data(paths)
                 .enter()
@@ -243,6 +250,8 @@ parseData.load(dataFile, { dateFormat, highlightNames })
                 .call(myChart);
 
             currentFrame.plot()
+                .append('g')
+                .attr('class', 'seriesLinesHighlighted')
                 .selectAll('.lines.highlighlines')
                 .data(highlightPaths)
                 .enter()

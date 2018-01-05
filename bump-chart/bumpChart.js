@@ -17,7 +17,7 @@ export function draw() {
         const lineData = d3.line()
             .defined(d => d)
             .curve(interpolation)
-            .x(d => xScale(d.group) + (xScale.bandwidth() / 2))
+            .x(d => xScale(d.group) + (xScale.bandwidth() / 4))
             .y(d => yScale(d.pos) + (yScale.bandwidth() / 2));
 
         parent.append('path')
@@ -48,7 +48,7 @@ export function draw() {
                 .attr('r', rem / 6)
                 .attr('cx', (d) => {
                     const x = dates[d.indexStart];
-                    return xScale(x) + (xScale.bandwidth() / 2);
+                    return xScale(x) + (xScale.bandwidth() / 4);
                 })
                 .attr('cy', (d) => {
                     const y = d.pos;
@@ -59,7 +59,7 @@ export function draw() {
                 .attr('r', rem / 6)
                 .attr('cx', (d) => {
                     const x = dates[d.indexEnd];
-                    return xScale(x) + (xScale.bandwidth() / 2);
+                    return xScale(x) + (xScale.bandwidth() / 4);
                 })
                 .attr('cy', (d) => {
                     const y = d.posEnd;
