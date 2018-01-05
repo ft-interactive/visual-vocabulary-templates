@@ -28,7 +28,7 @@ const sharedConfig = {
 };
 
 const columns = true;
-const xAxisAlign = 'top';// alignment of the axis
+const xAxisAlign = 'bottom';// alignment of the axis
 const markers = true;// show dots on lines
 const highlightNames = ['Real Madrid', 'Arsenal', 'Bayern Munich']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveMonotoneX;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
@@ -202,7 +202,12 @@ parseData.load(dataFile, { dateFormat, highlightNames })
             currentFrame.plot()
                 .call(myXAxis);
 
-            myXAxis.xLabel().attr('transform', `translate(${-xScale.bandwidth() / 4},0)`);
+            if (xAxisAlign === 'bottom') {
+                myXAxis.xLabel().attr('transform', `translate(${-xScale.bandwidth() / 4},${currentFrame.dimension().height})`);
+            }
+            if (xAxisAlign === 'top') {
+                myXAxis.xLabel().attr('transform', `translate(${-xScale.bandwidth() / 4},0)`);
+            }
 
             if (columns) {
                 const bgColumns = currentFrame.plot()
