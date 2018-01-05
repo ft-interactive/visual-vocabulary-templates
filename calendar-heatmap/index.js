@@ -83,19 +83,19 @@ const frame = {
     // .width(74)// markets std print
         .height(69.85), //  std print (Use 58.21mm for markets charts that matter)
 
-    social: gChartframe.socialFrame(sharedConfig)
-        .margin({
-            top: 140, left: 50, bottom: 138, right: 40,
-        })
-    // .title("Put headline here")
-        .width(612)
-        .height(612),
+    // social: gChartframe.socialFrame(sharedConfig)
+    //     .margin({
+    //         top: 140, left: 50, bottom: 138, right: 40,
+    //     })
+    // // .title("Put headline here")
+    //     .width(612)
+    //     .height(612),
 
-    video: gChartframe.videoFrame(sharedConfig)
-        .margin({
-            left: 207, right: 207, bottom: 210, top: 233,
-        }),
-    // .title("Put headline here")
+    // video: gChartframe.videoFrame(sharedConfig)
+    //     .margin({
+    //         left: 207, right: 207, bottom: 210, top: 233,
+    //     }),
+    // // .title("Put headline here")
 };
 
 
