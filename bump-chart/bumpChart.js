@@ -10,7 +10,8 @@ export function draw() {
     let yAxisAlign = 'right';
     let markers = false;
     let interpolation = d3.curveMonotoneX;
-    let colourScale = d3.scaleOrdinal()
+    let mutedColour = '#999999';
+    const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
@@ -28,11 +29,11 @@ export function draw() {
 
         parent.append('path')
             .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    d.strokeColour = colourScale.range()[0];
+                if (d.highlightLine === false) {
+                    d.strokeColour = mutedColour;
                     return d.strokeColour;
                 }
-                if (highlightNames.length > 0 && d.highlightLine === true) {
+                if (d.highlightLine === true) {
                     d.strokeColour = colourScale(d.item);
                     return d.strokeColour;
                 }
@@ -124,26 +125,23 @@ export function draw() {
         return chart;
     };
 
+    chart.mutedColour = (d) => {
+        if (!d) return mutedColour;
+        mutedColour = d;
+        return chart;
+    };
+
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            } else if (d && d.name && d.name === 'scale') {
-                colourScale = d;
-            }
-            return chart;
-        }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
+            mutedColour = gChartcolour.mutedFirstLineSocial[0];
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.lineWeb);
+            mutedColour = gChartcolour.mutedFirstLineWeb[0];
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+            mutedColour = gChartcolour.mutedFirstLinePrint[0];
         }
         return chart;
     };

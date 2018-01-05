@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
-import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as bumpChart from './bumpChart.js';
@@ -27,8 +26,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const columns = true;
-const xAxisAlign = 'bottom';// alignment of the axis
+const columns = true;// show background columns for each date (e.g. year)
+const xAxisAlign = 'top';// alignment of the axis
 const markers = true;// show dots on lines
 const highlightNames = ['Real Madrid', 'Arsenal', 'Bayern Munich']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveMonotoneX;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
@@ -121,35 +120,6 @@ parseData.load(dataFile, { dateFormat, highlightNames })
                 .highlightNames(highlightNames)
                 .interpolation(interpolation);
 
-            const myHighLines = bumpChart.draw()
-                .markers(markers)
-                .seriesNames(seriesArray)
-                .highlightNames(highlightNames)
-                .interpolation(interpolation);
-
-            // Create a second colour palette for highlighted lines
-            const highlightedLines = colourPalette(frameName);
-
-            function colourPalette(d) {
-                const newPalette = d3.scaleOrdinal();
-                if (d === 'social' || d === 'video') {
-                    newPalette
-                        .domain(highlightNames)
-                        .range(Object.values(gChartcolour.lineSocial));
-                }
-                if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                    newPalette
-                        .domain(highlightNames)
-                        .range(Object.values(gChartcolour.lineWeb));
-                }
-                if (d === 'print') {
-                    newPalette
-                        .domain(highlightNames)
-                        .range(Object.values(gChartcolour.linePrint));
-                }
-                return newPalette;
-            }
-
             myYAxis
                 .domain(terminusLabels.map(d => d.pos))
                 .rangeRound([0, currentFrame.dimension().height])
@@ -235,13 +205,6 @@ parseData.load(dataFile, { dateFormat, highlightNames })
                 .rem(currentFrame.rem())
                 .colourPalette((frameName));
 
-            myHighLines
-                .yScale(myYAxis.scale())
-                .xScale(myXAxis.scale())
-                .plotDim(currentFrame.dimension())
-                .rem(currentFrame.rem())
-                .colourPalette(highlightedLines);
-
             // Draw the lines
             currentFrame.plot()
                 .append('g')
@@ -253,17 +216,6 @@ parseData.load(dataFile, { dateFormat, highlightNames })
                 .attr('class', 'lines')
                 .attr('id', d => d.item)
                 .call(myChart);
-
-            currentFrame.plot()
-                .append('g')
-                .attr('class', 'seriesLinesHighlighted')
-                .selectAll('.lines.highlighlines')
-                .data(highlightPaths)
-                .enter()
-                .append('g')
-                .attr('class', 'lines highlighlines')
-                .attr('id', d => d.item)
-                .call(myHighLines);
         });
       // addSVGSavers('figure.saveable');
     });
