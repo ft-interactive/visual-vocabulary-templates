@@ -169,15 +169,18 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 labelWidth = Math.max(this.getBBox().width, labelWidth);
             });
             // Add option to specify where labels are
-            const newMargin = labelWidth + currentFrame.margin().left;
+            const newMargin = (labelWidth * 1.2) + currentFrame.margin().left;
             currentFrame.margin({ left: newMargin });
-            yearLabels.attr('transform', `translate(${-labelWidth},0)`);
+
+            const newRightMargin = (labelWidth * 1.2) + currentFrame.margin().right;
+            currentFrame.margin({ right: newRightMargin });
+            yearLabels.attr('transform', `translate(${-labelWidth * 1.2},0)`);
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
             // Calculate cell size and pass this to the chart
-            const cellSize = Math.min(currentFrame.dimension().width / 56, currentFrame.dimension().height / 24);
+            const cellSize = Math.min(currentFrame.dimension().width / 53, currentFrame.dimension().height / 24);
             myChart.cellSize(cellSize);
 
             years.call(myChart);
@@ -210,7 +213,10 @@ parseData.load(dataFile, { fiscal, dateFormat })
             });
 
             dayLabelsLeft.attr('transform', `translate(${-labelWidth},0)`);
-            dayLabelsRight.attr('transform', `translate(${cellSize * 56},0)`);
+            dayLabelsLeft.attr('transform', `translate(${-labelWidth * 1.2},0)`);
+            dayLabelsRight.attr('transform', `translate(${currentFrame.dimension().width + (labelWidth * 1.2)},0)`);
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
 
             // Get the bounding boxes of month outlines
             const boundingBoxes = [];
