@@ -169,9 +169,9 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 labelWidth = Math.max(this.getBBox().width, labelWidth);
             });
             // Add option to specify where labels are
-            const newMargin = (labelWidth * 1.5) + currentFrame.margin().left;
+            const newMargin = labelWidth + currentFrame.margin().left;
             currentFrame.margin({ left: newMargin });
-            yearLabels.attr('transform', `translate(${-labelWidth * 1.5},0)`);
+            yearLabels.attr('transform', `translate(${-labelWidth},0)`);
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
@@ -209,7 +209,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 dayLabelsWidth = Math.max(this.getBBox().width, dayLabelsWidth);
             });
 
-            dayLabelsLeft.attr('transform', `translate(${-labelWidth * 1.5},0)`);
+            dayLabelsLeft.attr('transform', `translate(${-labelWidth},0)`);
             dayLabelsRight.attr('transform', `translate(${cellSize * 56},0)`);
 
             // Get the bounding boxes of month outlines
