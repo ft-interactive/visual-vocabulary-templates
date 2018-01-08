@@ -76,7 +76,7 @@ export function load(url, options) { // eslint-disable-line
             }
             return -1;
         };
-        if (highlightNames.length > 0) { plotData.sort(dataSorter); }
+        if (highlightNames.length > 0) { paths.sort(dataSorter); }
 
         return {
             seriesNames,
