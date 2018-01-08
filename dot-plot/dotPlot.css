@@ -1,26 +1,35 @@
 
-.ft-webgraphic-s .dotHighlight circle,
-.ft-webgraphic-m .dotHighlight circle,
-.ft-webgraphic-m-default .dotHighlight circle,
-.ft-webgraphic-l .dotHighlight circle{
+.ft-webgraphic-s .dotholder circle,
+.ft-webgraphic-m .dotholder circle,
+.ft-webgraphic-m-default .dotholder circle,
+.ft-webgraphic-l .dotholder circle{
 	stroke-width: 1;
 	stroke: #000000;
 }
 
-.ft-printgraphic .dotHighlight circle {
+.ft-printgraphic .dotholder circle {
  	stroke-width: 0.6;
 	stroke: #000000;
 }
 
-.ft-socialgraphic .dotHighlight circle{
+.ft-socialgraphic .dotholder circle{
  	stroke-width: 2;
 	stroke: #FFFFFF;
 	stroke-opacity: 0.5;
 }
 
-.ft-videographic .dotHighlight circle {
+.ft-videographic .dotholder circle {
  	stroke-width: 4;
 	stroke: #FFFFFF;
 	stroke-opacity: 0.5
 }
 
+.rows-filled {
+	fill: #FCE6D6;
+}
+
+.first-label {
+	fill: #66605C;
+	font-size: 20px;
+	text-anchor: middle;
+}

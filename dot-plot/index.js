@@ -14,21 +14,23 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 0;// sets the minimum value on the yAxis
+const xMin = 350;// sets the minimum value on the yAxis
 const xMax = 200;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 4;// Number of tick on the uAxis
-const colourProperty = 'name';
-const yAxisAlign = 'left';// alignment of the axis
-const xAxisAlign = 'bottom';
-const lines = true;
-const quantiles = false;
+const numTicks = 3;// Number of tick on the yAxis
+const yAxisAlign = 'left';// sets alignment of the yAxis
+const xAxisAlign = 'bottom';// sets alignment of the xAxis
+const lines = true;// sets whether to display lines between data point
 const logscale = false;
 const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
-const sort = 'descending';
-const sortOn = 'boys';
-
+const sort = 'descending';// order in which to sort data
+const sortOn = 'Girls';// category to sort data on
+const rows = true;// show background rows
+const labelFirst = true;// show labels on first group of data
+const showLegend = true;// sets whether to show the legend
+const legendType = 'circ';// sets the legend type 'circ', 'rect', 'line'
+const legendAlign = 'vert';// sets the alignment of the legend 'vert' or 'hort'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -52,7 +54,7 @@ const frame = {
             top: 100, left: 20, bottom: 86, right: 38,
         })
     // .title("Put headline here")
-        .height(500),
+        .height(1000),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
@@ -101,8 +103,8 @@ d3.selectAll('.framed')
 
 parseData.load(dataURL, { sort, sortOn })
     .then(({
-        groupNames, plotData, valueExtent, data,
-    }) => { // eslint-disable-line no-unused-vars
+        seriesNames, plotData, valueExtent, data, // eslint-disable-line no-unused-vars
+    }) => {
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -110,7 +112,6 @@ parseData.load(dataURL, { sort, sortOn })
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
             const myChart = dotPlot.draw();
-            const myQuartiles = dotPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
             const tickSize = currentFrame.dimension().height; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
             // const plotDim=currentFrame.dimension(); // useful variable to carry the current frame dimensions
@@ -129,8 +130,6 @@ parseData.load(dataURL, { sort, sortOn })
                 .xAxisHighlight(xAxisHighlight)
                 .frameName(frameName)
                 .divisor(divisor);
-
-            // console.log(xMin,xMax,valueExtent, xAxis.domain)
 
             const base = currentFrame.plot().append('g'); // eslint-disable-line no-unused-vars
 
@@ -153,6 +152,30 @@ parseData.load(dataURL, { sort, sortOn })
             // Set the plot object to its new dimensions
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
+
+            const yScale = yAxis.scale();
+
+            if (rows) {
+                currentFrame.plot()
+                    .append('g')
+                    .attr('class', 'row-holder')
+                    .selectAll('.rows')
+                    .data(plotData.map(d => d.group))
+                    .enter()
+                    .append('rect')
+                    .attr('y', d => yScale(d))
+                    // .attr('height', yScale.bandwidth())
+                    .attr('height', currentFrame.dimension().height / plotData.length)
+                    .attr('width', currentFrame.dimension().width + yScale.bandwidth())
+                    // .attr('class', 'rows');
+                    .attr('class', (d, i) => {
+                        if (i % 2 === 0) {
+                            return 'rows-filled';
+                        }
+                        return 'rows-empty';
+                    });
+            }
+
             // Use new widtth of frame to set the range of the x-axis and any other parameters
             xAxis
                 .range([0, currentFrame.dimension().width])
@@ -160,16 +183,16 @@ parseData.load(dataURL, { sort, sortOn })
             // Call the axis and move it if needed
             currentFrame.plot()
                 .call(xAxis);
+
             if (xAxisAlign === 'top') {
                 xAxis.xLabel()
                     .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
             }
 
             myChart
-            // .paddingInner(0.06)
-                .colourProperty(colourProperty)
                 .colourPalette((frameName))
-                .groupNames(groupNames)
+                // what should this be called?
+                .groupNames(seriesNames)
                 .yScale(yAxis.scale())
                 .xScale(xAxis.scale())
                 .rem(currentFrame.rem())
@@ -177,60 +200,49 @@ parseData.load(dataURL, { sort, sortOn })
                 .geometry(geometry)
                 .frameName(frameName);
 
-            myQuartiles
-            // .paddingInner(0.06)
-                .colourProperty(colourProperty)
-                .colourPalette((frameName))
-                .groupNames(groupNames)
-                .yScale(yAxis.scale())
-                .xScale(xAxis.scale())
-                .rem(currentFrame.rem())
-                .quantiles(quantiles)
-                .frameName(frameName);
-
-            const dots = plotData.map(d => ({
-                group: d.group,
-                min: d.min,
-                max: d.max,
-                values: d.values.filter(el => el.highlight === ''),
-            }));
-            const highlights = plotData.map(d => ({
-                group: d.group,
-                values: d.values.filter(el => el.highlight === 'yes'),
-            }),
-                // d.values = d.values.filter(el => el.highlight === 'yes');
-                // return d;
-            );
-
-            // Draw unhighlighted circles first
             currentFrame.plot()
+                .append('g')
+                .attr('class', 'dot-plots')
                 .selectAll('.dotholder')
-                .data(dots)
+                .data(plotData)
                 .enter()
                 .append('g')
                 .attr('class', 'dotholder baseline')
                 .call(myChart);
 
-            // Ensure that the linking lines are not drawn a second time
-            myChart.lines(false);
+            if (labelFirst) {
+                const xScale = xAxis.scale();
 
-            // Then draw highlighted circles so that they are on top
-            currentFrame.plot()
-                .selectAll('.dotHighlight')
-                .data(highlights)
-                .enter()
-                .append('g')
-                .attr('class', 'dotHighlight axis xAxis')
-                .call(myChart);
-
-            if (quantiles) {
                 currentFrame.plot()
-                    .selectAll('.quantiles')
-                    .data(plotData)
+                    .append('g')
+                    .selectAll('text')
+                    .data(plotData[0].values)
+                    .enter()
+                    .append('text')
+                    .attr('class', 'first-label')
+                    .attr('x', d => xScale(d.value))
+                    .text(d => d.cat);
+            }
+
+            if (showLegend) {
+                myLegend
+                    .frameName(frameName)
+                    .seriesNames(seriesNames)
+                    .colourPalette((frameName))
+                    .rem(myChart.rem())
+                    .geometry(legendType)
+                    .alignment(legendAlign);
+
+                // Draw the Legend
+                currentFrame.plot()
+                    .append('g')
+                    .attr('id', 'legend')
+                    .selectAll('.legend')
+                    .data(seriesNames)
                     .enter()
                     .append('g')
-                    .attr('class', 'quantiles dotHighlight axis xAxis')
-                    .call(myQuartiles);
+                    .classed('legend', true)
+                    .call(myLegend);
             }
         });
     // addSVGSavers('figure.saveable');

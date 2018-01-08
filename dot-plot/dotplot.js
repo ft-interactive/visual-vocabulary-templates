@@ -7,7 +7,6 @@ export function draw() {
     let groupNames = [];
     let geometry = '';
     let setHighlight;
-    let colourProperty = 'name'; // eslint-disable-line
     const colourScale = d3.scaleOrdinal()
         .domain(groupNames);
     let rem = 10;
@@ -16,13 +15,11 @@ export function draw() {
 
 
     function dots(parent) {
-        const currentFrame = frameName;
+        parent.attr('transform', d => `translate(0,${yScale(d.group) + (yScale.bandwidth() * 0.5)})`);
 
         if (lines) {
             parent.append('line')
-                .attr('y1', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
                 .attr('x1', d => xScale(d.min))
-                .attr('y2', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
                 .attr('x2', d => xScale(d.max));
         }
 
@@ -31,37 +28,34 @@ export function draw() {
                 .data(d => d.values)
                 .enter()
                 .append('circle')
-                .attr('id', d => d.name)
-                .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
+                .attr('id', d => d.cat)
                 .attr('cx', d => xScale(d.value))
-                .attr('r', rem * 0.5)
-                .attr('fill', d => colourScale(d.group));
+                // .attr('r', rem * 0.5)
+                .attr('r', yScale.bandwidth() / 2)
+                .attr('fill', d => colourScale(d.cat));
         } else {
             parent.selectAll('rect')
                 .data(d => d.values)
                 .enter()
                 .append('rect')
-                .attr('id', d => d.name)
-                .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.25))
+                .attr('id', d => d.cat)
                 .attr('x', d => xScale(d.value))
-                .attr('height', yScale.bandwidth() * 0.5)
-                .attr('width', rem / 5)
-                .attr('fill', (d) => {
-                    setHighlight = d.highlight === 'yes' ? colourScale(d.group) : colourScale.range()[5];
-                    return setHighlight;
-                });
+                .attr('y', -yScale.bandwidth() / 2)
+                .attr('height', yScale.bandwidth())
+                .attr('width', yScale.bandwidth())
+                .attr('fill', d => colourScale(d.cat));
         }
 
-        parent.selectAll('text')
-            .data(d => d.values.filter(el => el.highlight === 'yes'))
-            .enter()
-            .append('text')
-            .attr('id', d => currentFrame + d.name)
-            .attr('class', 'xAxis text')
-            .attr('text-anchor', 'middle')
-            .attr('x', d => xScale(d.value))
-            .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
-            .text(d => `${d.name} ${d.value}`);
+        // parent.selectAll('text')
+        //     .data(d => d.values.filter(el => el.highlight === 'yes'))
+        //     .enter()
+        //     .append('text')
+        //     .attr('id', d => currentFrame + d.name)
+        //     .attr('class', 'xAxis text')
+        //     .attr('text-anchor', 'middle')
+        //     .attr('x', d => xScale(d.value))
+        //     .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
+        //     .text(d => `${d.name} ${d.value}`);
     }
 
     dots.frameName = (d) => {
@@ -69,11 +63,13 @@ export function draw() {
         frameName = d;
         return dots;
     };
+
     dots.lines = (d) => {
         if (d === undefined) return lines;
         lines = d;
         return dots;
     };
+
     dots.yScale = (d) => {
         if (!d) return yScale;
         yScale = d;
@@ -91,6 +87,7 @@ export function draw() {
         yScale.range(d);
         return dots;
     };
+
     dots.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
@@ -114,136 +111,29 @@ export function draw() {
         geometry = d;
         return dots;
     };
-    dots.colourProperty = (d) => {
-        if (!d) return colourProperty;
-        colourProperty = d;
-        return dots;
-    };
+
     dots.colourPalette = (d) => {
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.categorical_bar);
+            colourScale.range(gChartcolour.lineWeb);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
         }
         return dots;
     };
+
     dots.groupNames = (d) => {
         if (!d) return groupNames;
         groupNames = d;
         return dots;
     };
+
     dots.rem = (d) => {
         if (!d) return rem;
         rem = d;
         return dots;
     };
+
     return dots;
-}
-
-export function drawQuartiles() {
-    let yScale = d3.scaleBand();
-    let xScale = d3.scaleLinear();
-    let groupNames = [];
-    let colourProperty = 'name'; // eslint-disable-line
-    const colourScale = d3.scaleOrdinal()
-        .domain(groupNames);
-    let rem = 10;
-    let quantiles = false;
-    let frameName;
-
-    function quants(parent) {
-        parent.selectAll('circle')
-            .data(d => d.quantiles)
-                .enter()
-                .append('circle')
-                .attr('cy', d => yScale(d.group) + (yScale.bandwidth() * 0.5))
-                .attr('cx', d => xScale(d.value))
-                .attr('r', () => rem * 0.5)
-                .attr('fill', d => colourScale(d.group));
-
-        parent.selectAll('.text')
-            .data(d => d.quantiles)
-            .enter()
-                .append('text')
-                .attr('class', 'xAxis text')
-                .attr('text-anchor', 'middle')
-                .attr('x', d => xScale(d.value))
-                .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
-                .text(d => d.name);
-    }
-    quants.frameName = (d) => {
-        if (!d) return frameName;
-        frameName = d;
-        return quants;
-    };
-    quants.quantiles = (d) => {
-        if (d === undefined) return quantiles;
-        quantiles = d;
-        return quants;
-    };
-    quants.yScale = (d) => {
-        if (!d) return yScale;
-        yScale = d;
-        return quants;
-    };
-    quants.yDomain = (d) => {
-        if (typeof d === 'undefined') return yScale.domain();
-        yScale.domain(d);
-        return quants;
-    };
-
-    quants.yRange = (d) => {
-        if (typeof d === 'undefined') return yScale.range();
-        yScale.range(d);
-        return quants;
-    };
-    quants.xScale = (d) => {
-        if (!d) return xScale;
-        xScale = d;
-        return quants;
-    };
-
-    quants.xDomain = (d) => {
-        if (typeof d === 'undefined') return xScale.domain();
-        xScale.domain(d);
-        return quants;
-    };
-
-    quants.xRange = (d) => {
-        if (typeof d === 'undefined') return xScale.rangeRound();
-        xScale.rangeRound(d);
-        return quants;
-    };
-
-    quants.xRange = (d) => {
-        if (typeof d === 'undefined') return xScale.rangeRound();
-        xScale.rangeRound(d);
-        return quants;
-    };
-    quants.colourProperty = (d) => {
-        if (!d) return colourProperty;
-        colourProperty = d;
-        return quants;
-    };
-    quants.colourPalette = (d) => {
-        if (d === 'social' || d === 'video') {
-            colourScale.range(gChartcolour.lineSocial);
-        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.categorical_bar);
-        } else if (d === 'print') {
-            colourScale.range(gChartcolour.linePrint);
-        }
-        return quants;
-    };
-    quants.groupNames = (d) => {
-        groupNames = d;
-        return quants;
-    };
-    quants.rem = (d) => {
-        rem = d;
-        return quants;
-    };
-    return quants;
 }
