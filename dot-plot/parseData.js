@@ -15,49 +15,33 @@ export function load(url, options) { // eslint-disable-line
         const data = result.data ? result.data : result;
         const { sort, sortOn } = options;
 
-        // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
-        const allGroups = data.map(d => d.group);
-        // create an array of the group names
-        const groupNames = allGroups.filter((el, i) => allGroups.indexOf(el) === i);
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
         // Buid the dataset for plotting
-        const plotData = groupNames.map((d) => {
-            const values = data.filter(el => el.group === d);
-            // Create an array of just the values to extract min, max and quartiles
-            const dotValues = values.map(item => Number(item.value));
-            dotValues.sort((a, b) => parseFloat(a) - parseFloat(b));
-            const quantiles = [];
-            for (let i = 1; i < 4; i += 1) {
-                const qData = {};
-                qData.name = `q${i}`;
-                qData.value = d3.quantile(dotValues, (i / 4));
-                qData.group = d;
-                quantiles.push(qData);
-            }
+        const plotData = data.map((d) => {
+            const dotValues = seriesNames.map(name => ({
+                cat: name,
+                value: d[name],
+            }));
+            dotValues.sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
             return {
-                group: d,
-                values,
-                quantiles,
-                min: d3.min(dotValues),
-                max: d3.max(dotValues),
+                group: d.name,
+                values: dotValues,
+                min: d3.min(dotValues, dot => +dot.value),
+                max: d3.max(dotValues, dot => +dot.value),
             };
         });
 
-        console.log(plotData);
-
         if (sort === 'descending') {
             plotData.sort((a, b) =>
-            // console.log("sortON=",sortOn)
-            // console.log("SortOn",a.groups[sortOn],a.groups[sortOn].value,b.groups[sortOn],b.groups[sortOn].value)
-                b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left
+                b.values.find(e => e.cat === sortOn).value - a.values.find(e => e.cat === sortOn).value);
         } else if (sort === 'ascending') {
-            plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
-        } // Sorts biggest rects to the left
+            plotData.sort((a, b) =>
+                a.values.find(e => e.cat === sortOn).value - b.values.find(e => e.cat === sortOn).value);
+        }
 
         return {
-            groupNames,
             valueExtent,
             seriesNames,
             plotData,

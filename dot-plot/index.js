@@ -26,8 +26,8 @@ const lines = true;
 const quantiles = false;
 const logscale = false;
 const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
-const sort = '';
-const sortOn = 0;
+const sort = 'descending';
+const sortOn = 'boys';
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc

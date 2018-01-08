@@ -1,1 +1,50 @@
-name,value,group,highlightManchester City,55097,Endland,yesLeicester City,32262,Endland,Manchester United,75731,Endland,Arsenal,60432,Endland,Tottenham Hotspur,36284,Endland,Liverpool,45522,Endland,Crystal Palace,26309,Endland,West Ham,35016,Endland,Everton,40221,Endland,Southampton,32505,Endland,Watford,21577,Endland,Stoke,27743,Endland,yesWest Brom,26850,Endland,Chelsea,41798,Endland,Swansea,20520,Endland,Norwich,27244,Endland,Sunderland,49000,Endland,Bournemouth,11700,Endland,Newcastle,52405,Endland,Aston Villa,42788,Endland,MEDIAN,35016,Endland,MEAN,37153,Endland,Barcelona,100000,Spain,yesAtl madrid,54907,Spain,Real madrid,81044,Spain,Celta de Vigo,31800,Spain,Deportivo de La Coru_a,34600,Spain,Villareal,25000,Spain,Ath Bilbao,53332,Spain,Eibar,6300,Spain,Valencia,55000,Spain,Real Betis,56500,Spain,Espanyol,40500,Spain,Sevilla,42500,Spain,Getafe,17393,Spain,Rayo Vallecano,14708,Spain,Real Sociedad,32076,Spain,Spoting de Gij n,30000,Spain,Granada CF,22524,Spain,M_laga,30044,Spain,Las Palmas,31250,Spain,Levante,25354,Spain,MEDIAN,31938,Spain,MEAN,39209.3,Spain,Inter Milan,80018,Spain,Napoli,60240,Spain,Fiorentina,47290,Spain,Roma,72698,Spain,Milan,80018,Spain,Sassuolo,23717,Spain,Juventus,41254,Spain,Torino,28140,Spain,Atalanta,26562,Spain,Lazio,72698,Spain,Udinese,25144,Spain,Empoli,16800,Spain,Chievo,39371,Spain,Sampdoria,36599,Spain,Genoa,36599,Spain,Palermo,37619,Spain,Frosinone,10000,Spain,Bologna,38279,Spain,Carpi,21151,Spain,Verona,39371,Spain,MEDIAN,37949,Spain,MEAN,41678.4,Spain,Inter Milan,80018,Italy,Napoli,60240,Italy,Fiorentina,47290,Italy,Roma,72698,Italy,Milan,80018,Italy,Sassuolo,23717,Italy,yesJuventus,41254,Italy,Torino,28140,Italy,Atalanta,26562,Italy,Lazio,72698,Italy,Udinese,25144,Italy,Empoli,16800,Italy,Chievo,39371,Italy,Sampdoria,36599,Italy,Genoa,36599,Italy,Palermo,37619,Italy,Frosinone,10000,Italy,Bologna,38279,Italy,Carpi,21151,Italy,Verona,39371,Italy,MEDIAN,37949,Italy,MEAN,41678.4,Italy,Bayern Munchen,75024,Germany,Borussia Dortmund,81359,Germany,VfL Wolfsburg,26385,Germany,Borussia Monchengladbach,54000,Germany,Hertha BSC,74475,Germany,Bayer Leverkusen,30210,Germany,Hamburger SV,51500,Germany,Schalke,78996,Germany,FSV Mainz 05,34000,Germany,_FC K_ln,50374,Germany,FC Ingolstadt 04,15800,Germany,yesSV Darmstadt 98,17000,Germany,Eintracht Frankfurt,51500,Germany,Hannover 96,49000,Germany,SV Werder Bremen,42100,Germany,FC Augsburg,30660,Germany,VfB Stuttgart,60441,Germany,TSG 1899 Hoffenheim,30150,Germany,Bayern Munchen,75024,Ireland,Borussia Dortmund,81359,Ireland,VfL Wolfsburg,26385,Ireland,Borussia Monchengladbach,54000,Ireland,Hertha BSC,74475,Ireland,Bayer Leverkusen,30210,Ireland,Hamburger SV,51500,Ireland,Schalke,78996,Ireland,FSV Mainz 05,34000,Ireland,_FC K_ln,50374,Ireland,FC Ingolstadt 04,15800,Ireland,SV Darmstadt 98,17000,Ireland,Eintracht Frankfurt,51500,Ireland,Hannover 96,49000,Ireland,yesSV Werder Bremen,42100,Ireland,FC Augsburg,30660,Ireland,VfB Stuttgart,60441,Ireland,TSG 1899 Hoffenheim,30150,Ireland,
+name,boys,girls
+Singapore,552,572
+Japan,539,565
+Hong Kong (China),523,559
+Finland,511,559
+Korea,522,556
+Canada,516,555
+New Zealand,513,553
+Australia,511,552
+Estonia,522,549
+Germany,510,540
+United Kingdom,503,536
+United States,507,533
+Netherlands,504,531
+Sweden,489,531
+Denmark,509,530
+Austria,498,521
+Slovenia,484,521
+Norway,487,518
+OECD average,486,515
+Belgium,489,514
+Iceland,485,512
+Czech Republic,486,512
+France,480,508
+B-S-J-G (China),486,508
+Spain,485,508
+Portugal,489,507
+Latvia,465,505
+Luxembourg,478,504
+Italy,466,489
+Russia,460,486
+Croatia,459,486
+Hungary,459,485
+Lithuania,453,482
+Israel,459,481
+Slovak Republic,448,478
+Greece,444,475
+Chile,450,464
+Bulgaria,429,461
+United Arab Emirates,416,454
+Thailand,416,451
+Uruguay,434,451
+Costa Rica,437,445
+Mexico,426,440
+Turkey,411,434
+Colombia,425,433
+Montenegro,403,429
+Peru,414,421
+Brazil,402,421
+Tunisia,375,387
