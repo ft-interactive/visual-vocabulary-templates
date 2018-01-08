@@ -1,0 +1,20 @@
+.ft-webgraphic-s .column,
+.ft-webgraphic-m .column,
+.ft-webgraphic-m-default .column,
+.ft-webgraphic-l .column {
+    fill: #FCE6D6;
+}
+
+.ft-printgraphic .column {
+    fill: #d9e7ef;
+}
+
+.ft-socialgraphic .column,
+.ft-videographic .column {
+    fill: #ffffff;
+    fill-opacity: 0.1;
+}
+
+#endLabels text {
+    text-anchor: start;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bump Chart - Visual Vocabulary</title>
+
+    <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
+    <link rel="stylesheet" href="https://ig.ft.com/visual-vocabulary/styles.css"/>
+    <link rel="stylesheet" href="./bumpChart.css"/>
+    <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
+</head>
+<body>
+
+    <h1>Bump Chart</h1>
+    <p>Effective for showing changing rankings across multiple dates. For large datasets, consider grouping lines using colour.</p>
+    <p><b>Some useful settings in the index.js</b>
+        <ul>
+            <li><b>columns</b> – set to 'true' will display background columns for each time period (e.g. year)</li>
+            <li><b>markers</b> – set to 'true' will display dots at the ends of each line</li>
+            <li><b>highlightNames</b> – put the column names of the data you want to highlight, all other series will be muted</li>
+        </ul>
+    </p>
+    <p>Please make sure than the <b>blue line</b> is on top as this is the primary line colour</p>
+
+    <hr>
+
+    <!-- These are provided already for convenience, but could also be added purely via JS: -->
+    <script>
+    /*
+      [
+        'webS'
+        'webM'
+        'webL'
+        'print'
+        'social'
+        'video'
+      ].forEach(function(size){
+        const container = document.createElement('figure');
+        container.dataset.frame = size;
+        container.className = 'framed saveable';
+        container.appendChild(document.createElement('svg'));
+        document.body.appendChild(container);
+      });
+    */
+    </script>
+    <p class="section-heading">Non-responsive chart</p>
+    <figure class="framed saveable" data-frame="webMDefault"><svg></svg></figure>
+    <p class="section-heading">Responsive image set</p>
+    <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="print"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="social"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="video"><svg></svg></figure>
+
+</body>
+</html>
