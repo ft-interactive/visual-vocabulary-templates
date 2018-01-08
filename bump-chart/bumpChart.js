@@ -18,7 +18,7 @@ export function draw() {
         const lineData = d3.line()
             .defined(d => d)
             .curve(interpolation)
-            .x(d => xScale(d.group) + (xScale.bandwidth() / 4))
+            .x(d => xScale(d.group) + (xScale.bandwidth() / 2))
             .y(d => yScale(d.pos) + (yScale.bandwidth() / 2));
 
         parent.attr('opacity', (d) => {
@@ -50,7 +50,7 @@ export function draw() {
                 .attr('r', rem / 6)
                 .attr('cx', (d) => {
                     const x = dates[d.indexStart];
-                    return xScale(x) + (xScale.bandwidth() / 4);
+                    return xScale(x) + (xScale.bandwidth() / 2);
                 })
                 .attr('cy', (d) => {
                     const y = d.pos;
@@ -61,7 +61,7 @@ export function draw() {
                 .attr('r', rem / 6)
                 .attr('cx', (d) => {
                     const x = dates[d.indexEnd];
-                    return xScale(x) + (xScale.bandwidth() / 4);
+                    return xScale(x) + (xScale.bandwidth() / 2);
                 })
                 .attr('cy', (d) => {
                     const y = d.posEnd;

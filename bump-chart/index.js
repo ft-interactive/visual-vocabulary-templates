@@ -36,21 +36,21 @@ const interpolation = d3.curveMonotoneX;// curveStep, curveStepBefore, curveStep
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 82, right: 5 })
+        .margin({ top: 100, left: 0, bottom: 82, right: 5 })
     // .title('Put headline here') // use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 0, bottom: 86, right: 5,
         })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 5,
+            top: 100, left: 0, bottom: 104, right: 5,
         })
     // .title("Put headline here")
         .height(700)
@@ -58,7 +58,7 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 0, bottom: 86, right: 5,
         })
         // .title("Put headline here")
         .height(500),
@@ -130,10 +130,9 @@ parseData.load(dataFile, { dateFormat, highlightNames })
             currentFrame.plot()
                 .call(myYAxis);
 
-            const newMarginYLeft = myYAxis.labelWidth() + currentFrame.margin().left;
+            const newMarginYLeft = (myYAxis.labelWidth() * 1.2) + currentFrame.margin().left;
             // Use newMargin redefine the new margin and range of yAxis
             currentFrame.margin({ left: newMarginYLeft });
-            myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
@@ -173,10 +172,7 @@ parseData.load(dataFile, { dateFormat, highlightNames })
                 .call(myXAxis);
 
             if (xAxisAlign === 'bottom') {
-                myXAxis.xLabel().attr('transform', `translate(${-xScale.bandwidth() / 4},${currentFrame.dimension().height})`);
-            }
-            if (xAxisAlign === 'top') {
-                myXAxis.xLabel().attr('transform', `translate(${-xScale.bandwidth() / 4},0)`);
+                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
             }
 
             if (columns) {
@@ -189,7 +185,7 @@ parseData.load(dataFile, { dateFormat, highlightNames })
                     .append('g')
                     .attr('class', 'columns')
                     .attr('id', d => d.item)
-                    .attr('transform', d => `translate(${xScale(d.group) - (xScale.bandwidth() / 4)},0)`);
+                    .attr('transform', d => `translate(${xScale(d.group)},0)`);
 
                 bgColumns
                     .append('rect')
