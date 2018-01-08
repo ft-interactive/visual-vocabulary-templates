@@ -14,69 +14,55 @@
 }
 
 .ft-webgraphic-s .weekday-labels,
-.ft-webgraphic-m .weekday-labels,
-.ft-webgraphic-m-default .weekday-labels {
-    font-size: 12px;
-    fill: #000000;
-}
-
-.ft-webgraphic-l .weekday-labels {
-    font-size: 16px;
-    fill: #000000;
-}
-
 .ft-webgraphic-s .month-labels,
+.ft-webgraphic-s .year-labels {
+    font-family: metric;
+    font-size: 12px;
+    fill: #66605C;
+}
+
+.ft-webgraphic-m .weekday-labels,
 .ft-webgraphic-m .month-labels,
-.ft-webgraphic-m-default .month-labels {
-    font-size: 12px;
-    fill: #000000;
-}
-
-.ft-webgraphic-l .month-labels {
+.ft-webgraphic-m .year-labels {
+    font-family: metric;
     font-size: 16px;
-    fill: #000000;
+    fill: #66605C;
 }
 
-.ft-webgraphic-s .year-labels,
-.ft-webgraphic-m .year-labels,
+.ft-webgraphic-m-default .weekday-labels,
+.ft-webgraphic-m-default .month-labels,
 .ft-webgraphic-m-default .year-labels {
-    font-size: 12px;
-    fill: #000000;
+    font-family: metric;
+    font-size: 16px;
+    fill: #66605C;
 }
 
+.ft-webgraphic-l .weekday-labels,
+.ft-webgraphic-l .month-labels,
 .ft-webgraphic-l .year-labels {
-    font-size: 16px;
-    fill: #000000;
+    font-family: metric;
+    font-size: 20px;
+    fill: #66605C;
 }
 
 .ft-printgraphic .weekday-labels,
+.ft-printgraphic .month-labels,
 .ft-printgraphic .year-labels {
+    font-family: metric;
     font-size: 9.6px;
-	stroke: #000000;
+    fill: #000000;
 }
 
 .ft-socialgraphic .weekday-labels,
+.ft-socialgraphic .month-labels,
 .ft-socialgraphic .year-labels {
-    font-size: 12px;
-	fill: #ffffff;
-    opacity: 0.5;
+    font-family: metric;
+    font-size: 28px;
 }
 
 .ft-videographic .weekday-labels,
+.ft-videographic .month-labels,
 .ft-videographic .year-labels {
-    font-size: 30px;
-    fill: #ffffff;
-    opacity: 0.5;
-}
-
-.ft-webgraphic-s .days,
-.ft-webgraphic-m .days,
-.ft-webgraphic-m-default .days,
-.ft-webgraphic-l .days {
-    stroke: #e6d9ce;
-}
-
-.ft-printgraphic .months {
-    stroke: #ffffff;
-    stroke-width: 0.5px;
+    font-family: metric;
+    font-size: 48px;
 }
