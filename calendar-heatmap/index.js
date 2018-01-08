@@ -212,9 +212,9 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 dayLabelsWidth = Math.max(this.getBBox().width, dayLabelsWidth);
             });
 
-            dayLabelsLeft.attr('transform', `translate(${-labelWidth},0)`);
             dayLabelsLeft.attr('transform', `translate(${-labelWidth * 1.2},0)`);
             dayLabelsRight.attr('transform', `translate(${currentFrame.dimension().width + (labelWidth * 1.2)},0)`);
+
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
