@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calendar heatmap vertical - Visual Vocabulary</title>
+
+    <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
+    <link rel="stylesheet" href="https://ig.ft.com/visual-vocabulary/styles.css"/>
+    <link rel="stylesheet" href="./calendarHeatmap.css"/>
+    <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
+</head>
+<body>
+
+    <h1>Calendar heatmap</h1>
+    <p>A great way of showing temporal patterns (daily, weekly, monthly) – at the expense of showing precision in quantity.</b>
+    <p>
+        <b>Some useful settings in the index.js</b>
+        <ul>
+            <li><b>fiscal</b> – set this to true to use financial years</li>
+            <li><b>clipYear</b> – set true to clip to year in calendar outline</li>
+            <li><b>scaleBreaks</b> – gives this an array of breaks for the threshold scale (e.g. [20, 40, 60, 80, 100])</li>
+            <li><b>scaleType</b> – set colours used in the scale with 'sequentialBlue' or 'sequentialRed'</li>
+        </ul>
+    </p>
+    <hr>
+    <p class="section-heading">Non-responsive chart</p>
+    <figure class="framed saveable" data-frame="webMDefault"><svg></svg></figure>
+    <p class="section-heading">Responsive image set</p>
+    <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="print"><svg></svg></figure>
+    <!-- <figure class="framed saveable" data-frame="social"><svg></svg></figure> -->
+    <!-- <figure class="framed saveable" data-frame="video"><svg></svg></figure> -->
+
+</body>
+</html>
