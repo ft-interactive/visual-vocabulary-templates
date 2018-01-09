@@ -6,7 +6,6 @@ export function draw() {
     let xScale = d3.scaleLinear();
     let groupNames = [];
     let geometry = '';
-    let setHighlight;
     const colourScale = d3.scaleOrdinal()
         .domain(groupNames);
     let rem = 10;
@@ -30,8 +29,7 @@ export function draw() {
                 .append('circle')
                 .attr('id', d => d.cat)
                 .attr('cx', d => xScale(d.value))
-                // .attr('r', rem * 0.5)
-                .attr('r', yScale.bandwidth() / 2)
+                .attr('r', rem * 0.5)
                 .attr('fill', d => colourScale(d.cat));
         } else {
             parent.selectAll('rect')
@@ -41,8 +39,8 @@ export function draw() {
                 .attr('id', d => d.cat)
                 .attr('x', d => xScale(d.value))
                 .attr('y', -yScale.bandwidth() / 2)
-                .attr('height', yScale.bandwidth())
-                .attr('width', yScale.bandwidth())
+                .attr('height', rem)
+                .attr('width', rem)
                 .attr('fill', d => colourScale(d.cat));
         }
 

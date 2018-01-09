@@ -14,8 +14,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 350;// sets the minimum value on the yAxis
-const xMax = 200;// sets the maximum value on the xAxis
+const xMin = -5;// sets the minimum value on the yAxis
+const xMax = 60;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 3;// Number of tick on the yAxis
@@ -24,10 +24,10 @@ const xAxisAlign = 'bottom';// sets alignment of the xAxis
 const lines = true;// sets whether to display lines between data point
 const logscale = false;
 const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
-const sort = 'descending';// order in which to sort data
-const sortOn = 'Girls';// category to sort data on
+const sort = 'descending';// order in which to sort data 'ascending' or 'descending'
+const sortOn = 'Change Critical Load';// category to sort data on
 const rows = true;// show background rows
-const labelFirst = true;// show labels on first group of data
+const labelFirst = false;// show labels on first group of data
 const showLegend = true;// sets whether to show the legend
 const legendType = 'circ';// sets the legend type 'circ', 'rect', 'line'
 const legendAlign = 'vert';// sets the alignment of the legend 'vert' or 'hort'
@@ -54,7 +54,7 @@ const frame = {
             top: 100, left: 20, bottom: 86, right: 38,
         })
     // .title("Put headline here")
-        .height(1000),
+        .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
