@@ -29,7 +29,7 @@ export function draw() {
                 .append('circle')
                 .attr('id', d => d.cat)
                 .attr('cx', d => xScale(d.value))
-                .attr('r', rem * 0.5)
+                .attr('r', yScale.bandwidth() * 0.4)
                 .attr('fill', d => colourScale(d.cat));
         } else {
             parent.selectAll('rect')
@@ -39,8 +39,8 @@ export function draw() {
                 .attr('id', d => d.cat)
                 .attr('x', d => xScale(d.value))
                 .attr('y', -yScale.bandwidth() / 2)
-                .attr('height', rem)
-                .attr('width', rem)
+                .attr('height', yScale.bandwidth() * 0.8)
+                .attr('width', yScale.bandwidth() * 0.8)
                 .attr('fill', d => colourScale(d.cat));
         }
 

@@ -163,10 +163,10 @@ parseData.load(dataURL, { sort, sortOn })
                     .data(plotData.map(d => d.group))
                     .enter()
                     .append('rect')
-                    .attr('y', d => yScale(d))
+                    .attr('y', d => yScale(d) - (yScale.bandwidth() * 0.15))
                     // .attr('height', yScale.bandwidth())
                     .attr('height', currentFrame.dimension().height / plotData.length)
-                    .attr('width', currentFrame.dimension().width + yScale.bandwidth())
+                    .attr('width', currentFrame.dimension().width)
                     // .attr('class', 'rows');
                     .attr('class', (d, i) => {
                         if (i % 2 === 0) {
