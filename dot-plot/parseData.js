@@ -20,10 +20,12 @@ export function load(url, options) { // eslint-disable-line
         const valueExtent = extentMulti(data, seriesNames);
         // Buid the dataset for plotting
         const plotData = data.map((d) => {
-            const dotValues = seriesNames.map(name => ({
+            let dotValues = seriesNames.map(name => ({
                 cat: name,
                 value: d[name],
             }));
+            // Filter out missing values
+            dotValues = dotValues.filter(a => a.value !== '');
             dotValues.sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
             return {
                 group: d.name,
