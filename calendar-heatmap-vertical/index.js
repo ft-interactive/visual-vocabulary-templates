@@ -134,7 +134,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 .domain(scaleBreaks)
                 .range(colourRange);
 
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
             myChart
@@ -188,23 +188,23 @@ parseData.load(dataFile, { fiscal, dateFormat })
             const dayLabelsLeft = years
                 .append('g')
                 .attr('class', 'dayLabelsLeft');
-            const dayLabelsRight = years
-                .append('g')
-                .attr('class', 'dayLabelsRight');
+            // const dayLabelsRight = years
+            //     .append('g')
+            //     .attr('class', 'dayLabelsRight');
 
             days.forEach((day, i) => {
                 dayLabelsLeft.append('text')
                     .attr('class', 'weekday-labels')
-                    .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
-                    .attr('dy', '0.9em')
+                    .attr('x', (currentFrame.rem() * 1.4) + (i * cellSize))
+                    .attr('dx', '0.9em')
                     .attr('text-anchor', 'start')
                     .text(day);
-                dayLabelsRight.append('text')
-                    .attr('class', 'weekday-labels')
-                    .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
-                    .attr('dy', '0.9em')
-                    .attr('text-anchor', 'end')
-                    .text(day);
+                // dayLabelsRight.append('text')
+                //     .attr('class', 'weekday-labels')
+                //     .attr('y', (currentFrame.rem() * 1.4) + (i * cellSize))
+                //     .attr('dy', '0.9em')
+                //     .attr('text-anchor', 'end')
+                //     .text(day);
             });
 
             let dayLabelsWidth = 0;
@@ -213,7 +213,7 @@ parseData.load(dataFile, { fiscal, dateFormat })
             });
 
             dayLabelsLeft.attr('transform', `translate(${-labelWidth * 1.2},0)`);
-            dayLabelsRight.attr('transform', `translate(${currentFrame.dimension().width + (labelWidth * 1.2)},0)`);
+            // dayLabelsRight.attr('transform', `translate(${currentFrame.dimension().width + (labelWidth * 1.2)},0)`);
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
@@ -233,25 +233,25 @@ parseData.load(dataFile, { fiscal, dateFormat })
                 monthX.push(d.x + boxCentre);
             });
 
-            const monthLabels = years
-                .append('g')
-                .attr('class', 'monthLabels');
+            // const monthLabels = years
+            //     .append('g')
+            //     .attr('class', 'monthLabels');
 
-            months.forEach((d, i) => {
-                monthLabels.append('text')
-                    .attr('class', 'month-labels')
-                    .attr('x', () => {
-                        if (fiscal && i < 3) {
-                            return monthX[i + 9];
-                        }
-                        if (fiscal && i > 2) {
-                            return monthX[i - 3];
-                        }
-                        return monthX[i];
-                    })
-                    .attr('y', myChart.rem())
-                    .text(d);
-            });
+            // months.forEach((d, i) => {
+            //     monthLabels.append('text')
+            //         .attr('class', 'month-labels')
+            //         .attr('x', () => {
+            //             if (fiscal && i < 3) {
+            //                 return monthX[i + 9];
+            //             }
+            //             if (fiscal && i > 2) {
+            //                 return monthX[i - 3];
+            //             }
+            //             return monthX[i];
+            //         })
+            //         .attr('y', myChart.rem())
+            //         .text(d);
+            // });
 
             myLegend
                 .seriesNames(scaleBreaks)

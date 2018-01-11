@@ -136,21 +136,11 @@ function monthPath(t0, fiscal, cellSize, clipYear) {
     w0 = parseInt(w0, 10);
     w1 = parseInt(w1, 10);
 
-    // return `M${(d0 + 1) * cellSize},${w0 * cellSize}`
-    //     + `V${w0 * cellSize}H${7 * cellSize}`
-    //     + `V${w1 * cellSize}H${(d1 + 1) * cellSize}`
-    //     + `V${(w1 + 1) * cellSize}H0`
-    //     + `V${(w0 + 1) * cellSize}Z`;
-    return `M${(d0 + 1) * cellSize},${w0 * cellSize}`
+    return `M${d0 * cellSize},${(w0 + 1) * cellSize}`
         + `V${w0 * cellSize}H${7 * cellSize}`
         + `V${w1 * cellSize}H${(d1 + 1) * cellSize}`
         + `V${(w1 + 1) * cellSize}H0`
         + `V${(w0 + 1) * cellSize}Z`;
-    // return `M${(w0 + 1) * cellSize},${d0 * cellSize}`
-    //     + `H${w0 * cellSize}V${7 * cellSize}`
-    //     + `H${w1 * cellSize}V${(d1 + 1) * cellSize}`
-    //     + `H${(w1 + 1) * cellSize}V0`
-    //     + `H${(w0 + 1) * cellSize}Z`;
 }
 
 function getWeekOfYear(e) {
