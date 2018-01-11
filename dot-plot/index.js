@@ -207,7 +207,7 @@ parseData.load(dataURL, { sort, sortOn })
                 .data(plotData)
                 .enter()
                 .append('g')
-                .attr('class', 'dotholder baseline')
+                .attr('class', 'dotholder')
                 .call(myChart);
 
             if (labelFirst) {

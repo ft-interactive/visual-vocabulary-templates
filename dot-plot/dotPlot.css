@@ -1,27 +1,35 @@
-
-.ft-webgraphic-s .dotholder circle,
-.ft-webgraphic-m .dotholder circle,
-.ft-webgraphic-m-default .dotholder circle,
-.ft-webgraphic-l .dotholder circle{
-	stroke-width: 1;
-	stroke: #000000;
-}
-
 .ft-printgraphic .dotholder circle {
- 	stroke-width: 0.6;
+ 	stroke-width: 0.5;
 	stroke: #000000;
 }
 
-.ft-socialgraphic .dotholder circle{
- 	stroke-width: 2;
-	stroke: #FFFFFF;
-	stroke-opacity: 0.5;
+.ft-webgraphic-s .dotholder line {
+    stroke-width: 1;
+    stroke: #b3a9a0;
 }
 
-.ft-videographic .dotholder circle {
- 	stroke-width: 4;
-	stroke: #FFFFFF;
-	stroke-opacity: 0.5
+.ft-webgraphic-m .dotholder line,
+.ft-webgraphic-m-default .dotholder line,
+.ft-webgraphic-l .dotholder line{
+    stroke-width: 2;
+    stroke: #b3a9a0;
+}
+
+.ft-printgraphic .dotholder line {
+    stroke-width: 0.6;
+    stroke: #000000;
+}
+
+.ft-socialgraphic .dotholder line{
+    stroke-width: 3;
+    stroke: #FFFFFF;
+    stroke-opacity: 0.5;
+}
+
+.ft-videographic .dotholder line {
+    stroke-width: 4;
+    stroke: #FFFFFF;
+    stroke-opacity: 0.5
 }
 
 .ft-webgraphic-s .rows-filled,
