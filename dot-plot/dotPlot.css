@@ -1,0 +1,82 @@
+.ft-printgraphic .dotholder circle {
+ 	stroke-width: 0.5;
+	stroke: #000000;
+}
+
+.ft-webgraphic-s .dotholder line {
+    stroke-width: 1;
+    stroke: #b3a9a0;
+}
+
+.ft-webgraphic-m .dotholder line,
+.ft-webgraphic-m-default .dotholder line,
+.ft-webgraphic-l .dotholder line{
+    stroke-width: 2;
+    stroke: #b3a9a0;
+}
+
+.ft-printgraphic .dotholder line {
+    stroke-width: 0.6;
+    stroke: #000000;
+}
+
+.ft-socialgraphic .dotholder line{
+    stroke-width: 3;
+    stroke: #FFFFFF;
+    stroke-opacity: 0.5;
+}
+
+.ft-videographic .dotholder line {
+    stroke-width: 4;
+    stroke: #FFFFFF;
+    stroke-opacity: 0.5
+}
+
+.ft-webgraphic-s .rows-filled,
+.ft-webgraphic-m .rows-filled,
+.ft-webgraphic-m-default .rows-filled,
+.ft-webgraphic-l .rows-filled,
+.ft-printgraphic .rows-filled {
+	fill: #FCE6D6;
+}
+
+.first-label {
+	text-anchor: middle;
+}
+
+.ft-webgraphic-s .first-label {
+	font-size: 14px;
+	fill: #66605C;
+}
+
+.ft-webgraphic-m .first-label {
+	font-size: 16px;
+	fill: #66605C;
+}
+
+.ft-webgraphic-m-default .first-label {
+	font-size: 20px;
+	fill: #66605C;
+}
+
+.ft-webgraphic-l .first-label {
+	font-size: 18px;
+	fill: #66605C;
+}
+
+.ft-printgraphic .first-label {
+	font-size: 9.6px;
+    fill: #000000;
+}
+
+.ft-socialgraphic .first-label {
+	opacity: 0.5;
+    fill: #ffffff;
+	font-size: 28px;
+}
+
+.ft-videographic .first-label {
+	opacity: 0.5;
+    fill: #ffffff;
+	font-size: 48px;
+}
