@@ -16,7 +16,6 @@ export function draw() {
     function dots(parent) {
         parent.attr('transform', d => `translate(0,${yScale(d.group) + (yScale.bandwidth() * 0.5)})`);
 
-        console.log(frameName);
         if (lines) {
             parent.append('line')
                 .attr('x1', d => xScale(d.min))
