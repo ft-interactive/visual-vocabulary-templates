@@ -11,11 +11,12 @@ export function draw() {
     let rem = 10;
     let lines = false;
     let frameName;
-
+    let circleRadius;
 
     function dots(parent) {
         parent.attr('transform', d => `translate(0,${yScale(d.group) + (yScale.bandwidth() * 0.5)})`);
 
+        console.log(frameName);
         if (lines) {
             parent.append('line')
                 .attr('x1', d => xScale(d.min))
@@ -29,7 +30,14 @@ export function draw() {
                 .append('circle')
                 .attr('id', d => d.cat)
                 .attr('cx', d => xScale(d.value))
-                .attr('r', rem * 0.4)
+                .attr('r', () => {
+                    if (frameName === 'webS' || frameName === 'print') {
+                        circleRadius = rem * 0.3;
+                    } else {
+                        circleRadius = rem * 0.4;
+                    }
+                    return circleRadius;
+                })
                 .attr('fill', d => colourScale(d.cat));
         } else {
             parent.selectAll('rect')
