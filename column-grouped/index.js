@@ -131,6 +131,7 @@ parseData.load(dataFile, '', { sort, sortOn })
             .call(currentFrame);
 
         myXAxis0
+            .tickSize(0)
             .align(xAxisAlign)
             .domain(plotData.map(d => d.name))
             .rangeRound([0, currentFrame.dimension().width], 10)
