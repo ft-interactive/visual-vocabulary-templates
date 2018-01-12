@@ -125,6 +125,21 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
 
+    const axisLabelX = {
+        tag: xVar,
+        hori:'middle',
+        vert: 'bottom',
+        anchor: 'middle',
+        rotate: 0
+    }
+    const axisLabelY = {
+        tag: yVar,
+        hori:'left',
+        vert: 'top',
+        anchor: 'middle',
+        rotate: 0
+    }
+
 
     // define chart
     const myChart = scatterplot.draw()
@@ -146,7 +161,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .align(yAxisAlign)
             .tickSize(tickSize)
             .frameName(frameName)
-            .divisor(divisorY);
+            .divisor(divisorY)
+            .label(axisLabelY);
 
         currentFrame.plot()
             .call(myYAxis);
@@ -175,7 +191,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .range([0, currentFrame.dimension().width])
             .align(xAxisAlign)
             .frameName(frameName)
-            .divisor(divisorX);
+            .divisor(divisorX)
+            .label(axisLabelX);
 
         // call axes
         currentFrame.plot()
