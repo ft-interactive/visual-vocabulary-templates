@@ -22,7 +22,10 @@ export function draw() {
         parent.append('circle')
             .attr('cx', d => xScale(d[xVar]))
             .attr('cy', d => yScale(d[yVar]))
-            .attr('r', rem / 2.5)
+            .attr('r', function(d){
+                console.log(d)
+               return rem / 2.5
+            })
             .attr('fill', (d) => {
                 if (hollowDots) {
                     return 'none';

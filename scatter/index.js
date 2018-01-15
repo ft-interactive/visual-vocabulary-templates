@@ -21,7 +21,7 @@ const sharedConfig = {
 
 // display options
 const xVar = 'Change in spending on other things as % of GDP';// these should be series (column) names from your data
-const xMin = -15;// sets the minimum value on the xAxis - will autoextend to include range of your data
+const xMin = -12;// sets the minimum value on the xAxis - will autoextend to include range of your data
 const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
 const divisorX = 1;// sets the formatting on linear axis for ’000s and millions
 
@@ -29,6 +29,8 @@ const yVar = 'Change in spending on interest as % of GDP';
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
+
+const sizeVar = 'Change in debt as % of GDP';
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
