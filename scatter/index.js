@@ -10,7 +10,7 @@ import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
 
 // dataset and titles
-const dataURL = 'data.csv';
+const dataURL = 'kateallen.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -20,12 +20,12 @@ const sharedConfig = {
 
 
 // display options
-const xVar = 'var a';// these should be series (column) names from your data
-const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
+const xVar = 'Change in spending on other things as % of GDP';// these should be series (column) names from your data
+const xMin = -15;// sets the minimum value on the xAxis - will autoextend to include range of your data
 const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
 const divisorX = 1;// sets the formatting on linear axis for ’000s and millions
 
-const yVar = 'var b';
+const yVar = 'Change in spending on interest as % of GDP';
 const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
@@ -121,6 +121,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     });
 
 
+    
+
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
@@ -135,7 +137,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     const axisLabelY = {
         tag: yVar,
         hori:'left',
-        vert: 'top',
+        vert: 'middle',
         anchor: 'middle',
         rotate: 0
     }
@@ -152,6 +154,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
+    const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
+
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
@@ -162,6 +166,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .tickSize(tickSize)
             .frameName(frameName)
             .divisor(divisorY)
+            .rem(currentFrame.rem())
+            .plotDim(plotDim)
             .label(axisLabelY);
 
         currentFrame.plot()
@@ -192,6 +198,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .align(xAxisAlign)
             .frameName(frameName)
             .divisor(divisorX)
+            .rem(currentFrame.rem())
+            .plotDim(plotDim)
             .label(axisLabelX);
 
         // call axes
