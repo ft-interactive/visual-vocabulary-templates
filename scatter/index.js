@@ -20,14 +20,14 @@ const sharedConfig = {
 
 
 // display options
-const xVar = 'Change in spending on other things as % of GDP';// these should be series (column) names from your data
-const xMin = -12;// sets the minimum value on the xAxis - will autoextend to include range of your data
-const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
+const xVar = 'Change in spending on interest as % of GDP';// these should be series (column) names from your data
+const xMin = -2;// sets the minimum value on the xAxis - will autoextend to include range of your data
+const xMax = 1.5;// sets the maximum value on the xAxis - will autoextend to include range of your data
 const divisorX = 1;// sets the formatting on linear axis for ’000s and millions
 
-const yVar = 'Change in spending on interest as % of GDP';
-const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
-const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
+const yVar = 'Change in spending on other things as % of GDP';
+const yMin = -12;// sets the minimum value on the yAxis - will autoextend to include range of your data
+const yMax = 10;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
 const sizeVar = 'Change in debt as % of GDP';
@@ -239,6 +239,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .colourPalette((frameName))
             .xVar(xVar)
             .yVar(yVar)
+            .sizeVar(sizeVar)
             .hollowDots(hollowDots)
             .groups(groups)
             .opacity(opacity);

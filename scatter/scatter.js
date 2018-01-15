@@ -12,7 +12,7 @@ export function draw() {
     let xVar;
     let opacity;
     let yVar;
-    let sizeVar; // eslint-disable-line
+    let sizeVar;
     let hollowDots;
     let dotOutline;
 
@@ -23,9 +23,8 @@ export function draw() {
         parent.append('circle')
             .attr('cx', d => xScale(d[xVar]))
             .attr('cy', d => yScale(d[yVar]))
-            .attr('r', function(d){
-                console.log(d)
-               return rem / 2.5
+            .attr('r', (d) => {
+                return sizeScale(d[sizeVar])
             })
             .attr('fill', (d) => {
                 if (hollowDots) {
@@ -33,6 +32,7 @@ export function draw() {
                 }
                 return colourScale(d.group);
             })
+            .attr("id", d => d.name+":"+d[sizeVar])
             .attr('fill-opacity', opacity)
             .attr('stroke', (d) => {
                 if (hollowDots) {
@@ -53,7 +53,6 @@ export function draw() {
                 }
                 return 0;
             });
-
 
         // create text labels required
         parent.filter(d => d.label === 'yes')
