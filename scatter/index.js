@@ -31,6 +31,8 @@ const yMax = 0;// sets the maximum value on the yAxis - will autoextend to inclu
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
 const sizeVar = 'Change in debt as % of GDP';
+const sizeMin=0;
+const sizeMax=0;
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
@@ -114,16 +116,19 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     // determin extents for each scale
     const xValRange = [xMin, xMax];
     const yValRange = [yMin, yMax];
+    const sizeRange = [sizeMin, sizeMax];
 
     data.forEach((d) => {
         xValRange[0] = Math.min(xValRange[0], d[xVar]);
         xValRange[1] = Math.max(xValRange[1], d[xVar]);
         yValRange[0] = Math.min(yValRange[0], d[yVar]);
         yValRange[1] = Math.max(yValRange[1], d[yVar]);
+        sizeRange[0] = Math.min(sizeRange[0], d[sizeVar]);
+        sizeRange[1] = Math.max(sizeRange[1], d[sizeVar]);
     });
 
 
-    
+
 
     // set up axes
     const myYAxis = gAxis.yLinear();
@@ -155,6 +160,14 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     // draw, for each frame
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
+
+        const sqrtScale = d3.scaleSqrt()
+            .domain(sizeRange)
+            .range([0,currentFrame.rem()]);
+
+        /*
+        .domain(sizeRange)
+        .range([currentFrame.rem(),currentFrame.rem()*4]);*/
 
     const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
 
@@ -220,6 +233,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         myChart
             .yRange([currentFrame.dimension().height, 0])
             .xScale(myXAxis.scale())
+            .sizeScale(sqrtScale)
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette((frameName))

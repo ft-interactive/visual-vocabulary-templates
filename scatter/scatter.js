@@ -4,6 +4,7 @@ import gChartcolour from 'g-chartcolour';
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
+    let sizeScale = d3.scaleSqrt();
     let seriesNames  = []; // eslint-disable-line
     let groups = [];
     let yAxisAlign = 'right';
@@ -125,6 +126,11 @@ export function draw() {
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
+        return chart;
+    };
+    chart.sizeScale = (d) => {
+        if (!d) return sizeScale;
+        sizeScale = d;
         return chart;
     };
     chart.xDomain = (d) => {
