@@ -26,7 +26,6 @@ export function load(url, options) { // eslint-disable-line
             }));
             // Filter out missing values
             dotValues = dotValues.filter(a => a.value !== '');
-            dotValues.sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
             return {
                 group: d.name,
                 values: dotValues,
