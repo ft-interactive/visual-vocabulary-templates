@@ -26,7 +26,6 @@ export function load(url, options) { // eslint-disable-line
             }));
             // Filter out missing values
             dotValues = dotValues.filter(a => a.value !== '');
-            dotValues.sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
             return {
                 group: d.name,
                 values: dotValues,
@@ -37,7 +36,7 @@ export function load(url, options) { // eslint-disable-line
 
         if (sort === 'descending') {
             plotData.sort((a, b) =>
-                b.values.find(e => e.cat === sortOn).value - a.values.find(e => e.cat === sortOn).value);
+                b.values.find(e => e.cat === seriesNames[sortOn]).value - a.values.find(e => e.cat === seriesNames[sortOn]).value);
         } else if (sort === 'ascending') {
             plotData.sort((a, b) =>
                 a.values.find(e => e.cat === sortOn).value - b.values.find(e => e.cat === sortOn).value);

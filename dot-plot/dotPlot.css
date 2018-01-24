@@ -35,9 +35,30 @@
 .ft-webgraphic-s .rows-filled,
 .ft-webgraphic-m .rows-filled,
 .ft-webgraphic-m-default .rows-filled,
-.ft-webgraphic-l .rows-filled,
+.ft-webgraphic-l .rows-filled {
+    fill: #FCE6D6;
+}
+
 .ft-printgraphic .rows-filled {
-	fill: #FCE6D6;
+    fill: #95BFC5;
+    opacity: 0.3;
+}
+
+.ft-socialgraphic .rows-filled,
+.ft-videographic .rows-filled {
+    fill: #ffffff;
+    opacity: 0.1;
+}
+
+
+.ft-webgraphic-s .rows-empty,
+.ft-webgraphic-m .rows-empty,
+.ft-webgraphic-m-default .rows-empty,
+.ft-webgraphic-l .rows-empty,
+.ft-printgraphic .rows-empty,
+.ft-socialgraphic .rows-empty,
+.ft-videographic .rows-empty {
+	fill: none;
 }
 
 .first-label {
