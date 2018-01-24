@@ -31,12 +31,12 @@ export function load([url, url2], options) { // eslint-disable-line
             d.date = parseDate(d.date);
         });
 
-        const seriesNames0 = getSeriesNames(data1.columns);
-        const seriesNames1 = getSeriesNames(data2.columns);
+        const seriesNamesL = getSeriesNames(data1.columns);
+        const seriesNamesR = getSeriesNames(data2.columns);
 
         // Use the seriesNamesL array to calculate the minimum and max values in the dataset
-        const valueExtentL = extentMulti(data1, seriesNames0);
-        const valueExtentR = extentMulti(data2, seriesNames1);
+        const valueExtentL = extentMulti(data1, seriesNamesL);
+        const valueExtentR = extentMulti(data2, seriesNamesR);
 
         // Buid the dataset for plotting
         const barData = data1.map(d => ({
