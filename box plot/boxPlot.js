@@ -12,102 +12,143 @@ export function draw() {
     let lines = false;
     let mean = false;
     let frameName;
+    let quantile;
 
 
     function dots(parent) {
         parent.attr('transform', d => `translate(0,${yScale.bandwidth()/2})`);
+
         if(geometry ==='rect') {
             parent.append('line')
-                .attr("class", 'line')
-                .attr("x1", d => xScale(d.min))
-                .attr("y1", d => yScale(d.group))
-                .attr("x2", d => xScale(d.q1))
-                .attr("y2", d => yScale(d.group))
+                .attr('class', 'line')
+                .attr('x1', d => xScale(d.min))
+                .attr('y1', d => yScale(d.group))
+                .attr('x2', d => xScale(d.q1))
+                .attr('y2', d => yScale(d.group));
             parent.append('line')
-                .attr("class", 'line')
-                .attr("x1", d => xScale(d.q3))
-                .attr("y1", d => yScale(d.group))
-                .attr("x2", d => xScale(d.max))
-                .attr("y2", d => yScale(d.group))
+                .attr('class', 'line')
+                .attr('x1', d => xScale(d.q3))
+                .attr('y1', d => yScale(d.group))
+                .attr('x2', d => xScale(d.max))
+                .attr('y2', d => yScale(d.group));
             parent.append('line')
-                .attr("class", 'line')
-                .attr("x1", d => xScale(d.min))
-                .attr("x2", d => xScale(d.min))
-                .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/8))
-                .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/8))
+                .attr('class', 'line')
+                .attr('x1', d => xScale(d.min))
+                .attr('x2', d => xScale(d.min))
+                .attr('y1', d => yScale(d.group) - (yScale.bandwidth() / 8))
+                .attr('y2', d => yScale(d.group) + (yScale.bandwidth() / 8));
             parent.append('line')
-                .attr("class", 'line')
-                .attr("x1", d => xScale(d.max))
-                .attr("x2", d => xScale(d.max))
-                .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/8))
-                .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/8))
+                .attr('class', 'line')
+                .attr('x1', d => xScale(d.max))
+                .attr('x2', d => xScale(d.max))
+                .attr('y1', d => yScale(d.group) - (yScale.bandwidth() / 8))
+                .attr('y2', d => yScale(d.group) + (yScale.bandwidth() / 8));
 
             parent.append('rect')
                 .attr('class', 'bars')
-                .attr('y', d => yScale(d.group) - (yScale.bandwidth()/4))
-                .attr('height', yScale.bandwidth()/2)
+                .attr('y', d => yScale(d.group) - (yScale.bandwidth() / 4))
+                .attr('height', yScale.bandwidth() / 2)
                 .attr('x', d => xScale(Math.max(0, d.q1)))
                 .attr('width', d => Math.abs(xScale(d.q3) - xScale(d.q1)))
-                .attr('fill', colourScale.range()[1])
+                .attr('fill', colourScale.range()[1]);
 
             parent.append('line')
-                .attr("class", 'line')
-                .attr("x1", d => xScale(d.q2))
-                .attr("x2", d => xScale(d.q2))
-                .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/4))
-                .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/4))
+                .attr('class', 'line')
+                .attr('x1', d => xScale(d.q2))
+                .attr('x2', d => xScale(d.q2))
+                .attr('y1', d => yScale(d.group) - (yScale.bandwidth() / 4))
+                .attr('y2', d => yScale(d.group) + (yScale.bandwidth() / 4));
             if (mean) {
                 parent.append('line')
-                    .attr("class", 'line')
-                    .attr("x1", d => xScale(d.mean))
-                    .attr("x2", d => xScale(d.mean))
-                    .attr('y1', d => yScale(d.group) - (yScale.bandwidth()/4))
-                    .attr('y2', d => yScale(d.group) + (yScale.bandwidth()/4))
-                    .style('stroke', colourScale.range()[2])
+                    .attr('class', 'line')
+                    .attr('x1', d => xScale(d.mean))
+                    .attr('x2', d => xScale(d.mean))
+                    .attr('y1', d => yScale(d.group) - (yScale.bandwidth() / 4))
+                    .attr('y2', d => yScale(d.group) + (yScale.bandwidth() / 4))
+                    .style('stroke', colourScale.range()[2]);
             }
         }
 
-        if(geometry ==='circle') {
-            if(lines) {
+        if (geometry === 'circle') {
+            if (lines) {
                 parent.append('line')
-                    .attr("class", 'line')
-                    .attr("x1", d => xScale(d.min))
-                    .attr("y1", d => yScale(d.group))
-                    .attr("x2", d => xScale(d.max))
-                    .attr("y2", d => yScale(d.group))
+                    .attr('class', 'line')
+                    .attr('x1', d => xScale(d.min))
+                    .attr('y1', d => yScale(d.group))
+                    .attr('x2', d => xScale(d.max))
+                    .attr('y2', d => yScale(d.group));
             }
 
             parent.selectAll('circle')
-                .data((d) => {return d.quartiles})
+                .data(d => d.values.filter((el) => {return el.label === ''}))
                 .enter()
                 .append('circle')
-                .attr('id', d => d.name)
+                //.attr('id', d => d.name + ' ' + d.value)
                 .attr('cx', d => xScale(d.value))
                 .attr('cy', d => yScale(d.group))
-                .attr('r', rem/2)
-                .attr('fill',d => colourScale.range()[1])
-         
+                .attr('r', rem / 2)
+                .attr('fill', colourScale.range()[1]);
+
+            const highlights = parent.append('g').attr('class', 'dotHighlight')
+
+            highlights.selectAll('.circle')
+                .data(d => d.values.filter((el) => {return el.label === 'yes'}))
+                .enter()
+                .append('circle')
+                .attr('cx', d => xScale(d.value))
+                .attr('cy', d => yScale(d.group))
+                .attr('r', rem / 2)
+                .attr('fill', colourScale.range()[1]);
+
+            if (quantile) {
+                const quantiles = parent.append('g')
+                .attr('id', 'quantiles');
+
+                quantiles.selectAll('circle')
+                    .data((d) => {
+                        return d.quantiles})
+                    .enter()
+                    .append('circle')
+                    .attr('id', d => d.name)
+                    .attr('cx', d => xScale(d.value))
+                    .attr('cy', d => yScale(d.group))
+                    .attr('r', rem / 2)
+                    .attr('fill', colourScale.range()[3]);
+
+            }
+
             parent.append('circle')
                 .attr('cx', d => xScale(d.min))
                 .attr('cy', d => yScale(d.group))
-                .attr('r', rem/2)
-                .attr('fill',d => colourScale.range()[0])
-            
+                .attr('r', rem / 2)
+                .attr('fill', colourScale.range()[0]);
+
             parent.append('circle')
                 .attr('cx', d => xScale(d.max))
                 .attr('cy', d => yScale(d.group))
-                .attr('r', rem/2)
-                .attr('fill',d => colourScale.range()[0])
+                .attr('r', rem / 2)
+                .attr('fill', colourScale.range()[0]);
+
+            parent.selectAll('text')
+                .data(d => d.values.filter((el) => {return el.label === 'yes'}))
+                .enter()
+                .append('text')
+                .attr('class', 'highlighted-label')
+                .attr('x', d => xScale(d.value))
+                .attr('y', d => yScale(d.group) - rem)
+                .style('text-anchor', 'middle')
+                .text(d => d.name+' '+d.value)
+
+
             if (mean) {
-                 parent.append('circle')
+                parent.append('circle')
                     .attr('cx', d => xScale(d.mean))
                     .attr('cy', d => yScale(d.group))
-                    .attr('r', rem/2)
-                    .attr('fill',d => colourScale.range()[2])
+                    .attr('r', rem / 2)
+                    .attr('fill', colourScale.range()[2]);
 
             }
         }
-        
     }
 
     dots.frameName = (d) => {
@@ -128,6 +169,11 @@ export function draw() {
     dots.mean = (d) => {
         if (d === undefined) return mean;
         mean = d;
+        return dots;
+    };
+    dots.quantile = (d) => {
+        if (d === undefined) return quantile;
+        quantile = d;
         return dots;
     };
     dots.yScale = (d) => {

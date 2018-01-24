@@ -1,28 +1,53 @@
-/*
-.ft-webgraphic-s .boxplot circle,
-.ft-webgraphic-m .boxplot circle,
-.ft-webgraphic-m-default .boxplot circle,
-.ft-webgraphic-l .boxplot circle{
+
+.ft-webgraphic-s .dotHighlight circle,
+.ft-webgraphic-m .dotHighlight circle,
+.ft-webgraphic-m-default .dotHighlight circle,
+.ft-webgraphic-l .dotHighlight circle{
 	stroke-width: 1;
 	stroke: #000000;
 }
 
-.ft-printgraphic .boxplot circle {
+.ft-printgraphic .dotHighlight circle {
  	stroke-width: 0.6;
 	stroke: #000000;
 }
 
-.ft-socialgraphic .boxplot circle{
+.ft-socialgraphic .dotHighlight circle{
  	stroke-width: 2;
 	stroke: #FFFFFF;
 	stroke-opacity: 0.5;
 }
 
-.ft-videographic .boxplot circle {
+.ft-videographic .dotHighlight circle {
  	stroke-width: 4;
 	stroke: #FFFFFF;
 	stroke-opacity: 0.5
-}*/
+}
+
+.ft-webgraphic-s .dotHighlight text,
+.ft-webgraphic-m .dotHighlight text,
+.ft-webgraphic-m-default .dotHighlight text,
+.ft-webgraphic-l .dotHighlight text{
+	font-size: 20px;
+	fill: #66605C;
+}
+
+.ft-printgraphic .dotHighlight text {
+ 	font-size: 9.6px;
+    fill: #000000;
+}
+
+.ft-socialgraphic .dotHighlight text{
+ 	font-size: 28px;
+    fill: #ffffff;
+    opacity: 0.7;
+}
+
+.ft-videographic .dotHighlight text {
+ 	font-size: 48px;
+    fill: #ffffff;
+    opacity: 0.7;
+}
 
 .ft-webgraphic-s .boxplot line,
 .ft-webgraphic-m .boxplot line,

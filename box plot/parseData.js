@@ -15,50 +15,50 @@ export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
 
-        // automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        // automatically calculate the groupNames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
-        // Use the seriesNames array to calculate the minimum and max values in the dataset
+
+        const groupNames = data.map( d => d.group)
+            .filter((item, pos, groupNames) => groupNames.indexOf(item) === pos);
+
+        // Use the groupNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
 
         // Buid the dataset for plotting
-        const plotData = seriesNames.map((d,i) => {
-            const values = data.map((el) => {return el[d]})
-                .filter((d) => {return d !==""})
-                .map((d) => {return Number(d)});
-            // Create an array of just the values to extract min, max and quartiles
-            values.sort((a, b) => parseFloat(a) - parseFloat(b));
-            const quantiles = [];
-            for (let i = 1; i < 4; i += 1) {
-                const qData = {};
-                qData.name = `q${i}`;
-                qData.value = d3.quantile(values, (i / 4));
-                qData.group = d;
-                quantiles.push(qData);
-            }
-
-            console.log(seriesNames[i])
-            console.log("Min: "+ Number(d3.min(values)))
-            console.log("Max: "+ Number(d3.max(values)))
-            console.log("Q25: "+ d3.quantile(values, .25))
-            console.log("Q50MED: "+ d3.quantile(values, .5))
-            console.log("Q75: "+ d3.quantile(values, .75))
-            console.log("Mean: "+ d3.mean(values))
-
+        const plotData = groupNames.map((d,i) => {
+            let groupValues = data.filter((el) => {return el.group === d})
+            let qValues = groupValues.map(d => Number(d.value))
+            qValues.sort((a, b) => parseFloat(a) - parseFloat(b));
             return {
                 group: d,
-                values,
-                q1: d3.quantile(values, .25),
-                q2: d3.quantile(values, .5),
-                q3: d3.quantile(values, .75),
-                min: Number(d3.min(values)),
-                max: Number(d3.max(values)),
-                mean: d3.mean(values),
-                quartiles: quantiles
-            };
+                values: groupValues,
+                q1: d3.quantile(qValues, .25),
+                q2: d3.quantile(qValues, .5),
+                q3: d3.quantile(qValues, .75),
+                quantiles: getQuantiles(qValues, d),
+                min: d3.min(qValues),
+                max: d3.max(qValues),
+                mean: d3.mean(qValues),
+            }
+          
+            function getQuantiles(vals, groupName) {
+                const quantiles = [];
+                    for (let i = 1; i < 4; i += 1) {
+                        const qData = {};
+                        qData.name = `q${i}`;
+                        qData.value = d3.quantile(vals, (i / 4));
+                        qData.group = groupName;
+                        quantiles.push(qData);
+                    }
+                return quantiles
+            }
         });
+
+        console.log('plotData', plotData)
 
         return {
             valueExtent,
+            groupNames,
             seriesNames,
             plotData,
             data,
@@ -68,7 +68,7 @@ export function load(url, options) { // eslint-disable-line
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = [];
+    const exclude = ['name', 'group', 'label'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
