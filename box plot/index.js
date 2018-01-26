@@ -8,22 +8,24 @@ import * as boxPlot from './boxPlot.js';
 const dataURL = 'data.csv';
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Waste generation rate',
+    subtitle: 'kg per person per day, 2010',
     source: 'Source not yet added',
 };
 
-const xMin = 10000;// sets the minimum value on the yAxis
-const xMax = 90000;// sets the maximum value on the xAxis
+const xMin = 0;// sets the minimum value on the yAxis
+const xMax = 6;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicks = 8;// Number of tick on the uAxis
+const numTicks = 3;// Number of tick on the uAxis
 const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;//connecting lines on circles
 const mean = false;//add a marker to show mean
-const geometry = 'rect'; // set the geometry of the data options are 'circle' or 'rect'
+const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
+const logScale = false;
+const quantile = false; // circle geometry only
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -62,8 +64,8 @@ const frame = {
             top: 40, left: 7, bottom: 35, right: 7,
         })
     // .title("Put headline here")
-        .width(53.71)// 1 col
-    // .width(112.25)// 2 col
+    // .width(53.71)// 1 col
+    .width(112.25)// 2 col
     // .width(170.8)// 3 col
     // .width(229.34)// 4 col
     // .width(287.88)// 5 col
@@ -106,7 +108,6 @@ parseData.load(dataURL)
             const myChart = boxPlot.draw();
             const tickSize = currentFrame.dimension().height; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
             // const plotDim=currentFrame.dimension(); // useful variable to carry the current frame dimensions
-
             yAxis
                 .align(yAxisAlign)
                 .domain(plotData.map(d => d.group))
@@ -114,8 +115,9 @@ parseData.load(dataURL)
                 .frameName(frameName);
 
             xAxis
+                .logScale(logScale)
                 .align(xAxisAlign)
-                .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
+                .domain([Math.min(xMin, 2), Math.max(xMax, valueExtent[1])])
                 .numTicks(numTicks)
                 .xAxisHighlight(xAxisHighlight)
                 .frameName(frameName)
@@ -168,7 +170,8 @@ parseData.load(dataURL)
                 .geometry(geometry)
                 .frameName(frameName)
                 .seriesNames(seriesNames)
-                .mean(mean);
+                .mean(mean)
+                .quantile(quantile);
 
             // Draw unhighlighted circles first
             currentFrame.plot()
