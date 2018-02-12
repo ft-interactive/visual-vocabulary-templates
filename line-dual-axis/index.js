@@ -50,6 +50,8 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
+const intraday = false// 
+
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -168,7 +170,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         const myAnnotations = lineChart.drawAnnotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().width; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
+        const tickSize = currentFrame.rem() * .75; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
 
         // create a 'g' element at the back of the chart to add time period
         // highlights after axis have been created
@@ -181,7 +183,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
           .domain([Math.min(yMinL, valueExtentL[0]), Math.max(yMaxL, valueExtentL[1])])
           .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksL)
-          .tickSize(currentFrame.rem() * 2)
+          .tickSize(tickSize)
           .align('left')
           .frameName(frameName)
           .divisor(divisorL);
@@ -195,7 +197,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
           .domain([Math.min(yMinR, valueExtentR[0]), Math.max(yMaxR, valueExtentR[1])])
           .range([currentFrame.dimension().height, 0])
           .numTicks(numTicksR)
-          .tickSize(currentFrame.rem() * 2)
+          .tickSize(tickSize)
           .align('right')
           .frameName(frameName)
           .divisor(divisorR);
@@ -223,18 +225,23 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         //   .attr("fill","#ededee");
 
         myChart.xRange([0, currentFrame.dimension().width]);
+        let xDomain;
+        if (intraday) {
+            xDomain = data.map(d => d.date);
+        } else { xDomain = d3.extent(data, d => d.date); }
 
         // Set up xAxis for this frame
         myXAxis
-          .domain(d3.extent(data, d => d.date))
+          .domain(xDomain)
           .range([0, currentFrame.dimension().width])
           .align(xAxisAlign)
           .fullYear(false)
           .interval(interval)
-          .tickSize(myChart.rem())
+          .tickSize(tickSize)
           .minorAxis(minorAxis)
           .fullYear(false)
-          .frameName(frameName);
+          .frameName(frameName)
+          .intraday(intraday);
 
         myChart
           .yScaleL(yAxisL.scale())
