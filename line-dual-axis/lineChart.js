@@ -9,7 +9,6 @@ export function draw() {
     let xScale = d3.scaleTime();
     let seriesNames = [];
     let highlightNames = [];
-    let yAxisAlign = 'right';
     let markers = false;
     let doubleScale = 0;
   const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
@@ -81,11 +80,6 @@ export function draw() {
     chart.yScaleR = (d) => {
         if (!d) return yScaleR;
         yScaleR = d;
-        return chart;
-    };
-    chart.yAxisAlign = (d) => {
-        if (!d) return yAxisAlign;
-        yAxisAlign = d;
         return chart;
     };
     chart.doubleScale = (d) => {
