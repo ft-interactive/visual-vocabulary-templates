@@ -35,11 +35,11 @@ const yMinL = 0.9;// sets the minimum value on the yAxisL
 const yMaxL = 1.4;// sets the maximum value on the xAxisL
 const divisorL = 1;// sets the formatting on linear axis for ’000s and millions
 const yMinR = 9;// sets the minimum value on the yAxisR
-const yMaxR = 13;// sets the maximum value on the xAxisR
+const yMaxR = 15;// sets the maximum value on the xAxisR
 const divisorR = 1;// sets the formatting on linear axis for ’000s and millions
 const doubleScale = 1;
 const numTicksL = 7;// Number of tick on the uAxis
-const numTicksR = 6;// Number of tick on the uAxis
+const numTicksR = 7;// Number of tick on the uAxis
 const yAxisAlign = 'left'; /* alignment of the axis */ // eslint-disable-line no-unused-vars
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'days';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
@@ -213,10 +213,10 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
             .call(currentFrame);
 
         yAxisL.yLabel()
-          .attr('transform', `translate(${(yAxisL.tickSize() - yAxisL.labelWidth())},0)`)
+          //.attr('transform', `translate(${(yAxisL.tickSize() - yAxisL.labelWidth())},0)`)
           .classed('baseline', true);
         yAxisR.yLabel()
-          .attr('transform', `translate(${(currentFrame.dimension().width - currentFrame.rem())},0)`)
+          .attr('transform', `translate(${currentFrame.dimension().width},0)`)
           .classed('baseline', true);
 
         // axisHighlight.append("rect")
@@ -226,10 +226,8 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         
         let xDomain;
         if (intraday) {
-          console.log('intraday')
             xDomain = data.map(d => d.date);
         } else { xDomain = d3.extent(data, d => d.date); }
-        console.log(xDomain)
 
         // Set up xAxis for this frame
         myXAxis
