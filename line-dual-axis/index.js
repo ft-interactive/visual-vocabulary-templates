@@ -9,9 +9,9 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 
-const dataFile = 'bonds.csv';
+const dataFile = 'data.csv';
 
-const dateFormat = '%d/%m/%Y %H:%M';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -31,18 +31,18 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMinL = 0.9;// sets the minimum value on the yAxisL
-const yMaxL = 1.4;// sets the maximum value on the xAxisL
+const yMinL = 0;// sets the minimum value on the yAxisL
+const yMaxL = 80;// sets the maximum value on the xAxisL
 const divisorL = 1;// sets the formatting on linear axis for ’000s and millions
-const yMinR = 9;// sets the minimum value on the yAxisR
-const yMaxR = 15;// sets the maximum value on the xAxisR
+const yMinR = 1;// sets the minimum value on the yAxisR
+const yMaxR = 8;// sets the maximum value on the xAxisR
 const divisorR = 1;// sets the formatting on linear axis for ’000s and millions
 const doubleScale = 1;
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 7;// Number of tick on the uAxis
 const yAxisAlign = 'left'; /* alignment of the axis */ // eslint-disable-line no-unused-vars
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'days';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -50,7 +50,7 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const intraday = true// 
+const intraday = false// 
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
