@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GB local authority cartogram</title>
+
+    <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <link rel="stylesheet" href="https://ig.ft.com/visual-vocabulary/styles.css"/>
+    <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
+</head>
+<body>
+
+    <h1>GB local authority cartogram</h1>
+    <p>The standard way to show a changing time series. If data are irregular, consider markers to represent data points</p>
+    <p><b>Some useful settings in the index.js</b>
+        <ul>
+            <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
+        </ul>
+    </p>
+     <p><b>Column headings in the csv</b>
+        <ul>
+            <li><b>annotate</b> – use this column to create annotations for a particular point in time</li>
+            <li><b>highlight</b> – use this column to define highlight bands in the background of your chart, add 'begin' where you want the band to start and 'end' where you want it to finish. You can have as many highlights as you want.</li>
+        </ul>
+    </p>
+    <p>Please make sure than the <b>blue line</b> is on top as this is the primary line colour</p>
+
+    <hr>
+
+    <!-- These are provided already for convenience, but could also be added purely via JS: -->
+    <script>
+    /*
+      [
+        'webS'
+        'webM'
+        'webL'
+        'print'
+        'social'
+        'video'
+      ].forEach(function(size){
+        const container = document.createElement('figure');
+        container.dataset.frame = size;
+        container.className = 'framed saveable';
+        container.appendChild(document.createElement('svg'));
+        document.body.appendChild(container);
+      });
+    */
+    </script>
+    <p class="section-heading">Non-responsive chart</p>
+    <figure class="framed saveable" data-frame="webMDefault"><svg></svg></figure>
+    <p class="section-heading">Responsive image set</p>
+    <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="print"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="social"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="video"><svg></svg></figure>
+
+</body>
+</html>
