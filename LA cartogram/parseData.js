@@ -20,10 +20,6 @@ export function load([url, url2], options) { // eslint-disable-line
         // make sure all the dates in the date column are a date object
 
         const parseDate = d3.timeParse(dateFormat);
-        
-        data1.forEach((d) => {
-            d.date = parseDate(d.date);
-        });
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data1.columns);
@@ -34,37 +30,29 @@ export function load([url, url2], options) { // eslint-disable-line
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map(d => ({
             name: d,
-            lineData: getlines(data1, d),
+            mapData: getMapData(d)
         }));
+        console.log(plotData)
 
-        // Sort the data so that the labeled items are drawn on top
-        const dataSorter = function dataSorter(a, b) {
-            if (highlightNames.indexOf(a.name) > highlightNames.indexOf(b.name)) {
-                return 1;
-            } else if (highlightNames.indexOf(a.name) === highlightNames.indexOf(b.name)) {
-                return 0;
-            }
-            return -1;
-        };
-        if (highlightNames.length > 0) { plotData.sort(dataSorter); }
-
-         // Filter data for annotations
-
-
-        // Format the data that is used to draw highlight tonal bands
-        const boundaries = data1.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-        const highlights = [];
-
-        boundaries.forEach((d, i) => {
-            if (d.highlight === 'begin') {
-                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-            }
-        });
+        function getMapData(group) {
+            let mapData = data1.map((d) =>{
+                return {
+                    group: group,
+                    ons_id: d.ons_id,
+                    ons_name: d.ons_name,
+                    ft_name: d.ft_name,
+                    value: Number(d[group])
+                }
+            })
+            return mapData
+        }
+        
         const shapeData = data2
 
         return {
             plotData,
             shapeData,
+            valueExtent,
         };
     });
 }
@@ -76,7 +64,7 @@ export function load([url, url2], options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight'];
+    const exclude = ['ons_id', 'ons_name', 'ft_name','region_code', 'region_name'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
@@ -101,45 +89,4 @@ function extentMulti(data, columns) {
         return acc;
     }, {});
     return [ext.min, ext.max];
-}
-
-/**
- * Sorts the column information in the dataset into groups according to the column
- * head, so that the line path can be passed as one object to the drawing function
- */
-export function getlines(d, group, joinPoints) {
-    const lineData = [];
-    d.forEach((el) => {
-        // console.log(el,i)
-        const column = {};
-        column.name = group;
-        column.date = el.date;
-        column.value = +el[group];
-        column.highlight = el.highlight;
-        column.annotate = el.annotate;
-        if (el[group]) {
-            lineData.push(column);
-        }
-
-        // if(el[group] == false) {
-        //     lineData.push(null)
-        // }
-        if (el[group] === false && joinPoints === false) {
-            lineData.push(null);
-        }
-    });
-    return lineData;
-    // return d.map((el) => {
-    //     if (el[group]) {
-    //         return {
-    //             name: group,
-    //             date: el.date,
-    //             value: +el[group],
-    //             highlight: el.highlight,
-    //             annotate: el.annotate,
-    //         };
-    //     }
-
-    //     return null;
-    // }).filter(i => i);
 }
