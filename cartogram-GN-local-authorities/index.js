@@ -40,32 +40,32 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
-    webS: gChartframe.webFrameS(sharedConfig)
-     .margin({ top: 100, left: 15, bottom: 82, right: 35 })
-     // .title('Put headline here') // use this if you need to override the defaults
-     // .subtitle("Put headline |here") //use this if you need to override the defaults
-     .height(1200)
-     .extend('numberOfColumns', 1)
-     .extend('numberOfRows', 3),
+ //    webS: gChartframe.webFrameS(sharedConfig)
+ //     .margin({ top: 100, left: 15, bottom: 82, right: 35 })
+ //     // .title('Put headline here') // use this if you need to override the defaults
+ //     // .subtitle("Put headline |here") //use this if you need to override the defaults
+ //     .height(1200)
+ //     .extend('numberOfColumns', 1)
+ //     .extend('numberOfRows', 3),
 
-    webM: gChartframe.webFrameM(sharedConfig)
-        .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
-        })
-    // .title("Put headline here")
-        .height(500)
-        .extend('numberOfColumns', 3)
-        .extend('numberOfRows', 1),
+ //    webM: gChartframe.webFrameM(sharedConfig)
+ //        .margin({
+ //            top: 100, left: 20, bottom: 86, right: 5,
+ //        })
+ //    // .title("Put headline here")
+ //        .height(500)
+ //        .extend('numberOfColumns', 3)
+ //        .extend('numberOfRows', 1),
 
-    webL: gChartframe.webFrameL(sharedConfig)
-        .margin({
-            top: 100, left: 20, bottom: 104, right: 5,
-        })
-    // .title("Put headline here")
-        .height(700)
-        .fullYear(true)
-        .extend('numberOfColumns', 3)
-        .extend('numberOfRows', 1),
+ //    webL: gChartframe.webFrameL(sharedConfig)
+ //        .margin({
+ //            top: 100, left: 20, bottom: 104, right: 5,
+ //        })
+ //    // .title("Put headline here")
+ //        .height(700)
+ //        .fullYear(true)
+ //        .extend('numberOfColumns', 3)
+ //        .extend('numberOfRows', 1),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
@@ -76,36 +76,36 @@ const frame = {
         .extend('numberOfColumns', 3)
         .extend('numberOfRows', 1),
 
-    print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 30, left: 7, bottom: 35, right: 7 })
-  // .title("Put headline here")
-  //.width(53.71)// 1 col
-  //.width(112.25)// 2 col
-   .width(170.8)// 3 col
-  // .width(229.34)// 4 col
-  // .width(287.88)// 5 col
-  // .width(346.43)// 6 col
-  // .width(74)// markets std print
-  .height(69.85)
-  .extend('numberOfColumns', 3)
-  .extend('numberOfRows', 1), // std print (Use 58.21mm for markets charts that matter)
+ //    print: gChartframe.printFrame(sharedConfig)
+ // .margin({ top: 30, left: 7, bottom: 35, right: 7 })
+ //  // .title("Put headline here")
+ //  //.width(53.71)// 1 col
+ //  //.width(112.25)// 2 col
+ //   .width(170.8)// 3 col
+ //  // .width(229.34)// 4 col
+ //  // .width(287.88)// 5 col
+ //  // .width(346.43)// 6 col
+ //  // .width(74)// markets std print
+ //  .height(69.85)
+ //  .extend('numberOfColumns', 3)
+ //  .extend('numberOfRows', 1), // std print (Use 58.21mm for markets charts that matter)
 
-    social: gChartframe.socialFrame(sharedConfig)
-        .margin({
-            top: 140, left: 50, bottom: 138, right: 40,
-        })
-    // .title("Put headline here")
-        .width(612)
-        .height(612)
-        .extend('numberOfColumns', 2)
-        .extend('numberOfRows', 2), // 700 is ideal height for Instagram
+ //    social: gChartframe.socialFrame(sharedConfig)
+ //        .margin({
+ //            top: 140, left: 50, bottom: 138, right: 40,
+ //        })
+ //    // .title("Put headline here")
+ //        .width(612)
+ //        .height(612)
+ //        .extend('numberOfColumns', 2)
+ //        .extend('numberOfRows', 2), // 700 is ideal height for Instagram
 
-    video: gChartframe.videoFrame(sharedConfig)
-        .margin({
-            left: 207, right: 207, bottom: 210, top: 233,
-        })
-        .extend('numberOfColumns', 3)
-        .extend('numberOfRows', 4),
+ //    video: gChartframe.videoFrame(sharedConfig)
+ //        .margin({
+ //            left: 207, right: 207, bottom: 210, top: 233,
+ //        })
+ //        .extend('numberOfColumns', 3)
+ //        .extend('numberOfRows', 4),
     // .title("Put headline here")
 };
 
@@ -128,16 +128,17 @@ parseData.load([dataFile, shapefile], { dateFormat})
         const mapWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
         const mapDim = [mapWidth,mapWidth* 1.55];
         const carto = cartogram.draw();
+        console.log(plotData)
 
-        const colourPalette = d3.scaleOrdinal()
-                .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
-                .range(Object.values(gChartcolour.germanPoliticalParties_bar));
+        const colourPalette = d3.scaleLinear()
+                .domain(valueExtent)
+                .range(['#d6d3ea', '#0a3866']);
 
         carto
           .mapDim(mapDim)
           .shapeData(shapeData)
           .valueExtent(valueExtent)
-          .colourPalette((frameName));
+          .colourPalette(colourPalette);
 
         const colourScale = d3.scaleOrdinal()
                 .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
@@ -158,8 +159,6 @@ parseData.load([dataFile, shapefile], { dateFormat})
               const xPos = i % currentFrame.numberOfColumns();
               return `translate(${(((mapDim[0] + (currentFrame.rem() * 1.5)) * xPos))}, ${yPos})`;
           });
-
-
 
       });
   });

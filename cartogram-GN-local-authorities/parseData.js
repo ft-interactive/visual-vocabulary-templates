@@ -16,7 +16,7 @@ export function load([url, url2], options) { // eslint-disable-line
         const data1 = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
 
-        const {dateFormat, yMin, joinPoints, highlightNames } = options; // eslint-disable-line no-unused-vars
+        const {dateFormat} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
 
         const parseDate = d3.timeParse(dateFormat);
@@ -29,15 +29,14 @@ export function load([url, url2], options) { // eslint-disable-line
 
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map(d => ({
-            name: d,
+            mapName: d,
             mapData: getMapData(d)
         }));
-        console.log(plotData)
 
         function getMapData(group) {
             let mapData = data1.map((d) =>{
                 return {
-                    group: group,
+                    mapName: group,
                     ons_id: d.ons_id,
                     ons_name: d.ons_name,
                     ft_name: d.ft_name,
