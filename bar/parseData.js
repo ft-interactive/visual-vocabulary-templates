@@ -32,6 +32,7 @@ export function load(url, options) { // eslint-disable-line
             plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
         } // Sorts biggest rects to the left
 
+        console.log(plotData)
         return {
             groupNames,
             valueExtent,
