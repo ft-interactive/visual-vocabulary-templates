@@ -1,4 +1,4 @@
-export default [
+module.exports = [
     {
         category: 'Deviation',
         colour: '#E6B00F',
