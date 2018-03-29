@@ -7,7 +7,8 @@
         "url": "git+https://github.com/ft-interactive/visual-vocabulary-templates.git"
     },
     "scripts": {
-        "deploy-css": "ft-graphics-deploy --confirm --local-dir=./docs/"
+        "deploy-css": "ft-graphics-deploy --confirm --local-dir=./docs/",
+        "generate-api-docs": "bash -O extglob -c 'jsdoc !(docs|node_modules)/*.js -d docs/api'"
     },
     "keywords": [],
     "author": "Financial Times Interactive Graphics",
@@ -21,7 +22,8 @@
         "eslint-config-airbnb-base": "^11.2.0",
         "eslint-plugin-html": "^3.2.2",
         "eslint-plugin-import": "^2.6.0",
-        "ft-graphics-deploy": "^2.1.6"
+        "ft-graphics-deploy": "^2.1.6",
+        "jsdoc": "^3.5.5"
     },
     "dependencies": {
         "d3": "^4.9.1",
