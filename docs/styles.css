@@ -32,13 +32,14 @@ svg {
 .ft-webgraphic-m .axis text,
 .ft-webgraphic-m-default .axis text,
 .ft-webgraphic-l .axis text {
-  font-family: Metric;
+  font-family: metric;
   fill: #66605C;
 }
 
 .ft-socialgraphic .axis text,
 .ft-videographic .axis text {
     opacity: 0.5;
+    fill: #ffffff;
 }
 
 .ft-webgraphic-s .highlighted-label,
@@ -73,18 +74,18 @@ svg {
 
 .ft-printgraphic .axis text,
 .ft-printgraphic .highlighted-label {
-    font-family: Metric;
+    font-family: metric;
     font-size: 9.6px;
     fill: #000000;
 }
 .ft-socialgraphic .axis text,
 .ft-socialgraphic .highlighted-label {
-    font-family: Metric;
+    font-family: metric;
     font-size: 28px;
 }
 .ft-videographic .axis text,
 .ft-videographic .highlighted-label {
-    font-family: Metric;
+    font-family: metric;
     font-size: 48px;
 }
 
@@ -374,7 +375,7 @@ svg {
 .ft-webgraphic-m .timeline-label,
 .ft-webgraphic-m-default .timeline-label,
 .ft-webgraphic-l .timeline-label {
-    font-family: Metric;
+    font-family: metric;
     fill: #000000;
 }
 
@@ -383,7 +384,7 @@ svg {
 .ft-webgraphic-m .legend,
 .ft-webgraphic-m-default .legend,
 .ft-webgraphic-l .legend {
-    font-family: Metric;
+    font-family: metric;
     fill: #66605C;
 }
 
@@ -409,14 +410,14 @@ svg {
 
 .ft-printgraphic .timeline-label,
 .ft-printgraphic .legend {
-    font-family: Metric;
+    font-family: metric;
     font-size: 9.6px;
     fill: #000000;
 }
 
 .ft-socialgraphic .timeline-label,
 .ft-socialgraphic .legend text {
-    font-family: Metric;
+    font-family: metric;
     opacity: 0.5;
     fill: #FFFFFF;
     font-size: 28px;
@@ -424,7 +425,7 @@ svg {
 
 .ft-videographic .timeline-label,
 .ft-videographic .legend text{
-    font-family: Metric;
+    font-family: metric;
     opacity: 0.5;
     fill: #FFFFFF;
     font-size: 48px;
