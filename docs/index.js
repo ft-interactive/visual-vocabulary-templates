@@ -1,8 +1,8 @@
-// @flow
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 import plotCategories from './categories.js';
 
-d3.csv('chartTypes.csv', (error, chartData) => {
+loadData('chartTypes.csv').then((error, chartData) => {
     const container = d3.select('.container');
 
     window.onresize = redraw;

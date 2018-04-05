@@ -3,34 +3,31 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, options) { // eslint-disable-line
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                // automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
-                const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames);
+export function load(url, options) {
+    const { dateFormat } = options;
+    return loadData(url).then((result) => {
+        // automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
+        const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
 
-                // Buid the dataset for plotting
-                const plotData = data;
+        // Buid the dataset for plotting
+        const plotData = data;
 
-                resolve({
-                    groupNames,
-                    valueExtent,
-                    seriesNames,
-                    plotData,
-                });
-            }
-        });
+        return {
+            groupNames,
+            valueExtent,
+            seriesNames,
+            plotData,
+        };
     });
 }
 
@@ -56,4 +53,3 @@ function extentMulti(data, columns) {
     }, {});
     return [ext.min, ext.max];
 }
-

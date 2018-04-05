@@ -3,42 +3,38 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, options) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                const { yMin, dataDivisor } = options;
+export function load(url, options) {
+    const { dateFormat, yMin, dataDivisor } = options;
 
-                // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
+    return loadData(url).then((result) => {
+        // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
 
-                const columnNames = data.map(d => d.name); // create an array of the column names
+        const columnNames = data.map(d => d.name); // create an array of the column names
 
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames, yMin);
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames, yMin);
 
-                // format the dataset that is used to draw the lines
-                const plotData = seriesNames.map(d => ({
-                    name: d,
-                    columnData: getColumns(data, d, dataDivisor),
-                }));
+        // format the dataset that is used to draw the lines
+        const plotData = seriesNames.map(d => ({
+            name: d,
+            columnData: getColumns(data, d, dataDivisor),
+        }));
 
-                resolve({
-                    columnNames,
-                    seriesNames,
-                    plotData,
-                    data,
-                    valueExtent,
-                });
-            }
-        });
+        return {
+            columnNames,
+            seriesNames,
+            plotData,
+            data,
+            valueExtent,
+        };
     });
 }
 

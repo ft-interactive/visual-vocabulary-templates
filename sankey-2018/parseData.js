@@ -3,37 +3,34 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateFormat) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateFormat);
+export function load(url, options) {
+    const { dateFormat } = options;
+    return loadData(url).then((result) => {
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateFormat);
 
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
-
-                // automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
-
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames);
-
-                resolve({
-                    seriesNames,
-                    valueExtent,
-                    data,
-                });
-            }
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
         });
+
+        // automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
+
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
+
+        return {
+            seriesNames,
+            valueExtent,
+            data,
+        };
     });
 }
 

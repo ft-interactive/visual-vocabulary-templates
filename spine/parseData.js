@@ -3,42 +3,39 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, options) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                const { sort, sortOn } = options;
-                // automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
-                const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames);
+export function load(url, options) {
+    const { sort, sortOn, dateFormat } = options;
 
-                // Buid the dataset for plotting
-                const plotData = data;
+    return loadData(url).then((result) => {
+        // automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
+        const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
 
-                if (sort === 'descending') {
-                    plotData.sort((a, b) =>
-                        b[seriesNames[sortOn]] - a[seriesNames[sortOn]]);// Sorts biggest rects to the left
-                } else if (sort === 'ascending') {
-                    plotData.sort((a, b) => a[seriesNames[sortOn]] - b[seriesNames[sortOn]]);
-                } // Sorts biggest rects to the left
+        // Buid the dataset for plotting
+        const plotData = data;
 
-                resolve({
-                    groupNames,
-                    valueExtent,
-                    seriesNames,
-                    plotData,
-                });
-            }
-        });
+        if (sort === 'descending') {
+            plotData.sort((a, b) =>
+                b[seriesNames[sortOn]] - a[seriesNames[sortOn]]);// Sorts biggest rects to the left
+        } else if (sort === 'ascending') {
+            plotData.sort((a, b) => a[seriesNames[sortOn]] - b[seriesNames[sortOn]]);
+        } // Sorts biggest rects to the left
+
+        return {
+            groupNames,
+            valueExtent,
+            seriesNames,
+            plotData,
+        };
     });
 }
 
