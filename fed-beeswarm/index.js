@@ -1,5 +1,6 @@
 /**
- * Bootstrapping code for line chart
+ * Code for generating a beeswarm chart for representing Fed projections
+ * of US interest rates at multiple sizes
  */
 
 import * as d3 from 'd3';

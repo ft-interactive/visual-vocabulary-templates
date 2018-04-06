@@ -10,7 +10,6 @@ import loadData from '@financial-times/load-data';
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
-    // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
         const { yMin } = options; // eslint-disable-line no-unused-vars
