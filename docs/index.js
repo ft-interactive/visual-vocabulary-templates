@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import loadData from '@financial-times/load-data';
 import plotCategories from './categories.js';
 
-loadData('chartTypes.csv').then((error, chartData) => {
+loadData('chartTypes.csv').then((chartData) => {
     const container = d3.select('.container');
 
     window.onresize = redraw;
