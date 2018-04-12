@@ -39,12 +39,15 @@ const yAxisAlign = 'right'; // alignment of the axis
 const xAxisAlign = 'bottom'; // alignment of the axis
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
 const legendType = 'circ'; // rect, line or circ, geometry of legend marker
+const invert = false // inverts the y axis
+const logScale = false // enables log scale on the y axis
+const yBanding = false // enables banding on the y axis
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe
         .webFrameS(sharedConfig)
-        .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+        .margin({ top: 100, left: 15, bottom: 82, right: 25 })
         // .title('Put headline here') // use this if you need to override the defaults
         // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
@@ -55,7 +58,7 @@ const frame = {
             top: 100,
             left: 20,
             bottom: 86,
-            right: 5,
+            right: 25,
         })
         // .title("Put headline here")
         .height(500),
@@ -66,7 +69,7 @@ const frame = {
             top: 100,
             left: 20,
             bottom: 104,
-            right: 5,
+            right: 25,
         })
         // .title("Put headline here")
         .height(700)
@@ -78,7 +81,7 @@ const frame = {
             top: 100,
             left: 20,
             bottom: 86,
-            right: 5,
+            right: 25,
         })
         // .title("Put headline here")
         .height(500),
@@ -135,11 +138,44 @@ parseData
 
             // define other functions to be called
             const tickSize = currentFrame.dimension().width; // Used when drawing the yAxis ticks
+            const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
 
             const myChart = beeswarmChart
                 .draw()
                 .seriesNames(seriesNames)
                 .projectionDates(projectionDates);
+
+            // set up y-axis for this frame
+            myYAxis
+                .plotDim(plotDim)
+                .banding(yBanding)
+                .domain([yMin, yMax])
+                .range([currentFrame.dimension().height, 0])
+                .numTicks(numTicksy)
+                .tickSize(tickSize)
+                .tickFormat(d3.format('.1f'))
+                .align(yAxisAlign)
+                .rem(currentFrame.rem())
+                .frameName(frameName)
+                .invert(invert)
+                .logScale(logScale);
+
+            currentFrame.plot().call(myYAxis);
+
+            // return the value in the variable newMargin and move axis if needed
+            if (yAxisAlign === 'right') {
+              const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+              // Use newMargin redefine the new margin and range of xAxis
+              //currentFrame.margin({ right: newMargin });
+            }
+            if (yAxisAlign === 'left') {
+              const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+              //Use newMargin redefine the new margin and range of xAxis
+              currentFrame.margin({ left: newMargin });
+              myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            }
+            d3.select(currentFrame.plot().node().parentNode)
+                .call(currentFrame);
 
             // Set up xAxis for this frame
             myXAxis
@@ -147,17 +183,17 @@ parseData
                 .rangeRound([0, currentFrame.dimension().width])
                 .align(xAxisAlign)
                 .tickSize(currentFrame.rem() * 0.75)
+                .rem(currentFrame.rem())
                 .frameName(frameName);
 
-            // set up y-axis for this frame
-            myYAxis
-                .domain([yMin, yMax])
-                .range([currentFrame.dimension().height, 0])
-                .numTicks(numTicksy)
-                .tickSize(tickSize)
-                .tickFormat(d3.format('.1f'))
-                .align(yAxisAlign)
-                .frameName(frameName);
+            currentFrame.plot().call(myXAxis);
+
+            if (xAxisAlign === 'bottom') {
+                myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+            }
+            if (xAxisAlign === 'top') {
+                myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+            }
 
             myChart
                 .yScale(myYAxis.scale())
@@ -165,18 +201,6 @@ parseData
                 .plotDim(currentFrame.dimension())
                 .rem(currentFrame.rem())
                 .colourPalette(frameName);
-
-            // Draw the x and y axes
-            currentFrame.plot().call(myXAxis);
-
-            currentFrame.plot().call(myYAxis);
-
-            myXAxis
-                .xLabel()
-                .attr(
-                    'transform',
-                    `translate(0,${currentFrame.dimension().height})`,
-                );
 
             // draw beeswarm
             currentFrame
