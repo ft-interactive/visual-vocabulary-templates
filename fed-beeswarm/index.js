@@ -39,9 +39,9 @@ const yAxisAlign = 'right'; // alignment of the axis
 const xAxisAlign = 'bottom'; // alignment of the axis
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
 const legendType = 'circ'; // rect, line or circ, geometry of legend marker
-const invert = false // inverts the y axis
-const logScale = false // enables log scale on the y axis
-const yBanding = false // enables banding on the y axis
+const invert = false; // inverts the y axis
+const logScale = false; // enables log scale on the y axis
+const yBanding = false; // enables banding on the y axis
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -164,15 +164,15 @@ parseData
 
             // return the value in the variable newMargin and move axis if needed
             if (yAxisAlign === 'right') {
-              const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
-              // Use newMargin redefine the new margin and range of xAxis
-              //currentFrame.margin({ right: newMargin });
+                const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+                // Use newMargin redefine the new margin and range of xAxis
+                currentFrame.margin({ right: newMargin });
             }
             if (yAxisAlign === 'left') {
-              const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
-              //Use newMargin redefine the new margin and range of xAxis
-              currentFrame.margin({ left: newMargin });
-              myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+                const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+                // Use newMargin redefine the new margin and range of xAxis
+                currentFrame.margin({ left: newMargin });
+                myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
             }
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
