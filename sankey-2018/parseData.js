@@ -12,7 +12,7 @@ import loadData from '@financial-times/load-data';
  */
 export function load(url, options) {
     const { dateFormat } = options;
-    return loadData(url).then((result) => {
+    return loadData(url).then((data) => {
         // make sure all the dates in the date column are a date object
         const parseDate = d3.timeParse(dateFormat);
 

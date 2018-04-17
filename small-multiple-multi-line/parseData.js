@@ -10,10 +10,10 @@ import loadData from '@financial-times/load-data';
  * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function load(url, options) { // eslint-disable-line
-    const { dateFormat, yMin, joinPoints, dataDivisor } = options;
+export function load(url, options = {}) { // eslint-disable-line
+    const { dateStructure, yMin, joinPoints, dataDivisor } = options;
 
-    return loadData(url).then((result) => {
+    return loadData(url).then((data) => {
         // make sure all the dates in the date column are a date object
         const parseDate = d3.timeParse(dateStructure);
         data.forEach((d) => {

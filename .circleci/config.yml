@@ -23,3 +23,6 @@ jobs:
             then
                 npm run deploy-css
             fi
+      - run:
+          name: Run regression tests
+          command: npm test

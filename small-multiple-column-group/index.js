@@ -108,7 +108,7 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
-parseData.fromCSV(dataFile, { yMin, dataDivisor })
+parseData.load(dataFile, { yMin, dataDivisor })
     .then(({
         columnNames, plotData, valueExtent,
     }) => {
