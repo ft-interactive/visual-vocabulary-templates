@@ -15,13 +15,5 @@
   },
   "env": {
     "browser": true
-  },
-  "plugins": [
-    "html"
-  ],
-  "settings": {
-    "html/html-extensions": [
-      ".html"
-    ]
   }
 }
