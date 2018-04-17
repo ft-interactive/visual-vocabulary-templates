@@ -32,13 +32,12 @@ describe('basic regression tests', function() {
 
     let server;
     let port;
-    let browser;
+    const browserP = puppeteer.launch();
 
     beforeAll(async () => {
         try {
             port = await portfinder.getPortPromise();
             server = http.createServer(connect().use(serveStatic(join(__dirname, '..'))));
-            browser = await puppeteer.launch();
             return new Promise(resolve =>
                 server.listen(port, resolve));
         } catch (e) {
@@ -55,6 +54,7 @@ describe('basic regression tests', function() {
     dirs.forEach(dir => {
         test(`${dir}`, async () => {
             console.log(`On: ${dir}`);
+            const browser = await browserP;
             const page = await browser.newPage();
 
             try {
