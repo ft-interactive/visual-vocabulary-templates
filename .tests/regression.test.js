@@ -55,10 +55,9 @@ describe('basic regression tests', function() {
     dirs.forEach(dir => {
         test(`${dir}`, async () => {
             console.log(`On: ${dir}`);
-            let page;
+            const page = await browser.newPage();
 
             try {
-                page = await browser.newPage();
                 const assertNoError = err => expect(err.message).not.toBeDefined();
 
                 page.on('pageerror', assertNoError);
