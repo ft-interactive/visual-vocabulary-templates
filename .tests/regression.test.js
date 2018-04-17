@@ -13,7 +13,7 @@ const portfinder = require('portfinder');
 
 const TIMEOUT = 20 * 1000;
 
-describe('basic regression tests', function() {
+describe('Visual Vocabulary Templates', function() {
     const exclude = [
         // Excluded templates:
         'choropleth', // Downloading the data takes too long and fails test
@@ -32,10 +32,11 @@ describe('basic regression tests', function() {
 
     let server;
     let port;
-    const browserP = puppeteer.launch();
+    let browser;
 
     beforeAll(async () => {
         try {
+            browser = await puppeteer.launch();
             port = await portfinder.getPortPromise();
             server = http.createServer(connect().use(serveStatic(join(__dirname, '..'))));
             return new Promise(resolve =>
@@ -51,24 +52,25 @@ describe('basic regression tests', function() {
         return new Promise(resolve => server.close(resolve));
     });
 
-    dirs.forEach(dir => {
-        test(`${dir}`, async () => {
-            console.log(`On: ${dir}`);
-            const browser = await browserP;
-            const page = await browser.newPage();
+    describe('basic regression tests', () => {
+        dirs.forEach(dir => {
+            test(`${dir}`, async () => {
+                console.log(`On: ${dir}`);
+                const page = await browser.newPage();
 
-            try {
-                const assertNoError = err => expect(err.message).not.toBeDefined();
+                try {
+                    const assertNoError = err => expect(err.message).not.toBeDefined();
 
-                page.on('pageerror', assertNoError);
-                page.on('requestfailed', assertNoError);
+                    page.on('pageerror', assertNoError);
+                    page.on('requestfailed', assertNoError);
 
-                await page.goto(`http://localhost:${port}/${basename(dir)}`, {waitUntil: 'networkidle0'});
-                return await page.close();
-            } catch (e) {
-                console.error(e);
-                await page.close();
-            }
-        }, TIMEOUT);
+                    await page.goto(`http://localhost:${port}/${basename(dir)}`, {waitUntil: 'networkidle0'});
+                    return await page.close();
+                } catch (e) {
+                    console.error(e);
+                    await page.close();
+                }
+            }, TIMEOUT);
+        });
     });
 });
