@@ -55,9 +55,10 @@ describe('basic regression tests', function() {
     dirs.forEach(dir => {
         test(`${dir}`, async () => {
             console.log(`On: ${dir}`);
-            try {
-                const page = await browser.newPage();
+            let page;
 
+            try {
+                page = await browser.newPage();
                 const assertNoError = err => expect(err.message).not.toBeDefined();
 
                 page.on('pageerror', assertNoError);
@@ -66,6 +67,7 @@ describe('basic regression tests', function() {
                 await page.goto(`http://localhost:${port}/${basename(dir)}`, {waitUntil: 'networkidle0'});
                 return await page.close();
             } catch (e) {
+                console.error(e);
                 await page.close();
             }
         }, TIMEOUT);
