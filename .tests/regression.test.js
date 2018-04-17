@@ -36,7 +36,7 @@ describe('Visual Vocabulary Templates', function() {
 
     beforeAll(async () => {
         try {
-            browser = await puppeteer.launch();
+            browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
             port = await portfinder.getPortPromise();
             server = http.createServer(connect().use(serveStatic(join(__dirname, '..'))));
             return new Promise(resolve =>
