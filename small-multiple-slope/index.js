@@ -27,7 +27,7 @@ const legendType = 'line';// rect, line or circ, geometry of legend marker
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-   .margin({ top: 100, left: 80, bottom: 62, right: 80 })
+   .margin({ top: 100, left: 0, bottom: 62, right: 10 })
    // .title("Put headline here") //use this if you need to override the defaults
    // .subtitle("Put headline |here") //use this if you need to override the defaults
    .height(400)
@@ -36,7 +36,7 @@ const frame = {
    .extend('numberOfRows', 2),
 
     webM: gChartframe.webFrameM(sharedConfig)
-   .margin({ top: 100, left: 100, bottom: 62, right: 100 })
+   .margin({ top: 100, left: 10, bottom: 62, right: 10 })
    // .title("Put headline here")
    .height(500)
    .sourcePlotYOffset(28)
@@ -51,7 +51,7 @@ const frame = {
    .extend('numberOfRows', 2),
 
     webL: gChartframe.webFrameL(sharedConfig)
-   .margin({ top: 100, left: 150, bottom: 76, right: 150 })
+   .margin({ top: 100, left: 10, bottom: 76, right: 10 })
    // .title("Put headline here")
    .height(700)
    .sourcePlotYOffset(32)
@@ -60,7 +60,7 @@ const frame = {
    .extend('numberOfRows', 2),
 
     print: gChartframe.printFrame(sharedConfig)
-    .margin({ top: 40, left: 40, bottom: 35, right: 40 })
+    .margin({ top: 40, left: 10, bottom: 35, right: 10 })
     // .title("Put headline here")
     // .width(53.71)// 1 col
     .width(112.25)// 2 col
@@ -74,7 +74,7 @@ const frame = {
     .extend('numberOfRows', 2),
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 140, left: 150, bottom: 138, right: 150 })
+   .margin({ top: 140, left: 10, bottom: 138, right: 50 })
    // .title("Put headline here")
    .width(612)
    .height(612)
@@ -82,7 +82,7 @@ const frame = {
    .extend('numberOfRows', 2),
 
     video: gChartframe.videoFrame(sharedConfig)
-   .margin({ left: 400, right: 400, bottom: 210, top: 233 })
+   .margin({ left: 150, right: 150, bottom: 210, top: 233 })
    // .title("Put headline here")
    .extend('numberOfColumns', 4)
    .extend('numberOfRows', 2),
