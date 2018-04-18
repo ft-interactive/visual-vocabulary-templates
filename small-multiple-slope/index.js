@@ -170,14 +170,14 @@ parseData.load(dataURL).then(({ seriesNames, setColourPalette, groupNames, names
         myChart.colourPalette(frameName, groupNames, setColourPalette); // set colour palette
         myAxes.colourInverse((frameName === 'social' || frameName === 'video'));
 
+        chart.call(myAxes);
+
         chart
           .append('g')
               .attr('class', 'legend')
               .attr('id', d => d.key)
               .append('text')
               .text(d => d.key);
-
-        chart.call(myAxes);
 
         chart
           .selectAll('g.slope')
