@@ -10,9 +10,9 @@ import loadData from '@financial-times/load-data';
  * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function load(url, options) {
+export function load(url, options = {}) {
     const { dateFormat } = options;
-    return loadData(url).then((result) => {
+    return loadData(url).then((data) => {
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names

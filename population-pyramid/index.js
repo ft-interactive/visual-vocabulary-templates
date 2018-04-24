@@ -96,7 +96,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, '')
+parseData.load(dataFile)
     .then(({ seriesNames, plotData, valueExtent }) => {
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
