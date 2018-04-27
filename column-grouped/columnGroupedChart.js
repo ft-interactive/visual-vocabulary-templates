@@ -28,7 +28,7 @@ export function draw() {
             .append('rect')
             .attr('class', 'columns')
             .attr('x', d => xScale1(d.name))
-            .attr('width', () => xScale1.bandwidth())
+            .attr('width', () => Math.max(1, xScale1.bandwidth()))
             .attr('y', (d) => {
                 if(logScale) {
                     return yScale(Math.max(min, d.value))
