@@ -11,16 +11,23 @@ import loadData from '@financial-times/load-data';
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options = {}) {
-    const { dateFormat } = options;
+    const { dateFormat, groupByYear } = options;
     return loadData(url).then((data) => {
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
         const groupNames = data.map(d => d.name).filter(d => d); // create an array of the group names
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames);
+
+        let plotData = data;
 
         // Buid the dataset for plotting
-        const plotData = data;
+        if (groupByYear) {
+            plotData = d3.nest()
+                .key(d => d.year)
+                .entries(data);
+        }
+
+        const valueExtent = extentMulti(plotData[plotData.length - 1].values, seriesNames);
 
         return {
             groupNames,
@@ -33,7 +40,7 @@ export function load(url, options = {}) {
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['name'];
+    const exclude = ['name', 'year', 'generation', 'born'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 

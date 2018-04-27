@@ -11,23 +11,35 @@ export function draw() {
         .domain(seriesNames);
     let rem = 10;
     let showNumberLabels = false;// show numbers on end of bars
+    let highlightGeneration = 'millennial';
+    let nonMillennials = '#D4CBC3';
 
     function bars(parent) {
         parent.append('rect')
             .attr('class', 'bars')
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
-            .attr('x', d => xScaleL(Math.max(0, +d[seriesNames[0]])))
+            .attr('x', d => xScaleL(Math.max(0, +d[seriesNames[0]])) - (xScaleL(0) * 0.02))
             .attr('width', d => Math.abs(xScaleL(+d[seriesNames[0]]) - xScaleL(0)))
-            .attr('fill', colourScale(0));
+            .attr('fill', (d) => {
+                if (d.generation === highlightGeneration) {
+                    return '#EE5E2B';
+                }
+                return nonMillennials;
+            });
 
         parent.append('rect')
             .attr('class', 'bars')
             .attr('y', d => yScale(d.name))
             .attr('height', () => yScale.bandwidth())
-            .attr('x', d => xScaleR(Math.min(0, +d[seriesNames[1]])))
+            .attr('x', d => xScaleR(Math.min(0, +d[seriesNames[1]])) + (xScaleR(0) * 0.02))
             .attr('width', d => Math.abs(xScaleR(+d[seriesNames[1]]) - xScaleR(0)))
-            .attr('fill', colourScale(1));
+            .attr('fill', (d) => {
+                if (d.generation === highlightGeneration) {
+                    return '#44A4AA';
+                }
+                return nonMillennials;
+            });
 
         if (showNumberLabels) {
             parent.append('text')

@@ -5,7 +5,7 @@ import * as parseData from './parseData.js';
 import * as pyramidChart from './pyramidChart.js';
 
 
-const dataFile = 'world2015.csv';
+const dataFile = 'populationPyramid19812018.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -25,7 +25,7 @@ const catLabel = 'Age'; // define the categories
 const showNumberLabels = false;// show numbers on end of bars
 
 const yNumTicks = 10;
-
+const groupByYear = true;
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -98,12 +98,17 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataFile)
+parseData.load(dataFile, { groupByYear })
     .then(({ seriesNames, plotData, valueExtent }) => {
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
             // define other functions to be called
+
+            let startYear = 0;
+            const endYear = plotData.length - 1;
+
+            let currentYear = plotData[startYear].values;
 
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const yLabelsAxis = gAxis.yLinear();
@@ -114,7 +119,7 @@ parseData.load(dataFile)
             // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
             yAxis
                 .align(yAxisAlign)
-                .domain(plotData.map(d => d.name))
+                .domain(d3.range(0, 100, 1))
                 .rangeRound([0, currentFrame.dimension().height], 10)
                 .invert(invertScale)
                 .frameName(frameName);
@@ -137,10 +142,15 @@ parseData.load(dataFile)
                 .call(yLabelsAxis);
 
             yLabelsAxis.yLabel()
-                .attr('transform', `translate(${((currentFrame.dimension().width / 2) + (currentFrame.rem() / 5))}, ${0})`);
-
-            yLabelsAxis.yLabel()
-                .selectAll('.tick text').style('text-anchor', 'middle');
+                .attr('transform', `translate(${((currentFrame.dimension().width / 2) + (currentFrame.rem() / 5))}, ${0})`)
+                .selectAll('.tick text')
+                .style('text-anchor', 'middle')
+                .attr('opacity', (d) => {
+                    if (d === 0) {
+                        return 0;
+                    }
+                    return 1;
+                });
 
             xAxisL
                 .range([0, ((currentFrame.dimension().width / 2) - (yAxis.labelWidth() / 2) - (currentFrame.rem() / 2.5))])
@@ -156,6 +166,9 @@ parseData.load(dataFile)
             currentFrame.plot()
                 .call(xAxisL);
 
+            xAxisL.xLabel()
+                .attr('transform', `translate(${-currentFrame.dimension().width * 0.01}, ${0})`);
+
             xAxisR
                 .range([((currentFrame.dimension().width) / 2) + (yAxis.labelWidth() / 2) + (currentFrame.rem() / 2.5), currentFrame.dimension().width])
                 .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
@@ -166,6 +179,12 @@ parseData.load(dataFile)
 
             currentFrame.plot()
                 .call(xAxisR);
+
+            xAxisR.xLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width * 0.01}, ${0})`);
+
+            const xFontSize = xAxisL.xLabel().selectAll('.tick text').style('font-size').slice(0, -2) * 0.875;
+            yLabelsAxis.yLabel().selectAll('.tick text').style('font-size', xFontSize);
 
             myChart
             // .paddingInner(0.06)
@@ -179,10 +198,13 @@ parseData.load(dataFile)
                 .showNumberLabels(showNumberLabels);
 
             currentFrame.plot()
+                .append('g')
+                .attr('class', 'barGroup')
                 .selectAll('.barHolder')
-                .data(plotData)
+                .data(currentYear)
                 .enter()
                 .append('g')
+                .attr('class', 'barHolder')
                 .call(myChart);
 
             currentFrame.plot()
@@ -191,10 +213,11 @@ parseData.load(dataFile)
                 .append('text')
                 .attr('class', 'annotation')
                 .attr('id', `${frameName}annotateright`)
-                .attr('x', (currentFrame.dimension().width / 2) - (currentFrame.rem() / 2) - (yAxis.labelWidth() / 2))
-                .attr('y', -currentFrame.rem() / 4)
+                .attr('x', (currentFrame.dimension().width / 2) - (currentFrame.rem() / 2) - (yAxis.labelWidth()))
+                .attr('y', -currentFrame.rem())
                 .attr('text-anchor', 'end')
-                .text(seriesNames[0]);
+                .style('fill', 'black')
+                .text(`← ${seriesNames[0]}`);
 
             currentFrame.plot()
                 .append('g')
@@ -202,10 +225,11 @@ parseData.load(dataFile)
                 .append('text')
                 .attr('class', 'annotation')
                 .attr('id', `${frameName}annotateleft`)
-                .attr('x', (currentFrame.dimension().width / 2) + (currentFrame.rem() / 2) + (yAxis.labelWidth() / 2))
-                .attr('y', -currentFrame.rem() / 4)
+                .attr('x', (currentFrame.dimension().width / 2) + (currentFrame.rem() / 2) + (yAxis.labelWidth()))
+                .attr('y', -currentFrame.rem())
                 .attr('text-anchor', 'start')
-                .text(seriesNames[1]);
+                .style('fill', 'black')
+                .text(`${seriesNames[1]} →`);
 
             currentFrame.plot()
                 .append('g')
@@ -214,9 +238,54 @@ parseData.load(dataFile)
                 .attr('class', 'annotation')
                 .attr('id', `${frameName}annotateleft`)
                 .attr('x', (currentFrame.dimension().width / 2))
-                .attr('y', -currentFrame.rem() / 4)
+                .attr('y', -currentFrame.rem())
                 .attr('text-anchor', 'middle')
-                .text(catLabel);
+                .style('font-size', xFontSize)
+                .text(catLabel.toUpperCase());
+
+            const yearLabel = currentFrame.plot()
+                .append('g')
+                .attr('class', 'annotations-holder')
+                .append('text')
+                .attr('class', 'annotation')
+                .attr('id', `${frameName}annotateYear`)
+                .attr('x', currentFrame.dimension().width * 0.95)
+                .attr('y', -currentFrame.rem())
+                .attr('text-anchor', 'end')
+                .style('font-size', xFontSize * 2)
+                .style('fill', '#D4CBC3')
+                .text(plotData[startYear].key);
+
+            yLabelsAxis.yLabel().raise();
+
+            d3.select(`#trigger-animation-${frameName}`).on('click', () => {
+                const timeoutFunction = setInterval(animateChart, 500);
+
+                function animateChart() {
+                    startYear += 1;
+                    currentYear = plotData[startYear].values;
+
+                    if (startYear <= endYear) {
+                        currentFrame.plot()
+                            .select('.barGroup')
+                            .remove();
+
+                        currentFrame.plot()
+                            .append('g')
+                            .attr('class', 'barGroup')
+                            .selectAll('.barHolder')
+                            .data(currentYear)
+                            .enter()
+                            .append('g')
+                            .attr('class', 'barHolder')
+                            .call(myChart);
+
+                        yearLabel.text(plotData[startYear].key)
+                    } else {
+                        clearTimeout(timeoutFunction);
+                    }
+                }
+            });
         });
     // addSVGSavers('figure.saveable');
     });
