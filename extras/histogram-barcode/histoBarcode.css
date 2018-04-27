@@ -1,0 +1,90 @@
+
+.ft-webgraphic-s .barHighlight rect,
+.ft-webgraphic-m .barHighlight rect,
+.ft-webgraphic-m-default .barHighlight rect,
+.ft-webgraphic-l .barHighlight rect {
+	fill: #000000;
+}
+
+.ft-printgraphic .barHighlight rect {
+	fill: #000000;
+}
+
+.ft-socialgraphic .barHighlight rect {
+	fill: #FFFFFF;
+}
+
+.ft-videographic .barHighlight rect {
+	fill: #FFFFFF;
+}
+
+.annotation-circle {
+	fill: #000000;
+}
+
+.ft-webgraphic-s .annotation-text,
+.ft-webgraphic-m .annotation-text,
+.ft-webgraphic-m-default .annotation-text,
+.ft-webgraphic-l .annotation-text {
+	fill: #000000;
+	font-weight: 600;
+}
+
+.ft-webgraphic-s .annotation-text {
+	font-size: 12px;
+}
+
+.ft-webgraphic-m .annotation-text {
+	font-size: 14px;
+}
+
+.ft-webgraphic-m-default .annotation-text {
+	font-size: 16px;
+}
+
+.ft-webgraphic-l .annotation-text {
+	font-size: 16px;
+}
+
+.ft-printgraphic .annotation-text {
+	fill: #000000;
+	font-size: 9.6px;
+}
+
+.annotation-path {
+  fill: none;
+  stroke: #000000;
+  stroke-width: 1px;
+}
+
+.ft-printgraphic .annotation-path {
+	stroke-width: 0.3px;
+}
+
+.ft-webgraphic-s .chart-subtitle-2,
+.ft-webgraphic-m .chart-subtitle-2,
+.ft-webgraphic-m-default .chart-subtitle-2,
+.ft-webgraphic-l .chart-subtitle-2 {
+	fill: #66605C;
+}
+
+.ft-webgraphic-s .chart-subtitle-2 {
+	font-size: 18px;
+}
+
+.ft-webgraphic-m .chart-subtitle-2 {
+	font-size: 18px;
+}
+
+.ft-webgraphic-m-default .chart-subtitle-2 {
+	font-size: 24px;
+}
+
+.ft-webgraphic-l .chart-subtitle-2 {
+	font-size: 18px;
+}
+
+.ft-printgraphic .chart-subtitle-2 {
+	fill: #000000;
+	font-size: 9.6px;
+}
