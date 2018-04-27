@@ -99,7 +99,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { groupByYear })
-    .then(({ seriesNames, plotData, valueExtent }) => {
+    .then(({ seriesNames, plotData, valueExtent, generations }) => {
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -115,6 +115,9 @@ parseData.load(dataFile, { groupByYear })
             const xAxisL = gAxis.xLinear();
             const xAxisR = gAxis.xLinear();
             const myChart = pyramidChart.draw();
+
+            const timeXAxis = gAxis.xLinear();
+            const percentYAxis = gAxis.yLinear();
 
             // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
             yAxis
@@ -185,6 +188,49 @@ parseData.load(dataFile, { groupByYear })
 
             const xFontSize = xAxisL.xLabel().selectAll('.tick text').style('font-size').slice(0, -2) * 0.875;
             yLabelsAxis.yLabel().selectAll('.tick text').style('font-size', xFontSize);
+
+            timeXAxis
+                .align('bottom')
+                .domain(d3.extent(generations, a => +a.key))
+                .range([0, currentFrame.dimension().width / 4])
+                .tickSize(currentFrame.dimension().height / 3)
+                .numTicks(5)
+                .frameName(frameName);
+
+            percentYAxis
+                .align('left')
+                .domain([0, 40])
+                .range([0, currentFrame.dimension().height / 3])
+                .numTicks(5)
+                .invert(true)
+                .tickSize(currentFrame.dimension().width / 4)
+                .frameName(frameName);
+
+            const minorChart = currentFrame.plot()
+                .append('g')
+                .attr('transform', `translate(${currentFrame.dimension().width * 0.75}, ${0})`);
+
+            minorChart
+                .append('rect')
+                .attr('width', currentFrame.dimension().width / 4)
+                .attr('height', currentFrame.dimension().height / 3)
+                .attr('fill', '#FCF1E1');
+
+            minorChart
+                .call(timeXAxis);
+
+            minorChart
+                .call(percentYAxis);
+
+            timeXAxis.xLabel()
+                .selectAll('.tick text')
+                .style('font-size', xFontSize)
+                .text(d => d);
+
+            percentYAxis.yLabel()
+                .attr('transform', `translate(${currentFrame.dimension().width * 0.25}, ${0})`)
+                .selectAll('.tick text')
+                .style('font-size', xFontSize);
 
             myChart
             // .paddingInner(0.06)
