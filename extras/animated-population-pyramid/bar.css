@@ -14,3 +14,17 @@
     fill: #ffffff;
     fill-opacity: 0.5;
 }
+
+
+.ft-webgraphic-s .minor-title,
+.ft-webgraphic-m .minor-title,
+.ft-webgraphic-m-default .minor-title,
+.ft-webgraphic-l .minor-title {
+    fill: #66605C;
+    font-size: 16px;
+}
+
+.minor-chart-lines path {
+  stroke: black;
+  stroke-width: 2px;
+}

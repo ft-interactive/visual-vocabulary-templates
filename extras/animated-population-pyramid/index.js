@@ -13,6 +13,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
+const minorChartTitle = 'Generation as percent of | total population over time';
+
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 40;// sets the maximum value on the xAxis
 const xAxisHighlight = 0; // sets which tick to highlight on the xAxis
@@ -26,6 +28,7 @@ const showNumberLabels = false;// show numbers on end of bars
 
 const yNumTicks = 10;
 const groupByYear = true;
+const minorChartGenerationsToShow = ["boomer", "millennial"];
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -99,7 +102,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { groupByYear })
-    .then(({ seriesNames, plotData, valueExtent, generations }) => {
+    .then(({ seriesNames, plotData, valueExtent, byGeneration }) => {
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -189,32 +192,42 @@ parseData.load(dataFile, { groupByYear })
             const xFontSize = xAxisL.xLabel().selectAll('.tick text').style('font-size').slice(0, -2) * 0.875;
             yLabelsAxis.yLabel().selectAll('.tick text').style('font-size', xFontSize);
 
+            /* Minor chart code  START */
+            const minorChartPosition = { right: 0, top: -40 };
+            const minorChartDim = {
+                width: currentFrame.dimension().width / 4,
+                height: currentFrame.dimension().height / 3
+            };
+
             timeXAxis
                 .align('bottom')
-                .domain(d3.extent(generations, a => +a.key))
-                .range([0, currentFrame.dimension().width / 4])
-                .tickSize(currentFrame.dimension().height / 3)
+                .domain(d3.extent(plotData, a => +a.key))
+                .range([0, minorChartDim.width])
+                .tickSize(minorChartDim.height)
                 .numTicks(5)
                 .frameName(frameName);
 
             percentYAxis
                 .align('left')
                 .domain([0, 40])
-                .range([0, currentFrame.dimension().height / 3])
+                .range([0, minorChartDim.height])
                 .numTicks(5)
                 .invert(true)
-                .tickSize(currentFrame.dimension().width / 4)
+                .tickSize(minorChartDim.width)
                 .frameName(frameName);
 
             const minorChart = currentFrame.plot()
                 .append('g')
-                .attr('transform', `translate(${currentFrame.dimension().width * 0.75}, ${0})`);
+                .attr('transform',
+                  `translate(${currentFrame.dimension().width - minorChartDim.width - minorChartPosition.right}, ${minorChartPosition.top})`
+                );
 
             minorChart
                 .append('rect')
-                .attr('width', currentFrame.dimension().width / 4)
-                .attr('height', currentFrame.dimension().height / 3)
-                .attr('fill', '#FCF1E1');
+                .attr('y', -(minorChartTitle.split('|').length + 1) * 16)
+                .attr('width', minorChartDim.width)
+                .attr('height', ((minorChartTitle.split('|').length + 1) * 16) + (minorChartDim.height * 1.2))
+                .attr('fill', '#FBE6D7');
 
             minorChart
                 .call(timeXAxis);
@@ -228,12 +241,42 @@ parseData.load(dataFile, { groupByYear })
                 .text(d => d);
 
             percentYAxis.yLabel()
-                .attr('transform', `translate(${currentFrame.dimension().width * 0.25}, ${0})`)
+                .attr('transform', `translate(${minorChartDim.width}, ${0})`)
                 .selectAll('.tick text')
                 .style('font-size', xFontSize);
 
+            minorChart
+              .append('g')
+              .attr('class', 'minor-chart-title')
+              .append('text')
+              .attr('class', 'minor-title')
+              .attr('y', -minorChartTitle.split('|').length * 16)
+              .attr('text-anchor', 'start')
+              .selectAll('tspan')
+              .data(minorChartTitle.split('|'))
+              .enter()
+              .append('tspan')
+              .attr('x', 0)
+              .attr('dy', (d, i) => i * 16)
+              .text(d => d.trim());
+
+            console.log(timeXAxis.scale().range())
+
+            const drawLine = d3.line()
+              .x(d => timeXAxis.scale()(d.values[0].year))
+              .y(d => percentYAxis.scale()(d.percent));
+
+            minorChart
+              .append('g')
+              .attr('class', 'minor-chart-lines')
+              .selectAll('path')
+              .data(byGeneration.filter(d => minorChartGenerationsToShow.includes(d.generation)).map(d => d.values))
+              .enter()
+              .append('path')
+              .attr('d', drawLine);
+            /* END */
+
             myChart
-            // .paddingInner(0.06)
                 .colourProperty(colourProperty)
                 .colourPalette((frameName))
                 .seriesNames(seriesNames)
@@ -289,47 +332,47 @@ parseData.load(dataFile, { groupByYear })
                 .style('font-size', xFontSize)
                 .text(catLabel.toUpperCase());
 
-            const yearLabel = currentFrame.plot()
-                .append('g')
-                .attr('class', 'annotations-holder')
-                .append('text')
-                .attr('class', 'annotation')
-                .attr('id', `${frameName}annotateYear`)
-                .attr('x', currentFrame.dimension().width * 0.95)
-                .attr('y', -currentFrame.rem())
-                .attr('text-anchor', 'end')
-                .style('font-size', xFontSize * 2)
-                .style('fill', '#D4CBC3')
-                .text(plotData[startYear].key);
+            // const yearLabel = currentFrame.plot()
+            //     .append('g')
+            //     .attr('class', 'annotations-holder')
+            //     .append('text')
+            //     .attr('class', 'annotation')
+            //     .attr('id', `${frameName}annotateYear`)
+            //     .attr('x', currentFrame.dimension().width * 0.95)
+            //     .attr('y', -currentFrame.rem())
+            //     .attr('text-anchor', 'end')
+            //     .style('font-size', xFontSize * 2)
+            //     .style('fill', '#D4CBC3')
+            //     .text(plotData[startYear].key);
 
             yLabelsAxis.yLabel().raise();
 
             d3.select(`#trigger-animation-${frameName}`).on('click', () => {
-                const timeoutFunction = setInterval(animateChart, 500);
+                const timeoutFunction = setInterval(animateChart, 200);
 
                 function animateChart() {
                     startYear += 1;
+                    if (!plotData[startYear]) {
+                        clearTimeout(timeoutFunction);
+                        return;
+                    }
                     currentYear = plotData[startYear].values;
 
-                    if (startYear <= endYear) {
-                        currentFrame.plot()
-                            .select('.barGroup')
-                            .remove();
+                    currentFrame.plot()
+                        .select('.barGroup')
+                        .remove();
 
-                        currentFrame.plot()
-                            .append('g')
-                            .attr('class', 'barGroup')
-                            .selectAll('.barHolder')
-                            .data(currentYear)
-                            .enter()
-                            .append('g')
-                            .attr('class', 'barHolder')
-                            .call(myChart);
+                    currentFrame.plot()
+                        .append('g')
+                        .attr('class', 'barGroup')
+                        .selectAll('.barHolder')
+                        .data(currentYear)
+                        .enter()
+                        .append('g')
+                        .attr('class', 'barHolder')
+                        .call(myChart);
 
-                        yearLabel.text(plotData[startYear].key)
-                    } else {
-                        clearTimeout(timeoutFunction);
-                    }
+                    // yearLabel.text(plotData[startYear].key);
                 }
             });
         });

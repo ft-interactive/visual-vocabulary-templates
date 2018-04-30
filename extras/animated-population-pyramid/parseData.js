@@ -19,7 +19,7 @@ export function load(url, options = {}) {
         // Use the seriesNames array to calculate the minimum and max values in the dataset
 
         let plotData = data;
-        let generations;
+        let byGeneration;
 
         // Buid the dataset for plotting
         if (groupByYear) {
@@ -27,7 +27,7 @@ export function load(url, options = {}) {
                 .key(d => d.year)
                 .entries(data);
 
-            generations = d3.nest()
+            const generations = d3.nest()
                 .key(d => d.year)
                 .key(d => d.generation)
                 .entries(data);
@@ -43,7 +43,19 @@ export function load(url, options = {}) {
                     gen.percent = gen.sum / total * 100;
                 });
             });
+
+            const generationNames = generations[generations.length - 1].values.map(d => d.key);
+            byGeneration = generationNames.map((gen) => {
+                let genArr = generations.map(g => g.values.find(v => v.key === gen));
+                genArr = genArr.filter(d => d !== undefined);
+                return {
+                    generation: gen,
+                    values: genArr,
+                };
+            });
         }
+
+        console.log(byGeneration);
 
         const valueExtent = extentMulti(plotData[plotData.length - 1].values, seriesNames);
 
@@ -52,7 +64,7 @@ export function load(url, options = {}) {
             valueExtent,
             seriesNames,
             plotData,
-            generations,
+            byGeneration,
         };
     });
 }

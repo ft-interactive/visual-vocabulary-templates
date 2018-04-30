@@ -12,7 +12,6 @@ export function draw() {
     let rem = 10;
     let showNumberLabels = false;// show numbers on end of bars
     let highlightGeneration = 'millennial';
-    let nonMillennials = '#D4CBC3';
 
     function bars(parent) {
         parent.append('rect')
@@ -23,9 +22,9 @@ export function draw() {
             .attr('width', d => Math.abs(xScaleL(+d[seriesNames[0]]) - xScaleL(0)))
             .attr('fill', (d) => {
                 if (d.generation === highlightGeneration) {
-                    return '#EE5E2B';
+                    return '#D7622C';
                 }
-                return nonMillennials;
+                return '#E8B699';
             });
 
         parent.append('rect')
@@ -36,9 +35,9 @@ export function draw() {
             .attr('width', d => Math.abs(xScaleR(+d[seriesNames[1]]) - xScaleR(0)))
             .attr('fill', (d) => {
                 if (d.generation === highlightGeneration) {
-                    return '#44A4AA';
+                    return '#59A0A8';
                 }
-                return nonMillennials;
+                return '#B1D1CE';
             });
 
         if (showNumberLabels) {
