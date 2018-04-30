@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import * as gAxis from 'g-axis';
 import gChartframe from 'g-chartframe';
+import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as pyramidChart from './pyramidChart.js';
 
@@ -8,12 +9,12 @@ import * as pyramidChart from './pyramidChart.js';
 const dataFile = 'populationPyramid19812018.csv';
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Millennials now make up more of | the population than baby boomers',
+    subtitle: 'Population by age (millions)',
     source: 'Source not yet added',
 };
 
-const minorChartTitle = 'Generation as percent of | total population over time';
+const minorChartTitle = 'Generation as percentage of | total population over time';
 
 const xMin = 0;// sets the minimum value on the yAxis
 const xMax = 40;// sets the maximum value on the xAxis
@@ -28,7 +29,11 @@ const showNumberLabels = false;// show numbers on end of bars
 
 const yNumTicks = 10;
 const groupByYear = true;
-const minorChartGenerationsToShow = ["boomer", "millennial"];
+const minorChartGenerationsToShow = ['boomer', 'millennial'];
+const minorChartLabelPlacement = [
+  { generation: 'Millennials', right: 0.05, top: 0.175 },
+  { generation: 'Boomers', right: 0.05, top: 0.75 }
+];
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -38,7 +43,7 @@ const frame = {
         })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
-        .height(400),
+        .height(500),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
@@ -52,7 +57,7 @@ const frame = {
             top: 100, left: 20, bottom: 86, right: 20,
         })
     // .title("Put headline here")
-        .height(500),
+        .height(600),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
@@ -113,7 +118,7 @@ parseData.load(dataFile, { groupByYear })
 
             let currentYear = plotData[startYear].values;
 
-            const yAxis = gAxis.yOrdinal();// sets up yAxis
+            // const yAxis = gAxis.yOrdinal();// sets up yAxis
             const yLabelsAxis = gAxis.yLinear();
             const xAxisL = gAxis.xLinear();
             const xAxisR = gAxis.xLinear();
@@ -122,33 +127,25 @@ parseData.load(dataFile, { groupByYear })
             const timeXAxis = gAxis.xLinear();
             const percentYAxis = gAxis.yLinear();
 
-            // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-            yAxis
-                .align(yAxisAlign)
+            const y = d3.scaleBand()
                 .domain(d3.range(0, 100, 1))
-                .rangeRound([0, currentFrame.dimension().height], 10)
-                .invert(invertScale)
-                .frameName(frameName);
+                .range([currentFrame.dimension().height, 0])
+                .padding(0.25);
 
             yLabelsAxis
                 .align(yAxisAlign)
                 .domain([0, 100])
-                .range([0, currentFrame.dimension().height], 10)
+                .range([0, currentFrame.dimension().height])
                 .tickSize(0.01)
                 .numTicks(yNumTicks)
                 .invert(invertScale)
                 .frameName(frameName);
 
             currentFrame.plot()
-                .call(yAxis);
-            yAxis.yLabel()
-                .attr('opacity', 0);
-
-            currentFrame.plot()
                 .call(yLabelsAxis);
 
             yLabelsAxis.yLabel()
-                .attr('transform', `translate(${((currentFrame.dimension().width / 2) + (currentFrame.rem() / 5))}, ${0})`)
+                .attr('transform', `translate(${((currentFrame.dimension().width / 2) + (currentFrame.rem() / 5))}, ${-y.bandwidth()})`)
                 .selectAll('.tick text')
                 .style('text-anchor', 'middle')
                 .attr('opacity', (d) => {
@@ -159,7 +156,7 @@ parseData.load(dataFile, { groupByYear })
                 });
 
             xAxisL
-                .range([0, ((currentFrame.dimension().width / 2) - (yAxis.labelWidth() / 2) - (currentFrame.rem() / 2.5))])
+                .range([0, ((currentFrame.dimension().width / 2) - (yLabelsAxis.labelWidth() / 2) - (currentFrame.rem() / 2.5))])
                 .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
                 .tickSize(currentFrame.dimension().height)
                 .invert(true)
@@ -176,7 +173,7 @@ parseData.load(dataFile, { groupByYear })
                 .attr('transform', `translate(${-currentFrame.dimension().width * 0.01}, ${0})`);
 
             xAxisR
-                .range([((currentFrame.dimension().width) / 2) + (yAxis.labelWidth() / 2) + (currentFrame.rem() / 2.5), currentFrame.dimension().width])
+                .range([((currentFrame.dimension().width) / 2) + (yLabelsAxis.labelWidth() / 2) + (currentFrame.rem() / 2.5), currentFrame.dimension().width])
                 .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
                 .tickSize(currentFrame.dimension().height)
                 .numTicks(numTicks)
@@ -195,8 +192,8 @@ parseData.load(dataFile, { groupByYear })
             /* Minor chart code  START */
             const minorChartPosition = { right: 0, top: -40 };
             const minorChartDim = {
-                width: currentFrame.dimension().width / 4,
-                height: currentFrame.dimension().height / 3
+                width: currentFrame.dimension().width * 0.25,
+                height: currentFrame.dimension().height / 3,
             };
 
             timeXAxis
@@ -208,12 +205,12 @@ parseData.load(dataFile, { groupByYear })
                 .frameName(frameName);
 
             percentYAxis
-                .align('left')
+                .align('right')
                 .domain([0, 40])
                 .range([0, minorChartDim.height])
                 .numTicks(5)
                 .invert(true)
-                .tickSize(minorChartDim.width)
+                .tickSize(-minorChartDim.width)
                 .frameName(frameName);
 
             const minorChart = currentFrame.plot()
@@ -221,13 +218,6 @@ parseData.load(dataFile, { groupByYear })
                 .attr('transform',
                   `translate(${currentFrame.dimension().width - minorChartDim.width - minorChartPosition.right}, ${minorChartPosition.top})`
                 );
-
-            minorChart
-                .append('rect')
-                .attr('y', -(minorChartTitle.split('|').length + 1) * 16)
-                .attr('width', minorChartDim.width)
-                .attr('height', ((minorChartTitle.split('|').length + 1) * 16) + (minorChartDim.height * 1.2))
-                .attr('fill', '#FBE6D7');
 
             minorChart
                 .call(timeXAxis);
@@ -243,6 +233,7 @@ parseData.load(dataFile, { groupByYear })
             percentYAxis.yLabel()
                 .attr('transform', `translate(${minorChartDim.width}, ${0})`)
                 .selectAll('.tick text')
+                .attr('dx', -minorChartDim.width - percentYAxis.labelWidth() - 5)
                 .style('font-size', xFontSize);
 
             minorChart
@@ -256,31 +247,60 @@ parseData.load(dataFile, { groupByYear })
               .data(minorChartTitle.split('|'))
               .enter()
               .append('tspan')
-              .attr('x', 0)
+              .attr('x', -percentYAxis.labelWidth())
               .attr('dy', (d, i) => i * 16)
               .text(d => d.trim());
-
-            console.log(timeXAxis.scale().range())
 
             const drawLine = d3.line()
               .x(d => timeXAxis.scale()(d.values[0].year))
               .y(d => percentYAxis.scale()(d.percent));
 
             minorChart
-              .append('g')
-              .attr('class', 'minor-chart-lines')
-              .selectAll('path')
-              .data(byGeneration.filter(d => minorChartGenerationsToShow.includes(d.generation)).map(d => d.values))
-              .enter()
-              .append('path')
-              .attr('d', drawLine);
+                .append('g')
+                .attr('class', 'minor-chart-lines')
+                .selectAll('path')
+                .data(byGeneration.filter(d => minorChartGenerationsToShow.includes(d.generation)).map(d => d.values))
+                .enter()
+                .append('path')
+                .attr('d', drawLine)
+                .style('stroke', (d, i) => gChartcolour.lineWeb[i]);
+
+            minorChart
+                .append('rect')
+                .attr('y', -(minorChartTitle.split('|').length + 1) * 16)
+                .attr('x', -percentYAxis.labelWidth())
+                .attr('width', minorChartDim.width + percentYAxis.labelWidth())
+                .attr('height', ((minorChartTitle.split('|').length + 1) * 16) + (minorChartDim.height * 1.2))
+                .attr('fill', '#FBE6D7')
+                .lower();
+
+            const yearLine = minorChart
+              .append('line')
+              .attr('class', 'year-line')
+              .attr('x1', 0)
+              .attr('x2', 0)
+              .attr('y1', 0)
+              .attr('y2', minorChartDim.height);
+
+            const minorChartText = minorChart
+                .append('g')
+                .selectAll('text')
+                .data(minorChartLabelPlacement)
+                .enter()
+                .append('text')
+                .attr('class', 'minor-chart-label')
+                .style('font-size', xFontSize * 0.9)
+                .attr('x', d => minorChartDim.width * (1 - d.right))
+                .attr('y', d => d.top * minorChartDim.height)
+                .text(d => d.generation);
+
             /* END */
 
             myChart
                 .colourProperty(colourProperty)
                 .colourPalette((frameName))
                 .seriesNames(seriesNames)
-                .yScale(yAxis.scale())
+                .yScale(y)
                 .xScaleL(xAxisL.scale())
                 .xScaleR(xAxisR.scale())
                 .rem(currentFrame.rem())
@@ -302,7 +322,7 @@ parseData.load(dataFile, { groupByYear })
                 .append('text')
                 .attr('class', 'annotation')
                 .attr('id', `${frameName}annotateright`)
-                .attr('x', (currentFrame.dimension().width / 2) - (currentFrame.rem() / 2) - (yAxis.labelWidth()))
+                .attr('x', (currentFrame.dimension().width / 2) - (currentFrame.rem() / 2) - (yLabelsAxis.labelWidth()))
                 .attr('y', -currentFrame.rem())
                 .attr('text-anchor', 'end')
                 .style('fill', 'black')
@@ -314,7 +334,7 @@ parseData.load(dataFile, { groupByYear })
                 .append('text')
                 .attr('class', 'annotation')
                 .attr('id', `${frameName}annotateleft`)
-                .attr('x', (currentFrame.dimension().width / 2) + (currentFrame.rem() / 2) + (yAxis.labelWidth()))
+                .attr('x', (currentFrame.dimension().width / 2) + (currentFrame.rem() / 2) + (yLabelsAxis.labelWidth()))
                 .attr('y', -currentFrame.rem())
                 .attr('text-anchor', 'start')
                 .style('fill', 'black')
@@ -332,23 +352,24 @@ parseData.load(dataFile, { groupByYear })
                 .style('font-size', xFontSize)
                 .text(catLabel.toUpperCase());
 
-            // const yearLabel = currentFrame.plot()
-            //     .append('g')
-            //     .attr('class', 'annotations-holder')
-            //     .append('text')
-            //     .attr('class', 'annotation')
-            //     .attr('id', `${frameName}annotateYear`)
-            //     .attr('x', currentFrame.dimension().width * 0.95)
-            //     .attr('y', -currentFrame.rem())
-            //     .attr('text-anchor', 'end')
-            //     .style('font-size', xFontSize * 2)
-            //     .style('fill', '#D4CBC3')
-            //     .text(plotData[startYear].key);
+            const yearLabelGroup = currentFrame.plot()
+                .append('g')
+                .append('text')
+                .attr('class', 'year-label')
+                .attr('text-anchor', 'start')
+                .attr('x', -currentFrame.margin().left)
+                .attr('y', -xFontSize * 0.5)
+                .style('font-size', xFontSize * 1.5);
+            yearLabelGroup.append('tspan')
+                .text('Year: ');
+            const yearLabel = yearLabelGroup.append('tspan')
+                .attr('class', 'year-label-bold')
+                .text(plotData[startYear].key);
 
             yLabelsAxis.yLabel().raise();
 
             d3.select(`#trigger-animation-${frameName}`).on('click', () => {
-                const timeoutFunction = setInterval(animateChart, 200);
+                const timeoutFunction = setInterval(animateChart, 500);
 
                 function animateChart() {
                     startYear += 1;
@@ -372,7 +393,12 @@ parseData.load(dataFile, { groupByYear })
                         .attr('class', 'barHolder')
                         .call(myChart);
 
-                    // yearLabel.text(plotData[startYear].key);
+                    const newPos = timeXAxis.scale()(startYear + 1981);
+                    yearLine
+                      .attr('x1', newPos)
+                      .attr('x2', newPos);
+
+                    yearLabel.text(plotData[startYear].key);
                 }
             });
         });

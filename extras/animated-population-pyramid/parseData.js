@@ -55,8 +55,6 @@ export function load(url, options = {}) {
             });
         }
 
-        console.log(byGeneration);
-
         const valueExtent = extentMulti(plotData[plotData.length - 1].values, seriesNames);
 
         return {

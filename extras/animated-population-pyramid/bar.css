@@ -26,5 +26,24 @@
 
 .minor-chart-lines path {
   stroke: black;
-  stroke-width: 2px;
+  stroke-width: 3px;
+}
+
+.minor-chart-label {
+  fill: #000000;
+  text-anchor: end;
+  text-shadow: 0 1px 0 #FBE6D8, 1px 0 0 #FBE6D8, 0 -1px 0 #FBE6D8, -1px 0 0 #FBE6D8;
+}
+
+.year-label {
+  fill: #66605C;
+}
+
+.year-label-bold {
+  fill: #000000;
+}
+
+.year-line {
+  stroke: #000000;
+  stroke-width: 1px;
 }
