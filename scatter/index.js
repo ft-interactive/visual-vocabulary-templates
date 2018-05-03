@@ -18,7 +18,6 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-
 // display options
 const xVar = 'Change in spending on interest as % of GDP';// these should be series (column) names from your data
 const xMin = -2;// sets the minimum value on the xAxis - will autoextend to include range of your data
@@ -30,10 +29,9 @@ const yMin = -12;// sets the minimum value on the yAxis - will autoextend to inc
 const yMax = 10;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
+const scaleDots = true;
 const sizeVar = 'Change in debt as % of GDP';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
-const sizeMin=0;
-const sizeMax=0;
-const sizeFactor=1;//controls how big in appearance bubbles are
+const scaleFactor=1;//controls how big in appearance bubbles are
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
@@ -96,7 +94,6 @@ const frame = {
     // .title("Put headline here")
 };
 
-
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
@@ -111,7 +108,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     // determin extents for each scale
     const xValRange = [xMin, xMax];
     const yValRange = [yMin, yMax];
-    const sizeRange = [0, sizeMax];
+    const sizeRange = [0,0];
 
     data.forEach((d) => {
         xValRange[0] = Math.min(xValRange[0], d[xVar]);
@@ -121,9 +118,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         sizeRange[0] = Math.min(sizeRange[0], d[sizeVar]);
         sizeRange[1] = Math.max(sizeRange[1], d[sizeVar]);
     });
-
-
-
 
     // set up axes
     const myYAxis = gAxis.yLinear();
@@ -136,6 +130,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         anchor: 'middle',
         rotate: 0
     }
+
     const axisLabelY = {
         tag: yVar,
         hori:'left',
@@ -143,7 +138,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         anchor: 'middle',
         rotate: 0
     }
-
 
     // define chart
     const myChart = scatterplot.draw()
@@ -156,10 +150,9 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-        const sqrtScale = d3.scaleSqrt()
+    const sqrtScale = d3.scaleSqrt()
             .domain(sizeRange)
-            .range([0,(currentFrame.rem()*sizeFactor)]);
-
+            .range([0,(currentFrame.rem()*scaleFactor)]);
 
     const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
 
@@ -220,11 +213,11 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
-
         myChart
             .yRange([currentFrame.dimension().height, 0])
             .xScale(myXAxis.scale())
             .sizeScale(sqrtScale)
+            .scaleFactor(scaleFactor)
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette((frameName))
@@ -233,8 +226,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .sizeVar(sizeVar)
             .hollowDots(hollowDots)
             .groups(groups)
-            .opacity(opacity);
-
+            .opacity(opacity)
+            .scaleDots(scaleDots);
 
         // draw chart
         currentFrame.plot()
@@ -260,7 +253,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .rem(myChart.rem())
             .geometry(legendType)
             .alignment(legendAlign);
-
 
         // Draw the Legend
         currentFrame.plot()

@@ -5,6 +5,8 @@ export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
     let sizeScale = d3.scaleSqrt();
+    let scaleDots;
+    let scaleFactor;
     let seriesNames  = []; // eslint-disable-line
     let groups = [];
     let yAxisAlign = 'right';
@@ -24,7 +26,11 @@ export function draw() {
             .attr('cx', d => xScale(d[xVar]))
             .attr('cy', d => yScale(d[yVar]))
             .attr('r', (d) => {
-                return sizeScale(d[sizeVar])
+                if (scaleDots) {
+                    return sizeScale(d[sizeVar])
+                }   else {
+                    return rem*(scaleFactor*.5)
+                }
             })
             .attr('fill', (d) => {
                 if (hollowDots) {
@@ -125,6 +131,16 @@ export function draw() {
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
+        return chart;
+    };
+    chart.scaleDots = (d) => {
+        if (!d) return scaleDots;
+        scaleDots = d;
+        return chart;
+    };
+    chart.scaleFactor = (d) => {
+        if (!d) return scaleFactor;
+        scaleFactor = d;
         return chart;
     };
     chart.sizeScale = (d) => {
