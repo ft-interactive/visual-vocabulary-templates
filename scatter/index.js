@@ -41,12 +41,6 @@ const hollowDots = false;// ...or you can set dots to be hollow (will need to ad
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'circ';// rect, line or circ, geometry of legend marker
 
-// remaining options to implement
-// log scales
-// invert scales
-// proportional circles (bubble chart)
-
-
 const myLegend = gLegend.legend();// sets up the legend
 /* eslint-disable */
 let yAxisHighlight;// = 20; //sets which tick to highlight on the yAxis
