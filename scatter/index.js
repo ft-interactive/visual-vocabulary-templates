@@ -30,9 +30,10 @@ const yMin = -12;// sets the minimum value on the yAxis - will autoextend to inc
 const yMax = 10;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
-const sizeVar = 'Change in debt as % of GDP';
+const sizeVar = 'Change in debt as % of GDP';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
 const sizeMin=0;
 const sizeMax=0;
+const sizeFactor=1;//controls how big in appearance bubbles are
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
@@ -57,7 +58,7 @@ const xAxisAlign = 'bottom';
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-        .margin({ top: 100, left: 15, bottom: 82, right: 20 })
+        .margin({ top: 100, left: 20, bottom: 82, right: 20 })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
@@ -68,12 +69,12 @@ const frame = {
         .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 86, right: 30 })
+        .margin({ top: 100, left: 25, bottom: 86, right: 30 })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 104, right: 25 })
+        .margin({ top: 100, left: 25, bottom: 104, right: 25 })
     // .title("Put headline here")
         .height(700),
 
@@ -116,7 +117,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     // determin extents for each scale
     const xValRange = [xMin, xMax];
     const yValRange = [yMin, yMax];
-    const sizeRange = [sizeMin, sizeMax];
+    const sizeRange = [0, sizeMax];
 
     data.forEach((d) => {
         xValRange[0] = Math.min(xValRange[0], d[xVar]);
@@ -163,11 +164,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
 
         const sqrtScale = d3.scaleSqrt()
             .domain(sizeRange)
-            .range([0,currentFrame.rem()]);
+            .range([0,(currentFrame.rem()*sizeFactor)]);
 
-        /*
-        .domain(sizeRange)
-        .range([currentFrame.rem(),currentFrame.rem()*4]);*/
 
     const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
 
@@ -220,7 +218,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         // call axes
         currentFrame.plot()
             .call(myXAxis);
-
 
         if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);

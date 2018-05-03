@@ -60,7 +60,7 @@ export function draw() {
             .attr('class', 'highlighted-label')
             .attr('x', d => xScale(d[xVar]))
             .attr('y', d => yScale(d[yVar]))
-            .attr('dy', -(rem / 2))
+            .attr('dy', -(rem))
             .attr('text-anchor', 'middle')
             .text(d => d.name);
 
