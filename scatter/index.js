@@ -10,7 +10,7 @@ import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
 
 // dataset and titles
-const dataURL = 'data.csv';
+const dataURL = 'kateallen.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -20,15 +20,19 @@ const sharedConfig = {
 
 
 // display options
-const xVar = 'var a';// these should be series (column) names from your data
-const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
-const xMax = 0;// sets the maximum value on the xAxis - will autoextend to include range of your data
+const xVar = 'Change in spending on interest as % of GDP';// these should be series (column) names from your data
+const xMin = -2;// sets the minimum value on the xAxis - will autoextend to include range of your data
+const xMax = 1.5;// sets the maximum value on the xAxis - will autoextend to include range of your data
 const divisorX = 1;// sets the formatting on linear axis for ’000s and millions
 
-const yVar = 'var b';
-const yMin = 0;// sets the minimum value on the yAxis - will autoextend to include range of your data
-const yMax = 0;// sets the maximum value on the yAxis - will autoextend to include range of your data
+const yVar = 'Change in spending on other things as % of GDP';
+const yMin = -12;// sets the minimum value on the yAxis - will autoextend to include range of your data
+const yMax = 10;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
+
+const sizeVar = 'Change in debt as % of GDP';
+const sizeMin = 0;
+const sizeMax = 0;
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
@@ -112,18 +116,36 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     // determin extents for each scale
     const xValRange = [xMin, xMax];
     const yValRange = [yMin, yMax];
+    const sizeRange = [sizeMin, sizeMax];
 
     data.forEach((d) => {
         xValRange[0] = Math.min(xValRange[0], d[xVar]);
         xValRange[1] = Math.max(xValRange[1], d[xVar]);
         yValRange[0] = Math.min(yValRange[0], d[yVar]);
         yValRange[1] = Math.max(yValRange[1], d[yVar]);
+        sizeRange[0] = Math.min(sizeRange[0], d[sizeVar]);
+        sizeRange[1] = Math.max(sizeRange[1], d[sizeVar]);
     });
 
 
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
+
+    const axisLabelX = {
+        tag: xVar,
+        hori: 'middle',
+        vert: 'bottom',
+        anchor: 'middle',
+        rotate: 0,
+    };
+    const axisLabelY = {
+        tag: yVar,
+        hori: 'left',
+        vert: 'middle',
+        anchor: 'middle',
+        rotate: 0,
+    };
 
 
     // define chart
@@ -137,6 +159,16 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
+        const sqrtScale = d3.scaleSqrt()
+            .domain(sizeRange)
+            .range([0, currentFrame.rem()]);
+
+        /*
+        .domain(sizeRange)
+        .range([currentFrame.rem(),currentFrame.rem()*4]);*/
+
+        const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
+
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
@@ -146,7 +178,10 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .align(yAxisAlign)
             .tickSize(tickSize)
             .frameName(frameName)
-            .divisor(divisorY);
+            .divisor(divisorY)
+            .rem(currentFrame.rem())
+            .plotDim(plotDim)
+            .label(axisLabelY);
 
         currentFrame.plot()
             .call(myYAxis);
@@ -175,7 +210,10 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .range([0, currentFrame.dimension().width])
             .align(xAxisAlign)
             .frameName(frameName)
-            .divisor(divisorX);
+            .divisor(divisorX)
+            .rem(currentFrame.rem())
+            .plotDim(plotDim)
+            .label(axisLabelX);
 
         // call axes
         currentFrame.plot()
@@ -193,11 +231,13 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         myChart
             .yRange([currentFrame.dimension().height, 0])
             .xScale(myXAxis.scale())
+            .sizeScale(sqrtScale)
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette((frameName))
             .xVar(xVar)
             .yVar(yVar)
+            .sizeVar(sizeVar)
             .hollowDots(hollowDots)
             .groups(groups)
             .opacity(opacity);
