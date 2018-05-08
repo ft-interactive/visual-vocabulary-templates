@@ -23,16 +23,14 @@ export function draw() {
         parent.append('circle')
             .attr('cx', d => xScale(d[xVar]))
             .attr('cy', d => yScale(d[yVar]))
-            .attr('r', (d) => {
-                return sizeScale(d[sizeVar])
-            })
+            .attr('r', d => sizeScale(d[sizeVar]))
             .attr('fill', (d) => {
                 if (hollowDots) {
                     return 'none';
                 }
                 return colourScale(d.group);
             })
-            .attr("id", d => d.name+":"+d[sizeVar])
+            .attr('id', d => `${d.name}:${d[sizeVar]}`)
             .attr('fill-opacity', opacity)
             .attr('stroke', (d) => {
                 if (hollowDots) {

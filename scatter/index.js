@@ -31,8 +31,8 @@ const yMax = 10;// sets the maximum value on the yAxis - will autoextend to incl
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
 const sizeVar = 'Change in debt as % of GDP';
-const sizeMin=0;
-const sizeMax=0;
+const sizeMin = 0;
+const sizeMax = 0;
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
@@ -128,26 +128,24 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     });
 
 
-
-
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
 
     const axisLabelX = {
         tag: xVar,
-        hori:'middle',
+        hori: 'middle',
         vert: 'bottom',
         anchor: 'middle',
-        rotate: 0
-    }
+        rotate: 0,
+    };
     const axisLabelY = {
         tag: yVar,
-        hori:'left',
+        hori: 'left',
         vert: 'middle',
         anchor: 'middle',
-        rotate: 0
-    }
+        rotate: 0,
+    };
 
 
     // define chart
@@ -163,13 +161,13 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
 
         const sqrtScale = d3.scaleSqrt()
             .domain(sizeRange)
-            .range([0,currentFrame.rem()]);
+            .range([0, currentFrame.rem()]);
 
         /*
         .domain(sizeRange)
         .range([currentFrame.rem(),currentFrame.rem()*4]);*/
 
-    const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
+        const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
 
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
