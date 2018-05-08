@@ -25,7 +25,7 @@ export function draw() {
             .append('rect')
             .attr('class', 'bars')
             .attr('y', d => yScale1(d.name))
-            .attr('height', () => Math.max(1, xScale1.bandwidth()))
+            .attr('height', () => Math.max(1, yScale1.bandwidth()))
             .attr('x', (d) => {
                 if(logScale) {
                     return xScale(Math.min(min, d.value));
