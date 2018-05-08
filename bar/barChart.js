@@ -11,11 +11,11 @@ export function draw() {
         .domain(seriesNames);
     let rem = 10;
     let showNumberLabels = false;
-    let logScale = false// show numbers on end of bars
+    let logScale = false;// show numbers on end of bars
 
 
     function bars(parent) {
-        const min = xScale.domain()[0]
+        const min = xScale.domain()[0];
 
         parent.attr('transform', d => `translate(0,${yScale0(d.name)})`);
 
@@ -27,16 +27,16 @@ export function draw() {
             .attr('y', d => yScale1(d.name))
             .attr('height', () => Math.max(1, yScale1.bandwidth()))
             .attr('x', (d) => {
-                if(logScale) {
+                if (logScale) {
                     return xScale(Math.min(min, d.value));
-                }                
-                return xScale(Math.min(0, d.value))
-                })
+                }
+                return xScale(Math.min(0, d.value));
+            })
             .attr('width', (d) => {
-                if(logScale) {
+                if (logScale) {
                     return Math.abs(xScale(d.value) - xScale(min));
                 }
-                return Math.abs(xScale(d.value) - xScale(0))
+                return Math.abs(xScale(d.value) - xScale(0));
             })
             .attr('fill', d => colourScale(d.name));
 
