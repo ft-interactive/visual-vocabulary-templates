@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FT boiler-frame</title>
+   <!--  <link rel="stylesheet" href="//rawgit.com/ft-interactive/visual-vocabulary-templates/master/styles.css"/>
+    <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
+    <script src="//unpkg.com/d3@4.9.1"></script>
+    <script src="//unpkg.com/g-chartframe@latest"></script>
+    <script src="//unpkg.com/g-chartcolour@latest"></script> -->
+
+
+    <link rel="stylesheet" href="assets/styles.css"/>
+    <link rel="stylesheet" href="assets/origami-fonts.css" />
+    <script src="assets/d3.v4.js"></script>
+    <script src="assets/g-chartframe.js"></script>
+    <script src="assets/g-chartcolour.js"></script>
+    <script src="assets/g-axis.js"></script>
+    <script src="assets/g-legend.js"></script>
+
+
+    <style>
+    /*custom CSS here*/
+    </style>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+
+let data = []
+
+d3.csv("em.csv",function(data1){
+
+
+    d3.csv("mm.csv",function(data2){
+
+    /*specify the frame type you require;
+        .webFrameS - 300px width
+        .webFrameM - 700px
+        .webFrameL - 1180px
+        .printFrame - note the height/width is mm
+        .socialFrame
+        .videoFrame
+    */
+    const frameConfig = {
+        chartType:'webFrameM',
+        title:'Mind the gap: EM debt is lower as a total, but rising at a faster rate, than|its developed market equivalent',
+        subtitle:'Debt as a % of GDP',
+        source:'FT graphic Alan Smith|Source: global debt monitor database',
+        xAlign:"bottom",
+        yAlign:"left",
+        //height:500,
+        //width:170.8,//comment the width out for web frames
+        margin:{top:20,left:20,right:50,bottom:100}//over-ride default margins
+    }
+
+    const appConfig = {
+        stackIndex:0,
+        aniDelay:5000,
+        aniSpeed:3000,
+        ticksY:6
+    }
+
+    //this creates the chart frame
+    const svg = d3.select("body").append("svg")
+    const chartFrame = createFrame(frameConfig.chartType)
+    svg.call(chartFrame);
+
+    //basic colour palettes
+    const seqColors = gChartcolour.sequentialMulti
+    const divColors = gChartcolour.diverging;
+    const lineColors = getLineColors(frameConfig.chartType)
+    const barColors = getBarColors(frameConfig.chartType)
+
+    //plot dimensions
+    const plot = chartFrame.plot().append("g");
+    const w = chartFrame.dimension().width;
+    const h = chartFrame.dimension().height;
+    const rem = chartFrame.rem();
+    const anno = chartFrame.plot().append("g").attr("class","annotations-holder");
+
+    /////////YOUR CUSTOM VIZ CODE HERE//////////
+
+    data[0] = data1;
+    data[1] = data2;
+
+    const parseDate = d3.timeParse("%d/%m/%Y")
+    const seriesNames = data[0].columns.filter(function(key) { return key !== 'date'; })
+
+    ///////check and parse data///////
+    data.forEach(function(d,i){
+        d.forEach(function(e,j){
+            e.date = parseDate(e.date);
+            seriesNames.forEach(function(f,k){
+                e[f]=+e[f]
+            })
+        })
+    })
+
+
+
+//use the first dataset to extract date range (they should match)
+let dates = data[0].map(function(d){return d.date})
+
+const xScale = d3.scaleTime()
+    .range([0, w])
+    .domain([d3.min(dates),d3.max(dates)]);
+
+const xAxis = gAxis.xDate()
+        .domain(xScale.domain())
+        .range([0,w])
+        .align(frameConfig.xAlign)
+
+plot.call(xAxis)//need to figure out why it's not offset
+
+
+    //set up data stack
+    const stack = d3.stack()
+        .keys(seriesNames)
+        .order(d3.stackOrderNone)
+        .offset(d3.stackOffsetNone)
+    const stacks = [stack(data[0]),stack(data[1])];
+
+    let minY = 0;
+    let maxY = 0;
+    //work out max y stack value
+    stacks.forEach(function(d,i){
+        d[3].forEach(function(e,j){
+            minY = d3.min([minY,e[1]])
+            maxY = d3.max([maxY,e[1]])
+        })
+    })
+
+    const yScale = d3.scaleLinear()
+        .domain([minY,maxY])
+        .range([h,0]);
+
+    //AXES
+    const yAxis = gAxis.yLinear()
+        .domain(yScale.domain())
+        .range([h,0])
+        .tickSize(w)
+        .align(frameConfig.yAlign)
+    plot.call(yAxis);
+
+//nudge axes into their correct positions based on axis options
+   if (frameConfig.xAlign == "bottom" ){
+        xAxis.xLabel().attr('transform', `translate(0,${chartFrame.dimension().height})`);
+        xAxis.xLabelMinor().attr('transform', `translate(0,${chartFrame.dimension().height})`);
+    }
+    if (frameConfig.xAlign == "top"){
+        xAxis.xLabel().attr('transform', `translate(0,${xAxis.tickSize()})`);
+    }
+    if (frameConfig.yAlign == 'right' ){
+            let newMargin = yAxis.labelWidth()+chartFrame.margin().right
+            chartFrame.margin({right:newMargin});
+        }
+    if (frameConfig.yAlign == 'left' ){
+            let newMargin = yAxis.labelWidth()+chartFrame.margin().left
+            chartFrame.margin({left:newMargin});
+            yAxis.yLabel().attr('transform', `translate(${(yAxis.tickSize()-yAxis.labelWidth())},0)`);
+        }
+    d3.select(chartFrame.plot().node().parentNode)
+            .call(chartFrame);
+
+    //define an area generator for drawing
+    var area = d3.area()
+        .x(function(d) { 
+          return xScale(d.data.date); })
+        .y0(function(d) { return yScale(d[0]); })
+        .y1(function(d) { return yScale(d[1]); });
+
+
+const colorScale = d3.scaleOrdinal()
+        .domain(seriesNames)
+        .range(lineColors)
+
+//create paths
+
+var layers = plot.append("g").selectAll("path")
+    .data(stacks[appConfig.stackIndex])
+    .enter()
+    .append("path")
+    .attr("fill-opacity",0.8)
+    .attr('d', area)
+    .style('fill', function(d,i) { return colorScale(d.key); });
+
+
+const stackLabels = ["Emerging markets","Mature markets"]
+
+const stackLabel = anno.append('text')
+        .attr("id","stackText")
+        .attr("x",w*.1)
+        .attr("y",h*.18)
+        .text(stackLabels[appConfig.stackIndex])
+        .style('text-anchor', 'middle')
+        .style('font-weight', 600)
+        .attr('dy', -(rem / 2));
+
+
+const myLegend = gLegend.legend();
+
+        myLegend
+          .seriesNames(seriesNames)
+          .geometry("rect")
+          .rem(rem)
+          .alignment("hori")
+          .colourPalette(frameConfig.chartType.split("Frame")[0].toLowerCase()); 
+
+        chartFrame.plot()
+          .append("g")
+          .attr("id","legend")
+          .selectAll(".legend")
+          .data(seriesNames)
+          .enter()
+          .append("g")
+          .classed("legend",true)
+          .call(myLegend)
+
+
+let timeout = setInterval(function(){
+
+    if (appConfig.stackIndex==0){
+        appConfig.stackIndex=1;
+    }   else {
+        appConfig.stackIndex=0;
+    }
+
+    console.log(layers)
+
+
+      layers.datum(function(d,i){
+                    return stacks[appConfig.stackIndex][i];   
+                })
+      .transition(1000)
+        .attr("d",area)
+
+    stackLabel.text(stackLabels[appConfig.stackIndex])
+
+
+    console.log(appConfig.stackIndex)
+
+
+},appConfig.aniSpeed)
+
+
+    //////draw your stuff on to 'plot' ////////
+    ////write annotations on to 'anno'
+
+
+
+
+    //END OF YOUR CUSTOM VIZ CODE
+
+
+
+    function createFrame(chartType){
+        let frame;
+        switch(frameConfig.chartType) {
+            case "socialFrame":
+                frame = gChartframe.socialFrame(frameConfig);
+                break;
+            case "printFrame":
+                frame = gChartframe.printFrame(frameConfig);
+                break;
+            case "webFrameS":
+                frame = gChartframe.webFrameS(frameConfig);
+                break;
+            case "webFrameM":
+                frame = gChartframe.webFrameM(frameConfig);
+                break;
+            case "webFrameL":
+                frame = gChartframe.webFrameL(frameConfig);
+                break;
+            case "videoFrame":
+                frame = gChartframe.videoFrame(frameConfig);
+                break;
+        }
+        return frame;
+    }
+
+    function getLineColors(chartType){
+        let colors;
+        switch(frameConfig.chartType) {
+            case "socialFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            case "printFrame":
+                colors = gChartcolour.linePrint;
+                break;
+            case "videoFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            default:
+                colors = gChartcolour.categorical_line;
+        }
+        return colors;
+    }
+
+    function getBarColors(chartType){
+        let colors;
+        switch(frameConfig.chartType) {
+            case "socialFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            case "printFrame":
+                colors = gChartcolour.linePrint;
+                break;
+            case "videoFrame":
+                colors = gChartcolour.lineSocial;
+                break;
+            default:
+                colors = gChartcolour.categorical_bar;
+        }
+        return colors;
+    }
+
+    })
+})
+
+
+
+
+
+
+</script>
+
+</html>

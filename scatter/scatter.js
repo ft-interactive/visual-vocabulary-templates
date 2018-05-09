@@ -4,6 +4,7 @@ import gChartcolour from 'g-chartcolour';
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
+    let sizeScale = d3.scaleSqrt();
     let seriesNames  = []; // eslint-disable-line
     let groups = [];
     let yAxisAlign = 'right';
@@ -11,7 +12,7 @@ export function draw() {
     let xVar;
     let opacity;
     let yVar;
-    let sizeVar; // eslint-disable-line
+    let sizeVar;
     let hollowDots;
     let dotOutline;
 
@@ -22,13 +23,14 @@ export function draw() {
         parent.append('circle')
             .attr('cx', d => xScale(d[xVar]))
             .attr('cy', d => yScale(d[yVar]))
-            .attr('r', rem / 2.5)
+            .attr('r', d => sizeScale(d[sizeVar]))
             .attr('fill', (d) => {
                 if (hollowDots) {
                     return 'none';
                 }
                 return colourScale(d.group);
             })
+            .attr('id', d => `${d.name}:${d[sizeVar]}`)
             .attr('fill-opacity', opacity)
             .attr('stroke', (d) => {
                 if (hollowDots) {
@@ -49,7 +51,6 @@ export function draw() {
                 }
                 return 0;
             });
-
 
         // create text labels required
         parent.filter(d => d.label === 'yes')
@@ -122,6 +123,11 @@ export function draw() {
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
+        return chart;
+    };
+    chart.sizeScale = (d) => {
+        if (!d) return sizeScale;
+        sizeScale = d;
         return chart;
     };
     chart.xDomain = (d) => {

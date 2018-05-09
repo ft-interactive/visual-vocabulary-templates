@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fed beeswarm chart - Visual Vocabulary</title>
+
+    <script src="//unpkg.com/@financial-times/d3-bootloader" async></script>
+    <link rel="stylesheet" href="https://ig.ft.com/visual-vocabulary/styles.css"/>
+    <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
+</head>
+<body>
+
+    <h1>Fed rate projections beeswarm plot</h1>
+    <p>A quick way of creating a Fed rate projections chart using data from the Federal Reserve. HTML data tables can be found under projection materials on the <a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm" target="_blank">Federal Reserve Federal Open Market Committee meeting calendar webpage</a>.</p>
+    <p><b>Some useful settings in the index.js</b>
+        <ul>
+            <li><b>yMin</b> and <b>yMax</b> – use these to set the lower and upper values of the y-axis</li>
+            <li><b>numTicksy</b> – set the number of scale lines on the y-axis</li>
+        </ul>
+    </p>
+     <p><b>Column headings in the csv</b>
+        <ul>
+            <li><b>date</b> – use this column to specify which date the projections were released (this should correspond to a FOMC minutes release). Date will be read in as a string (as if it were a category)</li>
+            <li><b>Midpoint of target range or target level (Percent)</b> – use this column to specify a projected Fed funds rate</li>
+            <li><b>Various year columms</b> – use these columns to specify the number of participants who project a particular target level</li>
+
+        </ul>
+    </p>
+    <p>Please make sure than the <b>blue line</b> is on top as this is the primary line colour</p>
+
+    <hr>
+
+    <!-- These are provided already for convenience, but could also be added purely via JS: -->
+    <script>
+    /*
+      [
+        'webS'
+        'webM'
+        'webL'
+        'print'
+        'social'
+        'video'
+      ].forEach(function(size){
+        const container = document.createElement('figure');
+        container.dataset.frame = size;
+        container.className = 'framed saveable';
+        container.appendChild(document.createElement('svg'));
+        document.body.appendChild(container);
+      });
+    */
+    </script>
+    <p class="section-heading">Non-responsive chart</p>
+    <figure class="framed saveable" data-frame="webMDefault"><svg></svg></figure>
+    <p class="section-heading">Responsive image set</p>
+    <figure class="framed saveable" data-frame="webS"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webM"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="webL"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="print"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="social"><svg></svg></figure>
+    <figure class="framed saveable" data-frame="video"><svg></svg></figure>
+
+</body>
+</html>

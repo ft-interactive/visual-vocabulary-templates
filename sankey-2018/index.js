@@ -8,7 +8,7 @@ import * as gChartcolour from 'g-chartcolour';
 // User defined constants similar to version 2
 const dateStructure = '%d/%m/%Y';
 
-const dataFile = 'data.csv?b';
+const dataFile = 'data.csv';
 
 const sharedConfig = {
     // title: 'German election 2017: which voters switched parties?',
@@ -82,9 +82,9 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.fromCSV(dataFile, dateStructure).then((data) => {
+parseData.load(dataFile, dateStructure).then((data) => {
 
-    // define chart    
+    // define chart
     const myChart = custom.draw();
 
     Object.keys(frame).forEach((frameName) => {
@@ -232,7 +232,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .map(d => d.key);
 
         console.log("nodes", plotData.nodes)
-    
+
         let cat=[];
 
         // loop through each link replacing the text with its index from node
@@ -284,10 +284,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .data(plotData.links)
           .enter().append("path")
           .attr("id",function(d) {
-            return d.source.name.replace(/HL_|HR_|RL_/g,"") + "_to_" + 
+            return d.source.name.replace(/HL_|HR_|RL_/g,"") + "_to_" +
                 d.target.name;
             })
-          .attr("transform", 
+          .attr("transform",
               "translate(" + plotMargin.sankey + "," + 0 + ")")
           .attr("class", media+"link")
           .style("opacity", d => d.highlight == 1 ? 1:0.3)
@@ -304,10 +304,10 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
           .data(plotData.nodes)
           .enter().append("g")
             .attr("class", media+"node")
-            .attr("transform", function(d) { 
+            .attr("transform", function(d) {
               return "translate(" + (d.x)+ "," + (d.y) + ")"; })
           .call(d3.drag()
-            .on("start", function() { 
+            .on("start", function() {
                 this.parentNode.appendChild(this); })
             .on("drag", function(d){
               d3.select(this)
@@ -348,7 +348,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
         .styles({
           "font-size": currentFrame.rem()-2
         })
-        .attr("transform", 
+        .attr("transform",
               "translate(" + plotMargin.sankey + "," + 0 + ")")
         .style("text-anchor", function (d){
             if(d.x<plotWidth*0.3) {
@@ -375,7 +375,7 @@ parseData.fromCSV(dataFile, dateStructure).then((data) => {
             }
             else {return -8}
         })
-        .attr("transform", 
+        .attr("transform",
               "translate(" + plotMargin.sankey + "," + 0 + ")")
         .style("text-anchor", function (d){
             if(d.x<plotWidth*0.3) {

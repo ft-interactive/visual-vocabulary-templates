@@ -111,7 +111,7 @@ parseData.load(dataURL).then(({ seriesNames, data, totalSize }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
         const formatNumber = d3.format(',');
-        let smallRadius = 0;
+        let smallRadius = 0.1;
 
         const radius = Math.min(currentFrame.dimension().width, currentFrame.dimension().height) / 2;
 

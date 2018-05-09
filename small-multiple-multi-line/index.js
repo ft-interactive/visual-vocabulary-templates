@@ -132,7 +132,7 @@ d3.selectAll('.framed')
         figure.select('svg')
             .call(frame[figure.node().dataset.frame]);
     });
-parseData.fromCSV(dataFile, dateStructure, { yMin, joinPoints, dataDivisor }).then(({
+parseData.load(dataFile, { dateStructure, yMin, joinPoints, dataDivisor }).then(({
     seriesNames, groupNamesReduced, data, newData, valueExtent, highlights, annos,
 }) => {
     Object.keys(frame).forEach((frameName) => {

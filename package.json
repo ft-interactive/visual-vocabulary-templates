@@ -7,7 +7,8 @@
         "url": "git+https://github.com/ft-interactive/visual-vocabulary-templates.git"
     },
     "scripts": {
-        "deploy-css": "ft-graphics-deploy --confirm --local-dir=./docs/"
+        "deploy-css": "ft-graphics-deploy --confirm --local-dir=./docs/",
+        "test": "jest ./.tests/*"
     },
     "keywords": [],
     "author": "Financial Times Interactive Graphics",
@@ -17,15 +18,25 @@
     },
     "homepage": "https://github.com/ft-interactive/visual-vocabulary-templates#readme",
     "devDependencies": {
+        "connect": "^3.6.6",
         "eslint": "^3.19.0",
         "eslint-config-airbnb-base": "^11.2.0",
-        "eslint-plugin-html": "^3.2.2",
         "eslint-plugin-import": "^2.6.0",
-        "ft-graphics-deploy": "^2.1.6"
+        "ft-graphics-deploy": "^2.1.6",
+        "glob": "^7.1.2",
+        "jest": "^22.4.3",
+        "portfinder": "^1.0.13",
+        "puppeteer": "^1.3.0",
+        "serve-static": "^1.13.2"
     },
     "dependencies": {
         "d3": "^4.9.1",
         "g-chartcolour": "^0.8.11",
         "locate-path": "^2.0.0"
+    },
+    "jest": {
+        "verbose": true,
+        "expand": true,
+        "bail": true
     }
 }

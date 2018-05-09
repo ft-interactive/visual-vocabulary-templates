@@ -3,77 +3,74 @@
  */
 
 import * as d3 from 'd3';
+import loadData from '@financial-times/load-data';
 
 /**
- * Parses CSV file and returns structured data
- * @param  {String} url Path to CSV file
+ * Parses data file and returns structured data
+ * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function fromCSV(url, dateStructure, options) {
-    return new Promise((resolve, reject) => {
-        d3.csv(url, (error, data) => {
-            if (error) reject(error);
-            else {
-                const { yMin, joinPoints, dataDivisor } = options;
-                // make sure all the dates in the date column are a date object
-                const parseDate = d3.timeParse(dateStructure);
-                data.forEach((d) => {
-                    d.date = parseDate(d.date);
-                });
+export function load(url, options = {}) { // eslint-disable-line
+    const { dateStructure, yMin, joinPoints, dataDivisor } = options;
 
-                // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-                const seriesNames = getSeriesNames(data.columns);
+    return loadData(url).then((data) => {
+        // make sure all the dates in the date column are a date object
+        const parseDate = d3.timeParse(dateStructure);
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
+        });
 
-                const seriesNamesReduced = getSeriesNamesReduced(seriesNames);
+        // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
 
-                const groupNamesReduced = getGroupNamesReduced(seriesNames);
+        const seriesNamesReduced = getSeriesNamesReduced(seriesNames);
 
-                // Format the dataset that is used to draw the lines
-                const plotData = seriesNames.map(d => ({
-                    name: d,
-                    lineData: getlines(data, d, joinPoints, dataDivisor),
-                }))
-                    .reduce((col, cur) => {
-                        const [name] = cur.name.split('_');
-                        if (!col[name]) col[name] = [];
-                        col[name].push(cur.lineData);
-                        return col;
-                    }, {});
+        const groupNamesReduced = getGroupNamesReduced(seriesNames);
 
-                const newData = seriesNamesReduced.map(d => ({
-                    name: d,
-                    lineData: plotData[d],
-                }));
+        // Format the dataset that is used to draw the lines
+        const plotData = seriesNames.map(d => ({
+            name: d,
+            lineData: getlines(data, d, joinPoints, dataDivisor),
+        }))
+        .reduce((col, cur) => {
+            const [name] = cur.name.split('_');
+            if (!col[name]) col[name] = [];
+            col[name].push(cur.lineData);
+            return col;
+        }, {});
+
+        const newData = seriesNamesReduced.map(d => ({
+            name: d,
+            lineData: plotData[d],
+        }));
 
 
-                // Use the seriesNames array to calculate the minimum and max values in the dataset
-                const valueExtent = extentMulti(data, seriesNames, yMin);
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames, yMin);
 
-                // Filter data for annotations
-                const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+        // Filter data for annotations
+        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
 
-                // Format the data that is used to draw highlight tonal bands
-                const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-                const highlights = [];
+        // Format the data that is used to draw highlight tonal bands
+        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const highlights = [];
 
-                boundaries.forEach((d, i) => {
-                    if (d.highlight === 'begin') {
-                        highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-                    }
-                });
-
-                resolve({
-                    seriesNames,
-                    seriesNamesReduced,
-                    groupNamesReduced,
-                    newData,
-                    data,
-                    valueExtent,
-                    highlights,
-                    annos,
-                });
+        boundaries.forEach((d, i) => {
+            if (d.highlight === 'begin') {
+                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+
+        return {
+            seriesNames,
+            seriesNamesReduced,
+            groupNamesReduced,
+            newData,
+            data,
+            valueExtent,
+            highlights,
+            annos,
+        };
     });
 }
 

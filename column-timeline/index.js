@@ -79,7 +79,7 @@ const frame = {
    .margin({ top: 140, left: 40, bottom: 138, right: 40 })
    // .title("Put headline here")
    .width(612)
-   .height(750),
+   .height(612),
 
     video: gChartframe.videoFrame(sharedConfig)
    .margin({ left: 207, right: 207, bottom: 210, top: 233 }),

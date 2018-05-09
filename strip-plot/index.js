@@ -26,8 +26,8 @@ const lines = true;
 const quantiles = false;
 const logscale = false;
 const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
-const sort = '';
-const sortOn = 0;
+const sort = '';// specify 'ascending', 'descending
+const sortOn = 0;// refers to the column in the dataset (or index in seriesNames) that the sort is performed on to sort on (ignores name column)
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
