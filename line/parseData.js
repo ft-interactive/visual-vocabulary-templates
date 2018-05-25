@@ -39,8 +39,17 @@ export function load(url, options) { // eslint-disable-line
         plotData = plotData.filter(d => d.highlightLine === false);
 
          // Filter data for annotations
-        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
-
+        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined))
+        .map((d) => {
+            return {
+                title: d.annotate,
+                note: d.level,
+                x: d.date,
+                y: d.level,
+                radius: 2,
+                type: d.type
+            }
+        })
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
@@ -70,7 +79,7 @@ export function load(url, options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight'];
+    const exclude = ['date', 'annotate', 'highlight','type'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 

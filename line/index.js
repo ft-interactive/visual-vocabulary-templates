@@ -9,10 +9,11 @@ import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
+import * as annotation from './annotations.js';
 
-const dataFile = 'data.csv';
+const dataFile = 'pain diary.csv';
 
-const dateFormat = '%d/%m/%Y';
+const dateFormat = '%d/%m/%Y %H:%M';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -27,19 +28,19 @@ const dateFormat = '%d/%m/%Y';
 */
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Pain diary for surgeon',
+    subtitle: '',
     source: 'Source not yet added',
 };
 
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 1400;// sets the maximum value on the xAxis
+const yMax = 10;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
-const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
+const yAxisHighlight = 7; // sets which tick to highlight on the yAxis
+const numTicksy = 10;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const interval = 'months';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -85,14 +86,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
-  .width(53.71)// 1 col
+  .width(280)// 1 col
   // .width(112.25)// 2 col
   // .width(170.8)// 3 col
   // .width(229.34)// 4 col
   // .width(287.88)// 5 col
   // .width(346.43)// 6 col
   // .width(74)// markets std print
-  .height(69.85), // std print (Use 58.21mm for markets charts that matter)
+  .height(180), // std print (Use 58.21mm for markets charts that matter)
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
@@ -126,7 +127,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-        const myAnnotations = lineChart.drawAnnotations();// sets up annotations
+        const myAnnotations = annotation.draw();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
@@ -290,19 +291,22 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .attr('class', 'highlights')
           .call(myHighlights);
 
-        // Set up highlights for this frame
+        //Set up highlights for this frame
         myAnnotations
-          .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
-          .rem(currentFrame.rem());
+          .yScale(myYAxis.scale())
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * 5)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
         // Draw the annotations before the lines
         plotAnnotation
-          .selectAll('.annotation')
-          .data(annos)
-          .enter()
-          .append('g')
-          .call(myAnnotations);
+            .selectAll('.highlighted-label')
+            .data(annos)
+            .enter()
+            .append('g')
+            .classed('highlighted-label', true)
+            .call(myAnnotations)
 
 
         // Set up legend for this frame
