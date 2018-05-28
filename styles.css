@@ -2,6 +2,8 @@
  * Global styles for Visual Vocabulary Templates
  */
 
+@import url("https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^3.0.4");
+
 .section-heading {
     background-color: #00757F;
     color: #fff;
@@ -32,7 +34,7 @@ svg {
 .ft-webgraphic-m .axis text,
 .ft-webgraphic-m-default .axis text,
 .ft-webgraphic-l .axis text {
-  font-family: metric;
+  font-family: MetricWeb;
   fill: #66605C;
 }
 
@@ -374,7 +376,7 @@ svg {
 .ft-webgraphic-m .timeline-label,
 .ft-webgraphic-m-default .timeline-label,
 .ft-webgraphic-l .timeline-label {
-    font-family: metric;
+    font-family: MetricWeb;
     fill: #000000;
 }
 
@@ -383,7 +385,7 @@ svg {
 .ft-webgraphic-m .legend,
 .ft-webgraphic-m-default .legend,
 .ft-webgraphic-l .legend {
-    font-family: metric;
+    font-family: MetricWeb;
     fill: #66605C;
 }
 
