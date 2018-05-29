@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import d3 from 'd3';
 
 export function draw() {
     let lineWidth = 100
@@ -21,17 +21,19 @@ export function draw() {
         let yOffset = 0;
         let xOffset = 0;
 
-    	let textLabel = parent.append('g')
+    	const textLabel = parent.append('g')
             .on('mouseover', pointer)
-            .call(d3.drag()
-                .on('start', dragstarted)
-                .on('drag', dragged)
-                .on('end', dragended))
 
-        textLabel.append('text')
+        // textLabel.append('circle')
+        //     .attr('cx',d => xScale(d.targetX))
+        //     .attr('cy',d => yScale(d.targetY))
+        //     .attr('r',10)
+
+        textLabel.append('g')
+        .append('text')
         	.attr('class', 'highlighted-label')
-        	.attr('x',d => xScale(d.x))
-        	.attr('y',d => yScale(d.y))
+        	.attr('x',d => xScale(d.targetX))
+        	.attr('y',d => yScale(d.targetY))
             .attr('dy',0)
         	.text((d) => {
                 if (intersect) {
@@ -40,10 +42,18 @@ export function draw() {
         		else {radius = d.radius};
         		return d.title + ' '+ d.note
         	})
-        	.call(wrap,lineWidth,(d => xScale(d.x)),"highlighted-label")
-            .call(offset)
+
+
+        	.call(wrap,lineWidth,(d => xScale(d.targetX)),"highlighted-label")
+            //.call(offset)
+
+       textLabel.call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended));
 
         let arrow = parent.append('path')
+        let source =  getSource(textLabel)
 
         // link.attr("d", function(d) {
         // var dx = d.target.x - d.source.x,
@@ -52,32 +62,42 @@ export function draw() {
         // return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
         // });
 
+        function getSource(label) {
+            let labelX = label.attr('x')
+            let labelY = label.attr('y')
+            let labDim = labelDimansions(label)
+            console.log(labDim)
+
+        }
+
         function offset(label) {
             label.each(function(d) {
-                //console.log(d)
-                let labelWidth = this.getBBox().width;
-                let labelHeight = this.getBBox().height;
-                let x = xScale(d.x);
-                let y = yScale(d.y)
+                let labDim = labelDimansions(textLabel)
+                let posX = label.attr('x');
+                let posY = label.attr('y');
                 //console.log(x,y,plotDim[0]/2)
-                if (x > plotDim[0]/2) {
-                    xOffset = (0-(labelWidth + radius + (rem)))
+                if (posX > plotDim[0]/2) {
+                    xOffset = (0-(labDim[0] + radius + (rem)))
                 }
-                if (x < plotDim[0]/2) {
+                if (posX < plotDim[0]/2) {
                     xOffset = radius + (rem);
                 }
-                if (y > (plotDim[1]/2)) {
-                    yOffset = 0 - (radius + rem + (labelHeight / 2))
+                if (posY > (plotDim[1]/2)) {
+                    yOffset = 0 - (radius + rem + (labDim[1] / 2))
                 }
-                if (y < (plotDim[1]/2)) {
+                if (posY < (plotDim[1]/2)) {
                     yOffset = radius + rem 
                 }
                 let text = d3.select(this)
                 text.attr('transform', `translate(${xOffset},${yOffset})`);
-            })
-            
+            })   
         }
 
+        function labelDimansions (label) {
+            let labelWidth = label.node().getBBox().width;
+            let labelHeight = label.node().getBBox().height;
+            return ([labelWidth,labelHeight])
+        }
 
     	//wrap text function adapted from Mike Bostock
 		function wrap(text, width,x, media) {
@@ -87,7 +107,7 @@ export function draw() {
 		        word,
 		        line = [],
 		        lineNumber = 0,
-		        lineHeight = 1.1,
+		        lineHeight = 1.0,
 		        y = text.attr("y"),
 		        dy = parseFloat(text.attr("dy")),
 		        tspan = text.text(null).append("tspan").attr("class", media).attr("x", x).attr("y", y).attr("dy", dy + "em");
@@ -107,25 +127,18 @@ export function draw() {
             this.style.cursor = 'pointer';
         }
 
-        function dragstarted() {
+        function dragstarted(d) {
             d3.select(this).raise().classed('active', true);
-            console.log(d3.event);
         }
 
-        function dragged() {
-            let item = d3.select(this)
-            console.log(item)
-            // const dX = window.event.x // subtract cx
-            // const dY = window.event.y // subtract cy
-            // d3.select(this).attr('transform', `translate(${dX}, ${dY})`);
-            // console.log(this);
-            console.log(d3.event);
-            // console.log(window.event);
-            // d3.select(this).attr('transform', `translate(${d3.event.x}, ${d3.event.y})`);
+        function dragged(d) {
+               d3.select(this).selectAll('tspan').attr('x', d.x = d3.event.x).attr('y', d.y = d3.event.y);
+
+           //d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+            //d3.select(this).attr('transform', `translate(${d3.event.d.x}, ${d3.event.d.y})`);
         }
 
-        function dragended() {
-            console.log(d3.event);
+        function dragended(d) {
             d3.select(this).classed('active', false);
         }
 

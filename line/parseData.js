@@ -44,8 +44,8 @@ export function load(url, options) { // eslint-disable-line
             return {
                 title: d.annotate,
                 note: d.level,
-                x: d.date,
-                y: d.level,
+                targetX: d.date,
+                targetY: d.level,
                 radius: 2,
                 type: d.type
             }
