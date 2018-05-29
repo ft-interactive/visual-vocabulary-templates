@@ -45,7 +45,7 @@ export function draw() {
 
 
         	.call(wrap,lineWidth,(d => xScale(d.targetX)),"highlighted-label")
-            //.call(offset)
+            .call(offset)
 
        textLabel.call(d3.drag()
             .on('start', dragstarted)
@@ -66,7 +66,7 @@ export function draw() {
             let labelX = label.attr('x')
             let labelY = label.attr('y')
             let labDim = labelDimansions(label)
-            console.log(labDim)
+            console.log(labDim, labelX, labelY)
 
         }
 
@@ -88,8 +88,7 @@ export function draw() {
                 if (posY < (plotDim[1]/2)) {
                     yOffset = radius + rem 
                 }
-                let text = d3.select(this)
-                text.attr('transform', `translate(${xOffset},${yOffset})`);
+                label.attr('transform', `translate(${xOffset},${yOffset})`);
             })   
         }
 
@@ -115,7 +114,6 @@ export function draw() {
 		            line.push(word);
 		            tspan.text(line.join(" "));
 		            if (tspan.node().getComputedTextLength() > width) {
-		                line.pop();
 		                tspan.text(line.join(" "));
 		                line = [word];
 		                tspan = text.append("tspan").attr("class", media).attr("x", x).attr("y", y).attr("dy",++lineNumber * lineHeight + dy + "em").text(word);
@@ -123,7 +121,7 @@ export function draw() {
 		        }
 		    });
 		}
-        function pointer() {
+        function pointer(d) {
             this.style.cursor = 'pointer';
         }
 
@@ -132,10 +130,12 @@ export function draw() {
         }
 
         function dragged(d) {
-               d3.select(this).selectAll('tspan').attr('x', d.x = d3.event.x).attr('y', d.y = d3.event.y);
+               d3.select(this).selectAll('tspan')
+                .attr('x', d.x = d3.event.x)
+                .attr('y', d.y = d3.event.y);
 
            //d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-            //d3.select(this).attr('transform', `translate(${d3.event.d.x}, ${d3.event.d.y})`);
+            //d3.select(this).selectAll('tspan').attr('transform', `translate(${d3.event.d.x}, ${d3.event.d.y})`);
         }
 
         function dragended(d) {
