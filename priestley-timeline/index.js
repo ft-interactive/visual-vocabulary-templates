@@ -72,7 +72,7 @@ const frame = {
 
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 140, left: 50, bottom: 138, right: 40 })
+   .margin({ top: 140, left: 40, bottom: 138, right: 40 })
    // .title("Put headline here")
    .width(612)
    .height(612),

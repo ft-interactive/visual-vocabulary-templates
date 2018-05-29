@@ -38,10 +38,12 @@ svg {
   fill: #66605C;
 }
 
-.ft-socialgraphic .axis text,
+.ft-socialgraphic .axis text {
+    fill: #8e9095;
+}
+
 .ft-videographic .axis text {
-    opacity: 0.5;
-    fill: #ffffff;
+    fill: #8e9095;
 }
 
 .ft-webgraphic-s .highlighted-label,
@@ -83,7 +85,7 @@ svg {
 .ft-socialgraphic .axis text,
 .ft-socialgraphic .highlighted-label {
     font-family: metric;
-    font-size: 28px;
+    font-size: 20px;
 }
 .ft-videographic .axis text,
 .ft-videographic .highlighted-label {
@@ -102,14 +104,9 @@ svg {
 .ft-printgraphic .yAxis text{
     text-anchor: end;
 }
-.ft-socialgraphic .yAxis text{
-    opacity: 0.5;
-    fill: #FFFFFF;
-    text-anchor: end;
-}
-.ft-videographic .yAxis text{
-    opacity: 0.5;
-    fill: #FFFFFF;
+.ft-socialgraphic .yAxis text,
+.ft-videographic .yAxis text {
+    fill: #8e9095;
     text-anchor: end;
 }
 
@@ -126,15 +123,12 @@ svg {
     stroke-width: 0.3px;
 }
 .ft-socialgraphic .yAxis line{
-    stroke: #FFFFFF;
-    stroke-width: 2px;
-    stroke-dasharray: 2, 8;
-    stroke-opacity: 0.38;
+    stroke: #47494d;
+    stroke-width: 1px;
 }
 .ft-videographic .yAxis line{
-    stroke: #FFFFFF;
-    stroke-width: 4px;
-    stroke-opacity: 0.38;
+    stroke: #47494d;
+    stroke-width: 3px;
 }
 /* Makes domian invivible on yAxis*/
 .ft-webgraphic-s .domain,
@@ -180,11 +174,11 @@ svg {
 }
 
 .ft-socialgraphic .timelineHolder .domain {
-    stroke-width: 2px
+    stroke-width: 1px;
 }
 
 .ft-videographic .timelineHolder .domain {
-    stroke-width: 4px
+    stroke-width: 4px;
 }
 /* .tick text on yAxis*/
 .ft-webgraphic-s .xAxis text,
@@ -197,16 +191,12 @@ svg {
 .ft-printgraphic .xAxis text{
     text-anchor: middle;
 }
-.ft-socialgraphic .xAxis text{
-    opacity: 0.5;
-    fill: #FFFFFF;
+.ft-socialgraphic .xAxis text,
+.ft-videographic .xAxis text {
+    fill: #8e9095;
     text-anchor: middle;
 }
-.ft-videographic .xAxis text{
-    opacity: 0.5;
-    fill: #FFFFFF;
-    text-anchor: middle;
-}
+
 .ft-webgraphic-s .xAxis line,
 .ft-webgraphic-m .xAxis line,
 .ft-webgraphic-m-default .xAxis line,
@@ -219,15 +209,12 @@ svg {
     stroke-width: 0.3px;
 }
 .ft-socialgraphic .xAxis line{
-    stroke: #FFFFFF;
-    stroke-width: 2px;
-    stroke-dasharray: 2, 8;
-    stroke-opacity: 0.38;
+    stroke: #47494d;
+    stroke-width: 1px;
 }
 .ft-videographic .xAxis line{
-    stroke: #FFFFFF;
-    stroke-width: 4px;
-    stroke-opacity: 0.38;
+    stroke: #47494d;
+    stroke-width: 3px;
 }
 /* Style for the highlight or base line on yAxis*/
 .ft-webgraphic-s .baseline line,
@@ -247,15 +234,12 @@ svg {
     stroke-width: 0.3px;
 }
 .ft-socialgraphic .baseline line{
-    stroke: #FFFFFF;
-    stroke-width: 2px;
-    stroke-dasharray: 1, 0;
-    stroke-opacity: 0.5;
+    stroke: #8e9095;
+    stroke-width: 1px;
 }
 .ft-videographic .baseline line{
-    stroke: #FFFFFF;
-    stroke-width: 4px;
-    stroke-opacity: .38;
+    stroke: #8e9095;
+    stroke-width: 3px;
 }
 /* Styles for lines on chart*/
 .ft-webgraphic-s .lines,
@@ -274,15 +258,15 @@ svg {
     fill: none;
 }
 .ft-socialgraphic .lines{
-    stroke-linecap: round;
+    stroke-linecap: square;
     stroke-linejoin: round;
-    stroke-width: 5px;
+    stroke-width: 4px;
     fill: none;
 }
 .ft-videographic .lines{
-    stroke-linecap: round;
+    stroke-linecap: square;
     stroke-linejoin: round;
-    stroke-width: 8px;
+    stroke-width: 10px;
     fill: none;
 }
 
@@ -301,14 +285,12 @@ svg {
     stroke-width: 0.5px;
 }
 .ft-socialgraphic .annotations-holder line {
-    stroke: #ffffff;
-    stroke-width: 2px;
-    opacity: 0.7;
+    stroke: #8e9095;
+    stroke-width: 1px;
 }
 .ft-videographic .annotations-holder line {
-    stroke: #ffffff;
-    stroke-width: 4px;
-    opacity: 0.7;
+    stroke: #8e9095;
+    stroke-width: 3px;
 }
 
 .ft-webgraphic-s .annotations-holder text {
@@ -340,15 +322,13 @@ svg {
 }
 
 .ft-socialgraphic .annotations-holder text {
-    font-size: 28px;
+    font-size: 24px;
     fill: #ffffff;
-    opacity: 0.7;
 }
 
 .ft-videographic .annotations-holder text {
     font-size: 48px;
     fill: #ffffff;
-    opacity: 0.7;
 }
 
 /* .overall text styles on axis*/
@@ -420,16 +400,14 @@ svg {
 .ft-socialgraphic .timeline-label,
 .ft-socialgraphic .legend text {
     font-family: metric;
-    opacity: 0.5;
-    fill: #FFFFFF;
-    font-size: 28px;
+    fill: #8e9095;
+    font-size: 20px;
 }
 
 .ft-videographic .timeline-label,
 .ft-videographic .legend text{
     font-family: metric;
-    opacity: 0.5;
-    fill: #FFFFFF;
+    fill: #8e9095;
     font-size: 48px;
 }
 
