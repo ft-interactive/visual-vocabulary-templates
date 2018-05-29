@@ -5,6 +5,8 @@ export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
     let sizeScale = d3.scaleSqrt();
+    let scaleDots;
+    let scaleFactor;
     let seriesNames  = []; // eslint-disable-line
     let groups = [];
     let yAxisAlign = 'right';
@@ -23,14 +25,20 @@ export function draw() {
         parent.append('circle')
             .attr('cx', d => xScale(d[xVar]))
             .attr('cy', d => yScale(d[yVar]))
-            .attr('r', d => sizeScale(d[sizeVar]))
+            .attr('r', (d) => {
+                if (scaleDots) {
+                    return sizeScale(d[sizeVar])
+                }   else {
+                    return rem*(scaleFactor*.5)
+                }
+            })
             .attr('fill', (d) => {
                 if (hollowDots) {
                     return 'none';
                 }
                 return colourScale(d.group);
             })
-            .attr('id', d => `${d.name}:${d[sizeVar]}`)
+            .attr("id", d => d.name+":"+d[sizeVar])
             .attr('fill-opacity', opacity)
             .attr('stroke', (d) => {
                 if (hollowDots) {
@@ -58,7 +66,7 @@ export function draw() {
             .attr('class', 'highlighted-label')
             .attr('x', d => xScale(d[xVar]))
             .attr('y', d => yScale(d[yVar]))
-            .attr('dy', -(rem / 2))
+            .attr('dy', -(rem))
             .attr('text-anchor', 'middle')
             .text(d => d.name);
 
@@ -123,6 +131,16 @@ export function draw() {
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
+        return chart;
+    };
+    chart.scaleDots = (d) => {
+        if (!d) return scaleDots;
+        scaleDots = d;
+        return chart;
+    };
+    chart.scaleFactor = (d) => {
+        if (!d) return scaleFactor;
+        scaleFactor = d;
         return chart;
     };
     chart.sizeScale = (d) => {

@@ -10,14 +10,13 @@ import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
 
 // dataset and titles
-const dataURL = 'kateallen.csv';
+const dataURL = 'bubble-data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
-
 
 // display options
 const xVar = 'Change in spending on interest as % of GDP';// these should be series (column) names from your data
@@ -30,21 +29,15 @@ const yMin = -12;// sets the minimum value on the yAxis - will autoextend to inc
 const yMax = 10;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
-const sizeVar = 'Change in debt as % of GDP';
-const sizeMin = 0;
-const sizeMax = 0;
+const scaleDots = true;
+const sizeVar = 'Change in debt as % of GDP';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
+const scaleFactor=1;//controls how big in appearance bubbles are
 
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
 
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'circ';// rect, line or circ, geometry of legend marker
-
-// remaining options to implement
-// log scales
-// invert scales
-// proportional circles (bubble chart)
-
 
 const myLegend = gLegend.legend();// sets up the legend
 /* eslint-disable */
@@ -57,7 +50,7 @@ const xAxisAlign = 'bottom';
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-        .margin({ top: 100, left: 15, bottom: 82, right: 20 })
+        .margin({ top: 100, left: 20, bottom: 82, right: 20 })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(400),
@@ -68,12 +61,12 @@ const frame = {
         .height(500),
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 86, right: 30 })
+        .margin({ top: 100, left: 25, bottom: 86, right: 30 })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
-        .margin({ top: 100, left: 20, bottom: 104, right: 25 })
+        .margin({ top: 100, left: 25, bottom: 104, right: 25 })
     // .title("Put headline here")
         .height(700),
 
@@ -101,7 +94,6 @@ const frame = {
     // .title("Put headline here")
 };
 
-
 // add the frames to the page...
 d3.selectAll('.framed')
     .each(function addFrames() {
@@ -116,7 +108,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     // determin extents for each scale
     const xValRange = [xMin, xMax];
     const yValRange = [yMin, yMax];
-    const sizeRange = [sizeMin, sizeMax];
+    const sizeRange = [0,0];
 
     data.forEach((d) => {
         xValRange[0] = Math.min(xValRange[0], d[xVar]);
@@ -127,26 +119,25 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         sizeRange[1] = Math.max(sizeRange[1], d[sizeVar]);
     });
 
-
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
 
     const axisLabelX = {
         tag: xVar,
-        hori: 'middle',
+        hori:'middle',
         vert: 'bottom',
         anchor: 'middle',
-        rotate: 0,
-    };
+        rotate: 0
+    }
+
     const axisLabelY = {
         tag: yVar,
-        hori: 'left',
+        hori:'left',
         vert: 'middle',
         anchor: 'middle',
-        rotate: 0,
-    };
-
+        rotate: 0
+    }
 
     // define chart
     const myChart = scatterplot.draw()
@@ -159,15 +150,11 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-        const sqrtScale = d3.scaleSqrt()
+    const sqrtScale = d3.scaleSqrt()
             .domain(sizeRange)
-            .range([0, currentFrame.rem()]);
+            .range([0,(currentFrame.rem()*scaleFactor)]);
 
-        /*
-        .domain(sizeRange)
-        .range([currentFrame.rem(),currentFrame.rem()*4]);*/
-
-        const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
+    const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
 
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
@@ -219,7 +206,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         currentFrame.plot()
             .call(myXAxis);
 
-
         if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
         }
@@ -227,11 +213,11 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
-
         myChart
             .yRange([currentFrame.dimension().height, 0])
             .xScale(myXAxis.scale())
             .sizeScale(sqrtScale)
+            .scaleFactor(scaleFactor)
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette((frameName))
@@ -240,8 +226,8 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .sizeVar(sizeVar)
             .hollowDots(hollowDots)
             .groups(groups)
-            .opacity(opacity);
-
+            .opacity(opacity)
+            .scaleDots(scaleDots);
 
         // draw chart
         currentFrame.plot()
@@ -258,7 +244,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-
         // Set up legend for this frame
         myLegend
             .frameName(frameName)
@@ -267,7 +252,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
             .rem(myChart.rem())
             .geometry(legendType)
             .alignment(legendAlign);
-
 
         // Draw the Legend
         currentFrame.plot()
