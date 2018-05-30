@@ -61,6 +61,22 @@ export function draw() {
         // dr = radius;
         // return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
         // });
+        function pointer(d) {
+            this.style.cursor = 'pointer';
+        }
+
+        function dragstarted(d) {
+            d3.select(this).raise().classed('active', true);
+        }
+
+        function dragged(d) {
+            d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+            d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+        }
+
+        function dragended(d) {
+            d3.select(this).classed('active', false);
+        }
 
         function getSource(label) {
             let labelX = label.attr('x')
@@ -121,24 +137,6 @@ export function draw() {
 		        }
 		    });
 		}
-        function pointer(d) {
-            this.style.cursor = 'pointer';
-        }
-
-        function dragstarted(d) {
-            d3.select(this).raise().classed('active', true);
-        }
-
-        function dragged(d) {
-
-            d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            //d3.select(this).attr('transform', `translate(${d3.event.x}, ${d3.event.y})`);
-        }
-
-        function dragended(d) {
-            d3.select(this).classed('active', false);
-        }
 
     }
 
