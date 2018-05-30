@@ -45,7 +45,7 @@ export function draw() {
 
 
         	.call(wrap,lineWidth,(d => xScale(d.targetX)),"highlighted-label")
-            .call(offset)
+            //.call(offset)
 
        textLabel.call(d3.drag()
             .on('start', dragstarted)
@@ -130,12 +130,10 @@ export function draw() {
         }
 
         function dragged(d) {
-               d3.select(this).selectAll('tspan')
-                .attr('x', d.x = d3.event.x)
-                .attr('y', d.y = d3.event.y);
 
-           //d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-            //d3.select(this).selectAll('tspan').attr('transform', `translate(${d3.event.d.x}, ${d3.event.d.y})`);
+            d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+            d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+            //d3.select(this).attr('transform', `translate(${d3.event.x}, ${d3.event.y})`);
         }
 
         function dragended(d) {
