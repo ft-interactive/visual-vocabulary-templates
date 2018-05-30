@@ -1,4 +1,5 @@
 import d3 from 'd3';
+import { select } from "d3-selection"
 
 export function draw() {
     let lineWidth = 100
@@ -48,6 +49,7 @@ export function draw() {
             //.call(offset)
 
        textLabel.call(d3.drag()
+            //.container(select('g.anotations').node())
             .on('start', dragstarted)
             .on('drag', dragged)
             .on('end', dragended));
