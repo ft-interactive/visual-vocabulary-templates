@@ -47,7 +47,9 @@ export function load(url, options) { // eslint-disable-line
                 targetX: d.date,
                 targetY: d.level,
                 radius: 2,
-                type: d.type
+                type: d.type,
+                sourceX: 300,
+                sourceY: 200
             }
         })
         // Format the data that is used to draw highlight tonal bands
