@@ -301,11 +301,11 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
 
         // Draw the annotations before the lines
         plotAnnotation
-            .selectAll('.anotations')
+            .selectAll('.annotations')
             .data(annos)
             .enter()
             .append('g')
-            .classed('anotations', true)
+            .classed('annotations', true)
             .call(myAnnotations)
 
 

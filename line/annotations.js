@@ -17,21 +17,14 @@ export function draw() {
 
 
     function label(parent) {
-
-    	let radius;
-        let yOffset = 0;
-        let xOffset = 0;
+        
+        let radius;
 
     	const textLabel = parent.append('g')
             .on('mouseover', pointer)
+            .attr('id', 'labelHolder')
 
-        // textLabel.append('circle')
-        //     .attr('cx',d => xScale(d.targetX))
-        //     .attr('cy',d => yScale(d.targetY))
-        //     .attr('r',10)
-
-        textLabel.append('g')
-        .append('text')
+        textLabel.append('text')
         	.attr('class', 'highlighted-label')
         	.attr('x',d => xScale(d.targetX))
         	.attr('y',d => yScale(d.targetY))
@@ -43,19 +36,26 @@ export function draw() {
         		else {radius = d.radius};
         		return d.title + ' '+ d.note
         	})
+        	.call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
+            .call(offset)
+
+        textLabel.append('line')
+            .attr('x1', 100)
+            .attr('y2', 100)
+            .attr('x2', d => xScale(d.targetX))
+            .attr('y2', d => yScale(d.targetY))
+            .attr('stroke', '#000000')
+            .attr('stroke-width', 1)
 
 
-        	.call(wrap,lineWidth,(d => xScale(d.targetX)),"highlighted-label")
-            //.call(offset)
 
-       textLabel.call(d3.drag()
-            //.container(select('g.anotations').node())
-            .on('start', dragstarted)
-            .on('drag', dragged)
-            .on('end', dragended));
+       textLabel
+            .call(d3.drag()
+                //.container(select('g.anotations').node())
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
 
-        let arrow = parent.append('path')
-        let source =  getSource(textLabel)
 
         // link.attr("d", function(d) {
         // var dx = d.target.x - d.source.x,
@@ -63,6 +63,7 @@ export function draw() {
         // dr = radius;
         // return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
         // });
+
         function pointer(d) {
             this.style.cursor = 'pointer';
         }
@@ -81,19 +82,18 @@ export function draw() {
         }
 
         function getSource(label) {
-            let labelX = label.attr('x')
-            let labelY = label.attr('y')
-            let labDim = labelDimansions(label)
-            console.log(labDim, labelX, labelY)
-
+            return [Number(label.x), Number(label.y)]
         }
 
         function offset(label) {
             label.each(function(d) {
-                let labDim = labelDimansions(textLabel)
-                let posX = label.attr('x');
-                let posY = label.attr('y');
-                //console.log(x,y,plotDim[0]/2)
+                let labelText = d3.select(this)
+                let labDim = labelDimansions(labelText)
+                let posX = xScale(d.targetX);
+                let posY = yScale(d.targetY);
+                //console.log(posX)
+                let yOffset = 0;
+                let xOffset = 0;
                 if (posX > plotDim[0]/2) {
                     xOffset = (0-(labDim[0] + radius + (rem)))
                 }
@@ -101,12 +101,12 @@ export function draw() {
                     xOffset = radius + (rem);
                 }
                 if (posY > (plotDim[1]/2)) {
-                    yOffset = 0 - (radius + rem + (labDim[1] / 2))
+                    yOffset = (0 - (radius + rem + (labDim[1])))
                 }
                 if (posY < (plotDim[1]/2)) {
                     yOffset = radius + rem 
                 }
-                label.attr('transform', `translate(${xOffset},${yOffset})`);
+                labelText.attr('transform', `translate(${xOffset},${yOffset})`);
             })   
         }
 
