@@ -37,11 +37,11 @@ export function draw() {
         		return d.title + ' '+ d.note
         	})
         	.call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
-            .call(offset)
+            .call(placeLabel)
 
         textLabel.append('line')
-            .attr('x1', d => xScale(d.targetX) + (getSource(d,)[0]))
-            .attr('y1', d => yScale(d.targetY) + (getSource(d,)[1]))
+            .attr('x1', d => getSource(d,)[0])
+            .attr('y1', d => getSource(d,)[1])
             .attr('x2', d => xScale(d.targetX))
             .attr('y2', d => yScale(d.targetY))
             .attr('stroke', '#000000')
@@ -74,38 +74,42 @@ export function draw() {
         }
 
         function dragged(d) {
+            console.log(d)
+            let newX = d.sourceX;
+            let newY = d.sourceY;
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-             d3.select(this).selectAll('line').attr("x1", d.x = d3.event.x).attr("y1", d.y = d3.event.y);
+            d3.select(this).selectAll('line').attr("x1", d.x = d3.event.x).attr("y1", d.y = d3.event.y);
         }
 
         function dragended(d) {
             d3.select(this).classed('active', false);
         }
 
-        function offset(label) {
+        function placeLabel(label) {
             label.each(function(d) {
+                console.log('offset', d)
                 let labelText = d3.select(this)
+                let labDim = labelDimansions(labelText)
                 let posX = xScale(d.targetX);
                 let posY = yScale(d.targetY);
                 //console.log(posX)
                 let yOffset = 0;
                 let xOffset = 0;
                 if (posX > plotDim[0]/2) {
-                    xOffset = (0-(radius + (rem)))
+                    xOffset = (0-(labDim[0] - radius + (rem)))
                 }
                 if (posX < plotDim[0]/2) {
                     xOffset = radius + (rem);
                 }
                 if (posY > (plotDim[1]/2)) {
-                    yOffset = (0 - (radius + rem ))
+                    yOffset = (0 - (labDim[1] + radius + rem ))
                 }
                 if (posY < (plotDim[1]/2)) {
                     yOffset = radius + rem 
                 }
-                console.log('source',d.sourceX)
-                d.sourceX = xOffset
-                d.sourceY = yOffset
+                d.sourceX = xScale(d.targetX) + xOffset
+                d.sourceY = yScale(d.targetY) + yOffset
                 labelText.attr('transform', `translate(${xOffset},${yOffset})`);
             }) 
         }
