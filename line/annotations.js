@@ -49,7 +49,10 @@ export function draw() {
 
        textLabel
             .call(d3.drag()
-                //.container(select('g.anotations').node())
+                .subject(function() { 
+                    const textEl = d3.select(this).select('text');
+                    return {x: textEl.attr('x'), y: textEl.attr('y')};
+                })
                 .on('start', dragstarted)
                 .on('drag', dragged)
                 .on('end', dragended));
