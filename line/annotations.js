@@ -74,6 +74,9 @@ export function draw() {
         }
 
         function dragged(d) {
+            console.log(d)
+            let newX = d.sourceX;
+            let newY = d.sourceY;
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('line').attr("x1", d.x = d3.event.x).attr("y1", d.y = d3.event.y);
@@ -83,32 +86,9 @@ export function draw() {
             d3.select(this).classed('active', false);
         }
 
-        function getOffset(d) {
-            console.log('offset', d)
-            let labelText = d3.select(this)
-            let labDim = labelDimansions(labelText);
-            let posX = xScale(d.targetX);
-            let posY = yScale(d.targetY);
-            let yOffset = 0;
-            let xOffset = 0;
-            if (posX > plotDim[0]/2) {
-                    xOffset = (0-(labDim[0] - radius + (rem)))
-                }
-            if (posX < plotDim[0]/2) {
-                xOffset = radius + (rem);
-            }
-            if (posY > (plotDim[1]/2)) {
-                yOffset = (0 - (labDim[1] + radius + rem ))
-            }
-            if (posY < (plotDim[1]/2)) {
-                yOffset = radius + rem 
-            }
-            return[yOffset,xOffset]
-        }
-
         function placeLabel(label) {
             label.each(function(d) {
-                console.log('place', d)
+                console.log('offset', d)
                 let labelText = d3.select(this)
                 let labDim = labelDimansions(d)
                 let posX = xScale(d.targetX);
@@ -128,7 +108,6 @@ export function draw() {
                 if (posY < (plotDim[1]/2)) {
                     yOffset = radius + rem 
                 }
-                console.log(getOffset(d))
                 d.sourceX = xScale(d.targetX) + xOffset
                 d.sourceY = yScale(d.targetY) + yOffset
                 labelText.attr('transform', `translate(${xOffset},${yOffset})`);
