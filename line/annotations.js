@@ -37,15 +37,26 @@ export function draw() {
         		return d.title + ' '+ d.note
         	})
         	.call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
-            .call(placeLabel)
+            .call(getOffset)
 
-        textLabel.append('line')
-            .attr('x1', d => getSource(d,)[0])
-            .attr('y1', d => getSource(d,)[1])
-            .attr('x2', d => xScale(d.targetX))
-            .attr('y2', d => yScale(d.targetY))
+        var path = textLabel.append('path')
             .attr('stroke', '#000000')
             .attr('stroke-width', 1)
+
+        path.attr("d", function(d) {
+        var dx = d.targetX - d.sourceX,
+        dy = d.targetY - d.sourceY,
+        dr = 150;
+        return "M" + d.sourceX + "," + d.sourceY + "A" + dr + "," + dr + " 0 0,1 " + xScale(d.targetX) + "," + yScale(d.targetY);
+        });
+
+        // textLabel.append('line')
+        //     .attr('x1', d => getSource(d,)[0])
+        //     .attr('y1', d => getSource(d,)[1])
+        //     .attr('x2', d => xScale(d.targetX))
+        //     .attr('y2', d => yScale(d.targetY))
+        //     .attr('stroke', '#000000')
+        //     .attr('stroke-width', 1)
 
        textLabel
             .call(d3.drag()
@@ -57,14 +68,6 @@ export function draw() {
                 .on('drag', dragged)
                 .on('end', dragended));
 
-
-        // link.attr("d", function(d) {
-        // var dx = d.target.x - d.source.x,
-        // dy = d.target.y - d.source.y,
-        // dr = radius;
-        // return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-        // });
-
         function pointer(d) {
             this.style.cursor = 'pointer';
         }
@@ -74,21 +77,17 @@ export function draw() {
         }
 
         function dragged(d) {
-            console.log(d)
-            let newX = d.sourceX;
-            let newY = d.sourceY;
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            d3.select(this).selectAll('line').attr("x1", d.x = d3.event.x).attr("y1", d.y = d3.event.y);
         }
 
         function dragended(d) {
             d3.select(this).classed('active', false);
         }
 
-        function placeLabel(label) {
+        function getOffset(label) {
             label.each(function(d) {
-                console.log('offset', d)
+                //console.log('offset', d)
                 let labelText = d3.select(this)
                 let labDim = labelDimansions(labelText)
                 let posX = xScale(d.targetX);
@@ -119,7 +118,7 @@ export function draw() {
                 //console.log('labelText',labelText)
                 //let labDim = labelDimansions(el)
                 let posX = (d.sourceX);
-                let posY = (d.sourceY);
+                let posY = (d.sourceY)-rem/2;
                 //console.log('pos',posX,posY)
 
                 let yOffset = 0;
