@@ -49,8 +49,8 @@ export function draw() {
         path.attr("d", function(d) {
             let sourceY = yScale(d.targetY) + d.OffsetY;
             let sourceX = xScale(d.targetX) + d.OffsetX;
-            let midY = sourceY - (d.OffsetY*0.5);
             let midX = sourceX
+            let midY = sourceY - (d.OffsetY*0.5);
             let points = [
                 [sourceX, sourceY],
                 [midX, midY],
@@ -58,7 +58,6 @@ export function draw() {
             ];
         let pathData = lineGenerator(points);
         return pathData
-        //return "M" + sourceX + "," + sourceY + "A" + dr + "," + dr + " 0 0,1 " + xScale(d.targetX) + "," + yScale(d.targetY);
         });
 
        textLabel
@@ -83,8 +82,6 @@ export function draw() {
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('path').attr("d", (d) => {
-                // let sourceY = d3.event.x + d.OffsetY;
-                // let sourceX = d3.event.y + d.OffsetX;
                 let points = [
                     [d3.event.x, d3.event.y],
                     [xScale(d.targetX), yScale(d.targetY)],
