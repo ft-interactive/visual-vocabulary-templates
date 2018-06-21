@@ -39,13 +39,13 @@ export function draw() {
         	.call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
             .call(placeLabel)
 
-        // textLabel.append('line')
-        //     .attr('x1', d => getSource(d,)[0])
-        //     .attr('y1', d => getSource(d,)[1])
-        //     .attr('x2', d => xScale(d.targetX))
-        //     .attr('y2', d => yScale(d.targetY))
-        //     .attr('stroke', '#000000')
-        //     .attr('stroke-width', 1)
+        textLabel.append('line')
+            .attr('x1', d => getSource(d,)[0])
+            .attr('y1', d => getSource(d,)[1])
+            .attr('x2', d => xScale(d.targetX))
+            .attr('y2', d => yScale(d.targetY))
+            .attr('stroke', '#000000')
+            .attr('stroke-width', 1)
 
        textLabel
             .call(d3.drag()
@@ -90,7 +90,7 @@ export function draw() {
             label.each(function(d) {
                 console.log('offset', d)
                 let labelText = d3.select(this)
-                let labDim = labelDimansions(d)
+                let labDim = labelDimansions(labelText)
                 let posX = xScale(d.targetX);
                 let posY = yScale(d.targetY);
                 //console.log(posX)
@@ -140,7 +140,6 @@ export function draw() {
         }
 
         function labelDimansions (label) {
-            console.log('label', label)
             let labelWidth = label.node().getBBox().width;
             let labelHeight = label.node().getBBox().height;
             return ([labelWidth,labelHeight])
