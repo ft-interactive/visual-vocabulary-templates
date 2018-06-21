@@ -80,14 +80,11 @@ export function draw() {
         }
 
         function dragged(d) {
-            let sourceX = d.OffsetX;
-            let sourceY = d.OffsetY;
-            console.log(sourceX, sourceY)
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            d3.select(this).selectAll('path').attr("d", function(d) {
-                let sourceY = d3.event.x + d.OffsetY;
-                let sourceX = d3.event.y + d.OffsetX;
+            d3.select(this).selectAll('path').attr("d", (d) => {
+                // let sourceY = d3.event.x + d.OffsetY;
+                // let sourceX = d3.event.y + d.OffsetX;
                 let points = [
                     [d3.event.x, d3.event.y],
                     [xScale(d.targetX), yScale(d.targetY)],
