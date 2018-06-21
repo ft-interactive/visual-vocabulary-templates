@@ -43,20 +43,23 @@ export function draw() {
             .attr('stroke', '#000000')
             .attr('stroke-width', 1)
 
-        path.attr("d", function(d) {
-        var dx = d.targetX - d.sourceX,
-        dy = d.targetY - d.sourceY,
-        dr = 150;
-        return "M" + d.sourceX + "," + d.sourceY + "A" + dr + "," + dr + " 0 0,1 " + xScale(d.targetX) + "," + yScale(d.targetY);
-        });
+        var lineGenerator = d3.line()
+            .curve(d3.curveBasis);
 
-        // textLabel.append('line')
-        //     .attr('x1', d => getSource(d,)[0])
-        //     .attr('y1', d => getSource(d,)[1])
-        //     .attr('x2', d => xScale(d.targetX))
-        //     .attr('y2', d => yScale(d.targetY))
-        //     .attr('stroke', '#000000')
-        //     .attr('stroke-width', 1)
+        path.attr("d", function(d) {
+            let sourceY = yScale(d.targetY) + d.OffsetY;
+            let sourceX = xScale(d.targetX) + d.OffsetX;
+            let midY = sourceY - (d.OffsetY*0.5);
+            let midX = sourceX
+            let points = [
+                [sourceX, sourceY],
+                [midX, midY],
+                [xScale(d.targetX), yScale(d.targetY)],
+            ];
+        let pathData = lineGenerator(points);
+        return pathData
+        //return "M" + sourceX + "," + sourceY + "A" + dr + "," + dr + " 0 0,1 " + xScale(d.targetX) + "," + yScale(d.targetY);
+        });
 
        textLabel
             .call(d3.drag()
@@ -77,8 +80,21 @@ export function draw() {
         }
 
         function dragged(d) {
+            let sourceX = d.OffsetX;
+            let sourceY = d.OffsetY;
+            console.log(sourceX, sourceY)
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+            d3.select(this).selectAll('path').attr("d", function(d) {
+                let sourceY = d3.event.x + d.OffsetY;
+                let sourceX = d3.event.y + d.OffsetX;
+                let points = [
+                    [d3.event.x, d3.event.y],
+                    [xScale(d.targetX), yScale(d.targetY)],
+                ];
+                let pathData = lineGenerator(points);
+                return pathData
+            });
         }
 
         function dragended(d) {
@@ -107,35 +123,10 @@ export function draw() {
                 if (posY < (plotDim[1]/2)) {
                     yOffset = radius + rem 
                 }
-                d.sourceX = xScale(d.targetX) + xOffset
-                d.sourceY = yScale(d.targetY) + yOffset
+                d.OffsetX = xOffset
+                d.OffsetY = yOffset
                 labelText.attr('transform', `translate(${xOffset},${yOffset})`);
             }) 
-        }
-        function getSource(d, el) {
-            //console.log('sourceObj',d, el)
-                let labelText = d3.select(d)
-                //console.log('labelText',labelText)
-                //let labDim = labelDimansions(el)
-                let posX = (d.sourceX);
-                let posY = (d.sourceY)-rem/2;
-                //console.log('pos',posX,posY)
-
-                let yOffset = 0;
-                let xOffset = 0;
-                // if (posX > plotDim[0]/2) {
-                //     xOffset = (0-(labDim[0] + radius + (rem)))
-                // }
-                // if (posX < plotDim[0]/2) {
-                //     xOffset = radius + (rem);
-                // }
-                // if (posY > (plotDim[1]/2)) {
-                //     yOffset = (0 - (radius + rem + (labDim[1])))
-                // }
-                // if (posY < (plotDim[1]/2)) {
-                //     yOffset = radius + rem 
-                // }
-                return [posX, posY]
         }
 
         function labelDimansions (label) {
