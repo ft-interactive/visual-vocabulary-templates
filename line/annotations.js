@@ -24,7 +24,7 @@ export function draw() {
             .on('mouseover', pointer)
             .attr('id', 'labelHolder')
 
-        textLabel.append('text')
+        let someText = textLabel.append('text')
         	.attr('class', 'highlighted-label')
         	.attr('x',d => xScale(d.targetX))
         	.attr('y',d => yScale(d.targetY))
@@ -36,8 +36,8 @@ export function draw() {
         		else {radius = d.radius};
         		return d.title + ' '+ d.note
         	})
-        	.call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
-            .call(textOffset)
+            .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
+            someText.call(textOffset)
 
         var path = textLabel.append('path')
             .attr('stroke', '#000000')
@@ -79,14 +79,13 @@ export function draw() {
         }
 
         function dragged(d) {
-            let sourceX = d3.event.x
-            let sourceY = d3.event.y
+            let sourceX = d3.event.x + d.OffsetX
+            let sourceY = d3.event.y + d.OffsetY
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('path').attr("d", (el) => {
-                console.log(el[0])
                 let points = [
-                    [sourceX, sourceY],
+                    [sourceX , sourceY],
                     [xScale(el.targetX), yScale(el.targetY)],
                 ];
                 let pathData = lineGenerator(points);
@@ -99,8 +98,9 @@ export function draw() {
         }
 
         function textOffset(label) {
-            label.each(function(d) {
-                //console.log('offset', d)
+            console.log('offset', label)
+            label.each(function(d,i) {
+                console.log(d)
                 let labelText = d3.select(this)
                 let labDim = labelDimansions(labelText)
                 let posX = xScale(d.targetX);
@@ -120,9 +120,13 @@ export function draw() {
                 if (posY < (plotDim[1]/2)) {
                     yOffset = radius + rem 
                 }
+                console.log(label[i])
                 d.OffsetX = xOffset
                 d.OffsetY = yOffset
-                labelText.attr('transform', `translate(${xOffset},${yOffset})`);
+                // let test = d3.select(label)
+                // test.attr('x', posX - xOffset);
+                // test.attr('y', posY - yOffset)
+                //label.attr('transform', `translate(${xOffset},${yOffset})`);
             }) 
         }
 
