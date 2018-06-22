@@ -47,8 +47,8 @@ export function draw() {
             .curve(d3.curveBasis);
 
         path.attr("d", function(d) {
-            let sourceY = yScale(d.targetY) + d.OffsetY;
             let sourceX = xScale(d.targetX) + d.OffsetX;
+            let sourceY = yScale(d.targetY) + d.OffsetY;
             let midX = sourceX
             let midY = sourceY - (d.OffsetY*0.5);
             let points = [
@@ -79,12 +79,15 @@ export function draw() {
         }
 
         function dragged(d) {
+            let sourceX = d3.event.x
+            let sourceY = d3.event.y
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            d3.select(this).selectAll('path').attr("d", (d) => {
+            d3.select(this).selectAll('path').attr("d", (el) => {
+                console.log(el[0])
                 let points = [
-                    [d3.event.x, d3.event.y],
-                    [xScale(d.targetX), yScale(d.targetY)],
+                    [sourceX, sourceY],
+                    [xScale(el.targetX), yScale(el.targetY)],
                 ];
                 let pathData = lineGenerator(points);
                 return pathData
