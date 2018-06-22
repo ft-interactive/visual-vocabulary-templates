@@ -37,7 +37,7 @@ export function draw() {
         		return d.title + ' '+ d.note
         	})
         	.call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
-            .call(getOffset)
+            .call(textOffset)
 
         var path = textLabel.append('path')
             .attr('stroke', '#000000')
@@ -95,7 +95,7 @@ export function draw() {
             d3.select(this).classed('active', false);
         }
 
-        function getOffset(label) {
+        function textOffset(label) {
             label.each(function(d) {
                 //console.log('offset', d)
                 let labelText = d3.select(this)
