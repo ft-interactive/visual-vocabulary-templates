@@ -305,7 +305,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
             .data(annos)
             .enter()
             .append('g')
-            .classed('annotations', true)
+            .attr('class', 'annotations')
             .call(myAnnotations)
 
 
