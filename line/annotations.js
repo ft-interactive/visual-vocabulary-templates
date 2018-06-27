@@ -21,11 +21,11 @@ export function draw() {
         
         let radius;
 
-        const textLabel = parent.append('g')
+        const annotation = parent.append('g')
             .on('mouseover', pointer)
             .attr('id', 'labelHolder')
 
-        textLabel.append('text')
+        let labelText = annotation.append('text')
             .attr('class', 'highlighted-label')
             .attr('x',d => xScale(d.targetX))
             .attr('y',d => yScale(d.targetY))
@@ -39,15 +39,13 @@ export function draw() {
             })
             .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
             .attr('transform', (d) => {
-                offset = [geOffset(d)[0],geOffset(d)[1]];
-                //console.log(d.xOffset,d.yOffset)
-
-                //console.log ('returned offssets',d.xOffset, d.xOffset)
+                offset = getOffset(d);
                 return `translate(${offset[0]},${offset[1]})`
             })
 
-        function geOffset(label) {
+        function getOffset(label) {
             let text = d3.select('#labelHolder');
+            //let labelWidth = test.getBBox().width;
             let labelDim = labelDimansions(text);
             //console.log('dimensions',labelDim)
             let posX = xScale(label.targetX);
@@ -55,32 +53,33 @@ export function draw() {
             let xOffset = 0;
             let yOffset = 0;
                 if (posX > plotDim[0]/2) {
-                    xOffset = (0-(labelDim[0] - radius + rem))
+                    xOffset = (0 - (labelDim[0] + radius +rem))
                 }
                 if (posX < plotDim[0]/2) {
                     xOffset = radius + (rem);
                 }
                 if (posY > (plotDim[1]/2)) {
-                    yOffset = (0 - (labelDim[1] + radius + rem ))
+                    yOffset = (0 - ((labelDim[1] * 2) + radius + rem ))
                 }
                 if (posY < (plotDim[1]/2)) {
-                    yOffset = radius + rem 
+                    yOffset = labelDim[1] + radius + rem 
                 }
             return[xOffset,yOffset];
         }
 
-        var path = textLabel.append('path')
-            .attr('id', d=> d.title)
-            .attr('stroke', '#000000')
-            .attr('stroke-width', 1)
-
         var lineGenerator = d3.line()
             .curve(d3.curveBasis);
 
-        path
+        let link  = annotation.append('path')
+            .attr('id', d=> d.title)
+            .attr('stroke', '#000000')
+            .attr('stroke-width', 1)
             .attr("d", function(d) {
-                let sourceX = xScale(d.targetX)
-                let sourceY = yScale(d.targetY)
+                // let label = annotation.select('#labelHolder').select('text'[i])
+                // let translate =[label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f]
+                //console.log(translate)
+                let sourceX = xScale(d.targetX) + getOffset(d)[0]
+                let sourceY = yScale(d.targetY) + getOffset(d)[1]
                 let points = [
                     [sourceX, sourceY],
                     //[sourceX-20, sourceY],
@@ -89,29 +88,8 @@ export function draw() {
             let pathData = lineGenerator(points);
             return pathData
             })
-            .transition()
-            .attr("d", function(d) {
-                let sourceX = xScale(d.targetX) + geOffset(d)[0]
-                let sourceY = yScale(d.targetY) + geOffset(d)[1]
-                let points = [
-                    [sourceX, sourceY],
-                    //[sourceX-20, sourceY],
-                    [xScale(d.targetX), yScale(d.targetY)],
-                ];
-            let pathData = lineGenerator(points);
-            return pathData
-            })
 
-
-        // d3.select(path)
-        //   .attr("d", lineGenerator)
-          //.attr("transform", null);
-
-        //path.transition().attr("d", line);
-
-        console.log(path.attr('d'[0]))
-
-       textLabel
+       annotation
             .call(d3.drag()
                 .subject(function() { 
                     const textEl = d3.select(this).select('text');
@@ -132,13 +110,10 @@ export function draw() {
 
         function dragged(d) {
             let label = d3.select(this).select('text')
-            //console.log (label.node())
-            console.log ('label',label.attr('transform'));
-            console.log ('label',label.node().transform.baseVal[0].matrix)
-            let coords =[label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
-            let sourceX = d3.event.x + coords[0]
-            let sourceY = d3.event.y + coords[1]
-            console.log ('coords',coords)
+            console.log('dragged', label)
+                let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
+            let sourceX = d3.event.x + translate[0]
+            let sourceY = d3.event.y + translate[1]
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('path').attr("d", (el) => {
