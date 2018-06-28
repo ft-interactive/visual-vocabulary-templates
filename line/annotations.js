@@ -22,8 +22,8 @@ export function draw() {
         let radius;
 
         const annotation = parent.append('g')
-            .on('mouseover', pointer)
-            .attr('id', 'labelHolder')
+            .on('mouseover', pointer);
+            // .attr('id', 'labelHolder')
 
         let labelText = annotation.append('text')
             .attr('class', 'highlighted-label')
@@ -38,13 +38,17 @@ export function draw() {
                 return d.title + ' '+ d.note
             })
             .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
-            .attr('transform', (d) => {
-                offset = getOffset(d);
+            .attr('transform', function(d, a) {
+                const offset = getOffset(d, this);
                 return `translate(${offset[0]},${offset[1]})`
             })
 
-        function getOffset(label) {
-            let text = d3.select('#labelHolder');
+        
+        function getOffset(label, textEl) {
+            console.log(label)
+            // let text = d3.select('#labelHolder');
+            const text = d3.select(textEl.parentNode);
+            // console.log(tec)s
             //let labelWidth = test.getBBox().width;
             let labelDim = labelDimansions(text);
             //console.log('dimensions',labelDim)
@@ -70,16 +74,16 @@ export function draw() {
         var lineGenerator = d3.line()
             .curve(d3.curveBasis);
 
-        let link  = annotation.append('path')
+        let path  = annotation.append('path')
             .attr('id', d=> d.title)
             .attr('stroke', '#000000')
             .attr('stroke-width', 1)
             .attr("d", function(d) {
-                // let label = annotation.select('#labelHolder').select('text'[i])
+                console.log('d in path', d)
                 // let translate =[label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f]
                 //console.log(translate)
-                let sourceX = xScale(d.targetX) + getOffset(d)[0]
-                let sourceY = yScale(d.targetY) + getOffset(d)[1]
+                let sourceX = xScale(d.targetX) + getOffset(d, this)[0]
+                let sourceY = yScale(d.targetY) + getOffset(d, this)[1]
                 let points = [
                     [sourceX, sourceY],
                     //[sourceX-20, sourceY],
@@ -98,6 +102,16 @@ export function draw() {
                 .on('start', dragstarted)
                 .on('drag', dragged)
                 .on('end', dragended));
+
+        function lineData(d) {
+            let sourceX = xScale(d.targetX) + getOffset(d, this)[0]
+                let sourceY = yScale(d.targetY) + getOffset(d, this)[1]
+                let points = [
+                    [sourceX, sourceY],
+                    //[sourceX-20, sourceY],
+                    [xScale(d.targetX), yScale(d.targetY)],
+                ];
+        }
 
         
         function pointer(d) {
