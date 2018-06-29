@@ -45,13 +45,8 @@ export function draw() {
 
         
         function getOffset(label, textEl) {
-            console.log(label)
-            // let text = d3.select('#labelHolder');
-            const text = d3.select(textEl.parentNode);
-            // console.log(tec)s
-            //let labelWidth = test.getBBox().width;
+            const text = d3.select(textEl.parentNode);//gets the path or text 'g' parent
             let labelDim = labelDimansions(text);
-            //console.log('dimensions',labelDim)
             let posX = xScale(label.targetX);
             let posY = yScale(label.targetY);
             let xOffset = 0;
@@ -63,7 +58,7 @@ export function draw() {
                     xOffset = radius + (rem);
                 }
                 if (posY > (plotDim[1]/2)) {
-                    yOffset = (0 - ((labelDim[1] * 2) + radius + rem ))
+                    yOffset = (0 - ((labelDim[1]) + radius + rem ))
                 }
                 if (posY < (plotDim[1]/2)) {
                     yOffset = labelDim[1] + radius + rem 
@@ -79,18 +74,8 @@ export function draw() {
             .attr('stroke', '#000000')
             .attr('stroke-width', 1)
             .attr("d", function(d) {
-                console.log('d in path', d)
-                // let translate =[label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f]
-                //console.log(translate)
-                let sourceX = xScale(d.targetX) + getOffset(d, this)[0]
-                let sourceY = yScale(d.targetY) + getOffset(d, this)[1]
-                let points = [
-                    [sourceX, sourceY],
-                    //[sourceX-20, sourceY],
-                    [xScale(d.targetX), yScale(d.targetY)],
-                ];
-            let pathData = lineGenerator(points);
-            return pathData
+                let pathData = lineGenerator(lineData(d, this));
+                return pathData
             })
 
        annotation
@@ -103,14 +88,15 @@ export function draw() {
                 .on('drag', dragged)
                 .on('end', dragended));
 
-        function lineData(d) {
-            let sourceX = xScale(d.targetX) + getOffset(d, this)[0]
-                let sourceY = yScale(d.targetY) + getOffset(d, this)[1]
-                let points = [
-                    [sourceX, sourceY],
-                    //[sourceX-20, sourceY],
-                    [xScale(d.targetX), yScale(d.targetY)],
-                ];
+        function lineData(d, container) {
+            let sourceX = xScale(d.targetX) + getOffset(d, container)[0]
+            let sourceY = yScale(d.targetY) + getOffset(d, container)[1]
+            let points = [
+                [sourceX, sourceY],
+                 [sourceX-20, sourceY],
+                 [xScale(d.targetX), yScale(d.targetY)],
+             ];
+            return points
         }
 
         
@@ -124,20 +110,76 @@ export function draw() {
 
         function dragged(d) {
             let label = d3.select(this).select('text')
-            console.log('dragged', label)
-                let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
+            let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
             let sourceX = d3.event.x + translate[0]
             let sourceY = d3.event.y + translate[1]
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            d3.select(this).selectAll('path').attr("d", (el) => {
-                let points = [
-                    [sourceX, sourceY],
-                    [xScale(d.targetX), yScale(d.targetY)],
-                ];
+            d3.select(this).selectAll('path').attr("d", function(el) {
+                let points = getPathData(label, sourceX, sourceY, el)
                 let pathData = lineGenerator(points);
                 return pathData
             });
+        }
+
+        function getPathData(label, sourceX, sourceY, el) {
+            let labelDim = labelDimansions(label);
+            let targetX = xScale(el.targetX)
+            let targetY = yScale(el.targetY)
+            let metrics = [sourceX,(sourceX + labelDim[0]),sourceY,(sourceY + labelDim[1])]
+            //console.log('metrics', metrics);
+            let newX;
+            let newY;
+            if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY > metrics[3]) {
+                console.log('TL');
+                newX = sourceX + labelDim[0];
+                newY = sourceY + labelDim[1];
+            }
+            if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2]  && targetY > metrics[3]) {
+                console.log('TM');
+                newX = sourceX + (labelDim[0] / 2);
+                newY = sourceY + labelDim[1];
+            }
+            if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2]  && targetY > metrics[3]) {
+                console.log('TR');
+                newX = sourceX
+                newY = sourceY + labelDim[1];
+            }
+            if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY < metrics[3]) {
+                console.log('ML')
+                newX = sourceX + labelDim[0];
+                newY = sourceY + (labelDim[1] / 2);
+            }
+            if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2] && targetY < metrics[3]) {
+                console.log('MM');
+                newX = sourceX + (labelDim[0] / 2);
+                newY = sourceY + (labelDim[1] / 2);
+            }
+            if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2] && targetY < metrics[3]) {
+                console.log('MR');
+                newX = sourceX
+                newY = sourceY + (labelDim[1] / 2);
+            }
+            if(targetX > metrics[0] && targetX > metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
+                console.log('BL');
+                newX = sourceX + labelDim[0];
+                newY = sourceY;
+            }
+            if(targetX < metrics[1] && targetX > metrics[0] && targetY < metrics[2] && targetY < metrics[3]) {
+                console.log('BM');
+                newX = sourceX + labelDim[0] / 2;
+                newY = sourceY;
+            }
+            if(targetX < metrics[0] && targetX < metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
+                console.log('BR');
+                newX = sourceX;
+                newY = sourceY;
+            }
+            let points = [
+                    [newX, newY - rem],
+                    [targetX, targetY],
+            ];
+            return points
         }
 
         function dragended(d) {
