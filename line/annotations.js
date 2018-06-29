@@ -117,8 +117,8 @@ export function draw() {
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('path').attr("d", function(el) {
                 let points = getPathData(label, sourceX, sourceY, el)
-                let pathData = lineGenerator(points);
-                return pathData
+                //let pathData = lineGenerator(points);
+                return points
             });
         }
 
@@ -130,20 +130,36 @@ export function draw() {
             //console.log('metrics', metrics);
             let newX;
             let newY;
+            let c1x = 400
+            let c1y = 400
+            let c2x = 20
+            let c2y = 20
             if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY > metrics[3]) {
                 console.log('TL');
                 newX = sourceX + labelDim[0];
                 newY = sourceY + labelDim[1];
+                c1x = newX + ((targetX-newX)/100 * 80)
+                c1y = newY + ((targetX-newY)/100 * 1)
+                c2x = targetX - ((targetX-newX)/100 * 1)
+                c2y = targetY - ((targetY-newY)/100 * 80)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2]  && targetY > metrics[3]) {
                 console.log('TM');
                 newX = sourceX + (labelDim[0] / 2);
                 newY = sourceY + labelDim[1];
+                c1x = newX + ((targetX-newX) * 0.6)
+                c1y = newY + ((targetX-newY) * 0.03)
+                c2x = targetX - ((targetX-newX) * 0.03)
+                c2y = targetY - ((targetY-newY) * .6)
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2]  && targetY > metrics[3]) {
                 console.log('TR');
                 newX = sourceX
                 newY = sourceY + labelDim[1];
+                c1x = newX - ((newX - targetX) * 0.6)
+                c1y = newY + ((targetX-newY) * 0.03)
+                c2x = targetX + ((newX - targetX) * 0.05)
+                c2y = targetY - ((targetY-newY) * .6)
             }
             if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY < metrics[3]) {
                 console.log('ML')
@@ -175,11 +191,9 @@ export function draw() {
                 newX = sourceX;
                 newY = sourceY;
             }
-            let points = [
-                    [newX, newY - rem],
-                    [targetX, targetY],
-            ];
-            return points
+            let pathString = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
+
+            return pathString
         }
 
         function dragended(d) {
