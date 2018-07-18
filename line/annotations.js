@@ -138,10 +138,10 @@ export function draw() {
                 console.log('TL');
                 newX = sourceX + labelDim[0];
                 newY = sourceY + labelDim[1];
-                c1x = newX + ((targetX-newX)/100 * 80)
-                c1y = newY + ((targetX-newY)/100 * 1)
-                c2x = targetX - ((targetX-newX)/100 * 1)
-                c2y = targetY - ((targetY-newY)/100 * 80)
+                c1x = newX + ((targetX-newX) * 0.8)
+                c1y = newY + ((targetY-newY)* 0.05)
+                c2x = targetX - ((targetX-newX)* 0.05)
+                c2y = targetY - ((targetY-newY) * 0.8)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2]  && targetY > metrics[3]) {
                 console.log('TM');
@@ -156,10 +156,10 @@ export function draw() {
                 console.log('TR');
                 newX = sourceX
                 newY = sourceY + labelDim[1];
-                c1x = newX - ((newX - targetX) * 0.6)
+                c1x = newX - ((newX - targetX) * 0.8)
                 c1y = newY + ((targetX-newY) * 0.03)
-                c2x = targetX + ((newX - targetX) * 0.05)
-                c2y = targetY - ((targetY-newY) * .6)
+                c2x = targetX + ((newX - targetX) * 0.03)
+                c2y = targetY - ((targetY - newY) * 0.8)
             }
             if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY < metrics[3]) {
                 console.log('ML')
