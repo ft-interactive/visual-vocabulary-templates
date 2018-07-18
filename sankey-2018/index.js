@@ -63,7 +63,7 @@ const frame = {
    .width(55),
 
     social: gChartframe.socialFrame(sharedConfig)
-   .margin({ top: 140, left: 40, bottom: 138, right: 50, sankey: 60 })
+   .margin({ top: 140, left: 50, bottom: 138, right: 50, sankey: 60 })
    .title("German election 2017:|which voters switched parties?") //use this if you need to override the defaults
    // .subtitle("Subtitle")
    // .title("Put headline here")
