@@ -147,49 +147,70 @@ export function draw() {
                 console.log('TM');
                 newX = sourceX + (labelDim[0] / 2);
                 newY = sourceY + labelDim[1];
-                c1x = newX + ((targetX-newX) * 0.6)
-                c1y = newY + ((targetX-newY) * 0.03)
-                c2x = targetX - ((targetX-newX) * 0.03)
-                c2y = targetY - ((targetY-newY) * .6)
+                c1x = newX + ((targetX - newX) * 0.2)
+                c1y = newY + ((targetY-newY)* 0.75)
+                c2x = targetX - ((targetX - newX)* 0.6)
+                c2y = targetY - ((targetY - newY) * 0.1)
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2]  && targetY > metrics[3]) {
                 console.log('TR');
                 newX = sourceX
                 newY = sourceY + labelDim[1];
                 c1x = newX - ((newX - targetX) * 0.8)
-                c1y = newY + ((targetX-newY) * 0.03)
-                c2x = targetX + ((newX - targetX) * 0.03)
+                c1y = newY + ((targetY-newY) * 0.05)
+                c2x = targetX + ((newX - targetX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
             }
             if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY < metrics[3]) {
                 console.log('ML')
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
+                c1x = newX + ((targetX-newX) * 0.8)
+                c1y = newY
+                c2x = targetX - ((targetX-newX)* 0.03)
+                c2y = targetY - ((targetY-newY) * 0.8)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2] && targetY < metrics[3]) {
                 console.log('MM');
                 newX = sourceX + (labelDim[0] / 2);
                 newY = sourceY + (labelDim[1] / 2);
+
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2] && targetY < metrics[3]) {
                 console.log('MR');
                 newX = sourceX
                 newY = sourceY + (labelDim[1] / 2);
+                c1x = newX - ((newX - targetX) * 0.8)
+                c1y = newY;
+                c2x = targetX + ((newX - targetX) * 0.05)
+                c2y = targetY - ((targetY - newY) * 0.8)
             }
             if(targetX > metrics[0] && targetX > metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 console.log('BL');
                 newX = sourceX + labelDim[0];
                 newY = sourceY;
+                c1x = newX + ((targetX - newX) * 0.6)
+                c1y = newY - ((newY - targetY)* 0.3)
+                c2x = targetX - ((targetX - newX)* 0.3)
+                c2y = targetY + ((newY - targetY) * 0.6)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY < metrics[2] && targetY < metrics[3]) {
                 console.log('BM');
                 newX = sourceX + labelDim[0] / 2;
                 newY = sourceY;
+                c1x = newX + ((targetX - newX) * 0.2)
+                c1y = newY + ((targetY-newY)* 0.75)
+                c2x = targetX - ((targetX - newX)* 0.6)
+                c2y = targetY - ((targetY - newY) * 0.1)    
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 console.log('BR');
                 newX = sourceX;
                 newY = sourceY;
+                c1x = newX - ((newX - targetX ) * 0.75)
+                c1y = newY - ((newY - targetY)* 0.3)
+                c2x = targetX + ((newX - targetX)* 0.2)
+                c2y = targetY + ((newY - targetY) * 0.6)
             }
             let pathString = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
 
