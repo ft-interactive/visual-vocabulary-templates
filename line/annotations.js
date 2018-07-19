@@ -147,10 +147,10 @@ export function draw() {
                 console.log('TM');
                 newX = sourceX + (labelDim[0] / 2);
                 newY = sourceY + labelDim[1];
-                c1x = newX + ((targetX - newX) * 0.2)
-                c1y = newY + ((targetY-newY)* 0.75)
-                c2x = targetX - ((targetX - newX)* 0.6)
-                c2y = targetY - ((targetY - newY) * 0.1)
+                c1x = newX + ((targetX - newX) * 0.6)
+                c1y = newY + ((targetY-newY)* 0.2)
+                c2x = targetX
+                c2y = targetY - ((targetY - newY) * 0.6)
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2]  && targetY > metrics[3]) {
                 console.log('TR');
