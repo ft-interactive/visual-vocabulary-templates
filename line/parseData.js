@@ -39,6 +39,34 @@ export function load(url, options) { // eslint-disable-line
         plotData = plotData.filter(d => d.highlightLine === false);
 
          // Filter data for annotations
+
+        const typeNames = data.map( d => d.type)
+            .filter((item, pos, typeNames) => typeNames.indexOf(item) === pos && item !== '');
+        console.log(typeNames)
+
+        const test = typeNames.map(d => ({
+            type: d,
+            annotations: getAnnotations(d),
+        }));
+
+        function getAnnotations(el) {
+            const annos = data.filter(d => (d.type === el))
+            .map((d) => {
+                return {
+                    title: d.annotate,
+                    note: d.level,
+                    targetX: d.date,
+                    targetY: d.level,
+                    radius: 2,
+                    type: d.type,
+                }
+            })
+            return annos
+        }
+
+
+         console.log('test', test)
+
         const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined))
         .map((d) => {
             return {
