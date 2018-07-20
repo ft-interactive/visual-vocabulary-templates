@@ -43,10 +43,12 @@ export function draw() {
             .attr('y', yScale.range()[1] - (rem / 2))
             .text(d => d.title + ' '+ d.note);
 
-        annotation.selectAll('text')
+        let textLabel =annotation.selectAll('text')
         .data(d => d.annotations.filter((el) => {return el.type === 'curve'}))
         .enter()
-        .append('text')
+        .append('g')
+        
+        textLabel.append('text')
             .attr('class', 'highlighted-label')
             .attr('x',d => xScale(d.targetX))
             .attr('y',d => yScale(d.targetY))
@@ -62,6 +64,19 @@ export function draw() {
             .attr('transform', function(d, a) {
                 const offset = getOffset(d, this);
                 return `translate(${offset[0]},${offset[1]})`
+            })
+
+        textLabel.append('path')
+            .attr('id', d=> d.title)
+            .attr('stroke', '#000000')
+            .attr('stroke-width', 1)
+            .attr("d", function(d) {
+                let label = d3.select(this.parentNode).select('text');
+                let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
+                let sourceX = xScale(d.targetX) + translate[0]
+                let sourceY = yScale(d.targetY) + translate[1]
+                let points = getPathData(label, sourceX, sourceY, d)
+               return points
             })
  
         function getOffset(label, textEl) {
@@ -86,28 +101,15 @@ export function draw() {
             return[xOffset,yOffset];
         }
 
-       //  let path  = annotation.append('path')
-       //      .attr('id', d=> d.title)
-       //      .attr('stroke', '#000000')
-       //      .attr('stroke-width', 1)
-       //      .attr("d", function(d) {
-       //          let label = d3.select(this.parentNode).select('text');
-       //          let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
-       //          let sourceX = xScale(d.targetX) + translate[0]
-       //          let sourceY = yScale(d.targetY) + translate[1]
-       //          let points = getPathData(label, sourceX, sourceY, d)
-       //         return points
-       //      })
-
-       // annotation
-       //      .call(d3.drag()
-       //          .subject(function() { 
-       //              const textEl = d3.select(this).select('text');
-       //              return {x: textEl.attr('x'), y: textEl.attr('y')};
-       //          })
-       //          .on('start', dragstarted)
-       //          .on('drag', dragged)
-       //          .on('end', dragended));
+       textLabel
+            .call(d3.drag()
+                .subject(function() { 
+                    const textEl = d3.select(this).select('text');
+                    return {x: textEl.attr('x'), y: textEl.attr('y')};
+                })
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
         
         function pointer(d) {
             this.style.cursor = 'pointer';
