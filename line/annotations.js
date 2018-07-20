@@ -21,11 +21,10 @@ export function draw() {
         
         let radius;
 
-        const threshold = parent.append('g');
         const annotation = parent.append('g')
             .on('mouseover', pointer);
         
-        threshold.selectAll('line')
+        annotation.selectAll('line')
         .data(d => d.annotations.filter((el) => {return el.type === 'threshold'}))
         .enter()
         .append('line')
@@ -34,80 +33,80 @@ export function draw() {
             .attr('x2', d => xScale(d.targetX))
             .attr('y1', yScale.range()[0])
             .attr('y2', yScale.range()[1])
-
-        threshold.selectAll('text')
-        .data(d => d.annotations.filter((el) => {return el.type === 'threshold'}))
-        .enter()
+        // annotation.selectAll('text')
+        // .data(d => d.annotations.filter((el) => {return el.type === 'threshold'}))
+        // .enter()
         .append('text')
-            .attr('class', 'annotation')
-            .attr('text-anchor', 'middle')
-            .attr('x', d => xScale(d.date))
-            .attr('y', yScale.range()[1] - (rem / 2))
-            .text(d => d.annotate);
-
-            
-        let labelText = annotation.append('text')
             .attr('class', 'highlighted-label')
+            .attr('text-anchor', 'middle')
             .attr('x',d => xScale(d.targetX))
-            .attr('y',d => yScale(d.targetY))
-            .attr('dy',0)
-            .text((d) => {
-                if (intersect) {
-                    radius = sizeScale(d.radius);
-                }
-                else {radius = d.radius};
-                return d.title + ' '+ d.note
-            })
-            .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
-            .attr('transform', function(d, a) {
-                const offset = getOffset(d, this);
-                return `translate(${offset[0]},${offset[1]})`
-            })
+            .attr('y', yScale.range()[1] - (rem / 2))
+            .text(d => d.title + ' '+ d.note);
+
+
+
+       //  let labelText = annotation.append('text')
+       //      .attr('class', 'highlighted-label')
+       //      .attr('x',d => xScale(d.targetX))
+       //      .attr('y',d => yScale(d.targetY))
+       //      .attr('dy',0)
+       //      .text((d) => {
+       //          if (intersect) {
+       //              radius = sizeScale(d.radius);
+       //          }
+       //          else {radius = d.radius};
+       //          return d.title + ' '+ d.note
+       //      })
+       //      .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
+       //      .attr('transform', function(d, a) {
+       //          const offset = getOffset(d, this);
+       //          return `translate(${offset[0]},${offset[1]})`
+       //      })
  
-        function getOffset(label, textEl) {
-            const text = d3.select(textEl.parentNode);//gets the path or text 'g' parent
-            let labelDim = labelDimansions(text);
-            let posX = xScale(label.targetX);
-            let posY = yScale(label.targetY);
-            let xOffset = 0;
-            let yOffset = 0;
-                if (posX > plotDim[0]/2) {
-                    xOffset = (0 - (labelDim[0] + radius +rem))
-                }
-                if (posX < plotDim[0]/2) {
-                    xOffset = radius + (rem);
-                }
-                if (posY > (plotDim[1]/2)) {
-                    yOffset = (0 - ((labelDim[1]) + radius + rem ))
-                }
-                if (posY < (plotDim[1]/2)) {
-                    yOffset = labelDim[1] + radius + rem 
-                }
-            return[xOffset,yOffset];
-        }
+       //  function getOffset(label, textEl) {
+       //      const text = d3.select(textEl.parentNode);//gets the path or text 'g' parent
+       //      let labelDim = labelDimansions(text);
+       //      let posX = xScale(label.targetX);
+       //      let posY = yScale(label.targetY);
+       //      let xOffset = 0;
+       //      let yOffset = 0;
+       //          if (posX > plotDim[0]/2) {
+       //              xOffset = (0 - (labelDim[0] + radius +rem))
+       //          }
+       //          if (posX < plotDim[0]/2) {
+       //              xOffset = radius + (rem);
+       //          }
+       //          if (posY > (plotDim[1]/2)) {
+       //              yOffset = (0 - ((labelDim[1]) + radius + rem ))
+       //          }
+       //          if (posY < (plotDim[1]/2)) {
+       //              yOffset = labelDim[1] + radius + rem 
+       //          }
+       //      return[xOffset,yOffset];
+       //  }
 
-        let path  = annotation.append('path')
-            .attr('id', d=> d.title)
-            .attr('stroke', '#000000')
-            .attr('stroke-width', 1)
-            .attr("d", function(d) {
-                let label = d3.select(this.parentNode).select('text');
-                let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
-                let sourceX = xScale(d.targetX) + translate[0]
-                let sourceY = yScale(d.targetY) + translate[1]
-                let points = getPathData(label, sourceX, sourceY, d)
-               return points
-            })
+       //  let path  = annotation.append('path')
+       //      .attr('id', d=> d.title)
+       //      .attr('stroke', '#000000')
+       //      .attr('stroke-width', 1)
+       //      .attr("d", function(d) {
+       //          let label = d3.select(this.parentNode).select('text');
+       //          let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
+       //          let sourceX = xScale(d.targetX) + translate[0]
+       //          let sourceY = yScale(d.targetY) + translate[1]
+       //          let points = getPathData(label, sourceX, sourceY, d)
+       //         return points
+       //      })
 
-       annotation
-            .call(d3.drag()
-                .subject(function() { 
-                    const textEl = d3.select(this).select('text');
-                    return {x: textEl.attr('x'), y: textEl.attr('y')};
-                })
-                .on('start', dragstarted)
-                .on('drag', dragged)
-                .on('end', dragended));
+       // annotation
+       //      .call(d3.drag()
+       //          .subject(function() { 
+       //              const textEl = d3.select(this).select('text');
+       //              return {x: textEl.attr('x'), y: textEl.attr('y')};
+       //          })
+       //          .on('start', dragstarted)
+       //          .on('drag', dragged)
+       //          .on('end', dragended));
         
         function pointer(d) {
             this.style.cursor = 'pointer';
