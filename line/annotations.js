@@ -73,6 +73,7 @@ export function draw() {
             .attr("d", function(d) {
                 let label = d3.select(this.parentNode).select('text');
                 let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
+                console.log(translate)
                 let sourceX = xScale(d.targetX) + translate[0]
                 let sourceY = yScale(d.targetY) + translate[1]
                 let points = getPathData(label, sourceX, sourceY, d)
@@ -99,7 +100,6 @@ export function draw() {
 
         function dragged(d) {
             let label = d3.select(this).select('text')
-            console.log('dragged label', label)
             let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
             let sourceX = d3.event.x + translate[0]
             let sourceY = d3.event.y + translate[1]
@@ -127,7 +127,7 @@ export function draw() {
             if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY > metrics[3]) {
                 //console.log('TL');
                 newX = sourceX + labelDim[0];
-                newY = sourceY + labelDim[1];
+                newY = sourceY + (labelDim[1] / 2);
                 c1x = newX + ((targetX-newX) * 0.8)
                 c1y = newY + ((targetY-newY)* 0.05)
                 c2x = targetX - ((targetX-newX)* 0.05)
@@ -145,7 +145,7 @@ export function draw() {
             if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2]  && targetY > metrics[3]) {
                 //console.log('TR');
                 newX = sourceX
-                newY = sourceY + labelDim[1];
+                newY = sourceY + (labelDim[1] / 2);
                 c1x = newX - ((newX - targetX) * 0.8)
                 c1y = newY
                 c2x = targetX + ((newX - targetX) * 0.05)
@@ -155,9 +155,9 @@ export function draw() {
                 //console.log('ML')
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX + ((targetX-newX) * 0.8)
+                c1x = newX + ((targetX-newX) * 0.5)
                 c1y = newY - rem
-                c2x = targetX - ((targetX-newX)* 0.05)
+                c2x = targetX - ((targetX-newX)* 0.1)
                 c2y = targetY - ((targetY-newY) * 0.8)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2] && targetY < metrics[3]) {
@@ -178,7 +178,7 @@ export function draw() {
             if(targetX > metrics[0] && targetX > metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 //console.log('BL');
                 newX = sourceX + labelDim[0];
-                newY = sourceY;
+                newY = sourceY + (labelDim[1] / 2);
                 c1x = newX + ((targetX - newX) * 0.6)
                 c1y = newY - ((newY - targetY)* 0.3)
                 c2x = targetX - ((targetX - newX)* 0.3)
@@ -196,7 +196,7 @@ export function draw() {
             if(targetX < metrics[0] && targetX < metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 //console.log('BR');
                 newX = sourceX;
-                newY = sourceY;
+                newY = sourceY + (labelDim[1] / 2);
                 c1x = newX - ((newX - targetX ) * 0.75)
                 c1y = newY - ((newY - targetY)* 0.3)
                 c2x = targetX + ((newX - targetX)* 0.2)
