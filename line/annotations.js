@@ -43,47 +43,48 @@ export function draw() {
             .attr('y', yScale.range()[1] - (rem / 2))
             .text(d => d.title + ' '+ d.note);
 
-
-
-       //  let labelText = annotation.append('text')
-       //      .attr('class', 'highlighted-label')
-       //      .attr('x',d => xScale(d.targetX))
-       //      .attr('y',d => yScale(d.targetY))
-       //      .attr('dy',0)
-       //      .text((d) => {
-       //          if (intersect) {
-       //              radius = sizeScale(d.radius);
-       //          }
-       //          else {radius = d.radius};
-       //          return d.title + ' '+ d.note
-       //      })
-       //      .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
-       //      .attr('transform', function(d, a) {
-       //          const offset = getOffset(d, this);
-       //          return `translate(${offset[0]},${offset[1]})`
-       //      })
+        annotation.selectAll('text')
+        .data(d => d.annotations.filter((el) => {return el.type === 'curve'}))
+        .enter()
+        .append('text')
+            .attr('class', 'highlighted-label')
+            .attr('x',d => xScale(d.targetX))
+            .attr('y',d => yScale(d.targetY))
+            .attr('dy',0)
+            .text((d) => {
+                if (intersect) {
+                    radius = sizeScale(d.radius);
+                }
+                else {radius = d.radius};
+                return d.title + ' '+ d.note
+            })
+            .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
+            .attr('transform', function(d, a) {
+                const offset = getOffset(d, this);
+                return `translate(${offset[0]},${offset[1]})`
+            })
  
-       //  function getOffset(label, textEl) {
-       //      const text = d3.select(textEl.parentNode);//gets the path or text 'g' parent
-       //      let labelDim = labelDimansions(text);
-       //      let posX = xScale(label.targetX);
-       //      let posY = yScale(label.targetY);
-       //      let xOffset = 0;
-       //      let yOffset = 0;
-       //          if (posX > plotDim[0]/2) {
-       //              xOffset = (0 - (labelDim[0] + radius +rem))
-       //          }
-       //          if (posX < plotDim[0]/2) {
-       //              xOffset = radius + (rem);
-       //          }
-       //          if (posY > (plotDim[1]/2)) {
-       //              yOffset = (0 - ((labelDim[1]) + radius + rem ))
-       //          }
-       //          if (posY < (plotDim[1]/2)) {
-       //              yOffset = labelDim[1] + radius + rem 
-       //          }
-       //      return[xOffset,yOffset];
-       //  }
+        function getOffset(label, textEl) {
+            const text = d3.select(textEl);//gets the path or text 'g' parent
+            let labelDim = labelDimansions(text);
+            let posX = xScale(label.targetX);
+            let posY = yScale(label.targetY);
+            let xOffset = 0;
+            let yOffset = 0;
+                if (posX > plotDim[0]/2) {
+                    xOffset = (0 - (labelDim[0] + radius +rem))
+                }
+                if (posX < plotDim[0]/2) {
+                    xOffset = radius + (rem);
+                }
+                if (posY > (plotDim[1]/2)) {
+                    yOffset = (0 - ((labelDim[1]) + radius + rem ))
+                }
+                if (posY < (plotDim[1]/2)) {
+                    yOffset = labelDim[1] + radius + rem 
+                }
+            return[xOffset,yOffset];
+        }
 
        //  let path  = annotation.append('path')
        //      .attr('id', d=> d.title)

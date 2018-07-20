@@ -29,7 +29,7 @@ const dateFormat = '%d/%m/%Y %H:%M';
 
 const sharedConfig = {
     title: 'Pain diary for surgeon',
-    subtitle: '',
+    subtitle: 'Subhead',
     source: 'Source not yet added',
 };
 
