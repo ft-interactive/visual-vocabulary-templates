@@ -68,8 +68,9 @@ export function draw() {
 
         textLabel.append('path')
             .attr('id', d=> d.title)
-            .attr('stroke', '#000000')
-            .attr('stroke-width', 1)
+            .attr('class', 'annotation')
+            .attr('stroke', '#000000')// remove when class is updfated to include definition for paths
+            .attr('stroke-width', 1)// remove when class is updfated to include definition for paths
             .attr("d", function(d) {
                 let label = d3.select(this.parentNode).select('text');
                 let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
@@ -230,6 +231,12 @@ export function draw() {
             if (el.type ==='curve') {
                 pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
             }
+            //For when I include the radius for dot plots etc
+            // let dx = d.target.x - d.source.x,
+            // let dy = d.target.y - d.source.y,
+            // let dr = Math.sqrt(dx * dx + dy * dy);
+            // return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+
             return pathString
         }
 
