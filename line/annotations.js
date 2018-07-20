@@ -44,7 +44,7 @@ export function draw() {
             .text(d => d.title);
 
         let textLabel =annotation.selectAll('text')
-        .data(d => d.annotations.filter((el) => {return el.type === 'curve'}))
+        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow'}))
         .enter()
         .append('g')
 
@@ -150,7 +150,7 @@ export function draw() {
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
                 c1x = newX + ((targetX-newX) * 0.8)
-                c1y = newY + ((targetY-newY)* 0.05)
+                c1y = newY - rem
                 c2x = targetX - ((targetX-newX)* 0.05)
                 c2y = targetY - ((targetY-newY) * 0.8)
             }
@@ -158,7 +158,7 @@ export function draw() {
                 //console.log('TM');
                 newX = sourceX + (labelDim[0] / 2);
                 newY = sourceY + labelDim[1];
-                c1x = newX + ((targetX - newX) * 0.2)
+                c1x = newX
                 c1y = newY + ((targetY-newY)* 0.2)
                 c2x = targetX - ((targetX - newX)* 0.6)
                 c2y = targetY - ((targetY - newY) * 0.1)
@@ -201,7 +201,7 @@ export function draw() {
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
                 c1x = newX + ((targetX - newX) * 0.6)
-                c1y = newY - ((newY - targetY)* 0.3)
+                c1y = newY - rem
                 c2x = targetX - ((targetX - newX)* 0.3)
                 c2y = targetY + ((newY - targetY) * 0.6)
             }
@@ -209,7 +209,7 @@ export function draw() {
                 //console.log('BM');
                 newX = sourceX + labelDim[0] / 2;
                 newY = sourceY;
-                c1x = newX + ((targetX - newX) * 0.2)
+                c1x = newX
                 c1y = newY + ((targetY-newY)* 0.75)
                 c2x = targetX - ((targetX - newX)* 0.6)
                 c2y = targetY - ((targetY - newY) * 0.1)    
@@ -219,14 +219,17 @@ export function draw() {
                 newX = sourceX;
                 newY = sourceY + (labelDim[1] / 2);
                 c1x = newX - ((newX - targetX ) * 0.75)
-                c1y = newY - ((newY - targetY)* 0.3)
+                c1y = newY - rem
                 c2x = targetX + ((newX - targetX)* 0.2)
                 c2y = targetY + ((newY - targetY) * 0.6)
             }
-            let pathString = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
-
-            //let pathString = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
-
+            let pathString;
+            if (el.type ==='elbow') {
+                pathString = "M " + newX + "," + (newY - rem) + " L " + c1x + "," + c1y + "L" + targetX + "," + targetY;
+            }
+            if (el.type ==='curve') {
+                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
+            }
             return pathString
         }
 
