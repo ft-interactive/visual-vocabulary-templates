@@ -231,12 +231,10 @@ export function draw() {
             if (el.type ==='curve') {
                 pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
             }
-            //For when I include the radius for dot plots etc
-            // let dx = d.target.x - d.source.x,
-            // let dy = d.target.y - d.source.y,
-            // let dr = Math.sqrt(dx * dx + dy * dy);
-            // return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-
+            if (el.type ==='arc') {
+                let dr = Math.sqrt(newX * newX + (newY - rem) * dy);
+                pathString  = "M" + newX + "," + (newY - rem) + "A" + dr + "," + dr + " 0 0,1 " + targetX + "," + targetY;
+            }
             return pathString
         }
 
