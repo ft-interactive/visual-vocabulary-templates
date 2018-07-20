@@ -58,7 +58,7 @@ export function draw() {
                     radius = sizeScale(d.radius);
                 }
                 else {radius = d.radius};
-                return d.title + ' '+ d.note
+                return d.title + ' ' + d.note
             })
             .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
             .attr('transform', function(d, a) {
@@ -243,28 +243,28 @@ export function draw() {
             return ([labelWidth,labelHeight])
         }
 
-        //wrap text function adapted from Mike Bostock
-        function wrap(text, width,x, media) {
-            text.each(function() {
-                var text = d3.select(this),
+        function wrap(text, width, x, media) {
+        text.each(function() {
+            var text = d3.select(this),
                 words = text.text().split(/\s+/).reverse(),
                 word,
                 line = [],
                 lineNumber = 0,
-                lineHeight = 1.0,
+                lineHeight = 1.1, // ems
                 y = text.attr("y"),
                 dy = parseFloat(text.attr("dy")),
-                tspan = text.text(null).append("tspan").attr("class", media).attr("x", x).attr("y", y).attr("dy", dy + "em");
-                while (word = words.pop()) {
-                    line.push(word);
-                    tspan.text(line.join(" "));
-                    if (tspan.node().getComputedTextLength() > width) {
-                        tspan.text(line.join(" "));
-                        line = [word];
-                        tspan = text.append("tspan").attr("class", media).attr("x", x).attr("y", y).attr("dy",++lineNumber * lineHeight + dy + "em").text(word);
-                    }
-                }
-            });
+                tspan = text.text(null).append("tspan").attr("class", media).attr("x", x).attr("y", y).attr("dy", dy + "em")
+            while (word = words.pop()) {
+              line.push(word)
+              tspan.text(line.join(" "))
+              if (tspan.node().getComputedTextLength() > width) {
+                line.pop()
+                tspan.text(line.join(" "))
+                line = [word]
+                tspan = text.append("tspan").attr("class", media).attr("x", x).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+              }
+            }
+            })
         }
 
     }
