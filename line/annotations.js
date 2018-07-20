@@ -21,9 +21,19 @@ export function draw() {
         
         let radius;
 
+        const threshold = parent.append('g');
         const annotation = parent.append('g')
             .on('mouseover', pointer);
-            // .attr('id', 'labelHolder')
+        
+        threshold.selectAll('line')
+        .data(d => d)
+        .enter()
+        .append('line')
+            .attr('class', 'annotation')
+            .attr('x1', d => xScale(d.targetX))
+            .attr('x2', d => xScale(d.targetX))
+            .attr('y1', yScale.range()[0])
+            .attr('y2', yScale.range()[1])
 
         let labelText = annotation.append('text')
             .attr('class', 'highlighted-label')
@@ -42,8 +52,7 @@ export function draw() {
                 const offset = getOffset(d, this);
                 return `translate(${offset[0]},${offset[1]})`
             })
-
-        
+ 
         function getOffset(label, textEl) {
             const text = d3.select(textEl.parentNode);//gets the path or text 'g' parent
             let labelDim = labelDimansions(text);
@@ -73,7 +82,6 @@ export function draw() {
             .attr("d", function(d) {
                 let label = d3.select(this.parentNode).select('text');
                 let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
-                console.log(translate)
                 let sourceX = xScale(d.targetX) + translate[0]
                 let sourceY = yScale(d.targetY) + translate[1]
                 let points = getPathData(label, sourceX, sourceY, d)
