@@ -41,13 +41,13 @@ export function draw() {
             .attr('text-anchor', 'middle')
             .attr('x',d => xScale(d.targetX))
             .attr('y', yScale.range()[1] - (rem / 2))
-            .text(d => d.title + ' '+ d.note);
+            .text(d => d.title);
 
         let textLabel =annotation.selectAll('text')
         .data(d => d.annotations.filter((el) => {return el.type === 'curve'}))
         .enter()
         .append('g')
-        
+
         textLabel.append('text')
             .attr('class', 'highlighted-label')
             .attr('x',d => xScale(d.targetX))
@@ -158,10 +158,10 @@ export function draw() {
                 //console.log('TM');
                 newX = sourceX + (labelDim[0] / 2);
                 newY = sourceY + labelDim[1];
-                c1x = newX + ((targetX - newX) * 0.6)
+                c1x = newX + ((targetX - newX) * 0.2)
                 c1y = newY + ((targetY-newY)* 0.2)
-                c2x = targetX
-                c2y = targetY - ((targetY - newY) * 0.6)
+                c2x = targetX - ((targetX - newX)* 0.6)
+                c2y = targetY - ((targetY - newY) * 0.1)
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY > metrics[2]  && targetY > metrics[3]) {
                 //console.log('TR');
