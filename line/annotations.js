@@ -66,28 +66,18 @@ export function draw() {
             return[xOffset,yOffset];
         }
 
-        var lineGenerator = d3.line()
-            .curve(d3.curveBasis);
-
         let path  = annotation.append('path')
             .attr('id', d=> d.title)
             .attr('stroke', '#000000')
             .attr('stroke-width', 1)
             .attr("d", function(d) {
-                let pathData = lineGenerator(lineData(d, this));
-                return pathData
+                let label = d3.select(this.parentNode).select('text');
+                let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
+                let sourceX = xScale(d.targetX) + translate[0]
+                let sourceY = yScale(d.targetY) + translate[1]
+                let points = getPathData(label, sourceX, sourceY, d)
+               return points
             })
-
-        function lineData(d, container) {
-            let sourceX = xScale(d.targetX) + getOffset(d, container)[0]
-            let sourceY = yScale(d.targetY) + getOffset(d, container)[1]
-            let points = [
-                [sourceX, sourceY],
-                 [sourceX-20, sourceY],
-                 [xScale(d.targetX), yScale(d.targetY)],
-             ];
-            return points
-        }
 
        annotation
             .call(d3.drag()
@@ -109,6 +99,7 @@ export function draw() {
 
         function dragged(d) {
             let label = d3.select(this).select('text')
+            console.log('dragged label', label)
             let translate = [label.node().transform.baseVal[0].matrix.e, label.node().transform.baseVal[0].matrix.f];
             let sourceX = d3.event.x + translate[0]
             let sourceY = d3.event.y + translate[1]
@@ -125,7 +116,7 @@ export function draw() {
             let labelDim = labelDimansions(label);
             let targetX = xScale(el.targetX)
             let targetY = yScale(el.targetY)
-            let metrics = [sourceX,(sourceX + labelDim[0]),sourceY,(sourceY + labelDim[1])]
+            let metrics = [sourceX,(sourceX + labelDim[0]),sourceY - rem,(sourceY + labelDim[1] - rem)]
             //console.log('metrics', metrics);
             let newX;
             let newY;
@@ -156,7 +147,7 @@ export function draw() {
                 newX = sourceX
                 newY = sourceY + labelDim[1];
                 c1x = newX - ((newX - targetX) * 0.8)
-                c1y = newY + ((targetY-newY) * 0.05)
+                c1y = newY
                 c2x = targetX + ((newX - targetX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
             }
@@ -165,8 +156,8 @@ export function draw() {
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
                 c1x = newX + ((targetX-newX) * 0.8)
-                c1y = newY
-                c2x = targetX - ((targetX-newX)* 0.03)
+                c1y = newY - rem
+                c2x = targetX - ((targetX-newX)* 0.05)
                 c2y = targetY - ((targetY-newY) * 0.8)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2] && targetY < metrics[3]) {
@@ -180,7 +171,7 @@ export function draw() {
                 newX = sourceX
                 newY = sourceY + (labelDim[1] / 2);
                 c1x = newX - ((newX - targetX) * 0.8)
-                c1y = newY;
+                c1y = newY - rem;
                 c2x = targetX + ((newX - targetX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
             }
