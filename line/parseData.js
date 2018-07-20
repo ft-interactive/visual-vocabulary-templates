@@ -38,19 +38,18 @@ export function load(url, options) { // eslint-disable-line
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
 
-         // Filter data for annotations
-
+        // Filter data for annotations
         const typeNames = data.map( d => d.type)
             .filter((item, pos, typeNames) => typeNames.indexOf(item) === pos && item !== '');
-        console.log(typeNames)
 
-        const test = typeNames.map(d => ({
+        const annos = typeNames.map(d => ({
             type: d,
             annotations: getAnnotations(d),
         }));
+        console.log('annos',annos)
 
         function getAnnotations(el) {
-            const annos = data.filter(d => (d.type === el))
+            const types = data.filter(d => (d.type === el))
             .map((d) => {
                 return {
                     title: d.annotate,
@@ -61,23 +60,9 @@ export function load(url, options) { // eslint-disable-line
                     type: d.type,
                 }
             })
-            return annos
+            return types
         }
 
-
-         console.log('test', test)
-
-        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined))
-        .map((d) => {
-            return {
-                title: d.annotate,
-                note: d.level,
-                targetX: d.date,
-                targetY: d.level,
-                radius: 2,
-                type: d.type,
-            }
-        })
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];

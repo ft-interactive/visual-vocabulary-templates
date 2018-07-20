@@ -40,6 +40,7 @@ export function load(url, options) { // eslint-disable-line
                 max: d3.max(qValues),
                 mean: d3.mean(qValues),
             }
+            console.log(plotData)
           
             function getQuantiles(vals, groupName) {
                 const quantiles = [];

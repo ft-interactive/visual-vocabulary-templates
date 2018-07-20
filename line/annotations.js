@@ -26,7 +26,7 @@ export function draw() {
             .on('mouseover', pointer);
         
         threshold.selectAll('line')
-        .data(d => d)
+        .data(d => d.annotations.filter((el) => {return el.type === 'threshold'}))
         .enter()
         .append('line')
             .attr('class', 'annotation')
@@ -35,6 +35,17 @@ export function draw() {
             .attr('y1', yScale.range()[0])
             .attr('y2', yScale.range()[1])
 
+        threshold.selectAll('text')
+        .data(d => d.annotations.filter((el) => {return el.type === 'threshold'}))
+        .enter()
+        .append('text')
+            .attr('class', 'annotation')
+            .attr('text-anchor', 'middle')
+            .attr('x', d => xScale(d.date))
+            .attr('y', yScale.range()[1] - (rem / 2))
+            .text(d => d.annotate);
+
+            
         let labelText = annotation.append('text')
             .attr('class', 'highlighted-label')
             .attr('x',d => xScale(d.targetX))
