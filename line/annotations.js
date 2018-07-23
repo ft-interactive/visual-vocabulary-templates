@@ -217,22 +217,22 @@ export function draw() {
                 c2x = targetX + ((newX - targetX)* 0.2)
                 c2y = targetY + ((newY - targetY) * 0.6)
             }
-            let pathString;
-            if (el.type ==='elbow') {
-                pathString = "M " + newX + "," + (newY - rem) + " L " + c1x + "," + c1y + "L" + targetX + "," + targetY;
-            }
-            if (el.type ==='curve') {
-                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
-            }
-            if (el.type ==='arc') {
-                var dx = newX - targetX,
+            var dx = newX - targetX,
                 dy = newY - targetY,
                 angle = Math.atan2(dx, dy);
                 console.log('radius', radius)
                 let offsetX = radius * Math.sin(angle);
                 let offsetY = radius * Math.cos(angle);
                 let dr = Math.sqrt(dx * dx + dy * dy);
-                pathString  = "M" + (newX) + "," + (newY) + "A" + dr + "," + dr + " 0 0,1 " + (targetX + offsetX) +
+            let pathString;
+            if (el.type ==='elbow') {
+                pathString = "M " + newX + "," + (newY - rem) + " L " + c1x + "," + c1y + "L" + targetX + "," + targetY;
+            }
+            if (el.type ==='curve') {
+                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX + offsetX) + "," + (targetY + offsetY);
+            }
+            if (el.type ==='arc') {
+                pathString  = "M" + (newX) + "," + (newY - rem) + "A" + dr + "," + dr + " 0 0,1 " + (targetX + offsetX) +
   "," + (targetY + offsetY);
             }
             return pathString
