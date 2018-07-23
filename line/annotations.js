@@ -70,6 +70,9 @@ export function draw() {
                 let points = getPathData(label, sourceX, sourceY, d)
                return points
             })
+            .attr("stroke-dasharray", function(d) {
+                    return this.getTotalLength() - d.radius;
+                });
  
         function getOffset(label, textEl) {
             const text = d3.select(textEl);//gets the path or text 'g' parent
@@ -119,11 +122,15 @@ export function draw() {
             let sourceY = d3.event.y + translate[1]
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            d3.select(this).selectAll('path').attr("d", function(el) {
-                let points = getPathData(label, sourceX, sourceY, el)
-                //let pathData = lineGenerator(points);
-                return points
-            });
+            d3.select(this).selectAll('path')
+                .attr("d", function(el) {
+                    let points = getPathData(label, sourceX, sourceY, el)
+                    //let pathData = lineGenerator(points);
+                    return points
+                })
+                .attr("stroke-dasharray", function(d) {
+                    return this.getTotalLength() - d.radius;
+                });
         }
 
         function getPathData(label, sourceX, sourceY, el) {
@@ -229,11 +236,7 @@ export function draw() {
                 pathString = "M " + newX + "," + (newY - rem) + " L " + c1x + "," + c1y + "L" + targetX + "," + targetY;
             }
             if (el.type ==='curve') {
-                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX + offsetX) + "," + (targetY + offsetY);
-            }
-            if (el.type ==='arc') {
-                pathString  = "M" + (newX) + "," + (newY - rem) + "A" + dr + "," + dr + " 0 0,1 " + (targetX + offsetX) +
-  "," + (targetY + offsetY);
+                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX) + "," + (targetY);
             }
             return pathString
         }
@@ -283,12 +286,6 @@ export function draw() {
         seriesNames = d;
         return label;
     };
-    // label.sizeScale = (d) => {
-    //     if (!d) return sizeScale;
-    //     sizeScale = d;
-    //     intersect = true
-    //     return label;
-    // };
     label.lineWidth = (d) => {
         if (!d) return lineWidth;
         lineWidth = d;
