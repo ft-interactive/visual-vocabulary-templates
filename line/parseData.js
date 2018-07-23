@@ -56,7 +56,7 @@ export function load(url, options) { // eslint-disable-line
                     note: d.level,
                     targetX: d.date,
                     targetY: d.level,
-                    radius: 2,
+                    radius: 30,
                     type: d.type,
                 }
             })
