@@ -44,7 +44,7 @@ export function draw() {
             .text(d => d.title);
 
         let textLabel =annotation.selectAll('text')
-        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow'}))
+        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc'}))
         .enter()
         .append('g')
 
@@ -54,10 +54,8 @@ export function draw() {
             .attr('y',d => yScale(d.targetY))
             .attr('dy',0)
             .text((d) => {
-                if (intersect) {
-                    radius = sizeScale(d.radius);
-                }
-                else {radius = d.radius};
+                console.log(d.radius)
+                radius = d.radius;
                 return d.title + ' ' + d.note
             })
             .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
@@ -145,7 +143,7 @@ export function draw() {
             let c1x = 400
             let c1y = 400
             let c2x = 20
-            let c2y = 20
+            let c2y = 20    
             if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY > metrics[3]) {
                 //console.log('TL');
                 newX = sourceX + labelDim[0];
@@ -232,8 +230,16 @@ export function draw() {
                 pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
             }
             if (el.type ==='arc') {
-                let dr = Math.sqrt(newX * newX + (newY - rem) * dy);
-                pathString  = "M" + newX + "," + (newY - rem) + "A" + dr + "," + dr + " 0 0,1 " + targetX + "," + targetY;
+                var dx = targetX - sourceX,
+                dy = targetY - sourceY,
+                angle = Math.atan2(dx, dy);
+                console.log('radius', radius)
+                let offsetX = radius * Math.cos(angle);
+                let offsetY = radius * Math.sin(angle);
+                let dr = Math.sqrt(dx * dx + dy * dy);
+                pathString  = "M" + (sourceX + offsetX) + "," + (sourceY + offsetY) +
+  "A" + dr + "," + dr + " 0 0,1 " + (targetX - offsetX) +
+  "," + (targetY - offsetY);
             }
             return pathString
         }
