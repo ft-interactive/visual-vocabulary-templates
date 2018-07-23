@@ -225,15 +225,14 @@ export function draw() {
                 pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
             }
             if (el.type ==='arc') {
-                var dx = sourceX - targetX,
-                dy = targetY - sourceY,
+                var dx = newX - targetX,
+                dy = newY - targetY,
                 angle = Math.atan2(dx, dy);
                 console.log('radius', radius)
-                let offsetX = radius * Math.cos(angle);
-                let offsetY = radius * Math.sin(angle);
+                let offsetX = radius * Math.sin(angle);
+                let offsetY = radius * Math.cos(angle);
                 let dr = Math.sqrt(dx * dx + dy * dy);
-                pathString  = "M" + (newX) + "," + (newY) +
-  "A" + dr + "," + dr + " 0 0,1 " + (targetX + offsetX) +
+                pathString  = "M" + (newX) + "," + (newY) + "A" + dr + "," + dr + " 0 0,1 " + (targetX + offsetX) +
   "," + (targetY + offsetY);
             }
             return pathString
