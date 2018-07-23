@@ -6,20 +6,15 @@ export function draw() {
     let plotDim = [100,100];
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
-    let sizeScale = d3.scaleSqrt();
-    let intersect = false
     let seriesNames  = []; // eslint-disable-line
     let rem = 16;
     let formatDecimal = d3.format(".2f")
     let frameName = ''
-
     const colourScale = d3.scaleOrdinal();
     let offset = []
 
 
     function label(parent) {
-        
-        let radius;
 
         const annotation = parent.append('g')
             .on('mouseover', pointer);
@@ -54,8 +49,6 @@ export function draw() {
             .attr('y',d => yScale(d.targetY))
             .attr('dy',0)
             .text((d) => {
-                console.log(d.radius)
-                radius = d.radius;
                 return d.title + ' ' + d.note
             })
             .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
@@ -83,6 +76,7 @@ export function draw() {
             let labelDim = labelDimansions(text);
             let posX = xScale(label.targetX);
             let posY = yScale(label.targetY);
+            let radius = label.radius
             let xOffset = 0;
             let yOffset = 0;
                 if (posX > plotDim[0]/2) {
@@ -143,7 +137,8 @@ export function draw() {
             let c1x = 400
             let c1y = 400
             let c2x = 20
-            let c2y = 20    
+            let c2y = 20
+            let radius = el.radius 
             if(targetX > metrics[0] && targetX > metrics[1] && targetY > metrics[2] && targetY > metrics[3]) {
                 //console.log('TL');
                 newX = sourceX + labelDim[0];
@@ -230,16 +225,16 @@ export function draw() {
                 pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + targetX + "," + targetY;
             }
             if (el.type ==='arc') {
-                var dx = targetX - sourceX,
+                var dx = sourceX - targetX,
                 dy = targetY - sourceY,
                 angle = Math.atan2(dx, dy);
                 console.log('radius', radius)
                 let offsetX = radius * Math.cos(angle);
                 let offsetY = radius * Math.sin(angle);
                 let dr = Math.sqrt(dx * dx + dy * dy);
-                pathString  = "M" + (sourceX + offsetX) + "," + (sourceY + offsetY) +
-  "A" + dr + "," + dr + " 0 0,1 " + (targetX - offsetX) +
-  "," + (targetY - offsetY);
+                pathString  = "M" + (newX) + "," + (newY) +
+  "A" + dr + "," + dr + " 0 0,1 " + (targetX + offsetX) +
+  "," + (targetY + offsetY);
             }
             return pathString
         }
@@ -289,12 +284,12 @@ export function draw() {
         seriesNames = d;
         return label;
     };
-    label.sizeScale = (d) => {
-        if (!d) return sizeScale;
-        sizeScale = d;
-        intersect = true
-        return label;
-    };
+    // label.sizeScale = (d) => {
+    //     if (!d) return sizeScale;
+    //     sizeScale = d;
+    //     intersect = true
+    //     return label;
+    // };
     label.lineWidth = (d) => {
         if (!d) return lineWidth;
         lineWidth = d;
