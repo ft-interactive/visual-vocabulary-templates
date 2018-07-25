@@ -143,7 +143,7 @@ export function draw() {
                 //console.log('TL');
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX + ((targetX-newX) * 0.8)
+                c1x = newX + ((targetX-newX) * 0.3)
                 c1y = newY - rem
                 c2x = targetX - ((targetX-newX)* 0.05)
                 c2y = targetY - ((targetY-newY) * 0.8)
@@ -161,7 +161,7 @@ export function draw() {
                 //console.log('TR');
                 newX = sourceX
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX - ((newX - targetX) * 0.8)
+                c1x = newX - ((newX - targetX) * 0.3)
                 c1y = newY - rem
                 c2x = targetX + ((newX - targetX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
@@ -229,11 +229,10 @@ export function draw() {
                 pathString = "M " + newX + "," + (newY - rem) + " L " + c1x + "," + c1y + "L" + targetX + "," + targetY;
             }
             if (el.type ==='curve') {
-                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX + offsetX) + "," + (targetY + offsetY);
+                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX) + "," + (targetY);
             }
             if (el.type ==='arc') {
-                pathString  = "M" + (newX) + "," + (newY - rem) + "A" + dr + "," + dr + " 0 0,1 " + (targetX + offsetX) +
-  "," + (targetY + offsetY);
+                pathString  = "M" + (newX) + "," + (newY - rem)  + "Q" + c1x + "," + c1y + " "+  (targetX + offsetX) + "," +(targetY + offsetY);
             }
             return pathString
         }
