@@ -12,7 +12,7 @@ import * as simpleStats from "simple-statistics";
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
-    const { samplePoints, bandwidthParameter } = options;
+    const { bandwidthParameter } = options;
     // eslint-disable-line
     return loadData(url).then(result => {
         const data = result.data ? result.data : result;
@@ -34,20 +34,40 @@ export function load(url, options) {
             });
             let qValues = groupValues.map(d => d.value);
             qValues = qValues.sort((a, b) => a - b);
+            const kernelDensityEstimationFunction = simpleStats.kernelDensityEstimation(
+                qValues
+            );
+            // Take sample points from range
+            let samplePoints = d3.range(valueExtent[0], valueExtent[1] + 1, 1);
+            let curvePoints = samplePoints.map(d =>
+                kernelDensityEstimationFunction(d)
+            );
+
             return {
                 group: d,
                 values: qValues,
                 q1: d3.quantile(qValues, 0.25),
                 q2: d3.quantile(qValues, 0.5),
-                q3: d3.quantile(qValues, 0.75)
+                q3: d3.quantile(qValues, 0.75),
+                violinPlot: curvePoints
             };
         });
+
+        const maxProbability = maxValueAcrossArrays(
+            plotData.map(d => d.violinPlot)
+        );
 
         return {
             valueExtent,
             groupNames,
             plotData,
+            maxProbability,
             data
         };
     });
+}
+
+function maxValueAcrossArrays(arrays) {
+    const maxArray = arrays.map(data => d3.max(data));
+    return d3.max(maxArray);
 }

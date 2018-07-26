@@ -92,9 +92,15 @@ d3.selectAll(".framed").each(function addFrames() {
     figure.select("svg").call(frame[figure.node().dataset.frame]);
 });
 
-parseData.load(dataFile, {}).then(({ plotData }) => {
-    Object.keys(frame).forEach(frameName => {
-        const currentFrame = frame[frameName];
+parseData
+    .load(dataFile, {})
+    .then(({ plotData, valueExtent, maxProbability }) => {
+        Object.keys(frame).forEach(frameName => {
+            const currentFrame = frame[frameName];
+
+            const yAxis = gAxis.yLinear();
+            const xAxis = gAxis.xOrdinal();
+            const xAxisMinor = gAxis.xLinear();
+        });
+        // addSVGSavers('figure.saveable');
     });
-    // addSVGSavers('figure.saveable');
-});
