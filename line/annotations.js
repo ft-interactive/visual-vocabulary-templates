@@ -58,7 +58,7 @@ export function draw() {
             })
 
         textLabel.append('path')
-            .attr('id', d=> d.title)
+            .attr('id', 'arrow')
             .attr('class', 'annotation')
             .attr('stroke', '#000000')// remove when class is updfated to include definition for paths
             .attr('stroke-width', 1)// remove when class is updfated to include definition for paths
