@@ -137,6 +137,15 @@ parseData
 
             currentFrame.plot().call(yAxis);
 
+            if (yAxisAlign === "left") {
+                yAxis
+                    .yLabel()
+                    .attr(
+                        "transform",
+                        `translate(${currentFrame.dimension().width}, 0)`
+                    );
+            }
+
             xAxis
                 .align(xAxisAlign)
                 .domain(plotData.map(d => d.group))
