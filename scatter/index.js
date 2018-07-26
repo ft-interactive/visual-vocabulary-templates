@@ -214,7 +214,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         }
 
         myChart
-            .yRange([currentFrame.dimension().height, 0])
+            .yScale(myYAxis.scale())
             .xScale(myXAxis.scale())
             .sizeScale(sqrtScale)
             .scaleFactor(scaleFactor)
