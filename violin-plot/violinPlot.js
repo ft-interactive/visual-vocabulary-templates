@@ -6,6 +6,12 @@ export function draw() {
     let yScale = d3.scaleLinear();
     let xMinorScale = d3.scaleLinear();
     let xScale = d3.scaleBand();
+    let groups = [];
+    let colourScale = d3.scaleOrdinal().domain(groups);
+    let highlightNames = [];
+    let showIQR = false;
+    let showMedian = false;
+    let showNinentyFivePc = false;
 
     function chart(parent) {
         const violinPathLeft = d3
@@ -23,22 +29,43 @@ export function draw() {
         // Right
         parent
             .append("path")
+            .attr("fill", d => colourScale(d.group))
             .datum(d => d.violinPlot)
-            .attr("fill", "none")
-            .attr("stroke", "#000")
-            .attr("stroke-width", 1.5)
-            .attr("stroke-linejoin", "round")
             .attr("d", violinPathRight);
 
         // Left
         parent
             .append("path")
+            .attr("fill", d => colourScale(d.group))
             .datum(d => d.violinPlot)
-            .attr("fill", "none")
-            .attr("stroke", "#000")
-            .attr("stroke-width", 1.5)
-            .attr("stroke-linejoin", "round")
             .attr("d", violinPathLeft);
+        if (showNinentyFivePc) {
+            parent
+                .append("line")
+                .attr("x1", xScale.bandwidth() / 2)
+                .attr("x2", xScale.bandwidth() / 2)
+                .attr("y1", d => yScale(d.ninetyFiveExtent[0][0]))
+                .attr("y2", d => yScale(d.ninetyFiveExtent[1][0]));
+        }
+
+        // IQR box
+        if (showIQR) {
+            parent
+                .append("rect")
+                .attr("x", xScale.bandwidth() / 2 - rem)
+                .attr("y", d => yScale(d.q3))
+                .attr("width", rem * 2)
+                .attr("height", d => yScale(d.q1) - yScale(d.q3));
+        }
+
+        // Median dot
+        if (showMedian) {
+            parent
+                .append("circle")
+                .attr("cx", xScale.bandwidth() / 2)
+                .attr("cy", d => yScale(d.q2))
+                .attr("r", rem * 0.75);
+        }
     }
 
     chart.yScale = d => {
@@ -56,6 +83,36 @@ export function draw() {
     chart.xScale = d => {
         if (!d) return xScale;
         xScale = d;
+        return chart;
+    };
+
+    chart.groups = d => {
+        if (!d) return groups;
+        groups = d;
+        return chart;
+    };
+
+    chart.highlightNames = d => {
+        if (!d) return highlightNames;
+        highlightNames = d;
+        return chart;
+    };
+
+    chart.showIQR = d => {
+        if (!d) return showIQR;
+        showIQR = d;
+        return chart;
+    };
+
+    chart.showMedian = d => {
+        if (!d) return showMedian;
+        showMedian = d;
+        return chart;
+    };
+
+    chart.showNinentyFivePc = d => {
+        if (!d) return showNinentyFivePc;
+        showNinentyFivePc = d;
         return chart;
     };
 

@@ -37,7 +37,13 @@ const yAxisAlign = "right";
 const xAxisAlign = "bottom";
 const numTicks = 5;
 const minProbability = 0.000001; // This will cut off values from the top and bottom of the distribution
-const kernelBandwidth = "nrd"; // Set this to a number to use a custom bandwidth
+const kernelBandwidth = "nrd"; // Use "nrd" for default. Set this to a number to use a custom bandwidth
+
+const rangeStep = 1; // Set to 1 if sample data is all integers, use an appropiate step for sampling otherwise
+
+const showIQR = true; // Show inter-quartile range box
+const showMedian = true; // Show median dot
+const showNinentyFivePc = true; // Show 95% confidence line
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -101,7 +107,13 @@ d3.selectAll(".framed").each(function addFrames() {
 });
 
 parseData
-    .load(dataFile, { yMin, yMax, kernelBandwidth, minProbability })
+    .load(dataFile, {
+        yMin,
+        yMax,
+        kernelBandwidth,
+        minProbability,
+        rangeStep
+    })
     .then(({ plotData, valueExtent, maxProbability }) => {
         Object.keys(frame).forEach(frameName => {
             const currentFrame = frame[frameName];
@@ -150,7 +162,12 @@ parseData
             myChart
                 .yScale(yAxis.scale())
                 .xMinorScale(xMinorScale)
-                .xScale(xAxis.scale());
+                .xScale(xAxis.scale())
+                .groups(plotData.map(d => d.group))
+                .colourPalette(frameName)
+                .showIQR(showIQR)
+                .showMedian(showMedian)
+                .showNinentyFivePc(showNinentyFivePc);
 
             currentFrame
                 .plot()

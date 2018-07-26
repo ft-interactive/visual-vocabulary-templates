@@ -12,7 +12,7 @@ import * as simpleStats from "simple-statistics";
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
-    const { yMin, yMax, kernelBandwidth, minProbability } = options;
+    const { yMin, yMax, kernelBandwidth, minProbability, rangeStep } = options;
     // eslint-disable-line
     return loadData(url).then(result => {
         const data = result.data ? result.data : result;
@@ -46,13 +46,33 @@ export function load(url, options) {
                 kernelBandwidth
             );
             // Take sample points from range
-            let samplePoints = d3.range(yMin, yMax + 1, 1);
+            let samplePoints = d3.range(yMin, yMax + rangeStep, rangeStep);
 
             let curvePoints = samplePoints.map(d => [
                 d,
                 kernelDensityEstimationFunction(d)
             ]);
 
+            const confidenceRange = curvePoints.slice(
+                0,
+                curvePoints.length - 1
+            );
+
+            let cumulative = 0;
+            for (let i = 0; i < confidenceRange.length; ++i) {
+                cumulative += confidenceRange[i][1];
+                confidenceRange[i][2] = cumulative;
+            }
+
+            // Remove points outside 95% confidence range
+            while (confidenceRange[confidenceRange.length - 1][2] > 0.975) {
+                confidenceRange.pop();
+            }
+            while (confidenceRange[0][2] < 0.025) {
+                confidenceRange.shift();
+            }
+
+            // Remove points below probability
             while (curvePoints[curvePoints.length - 1][1] < minProbability) {
                 curvePoints.pop();
             }
@@ -60,13 +80,21 @@ export function load(url, options) {
                 curvePoints.shift();
             }
 
+            const ninetyFiveExtent = [
+                confidenceRange[0],
+                confidenceRange[confidenceRange.length - 1]
+            ];
+
+            console.log(ninetyFiveExtent);
+
             return {
                 group: d,
                 values: qValues,
                 q1: d3.quantile(qValues, 0.25),
                 q2: d3.quantile(qValues, 0.5),
                 q3: d3.quantile(qValues, 0.75),
-                violinPlot: curvePoints
+                violinPlot: curvePoints,
+                ninetyFiveExtent: ninetyFiveExtent
             };
         });
 
