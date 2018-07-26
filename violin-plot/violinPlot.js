@@ -4,10 +4,41 @@ import gChartcolour from "g-chartcolour";
 export function draw() {
     let rem = 10;
     let yScale = d3.scaleLinear();
+    let xMinorScale = d3.scaleLinear();
     let xScale = d3.scaleBand();
 
     function chart(parent) {
-        //Your drawing function in here
+        const violinPathLeft = d3
+            .line()
+            .curve(d3.curveBasis)
+            .x(d => -xMinorScale(d[1]) + xScale.bandwidth() / 2)
+            .y(d => yScale(d[0]));
+
+        const violinPathRight = d3
+            .line()
+            .curve(d3.curveBasis)
+            .x(d => xMinorScale(d[1]) + xScale.bandwidth() / 2)
+            .y(d => yScale(d[0]));
+
+        // Right
+        parent
+            .append("path")
+            .datum(d => d.violinPlot)
+            .attr("fill", "none")
+            .attr("stroke", "#000")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-linejoin", "round")
+            .attr("d", violinPathRight);
+
+        // Left
+        parent
+            .append("path")
+            .datum(d => d.violinPlot)
+            .attr("fill", "none")
+            .attr("stroke", "#000")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-linejoin", "round")
+            .attr("d", violinPathLeft);
     }
 
     chart.yScale = d => {
@@ -16,9 +47,15 @@ export function draw() {
         return chart;
     };
 
-    chart.yAxisAlign = d => {
-        if (!d) return yAxisAlign;
-        yAxisAlign = d;
+    chart.xMinorScale = d => {
+        if (!d) return xMinorScale;
+        xMinorScale = d;
+        return chart;
+    };
+
+    chart.xScale = d => {
+        if (!d) return xScale;
+        xScale = d;
         return chart;
     };
 

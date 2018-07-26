@@ -32,10 +32,12 @@ const sharedConfig = {
 };
 
 const yMin = 0;
-const yMax = 0;
+const yMax = 150;
 const yAxisAlign = "right";
 const xAxisAlign = "bottom";
 const numTicks = 5;
+const minProbability = 0.000001; // This will cut off values from the top and bottom of the distribution
+const kernelBandwidth = "nrd"; // Set this to a number to use a custom bandwidth
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -99,14 +101,15 @@ d3.selectAll(".framed").each(function addFrames() {
 });
 
 parseData
-    .load(dataFile, {})
+    .load(dataFile, { yMin, yMax, kernelBandwidth, minProbability })
     .then(({ plotData, valueExtent, maxProbability }) => {
         Object.keys(frame).forEach(frameName => {
             const currentFrame = frame[frameName];
 
             const yAxis = gAxis.yLinear();
             const xAxis = gAxis.xOrdinal();
-            const xAxisMinor = gAxis.xLinear();
+            let xMinorScale;
+            const myChart = violinPlot.draw();
             const tickSize = currentFrame.dimension().width;
 
             yAxis
@@ -130,6 +133,11 @@ parseData
 
             currentFrame.plot().call(xAxis);
 
+            xMinorScale = d3
+                .scaleLinear()
+                .domain([0, maxProbability])
+                .range([0, xAxis.scale().bandwidth() / 2]);
+
             if (xAxisAlign === "bottom") {
                 xAxis
                     .xLabel()
@@ -138,6 +146,24 @@ parseData
                         `translate(0,${currentFrame.dimension().height})`
                     );
             }
+
+            myChart
+                .yScale(yAxis.scale())
+                .xMinorScale(xMinorScale)
+                .xScale(xAxis.scale());
+
+            currentFrame
+                .plot()
+                .selectAll(".violin-plot")
+                .data(plotData)
+                .enter()
+                .append("g")
+                .attr("class", "violin-plot")
+                .attr(
+                    "transform",
+                    d => `translate(${xAxis.scale()(d.group)}, 0)`
+                )
+                .call(myChart);
         });
         // addSVGSavers('figure.saveable');
     });

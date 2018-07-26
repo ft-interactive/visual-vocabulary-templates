@@ -12,11 +12,17 @@ import * as simpleStats from "simple-statistics";
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
-    const { bandwidthParameter } = options;
+    const { yMin, yMax, kernelBandwidth, minProbability } = options;
     // eslint-disable-line
     return loadData(url).then(result => {
         const data = result.data ? result.data : result;
         data.forEach(d => (d.value = Number(d.value)));
+
+        function kernelEpanechnikov(k) {
+            return function(v) {
+                return Math.abs((v /= k)) <= 1 ? (0.75 * (1 - v * v)) / k : 0;
+            };
+        }
 
         // Get group names
         const groupNames = data
@@ -35,13 +41,24 @@ export function load(url, options) {
             let qValues = groupValues.map(d => d.value);
             qValues = qValues.sort((a, b) => a - b);
             const kernelDensityEstimationFunction = simpleStats.kernelDensityEstimation(
-                qValues
+                qValues,
+                "gaussian",
+                kernelBandwidth
             );
             // Take sample points from range
-            let samplePoints = d3.range(valueExtent[0], valueExtent[1] + 1, 1);
-            let curvePoints = samplePoints.map(d =>
+            let samplePoints = d3.range(yMin, yMax + 1, 1);
+
+            let curvePoints = samplePoints.map(d => [
+                d,
                 kernelDensityEstimationFunction(d)
-            );
+            ]);
+
+            while (curvePoints[curvePoints.length - 1][1] < minProbability) {
+                curvePoints.pop();
+            }
+            while (curvePoints[0][1] < minProbability) {
+                curvePoints.shift();
+            }
 
             return {
                 group: d,
@@ -68,6 +85,6 @@ export function load(url, options) {
 }
 
 function maxValueAcrossArrays(arrays) {
-    const maxArray = arrays.map(data => d3.max(data));
+    const maxArray = arrays.map(data => d3.max(data, d => d[1]));
     return d3.max(maxArray);
 }
