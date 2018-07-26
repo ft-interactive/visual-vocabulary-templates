@@ -170,7 +170,7 @@ export function draw() {
                 //console.log('ML')
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX + ((targetX-newX) * 0.5)
+                c1x = newX + ((targetX-newX) * 0.2)
                 c1y = newY - rem
                 c2x = targetX - ((targetX-newX)* 0.1)
                 c2y = targetY - ((targetY-newY) * 0.8)
@@ -185,7 +185,7 @@ export function draw() {
                 //console.log('MR');
                 newX = sourceX
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX - ((newX - targetX) * 0.8)
+                c1x = newX - ((newX - targetX) * 0.2)
                 c1y = newY - rem;
                 c2x = targetX + ((newX - targetX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
@@ -194,7 +194,7 @@ export function draw() {
                 //console.log('BL');
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX + ((targetX - newX) * 0.6)
+                c1x = newX + ((targetX - newX) * 0.3)
                 c1y = newY - rem
                 c2x = targetX - ((targetX - newX)* 0.3)
                 c2y = targetY + ((newY - targetY) * 0.6)
@@ -204,15 +204,15 @@ export function draw() {
                 newX = sourceX + labelDim[0] / 2;
                 newY = sourceY;
                 c1x = newX
-                c1y = newY + ((targetY-newY)* 0.75)
-                c2x = targetX - ((targetX - newX)* 0.6)
-                c2y = targetY - ((targetY - newY) * 0.1)    
+                c1y = newY + ((targetY-newY)* 0.6)
+                c2x = targetX - ((targetX - newX)* 0.2)
+                c2y = targetY - ((targetY - newY) * 0.6)    
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 //console.log('BR');
                 newX = sourceX;
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX - ((newX - targetX ) * 0.75)
+                c1x = newX - ((newX - targetX ) * 0.3)
                 c1y = newY - rem
                 c2x = targetX + ((newX - targetX)* 0.2)
                 c2y = targetY + ((newY - targetY) * 0.6)
