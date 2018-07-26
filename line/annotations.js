@@ -130,7 +130,7 @@ export function draw() {
             let labelDim = labelDimansions(label);
             let targetX = xScale(el.targetX)
             let targetY = yScale(el.targetY)
-            let metrics = [sourceX,(sourceX + labelDim[0]),sourceY - rem,(sourceY + labelDim[1] - rem)]
+            let metrics = [sourceX,(sourceX + labelDim[0]),sourceY,(sourceY + labelDim[1])]
             //console.log('metrics', metrics);
             let newX;
             let newY;
@@ -173,7 +173,7 @@ export function draw() {
                 c1x = newX + ((targetX-newX) * 0.2)
                 c1y = newY - rem
                 c2x = targetX - ((targetX-newX)* 0.1)
-                c2y = targetY - ((targetY-newY) * 0.8)
+                c2y = targetY - ((targetY-newY) * 0.4)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2] && targetY < metrics[3]) {
                 //console.log('MM');
@@ -187,7 +187,7 @@ export function draw() {
                 newY = sourceY + (labelDim[1] / 2);
                 c1x = newX - ((newX - targetX) * 0.2)
                 c1y = newY - rem;
-                c2x = targetX + ((newX - targetX) * 0.05)
+                c2x = targetX + ((targetX - newX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
             }
             if(targetX > metrics[0] && targetX > metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
@@ -205,8 +205,8 @@ export function draw() {
                 newY = sourceY;
                 c1x = newX
                 c1y = newY + ((targetY-newY)* 0.6)
-                c2x = targetX - ((targetX - newX)* 0.2)
-                c2y = targetY - ((targetY - newY) * 0.6)    
+                c2x = targetX - ((targetX - newX)* 0.1)
+                c2y = targetY - ((targetY - newY) * 0.4)    
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 //console.log('BR');
