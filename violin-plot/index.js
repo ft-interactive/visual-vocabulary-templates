@@ -31,6 +31,12 @@ const sharedConfig = {
     source: "Source not yet added"
 };
 
+const yMin = 0;
+const yMax = 0;
+const yAxisAlign = "right";
+const xAxisAlign = "bottom";
+const numTicks = 5;
+
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe
@@ -101,6 +107,37 @@ parseData
             const yAxis = gAxis.yLinear();
             const xAxis = gAxis.xOrdinal();
             const xAxisMinor = gAxis.xLinear();
+            const tickSize = currentFrame.dimension().width;
+
+            yAxis
+                .align(yAxisAlign)
+                .domain([
+                    Math.min(yMin, valueExtent[0]),
+                    Math.max(yMax, valueExtent[1])
+                ])
+                .range([currentFrame.dimension().height, 0])
+                .numTicks(numTicks)
+                .tickSize(tickSize)
+                .frameName(frameName);
+
+            currentFrame.plot().call(yAxis);
+
+            xAxis
+                .align(xAxisAlign)
+                .domain(plotData.map(d => d.group))
+                .rangeRound([0, currentFrame.dimension().width])
+                .frameName(frameName);
+
+            currentFrame.plot().call(xAxis);
+
+            if (xAxisAlign === "bottom") {
+                xAxis
+                    .xLabel()
+                    .attr(
+                        "transform",
+                        `translate(0,${currentFrame.dimension().height})`
+                    );
+            }
         });
         // addSVGSavers('figure.saveable');
     });
