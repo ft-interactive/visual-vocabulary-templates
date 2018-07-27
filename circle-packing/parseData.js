@@ -56,10 +56,13 @@ export function load(url, options) {
 
         const plotData = root;
 
+        groupNames.push(rootName);
+
         return {
             data,
             plotData,
-            valueExtent
+            valueExtent,
+            groupNames
         };
     });
 }

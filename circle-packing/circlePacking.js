@@ -3,9 +3,9 @@ import gChartcolour from "g-chartcolour";
 
 export function draw() {
     let rem = 10;
-    let seriesNames = [];
+    let groupNames = [];
     let highlightNames = [];
-    const colourScale = d3.scaleOrdinal().domain(seriesNames);
+    const colourScale = d3.scaleOrdinal().domain(groupNames);
 
     function chart(parent) {
         const node = parent
@@ -23,18 +23,13 @@ export function draw() {
         node.append("circle")
             .attr("id", d => `node-${d.id}`)
             .attr("r", d => d.r)
-            .style("fill", "none")
-            .style("stroke", "black");
+            .style("fill", d => colourScale(d.data.group));
     }
 
-    chart.highlightNames = d => {
-        highlightNames = d;
-        return chart;
-    };
-
-    chart.seriesNames = d => {
-        if (typeof d === "undefined") return seriesNames;
-        seriesNames = d;
+    chart.groupNames = d => {
+        if (typeof d === "undefined") return groupNames;
+        groupNames = d;
+        colourScale.domain(groupNames);
         return chart;
     };
 
