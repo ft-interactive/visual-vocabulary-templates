@@ -52,6 +52,7 @@ const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
+const turnWidth = 6.5
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -296,7 +297,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .xScale(myXAxis.scale())
           .yScale(myYAxis.scale())
           .frameName(frameName)
-          .lineWidth(currentFrame.rem() * 5)
+          .lineWidth(currentFrame.rem() * turnWidth)
           .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
         // Draw the annotations before the lines
