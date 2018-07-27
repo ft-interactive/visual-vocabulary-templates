@@ -39,7 +39,7 @@ export function draw() {
             .text(d => d.title);
 
         let textLabel =annotation.selectAll('text')
-        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc'}))
+        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc' || el.type === ''}))
         .enter()
         .append('g')
 
@@ -220,7 +220,6 @@ export function draw() {
             var dx = newX - targetX,
                 dy = newY - targetY,
                 angle = Math.atan2(dx, dy);
-                console.log('radius', radius)
                 let offsetX = radius * Math.sin(angle);
                 let offsetY = radius * Math.cos(angle);
                 let dr = Math.sqrt(dx * dx + dy * dy);
@@ -231,7 +230,7 @@ export function draw() {
             if (el.type ==='curve') {
                 pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX) + "," + (targetY);
             }
-            if (el.type ==='arc') {
+            if (el.type ==='curve' || el.type ==='') {
                 pathString  = "M" + (newX) + "," + (newY - rem)  + "Q" + c1x + "," + c1y + " "+  (targetX + offsetX) + "," +(targetY + offsetY);
             }
             return pathString

@@ -11,9 +11,9 @@ import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from './annotations.js';
 
-const dataFile = 'pain diary.csv';
+const dataFile = 'data.csv';
 
-const dateFormat = '%d/%m/%Y %H:%M';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -28,7 +28,7 @@ const dateFormat = '%d/%m/%Y %H:%M';
 */
 
 const sharedConfig = {
-    title: 'Pain diary for surgeon',
+    title: 'Title not yet added',
     subtitle: 'Subhead',
     source: 'Source not yet added',
 };
@@ -40,7 +40,7 @@ const yAxisHighlight = 7; // sets which tick to highlight on the yAxis
 const numTicksy = 10;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'months';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
