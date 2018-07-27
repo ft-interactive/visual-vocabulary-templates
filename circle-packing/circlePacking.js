@@ -24,6 +24,21 @@ export function draw() {
             .attr("id", d => `node-${d.id}`)
             .attr("r", d => d.r)
             .style("fill", d => colourScale(d.data.group));
+
+        const leafToLabel = node.filter(d => !d.children && d.data.label);
+
+        const labels = leafToLabel.append("text")
+            .selectAll("tspan")
+            .data(d => {
+              const splitStr = d.id.substring(d.id.lastIndexOf(".") + 1).split(/(?=[A-Z][^A-Z])/g);
+              splitStr.push(d.value);
+              return splitStr;
+            })
+            .enter().append("tspan")
+              .attr("x", 0)
+              .attr("y", (d, i, nodes) => (rem) + (i - nodes.length / 2) * rem)
+              .text(d => d)
+              .style('font-size', rem);
     }
 
     chart.groupNames = d => {

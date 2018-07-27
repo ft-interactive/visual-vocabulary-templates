@@ -11,27 +11,27 @@ import loadData from "@financial-times/load-data";
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
-    const { displayHierarchy, rootName, attrToShow } = options;
+    const { displayHierarchy, rootName, attrToShow, filterGroups, showAllLabels } = options;
     // eslint-disable-line
     return loadData(url).then(result => {
         const data = result.data ? result.data : result;
+        const filteredData = data.filter(d => filterGroups.includes(d.group));
+        if (showAllLabels) {
+          filteredData.forEach(d => d.label = 'yes')
+        }
 
-        const seriesNames = getSeriesNames(data.columns);
-
-        const valueExtent = d3.extent(data, d => d[attrToShow]);
-
-        const groupNames = data
+        const groupNames = filteredData
             .map(d => d.group)
             .filter((el, i, ar) => ar.indexOf(el) === i);
 
         // Should check that no root exists first
-        data.push({
+        filteredData.push({
             name: rootName,
             group: ""
         });
 
         // Add all nodes with no parent as chilren of root object
-        data.forEach(d => {
+        filteredData.forEach(d => {
             if (d.name !== rootName && d.group === "") {
                 d.group = rootName;
             }
@@ -53,17 +53,17 @@ export function load(url, options) {
             root = d3
                 .stratify()
                 .id(d => d.name)
-                .parentId(d => d.group)(data)
+                .parentId(d => d.group)(filteredData)
                 .sum(d => d[attrToShow])
                 .sort((a, b) => a[attrToShow] - a[attrToShow]);
+        } else {
+          root = d3
+              .stratify()
+              .id(d => d.name)
+              .parentId((d) => d.group !== "" ? rootName : "")(filteredData)
+              .sum(d => d[attrToShow])
+              .sort((a, b) => a[attrToShow] - a[attrToShow]);
         }
-
-        root = d3
-            .stratify()
-            .id(d => d.name)
-            .parentId((d) => d.group !== "" ? rootName : "")(data)
-            .sum(d => d[attrToShow])
-            .sort((a, b) => a[attrToShow] - a[attrToShow]);
 
         const plotData = root;
 

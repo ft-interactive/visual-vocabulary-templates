@@ -11,11 +11,14 @@ import * as circlePacking from "./circlePacking.js";
 
 const dataFile = "data.csv";
 
-const displayHierarchy = false;
-const displayOuterCircle = false;
 const rootName = "Birds"; // If not set defaults to Root
 const attrToShow = "Breeding";
 const padding = 3;
+
+const displayHierarchy = false;
+const displayOuterCircle = false;
+const showAllLabels = false;
+const filterGroups = ["Red", "Amber"];
 
 const sharedConfig = {
     title: "Title not yet added",
@@ -107,7 +110,7 @@ d3.selectAll(".framed").each(function addFrames() {
     figure.select("svg").call(frame[figure.node().dataset.frame]);
 });
 parseData
-    .load(dataFile, { displayHierarchy, rootName, attrToShow })
+    .load(dataFile, { displayHierarchy, rootName, attrToShow, filterGroups, showAllLabels })
     .then(({ plotData, groupNames }) => {
         Object.keys(frame).forEach(frameName => {
             const currentFrame = frame[frameName];
@@ -115,7 +118,8 @@ parseData
             const myChart = circlePacking
                 .draw()
                 .groupNames(groupNames)
-                .colourPalette(frameName);
+                .rem(currentFrame.rem())
+                .colourPalette(frameName)
 
             // Set up packing function
             const pack = d3
