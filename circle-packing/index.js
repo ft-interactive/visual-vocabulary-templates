@@ -7,9 +7,12 @@ import * as gLegend from "g-legend";
 import gChartframe from "g-chartframe";
 import * as gAxis from "g-axis";
 import * as parseData from "./parseData.js";
-import * as lineChart from "./drawChart.js";
+import * as circlePacking from "./circlePacking.js";
 
 const dataFile = "data.csv";
+
+const showHierarchy = true;
+const rootName = "Birds"; // If not set defaults to Root
 
 const sharedConfig = {
     title: "Title not yet added",
@@ -100,7 +103,7 @@ d3.selectAll(".framed").each(function addFrames() {
 
     figure.select("svg").call(frame[figure.node().dataset.frame]);
 });
-parseData.load(dataFile, {}).then(({ plotData }) => {
+parseData.load(dataFile, { showHierarchy, rootName }).then(({ plotData }) => {
     Object.keys(frame).forEach(frameName => {
         const currentFrame = frame[frameName];
     });

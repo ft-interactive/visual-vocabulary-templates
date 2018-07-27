@@ -1,84 +1,84 @@
 name,Breeding,Winter,group
 Barn Owl,1,1,Amber
-Mallard,2,6,None
-Blackbird,20,140,None
-Magpie,0,1,None
-Blackcap,6,1,None
+Mallard,2,6,
+Blackbird,20,140,
+Magpie,0,1,
+Blackcap,6,1,
 Marsh Harrier,3,1,Amber
-Black-headed Gull,20,232,None
+Black-headed Gull,20,232,
 Marsh Tit,1,4,Red
-Blue Tit,20,139,None
-Meadow Pipit,3,44,None
-Brambling,2,23,None
+Blue Tit,20,139,
+Meadow Pipit,3,44,
+Brambling,2,23,
 Merlin,0,1,Red
 Bullfinch,8,40,Red
 Mistle Thrush,5,10,Amber
-Buzzard,6,4,None
+Buzzard,6,4,
 Mute Swan,0,1,Amber
-Canada Goose,2,0,None
+Canada Goose,2,0,
 Oyster Catcher,3,3,Amber
-Carrion Crow,2,12,None
+Carrion Crow,2,12,
 Grey Partridge,2,32,Red
-Chaffinch,114,369,None
-Peregrine,0,1,None
-Chiffchaff,1,2,None
-Pheasant,11,112,None
-Collared Dove,18,53,None
-Pied Wagtail,2,54,None
-Coal Tit,10,6,None
+Chaffinch,114,369,
+Peregrine,0,1,
+Chiffchaff,1,2,
+Pheasant,11,112,
+Collared Dove,18,53,
+Pied Wagtail,2,54,
+Coal Tit,10,6,
 Reed Bunting,0,134,Amber
 Common Gull,0,16,Amber
-Redwing,0,187,None
+Redwing,0,187,
 Cuckoo,2,0,Red
-Red-Legged Partridge,4,77,None
+Red-Legged Partridge,4,77,
 Curlew,2,7,Red
-Robin,12,52,None
+Robin,12,52,
 Dunnock,12,39,Amber
-Rook,6,112,None
-Egyptian Goose,0,2,None
-Siskin,0,1,None
-Feral Pigeon,0,23,None
-Shelduck,2,0,None
-Fieldfare,0,176,None
+Rook,6,112,
+Egyptian Goose,0,2,
+Siskin,0,1,
+Feral Pigeon,0,23,
+Shelduck,2,0,
+Fieldfare,0,176,
 Skylark,4,87,Red
-Garden Warbler,2,0,None
+Garden Warbler,2,0,
 Snipe,1,47,Amber
-Goldcrest,2,15,None
+Goldcrest,2,15,
 Song Thrush,4,36,Red
-Goldfinch,20,127,None
+Goldfinch,20,127,
 Spotted Flycatcher,1,0,Red
-Great Spotted Woodpecker,1,3,None
-Sparrow Hawk,1,2,None
-Great Tit,11,18,None
-Stock Dove,20,8,None
-Greenfinch,5,36,None
+Great Spotted Woodpecker,1,3,
+Sparrow Hawk,1,2,
+Great Tit,11,18,
+Stock Dove,20,8,
+Greenfinch,5,36,
 Starling,14,287,Red
-Green Woodpecker,1,2,None
-Swallow,2,0,None
-Herring Gull,22,16,None
-Swift,11,0,None
-Hobby,1,0,None
-Tawny Owl,0,1,None
-House Martin,8,0,None
+Green Woodpecker,1,2,
+Swallow,2,0,
+Herring Gull,22,16,
+Swift,11,0,
+Hobby,1,0,
+Tawny Owl,0,1,
+House Martin,8,0,
 Tree Sparrow,0,2,Red
 House Sparrow,17,21,Red
-Tree Creeper,0,1,None
-Jay,3,17,None
+Tree Creeper,0,1,
+Jay,3,17,
 Turtle Dove,2,0,Red
-Jackdaw,11,263,None
-Wheatear,1,0,None
+Jackdaw,11,263,
+Wheatear,1,0,
 Kestrel,3,3,Amber
-Whitethroat,6,0,None
+Whitethroat,6,0,
 Lapwing,8,311,Red
 Whooper Swan,0,3,Amber
 Lesser Redpoll,0,4,Red
 Willow Warbler,2,0,Amber
 Lesser Black-backed Gull,14,200,Amber
-Woodcock,0,5,None
+Woodcock,0,5,
 Linnet,3,165,Red
-Wood Pigeon,67,823,None
-Little Owl,0,3,None
-Wren,14,21,None
-Long-Tailed Tit,30,80,None
+Wood Pigeon,67,823,
+Little Owl,0,3,
+Wren,14,21,
+Long-Tailed Tit,30,80,
 Yellow Hammer,6,47,Red
-Lesser Whitethroat,5,0,None
+Lesser Whitethroat,5,0,

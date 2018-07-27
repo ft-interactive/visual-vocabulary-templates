@@ -11,16 +11,59 @@ import loadData from "@financial-times/load-data";
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
+    const { showHierarchy, rootName } = options;
     // eslint-disable-line
     return loadData(url).then(result => {
         const data = result.data ? result.data : result;
 
-        // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames);
+        const seriesNames = getSeriesNames(data.columns);
+
+        const valueExtent = [];
+
+        const groupNames = data
+            .map(d => d.group)
+            .filter((el, i, ar) => ar.indexOf(el) === i);
+
+        // Should check that no root exists first
+        data.push({
+            name: rootName,
+            group: ""
+        });
+
+        // Add all nodes with no parent as chilren of root object
+        data.forEach(d => {
+            if (d.name !== rootName && d.group === "") {
+                d.group = rootName;
+            }
+        });
+
+        // Add group objects
+        groupNames.forEach(g => {
+            if (g !== "") {
+                data.push({
+                    name: g,
+                    group: rootName
+                });
+            }
+        });
+
+        const root = d3
+            .stratify()
+            .id(d => d.name)
+            .parentId(d => d.group)(data);
+
+        const plotData = [];
 
         return {
-            valueExtent,
-            data
+            data,
+            plotData,
+            valueExtent
         };
     });
+}
+
+// a function that returns the columns headers from the top of the dataset, excluding specified
+function getSeriesNames(columns) {
+    const exclude = ["name", "group"]; // adjust column headings to match your dataset
+    return columns.filter(d => exclude.indexOf(d) === -1);
 }
