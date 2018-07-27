@@ -14,15 +14,49 @@ export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
 
+        let sizeVar = options.sizeVar;
+        let xVar = options.xVar;
+        let yVar = options.yVar;
+
         // automatically calculate the seriesnames excluding the reserved "name" and "group" fields
         const seriesNames = getSeriesNames(data.columns);
 
-        // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames);
+        // determin extents for each scale
+        const xValueExtent = extentMulti(data, [xVar]);
+        const yValueExtent = extentMulti(data, [yVar]);
+        const sizeExtent = extentMulti(data, [sizeVar]);
+
+        // Filter data for annotations
+        const typeNames = data.map( d => d.type)
+            .filter((item, pos, typeNames) => typeNames.indexOf(item) === pos && item !== '');
+
+        const annos = typeNames.map(d => ({
+            type: d,
+            annotations: getAnnotations(d),
+        }));
+
+        console.log(annos)
+
+        function getAnnotations(el) {
+            const types = data.filter(d => (d.type === el))
+            .map((d) => {
+                return {
+                    title: d.name,
+                    //note: '',
+                    targetX: d[xVar],
+                    targetY: d[yVar],
+                    radius: d[sizeVar],
+                    type: d.type,
+                }
+            })
+            return types
+        }
 
         return {
             seriesNames,
-            valueExtent,
+            xValueExtent,
+            yValueExtent,
+            sizeExtent,
             data,
         };
     });
@@ -34,7 +68,7 @@ export function load(url, options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 function getSeriesNames(columns) {
-    const exclude = ['name', 'group']; // adjust column headings to match your dataset
+    const exclude = ['name', 'group', 'label', 'type']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
