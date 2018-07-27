@@ -11,8 +11,11 @@ import * as circlePacking from "./circlePacking.js";
 
 const dataFile = "data.csv";
 
-const showHierarchy = true;
+const displayHierarchy = true;
+const displayOuterCircle = true;
 const rootName = "Birds"; // If not set defaults to Root
+const attrToShow = "Breeding";
+const padding = 3;
 
 const sharedConfig = {
     title: "Title not yet added",
@@ -103,9 +106,43 @@ d3.selectAll(".framed").each(function addFrames() {
 
     figure.select("svg").call(frame[figure.node().dataset.frame]);
 });
-parseData.load(dataFile, { showHierarchy, rootName }).then(({ plotData }) => {
-    Object.keys(frame).forEach(frameName => {
-        const currentFrame = frame[frameName];
+parseData
+    .load(dataFile, { displayHierarchy, rootName, attrToShow })
+    .then(({ plotData, valueExtent }) => {
+        Object.keys(frame).forEach(frameName => {
+            const currentFrame = frame[frameName];
+
+            const myChart = circlePacking.draw();
+
+            // Set up packing function
+            const pack = d3
+                .pack()
+                .size([
+                    currentFrame.dimension().width,
+                    currentFrame.dimension().height
+                ])
+                .padding(padding);
+
+            // Run packing function on plot data
+            pack(plotData);
+
+            currentFrame
+                .plot()
+                .append("g")
+                .attr("class", "pack-container")
+                .selectAll(".pack-circle")
+                .data(plotData.descendants())
+                .enter()
+                .append("g")
+                .attr("class", "pack-circle")
+                .call(myChart);
+
+            if (!displayOuterCircle) {
+                currentFrame
+                    .plot()
+                    .select(".node--root")
+                    .style("display", "none");
+            }
+        });
+        // addSVGSavers('figure.saveable');
     });
-    // addSVGSavers('figure.saveable');
-});

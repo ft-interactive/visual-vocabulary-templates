@@ -11,14 +11,14 @@ import loadData from "@financial-times/load-data";
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
-    const { showHierarchy, rootName } = options;
+    const { showHierarchy, rootName, attrToShow } = options;
     // eslint-disable-line
     return loadData(url).then(result => {
         const data = result.data ? result.data : result;
 
         const seriesNames = getSeriesNames(data.columns);
 
-        const valueExtent = [];
+        const valueExtent = d3.extent(data, d => d[attrToShow]);
 
         const groupNames = data
             .map(d => d.group)
@@ -50,9 +50,11 @@ export function load(url, options) {
         const root = d3
             .stratify()
             .id(d => d.name)
-            .parentId(d => d.group)(data);
+            .parentId(d => d.group)(data)
+            .sum(d => d[attrToShow])
+            .sort((a, b) => a[attrToShow] - a[attrToShow]);
 
-        const plotData = [];
+        const plotData = root;
 
         return {
             data,

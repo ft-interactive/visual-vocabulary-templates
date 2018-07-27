@@ -8,7 +8,23 @@ export function draw() {
     const colourScale = d3.scaleOrdinal().domain(seriesNames);
 
     function chart(parent) {
-        //Your drawing function in here
+        const node = parent
+            .attr("transform", d => `translate(${d.x},${d.y})`)
+            .attr(
+                "class",
+                d =>
+                    "node" +
+                    (!d.children ? " node--leaf" : d.depth ? "" : " node--root")
+            )
+            .each(function(d) {
+                d.node = this;
+            });
+
+        node.append("circle")
+            .attr("id", d => `node-${d.id}`)
+            .attr("r", d => d.r)
+            .style("fill", "none")
+            .style("stroke", "black");
     }
 
     chart.highlightNames = d => {
