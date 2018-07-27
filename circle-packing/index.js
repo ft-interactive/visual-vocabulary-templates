@@ -131,7 +131,7 @@ parseData
                 .pack()
                 .size([
                     currentFrame.dimension().width,
-                    currentFrame.dimension().height
+                    currentFrame.dimension().height * 1.1
                 ])
                 .padding(padding);
 
