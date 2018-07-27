@@ -11,7 +11,7 @@ import * as circlePacking from "./circlePacking.js";
 
 const dataFile = "data.csv";
 
-const displayHierarchy = true;
+const displayHierarchy = false;
 const displayOuterCircle = false;
 const rootName = "Birds"; // If not set defaults to Root
 const attrToShow = "Breeding";
@@ -108,7 +108,7 @@ d3.selectAll(".framed").each(function addFrames() {
 });
 parseData
     .load(dataFile, { displayHierarchy, rootName, attrToShow })
-    .then(({ plotData, valueExtent, groupNames }) => {
+    .then(({ plotData, groupNames }) => {
         Object.keys(frame).forEach(frameName => {
             const currentFrame = frame[frameName];
 

@@ -11,7 +11,7 @@ import loadData from "@financial-times/load-data";
  * @return {Object}     Object containing series names, value extent and raw data object
  */
 export function load(url, options) {
-    const { showHierarchy, rootName, attrToShow } = options;
+    const { displayHierarchy, rootName, attrToShow } = options;
     // eslint-disable-line
     return loadData(url).then(result => {
         const data = result.data ? result.data : result;
@@ -37,20 +37,31 @@ export function load(url, options) {
             }
         });
 
-        // Add group objects
-        groupNames.forEach(g => {
-            if (g !== "") {
-                data.push({
-                    name: g,
-                    group: rootName
-                });
-            }
-        });
+        let root;
 
-        const root = d3
+        if (displayHierarchy) {
+            // Add group objects
+            groupNames.forEach(g => {
+                if (g !== "") {
+                    data.push({
+                        name: g,
+                        group: rootName
+                    });
+                }
+            });
+
+            root = d3
+                .stratify()
+                .id(d => d.name)
+                .parentId(d => d.group)(data)
+                .sum(d => d[attrToShow])
+                .sort((a, b) => a[attrToShow] - a[attrToShow]);
+        }
+
+        root = d3
             .stratify()
             .id(d => d.name)
-            .parentId(d => d.group)(data)
+            .parentId((d) => d.group !== "" ? rootName : "")(data)
             .sum(d => d[attrToShow])
             .sort((a, b) => a[attrToShow] - a[attrToShow]);
 
@@ -61,7 +72,6 @@ export function load(url, options) {
         return {
             data,
             plotData,
-            valueExtent,
             groupNames
         };
     });
