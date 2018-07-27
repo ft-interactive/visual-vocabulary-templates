@@ -20,6 +20,9 @@ const displayOuterCircle = false;
 const showAllLabels = false;
 const filterGroups = ["Red", "Amber"];
 
+const legendAlign = 'vert'; // hori or vert, alignment of the legend
+const legendType = 'circ'; // rect, line or circ, geometry of legend marker
+
 const sharedConfig = {
     title: "Title not yet added",
     subtitle: "Subtitle not yet added",
@@ -115,11 +118,13 @@ parseData
         Object.keys(frame).forEach(frameName => {
             const currentFrame = frame[frameName];
 
+            const myLegend = gLegend.legend();
+
             const myChart = circlePacking
                 .draw()
                 .groupNames(groupNames)
                 .rem(currentFrame.rem())
-                .colourPalette(frameName)
+                .colourPalette(frameName);
 
             // Set up packing function
             const pack = d3
@@ -150,6 +155,35 @@ parseData
                     .select(".node--root")
                     .style("display", "none");
             }
+
+            myLegend
+              .frameName(frameName)
+              .seriesNames(groupNames)
+              .colourPalette((frameName))
+              .rem(myChart.rem())
+              .geometry(legendType)
+              .alignment(legendAlign);
+          // Draw the Legend
+          currentFrame.plot()
+            .append('g')
+            .attr('id', 'legend')
+            .selectAll('.legend')
+              .data(() => {
+                if (filterGroups.lenth > 0) {
+                  return filterGroups
+                }
+                if (!displayOuterCircle) {
+                  return groupNames.filter(d => d !== rootName);
+                }
+                return groupNames;
+              })
+              .enter()
+              .append('g')
+              .classed('legend', true)
+              .call(myLegend);
+
+          const legendSelection = currentFrame.plot().select('#legend');
+          legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
         });
         // addSVGSavers('figure.saveable');
     });
