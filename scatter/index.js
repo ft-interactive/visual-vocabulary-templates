@@ -104,7 +104,6 @@ d3.selectAll('.framed')
 parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data }) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
-    console.log(groups, seriesNames)
     
     // set up axes
     const myYAxis = gAxis.yLinear();
