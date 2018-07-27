@@ -52,7 +52,7 @@ export function load(url, options) { // eslint-disable-line
             .map((d) => {
                 return {
                     title: d.annotate,
-                    note: '',
+                    //note: '',
                     targetX: d.date,
                     targetY: d[plotData[0].name],
                     radius: 2,
