@@ -48,7 +48,7 @@ export function draw() {
             .attr('y',d => yScale(d.targetY))
             .attr('dy',0)
             .text((d) => {
-                return d.title + ' ' + d.note
+                return d.title;
             })
             .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
             .attr('transform', function(d, a) {
