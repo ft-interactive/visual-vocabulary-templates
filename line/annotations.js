@@ -1,5 +1,4 @@
 import d3 from 'd3';
-import { select } from "d3-selection"
 
 export function draw() {
     let lineWidth = 100
