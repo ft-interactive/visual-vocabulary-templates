@@ -233,7 +233,6 @@ export function draw() {
             if (el.type ==='elbow') {
                 pathString = "M " + newX + "," + (newY - rem) + " L " + c1x + "," + c1y + "L" + targetX + "," + targetY;
             }
-
             if (el.type ==='curve' || el.type ==='') {
                 pathString  = "M" + (newX) + "," + (newY - rem)  + "Q" + c1x + "," + c1y + " "+  (targetX + offsetX) + "," +(targetY + offsetY);
             }
