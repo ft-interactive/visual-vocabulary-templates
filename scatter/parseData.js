@@ -13,10 +13,12 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
+        const {xVar, yVar, sizeVar} = options;
+        console.log(xVar, yVar, sizeVar)
 
-        let sizeVar = options.sizeVar;
-        let xVar = options.xVar;
-        let yVar = options.yVar;
+        // let sizeVar = options.sizeVar;
+        // let xVar = options.xVar;
+        // let yVar = options.yVar;
 
         // automatically calculate the seriesnames excluding the reserved "name" and "group" fields
         const seriesNames = getSeriesNames(data.columns);
