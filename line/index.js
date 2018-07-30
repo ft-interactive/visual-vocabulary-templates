@@ -11,9 +11,9 @@ import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from './annotations.js';
 
-const dataFile = 'pain diary.csv';
+const dataFile = 'data.csv';
 
-const dateFormat = '%d/%m/%Y %H:%M';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -28,19 +28,19 @@ const dateFormat = '%d/%m/%Y %H:%M';
 */
 
 const sharedConfig = {
-    title: 'Pain diary for surgeon',
+    title: 'Title not yet added',
     subtitle: 'Subhead',
     source: 'Source not yet added',
 };
 
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 10;// sets the maximum value on the xAxis
+const yMax = 1400;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
-const yAxisHighlight = 7; // sets which tick to highlight on the yAxis
-const numTicksy = 10;// Number of tick on the uAxis
+const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
+const numTicksy = 7;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'months';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -86,14 +86,14 @@ const frame = {
     print: gChartframe.printFrame(sharedConfig)
  .margin({ top: 40, left: 7, bottom: 35, right: 7 })
   // .title("Put headline here")
-  .width(280)// 1 col
+  .width(53.71)// 1 col
   // .width(112.25)// 2 col
   // .width(170.8)// 3 col
   // .width(229.34)// 4 col
   // .width(287.88)// 5 col
   // .width(346.43)// 6 col
   // .width(74)// markets std print
-  .height(180), // std print (Use 58.21mm for markets charts that matter)
+  .height(69.85), // std print (Use 58.21mm for markets charts that matter)
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({

@@ -1,5 +1,4 @@
 import d3 from 'd3';
-import { select } from "d3-selection"
 
 export function draw() {
     let lineWidth = 100
@@ -39,7 +38,7 @@ export function draw() {
             .text(d => d.title);
 
         let textLabel =annotation.selectAll('text')
-        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc'}))
+        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc' || el.type === ''}))
         .enter()
         .append('g')
 
@@ -49,7 +48,7 @@ export function draw() {
             .attr('y',d => yScale(d.targetY))
             .attr('dy',0)
             .text((d) => {
-                return d.title + ' ' + d.note
+                return d.title;
             })
             .call(wrap,lineWidth,d => xScale(d.targetX),"highlighted-label")
             .attr('transform', function(d, a) {
@@ -58,7 +57,7 @@ export function draw() {
             })
 
         textLabel.append('path')
-            .attr('id', d=> d.title)
+            .attr('id', 'arrow')
             .attr('class', 'annotation')
             .attr('stroke', '#000000')// remove when class is updfated to include definition for paths
             .attr('stroke-width', 1)// remove when class is updfated to include definition for paths
@@ -137,7 +136,7 @@ export function draw() {
             let labelDim = labelDimansions(label);
             let targetX = xScale(el.targetX)
             let targetY = yScale(el.targetY)
-            let metrics = [sourceX,(sourceX + labelDim[0]),sourceY - rem,(sourceY + labelDim[1] - rem)]
+            let metrics = [sourceX,(sourceX + labelDim[0]),sourceY,(sourceY + labelDim[1])]
             //console.log('metrics', metrics);
             let newX;
             let newY;
@@ -150,7 +149,7 @@ export function draw() {
                 //console.log('TL');
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX + ((targetX-newX) * 0.8)
+                c1x = newX + ((targetX-newX) * 0.3)
                 c1y = newY - rem
                 c2x = targetX - ((targetX-newX)* 0.05)
                 c2y = targetY - ((targetY-newY) * 0.8)
@@ -168,7 +167,7 @@ export function draw() {
                 //console.log('TR');
                 newX = sourceX
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX - ((newX - targetX) * 0.8)
+                c1x = newX - ((newX - targetX) * 0.3)
                 c1y = newY - rem
                 c2x = targetX + ((newX - targetX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
@@ -177,10 +176,10 @@ export function draw() {
                 //console.log('ML')
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX + ((targetX-newX) * 0.5)
+                c1x = newX + ((targetX-newX) * 0.2)
                 c1y = newY - rem
                 c2x = targetX - ((targetX-newX)* 0.1)
-                c2y = targetY - ((targetY-newY) * 0.8)
+                c2y = targetY - ((targetY-newY) * 0.4)
             }
             if(targetX < metrics[1] && targetX > metrics[0] && targetY > metrics[2] && targetY < metrics[3]) {
                 //console.log('MM');
@@ -192,16 +191,16 @@ export function draw() {
                 //console.log('MR');
                 newX = sourceX
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX - ((newX - targetX) * 0.8)
+                c1x = newX - ((newX - targetX) * 0.2)
                 c1y = newY - rem;
-                c2x = targetX + ((newX - targetX) * 0.05)
+                c2x = targetX + ((targetX - newX) * 0.05)
                 c2y = targetY - ((targetY - newY) * 0.8)
             }
             if(targetX > metrics[0] && targetX > metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 //console.log('BL');
                 newX = sourceX + labelDim[0];
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX + ((targetX - newX) * 0.6)
+                c1x = newX + ((targetX - newX) * 0.3)
                 c1y = newY - rem
                 c2x = targetX - ((targetX - newX)* 0.3)
                 c2y = targetY + ((newY - targetY) * 0.6)
@@ -211,15 +210,15 @@ export function draw() {
                 newX = sourceX + labelDim[0] / 2;
                 newY = sourceY;
                 c1x = newX
-                c1y = newY + ((targetY-newY)* 0.75)
-                c2x = targetX - ((targetX - newX)* 0.6)
-                c2y = targetY - ((targetY - newY) * 0.1)    
+                c1y = newY + ((targetY-newY)* 0.6)
+                c2x = targetX - ((targetX - newX)* 0.1)
+                c2y = targetY - ((targetY - newY) * 0.4)    
             }
             if(targetX < metrics[0] && targetX < metrics[1] && targetY < metrics[2] && targetY < metrics[3]) {
                 //console.log('BR');
                 newX = sourceX;
                 newY = sourceY + (labelDim[1] / 2);
-                c1x = newX - ((newX - targetX ) * 0.75)
+                c1x = newX - ((newX - targetX ) * 0.3)
                 c1y = newY - rem
                 c2x = targetX + ((newX - targetX)* 0.2)
                 c2y = targetY + ((newY - targetY) * 0.6)
@@ -227,7 +226,6 @@ export function draw() {
             var dx = newX - targetX,
                 dy = newY - targetY,
                 angle = Math.atan2(dx, dy);
-                console.log('radius', radius)
                 let offsetX = radius * Math.sin(angle);
                 let offsetY = radius * Math.cos(angle);
                 let dr = Math.sqrt(dx * dx + dy * dy);
@@ -237,6 +235,12 @@ export function draw() {
             }
             if (el.type ==='curve') {
                 pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX) + "," + (targetY);
+<<<<<<< HEAD
+=======
+            }
+            if (el.type ==='curve' || el.type ==='') {
+                pathString  = "M" + (newX) + "," + (newY - rem)  + "Q" + c1x + "," + c1y + " "+  (targetX + offsetX) + "," +(targetY + offsetY);
+>>>>>>> f7f21754789531b5cc9d044a712386118926f84b
             }
             return pathString
         }

@@ -46,17 +46,16 @@ export function load(url, options) { // eslint-disable-line
             type: d,
             annotations: getAnnotations(d),
         }));
-        console.log('annos',annos)
 
         function getAnnotations(el) {
             const types = data.filter(d => (d.type === el))
             .map((d) => {
                 return {
                     title: d.annotate,
-                    note: d.level,
+                    //note: '',
                     targetX: d.date,
-                    targetY: d.level,
-                    radius: 30,
+                    targetY: d[plotData[0].name],
+                    radius: 2,
                     type: d.type,
                 }
             })
