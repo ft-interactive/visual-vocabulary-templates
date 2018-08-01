@@ -25,7 +25,7 @@ const xMax = 1.5;// sets the maximum value on the xAxis - will autoextend to inc
 const divisorX = 1;// sets the formatting on linear axis for ’000s and millions
 
 const yVar = 'Change in spending on other things as % of GDP';
-const yMin = -12;// sets the minimum value on the yAxis - will autoextend to include range of your data
+const yMin = -15;// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 10;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
@@ -84,7 +84,7 @@ const frame = {
 
 
     social: gChartframe.socialFrame(sharedConfig)
-        .margin({ top: 140, left: 50, bottom: 138, right: 50 })
+        .margin({ top: 140, left: 40, bottom: 138, right: 50 })
     // .title("Put headline here")
         .width(612)
         .height(612),
@@ -101,24 +101,10 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint-disable-line
+parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annos }) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
-
-    // determin extents for each scale
-    const xValRange = [xMin, xMax];
-    const yValRange = [yMin, yMax];
-    const sizeRange = [0,0];
-
-    data.forEach((d) => {
-        xValRange[0] = Math.min(xValRange[0], d[xVar]);
-        xValRange[1] = Math.max(xValRange[1], d[xVar]);
-        yValRange[0] = Math.min(yValRange[0], d[yVar]);
-        yValRange[1] = Math.max(yValRange[1], d[yVar]);
-        sizeRange[0] = Math.min(sizeRange[0], d[sizeVar]);
-        sizeRange[1] = Math.max(sizeRange[1], d[sizeVar]);
-    });
-
+    
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
@@ -142,8 +128,6 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
     // define chart
     const myChart = scatterplot.draw()
         .seriesNames(seriesNames)
-        .xDomain(xValRange)
-        .yDomain(yValRange)
         .yAxisAlign(yAxisAlign);
 
     // draw, for each frame
@@ -151,7 +135,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         const currentFrame = frame[frameName];
 
     const sqrtScale = d3.scaleSqrt()
-            .domain(sizeRange)
+            .domain(sizeExtent)
             .range([0,(currentFrame.rem()*scaleFactor)]);
 
     const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
@@ -160,7 +144,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
         myYAxis
-            .domain(yValRange)
+            .domain([Math.min(yMin, yValueExtent[0]), Math.max(yMax, yValueExtent[1])])
             .range([currentFrame.dimension().height, 0])
             .align(yAxisAlign)
             .tickSize(tickSize)
@@ -192,7 +176,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
 
         // should be able to set domain from myChart??
         myXAxis
-            .domain(xValRange)
+            .domain([Math.min(xMin, xValueExtent[0]), Math.max(xMax, xValueExtent[1])])
             .tickSize(currentFrame.rem() * 0.75)
             .range([0, currentFrame.dimension().width])
             .align(xAxisAlign)
@@ -212,12 +196,10 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
-        
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
-
         myChart
-            .yRange([currentFrame.dimension().height, 0])
+            .yScale(myYAxis.scale())
             .xScale(myXAxis.scale())
             .sizeScale(sqrtScale)
             .scaleFactor(scaleFactor)
@@ -246,6 +228,7 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
 
         // Set up legend for this frame
         myLegend
