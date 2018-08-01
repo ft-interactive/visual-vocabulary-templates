@@ -8,7 +8,6 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
-import * as annotation from './annotations.js';
 
 // dataset and titles
 const dataURL = 'bubble-data.csv';
@@ -109,7 +108,6 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
-    const myAnnotations = annotation.draw();// sets up annotations
 
     const axisLabelX = {
         tag: xVar,
@@ -231,23 +229,6 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        //Set up highlights for this frame
-        myAnnotations
-          .xScale(myXAxis.scale())
-          .yScale(myYAxis.scale())
-          .sizeScale(sqrtScale)
-          .scaleFactor(scaleFactor)
-          .frameName(frameName)
-          .lineWidth(currentFrame.rem() * 5)
-          .plotDim([currentFrame.dimension().width, currentFrame.dimension().height])
-
-        // Draw the annotations before the lines
-        // plotAnnotation
-        //     .selectAll('.annotations')
-        //     .data(annos)
-        //     .enter()
-        //     .append('g')
-        //     .call(myAnnotations)
 
         // Set up legend for this frame
         myLegend
