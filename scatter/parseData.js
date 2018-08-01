@@ -28,16 +28,28 @@ export function load(url, options) { // eslint-disable-line
         const yValueExtent = extentMulti(data, [yVar]);
         const sizeExtent = extentMulti(data, [sizeVar]);
 
-        // Filter data for annotations
-        const typeNames = data.map( d => d.type)
-            .filter((item, pos, typeNames) => typeNames.indexOf(item) === pos && item !== '');
+         // Filter data for annotations
+        const annotations = data.filter((d) => {return d.label === 'yes'});
+        //checks that annotation have a type, if non defined then defaults to 'curve'
+        annotations.forEach((d) => {
+            d.type = testType(d)
+        })
+        function testType(d) {
+            if (d.type === '' || d.type === undefined || d.type === null) {
+                return 'curve'
+            }
+            else {return d.type}
+        }
 
-        const annos = typeNames.map(d => ({
+        //create an array of listing unique annotations types
+        const anoTypes = annotations.map( d => d.type)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        //builds annotation dataset as grouped by type
+        const annos = anoTypes.map(d => ({
             type: d,
             annotations: getAnnotations(d),
         }));
-
-        console.log(annos)
 
         function getAnnotations(el) {
             const types = data.filter(d => (d.type === el))
@@ -53,6 +65,8 @@ export function load(url, options) { // eslint-disable-line
             })
             return types
         }
+
+        console.log(annos)
 
         return {
             seriesNames,
