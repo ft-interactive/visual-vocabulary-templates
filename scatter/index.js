@@ -109,6 +109,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
     // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
+    const myAnnotations = annotation.annotations();// sets up annotations
 
     const axisLabelX = {
         tag: xVar,
