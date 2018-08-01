@@ -13,17 +13,68 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
+        const {xVar, yVar, sizeVar} = options;
+        console.log(xVar, yVar, sizeVar)
+
+        // let sizeVar = options.sizeVar;
+        // let xVar = options.xVar;
+        // let yVar = options.yVar;
 
         // automatically calculate the seriesnames excluding the reserved "name" and "group" fields
         const seriesNames = getSeriesNames(data.columns);
 
-        // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames);
+        // determin extents for each scale
+        const xValueExtent = extentMulti(data, [xVar]);
+        const yValueExtent = extentMulti(data, [yVar]);
+        const sizeExtent = extentMulti(data, [sizeVar]);
+
+         // Filter data for annotations
+        const annotations = data.filter((d) => {return d.label === 'yes'});
+        //checks that annotation have a type, if non defined then defaults to 'curve'
+        annotations.forEach((d) => {
+            d.type = testType(d)
+        })
+        function testType(d) {
+            if (d.type === '' || d.type === undefined || d.type === null) {
+                return 'curve'
+            }
+            else {return d.type}
+        }
+
+        //create an array of listing unique annotations types
+        const anoTypes = annotations.map( d => d.type)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        //builds annotation dataset as grouped by type
+        const annos = anoTypes.map(d => ({
+            type: d,
+            annotations: getAnnotations(d),
+        }));
+
+        function getAnnotations(el) {
+            const types = data.filter(d => (d.type === el))
+            .map((d) => {
+                return {
+                    title: d.name,
+                    //note: '',
+                    targetX: Number(d[xVar]),
+                    targetY: Number(d[yVar]),
+                    radius: Number(d[sizeVar]),
+                    type: d.type,
+                }
+            })
+            return types
+        }
+
+        console.log(annos)
 
         return {
             seriesNames,
-            valueExtent,
+            xValueExtent,
+            yValueExtent,
+            sizeExtent,
             data,
+            annos,
         };
     });
 }
@@ -34,7 +85,7 @@ export function load(url, options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 function getSeriesNames(columns) {
-    const exclude = ['name', 'group']; // adjust column headings to match your dataset
+    const exclude = ['name', 'group', 'label', 'type']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
