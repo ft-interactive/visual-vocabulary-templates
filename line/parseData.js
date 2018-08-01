@@ -42,10 +42,10 @@ export function load(url, options) { // eslint-disable-line
         const annotations = data.filter((d) => {return d.annotate != ''});
         //checks that annotation have a type, if non defined then defaults to 'threshold'
         annotations.forEach((d) => {
-                d.type = testThreshold(d)
+                d.type = testType(d)
         })
-        function testThreshold(d) {
-            if (d.type === '') {
+        function testType(d) {
+            if (d.type === '' || d.type === 'undefined' || d.type === null) {
                 return 'threshold'
             }
             else {return d.type}
@@ -60,7 +60,6 @@ export function load(url, options) { // eslint-disable-line
             type: d,
             annotations: getAnnotations(d),
         }));
-        console.log('annos', annos)
 
         function getAnnotations(el) {
             const types = data.filter(d => (d.type === el))
