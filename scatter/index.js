@@ -8,6 +8,7 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
+import annotation from 'g-annotations';
 
 // dataset and titles
 const dataURL = 'bubble-data.csv';
