@@ -212,6 +212,9 @@ parseData.load(dataURL).then(({ seriesNames, valueExtent, data }) => { // eslint
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
+        
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
 
         myChart
             .yRange([currentFrame.dimension().height, 0])
