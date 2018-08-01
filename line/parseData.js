@@ -42,10 +42,10 @@ export function load(url, options) { // eslint-disable-line
         const annotations = data.filter((d) => {return d.annotate != ''});
         //checks that annotation have a type, if non defined then defaults to 'threshold'
         annotations.forEach((d) => {
-                d.type = testType(d)
+            d.type = testType(d)
         })
         function testType(d) {
-            if (d.type === '' || d.type === 'undefined' || d.type === null) {
+            if (d.type === '' || d.type === undefined || d.type === null) {
                 return 'threshold'
             }
             else {return d.type}
