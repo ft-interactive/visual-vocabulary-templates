@@ -5,13 +5,14 @@ export function draw() {
     let plotDim = [100,100];
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
+    let scaleFactor = 1
     let seriesNames  = []; // eslint-disable-line
     let rem = 16;
+    let sizeScale = d3.scaleSqrt();
     let formatDecimal = d3.format(".2f")
     let frameName = ''
     const colourScale = d3.scaleOrdinal();
     let offset = []
-
 
     function label(parent) {
 
@@ -69,9 +70,6 @@ export function draw() {
                 let points = getPathData(label, sourceX, sourceY, d)
                return points
             })
-            .attr("stroke-dasharray", function(d) {
-                    return this.getTotalLength() - d.radius;
-                });
  
         function getOffset(label, textEl) {
             const text = d3.select(textEl);//gets the path or text 'g' parent
@@ -121,15 +119,11 @@ export function draw() {
             let sourceY = d3.event.y + translate[1]
             d3.select(this).selectAll('tspan').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             d3.select(this).selectAll('text').attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
-            d3.select(this).selectAll('path')
-                .attr("d", function(el) {
-                    let points = getPathData(label, sourceX, sourceY, el)
-                    //let pathData = lineGenerator(points);
-                    return points
-                })
-                .attr("stroke-dasharray", function(d) {
-                    return this.getTotalLength() - d.radius;
-                });
+            d3.select(this).selectAll('path').attr("d", function(el) {
+                let points = getPathData(label, sourceX, sourceY, el)
+                //let pathData = lineGenerator(points);
+                return points
+            });
         }
 
         function getPathData(label, sourceX, sourceY, el) {
@@ -233,6 +227,9 @@ export function draw() {
             if (el.type ==='elbow') {
                 pathString = "M " + newX + "," + (newY - rem) + " L " + c1x + "," + c1y + "L" + targetX + "," + targetY;
             }
+            if (el.type ==='arc') {
+                pathString  = "M " + newX + "," + (newY - rem) + " C " + c1x + "," + c1y + " " + c2x + "," + c2y + " " + (targetX) + "," + (targetY);
+            }
             if (el.type ==='curve' || el.type ==='') {
                 pathString  = "M" + (newX) + "," + (newY - rem)  + "Q" + c1x + "," + c1y + " "+  (targetX + offsetX) + "," +(targetY + offsetY);
             }
@@ -284,6 +281,12 @@ export function draw() {
         seriesNames = d;
         return label;
     };
+    // label.sizeScale = (d) => {
+    //     if (!d) return sizeScale;
+    //     sizeScale = d;
+    //     intersect = true
+    //     return label;
+    // };
     label.lineWidth = (d) => {
         if (!d) return lineWidth;
         lineWidth = d;
@@ -292,6 +295,16 @@ export function draw() {
     label.plotDim = (d) => {
         if (!d) return window.plotDim;
         plotDim = d;
+        return label;
+    };
+    label.scaleFactor = (d) => {
+        if (!d) return scaleFactor;
+        scaleFactor = d;
+        return label;
+    };
+    label.sizeScale = (d) => {
+        if (!d) return sizeScale;
+        sizeScale = d;
         return label;
     };
     label.xScale = (d) => {
