@@ -59,7 +59,7 @@ export function load(url, options) { // eslint-disable-line
                     //note: '',
                     targetX: Number(d[xVar]),
                     targetY: Number(d[yVar]),
-                    radius: Number(d[sizeVar]),
+                    radius: 0,
                     type: d.type,
                 }
             })

@@ -236,7 +236,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
           .yScale(myYAxis.scale())
           .frameName(frameName)
           .lineWidth(currentFrame.rem() * 5)
-          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+          .plotDim([currentFrame.dimension().width, currentFrame.dimension().height])
 
         // Draw the annotations before the lines
         // currentFrame.plot()
