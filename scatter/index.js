@@ -198,6 +198,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         myChart
             .yScale(myYAxis.scale())
@@ -239,7 +240,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
           .plotDim([currentFrame.dimension().width, currentFrame.dimension().height])
 
         // Draw the annotations before the lines
-        // currentFrame.plot()
+        // plotAnnotation
         //     .selectAll('.annotations')
         //     .data(annos)
         //     .enter()
