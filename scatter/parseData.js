@@ -57,9 +57,9 @@ export function load(url, options) { // eslint-disable-line
                 return {
                     title: d.name,
                     //note: '',
-                    targetX: d[xVar],
-                    targetY: d[yVar],
-                    radius: d[sizeVar],
+                    targetX: Number(d[xVar]),
+                    targetY: Number(d[yVar]),
+                    radius: Number(d[sizeVar]),
                     type: d.type,
                 }
             })
@@ -74,6 +74,7 @@ export function load(url, options) { // eslint-disable-line
             yValueExtent,
             sizeExtent,
             data,
+            annos,
         };
     });
 }

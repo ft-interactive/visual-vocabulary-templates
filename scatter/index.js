@@ -102,7 +102,7 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data }) => { // eslint-disable-line
+parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annos }) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
     
@@ -229,6 +229,22 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
 
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
+
+        //Set up highlights for this frame
+        myAnnotations
+          .xScale(myXAxis.scale())
+          .yScale(myYAxis.scale())
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * 5)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+
+        // Draw the annotations before the lines
+        // currentFrame.plot()
+        //     .selectAll('.annotations')
+        //     .data(annos)
+        //     .enter()
+        //     .append('g')
+        //     .call(myAnnotations)
 
         // Set up legend for this frame
         myLegend
