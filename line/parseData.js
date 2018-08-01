@@ -69,7 +69,7 @@ export function load(url, options) { // eslint-disable-line
                     //note: '',
                     targetX: d.date,
                     targetY: d[plotData[0].name],
-                    radius: 2,
+                    radius: 0,
                     type: d.type,
                 }
             })
