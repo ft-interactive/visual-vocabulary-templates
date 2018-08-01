@@ -220,8 +220,8 @@ export function draw() {
             var dx = newX - targetX,
                 dy = newY - targetY,
                 angle = Math.atan2(dx, dy);
-                let offsetX = radius * Math.sin(angle);
-                let offsetY = radius * Math.cos(angle);
+                let offsetX = sizeScale(radius) * Math.sin(angle);
+                let offsetY = sizeScale(radius) * Math.cos(angle);
                 let dr = Math.sqrt(dx * dx + dy * dy);
             let pathString;
             if (el.type ==='elbow') {
