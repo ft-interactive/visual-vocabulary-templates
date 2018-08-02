@@ -42,7 +42,7 @@ const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'hori';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
-const minorAxis = true;// turns on or off the minor axis
+const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
@@ -207,8 +207,10 @@ parseData.load(dataFile, {
             myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
             myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
             myYAxis1.yLabel().selectAll('.tick text').attr('dx', (currentFrame.rem() / 2));
-            myYAxis1.yLabelMinor().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
-
+            if (minorAxis) {
+                myYAxis1.yLabelMinor().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            }
+            
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);
 
