@@ -10,6 +10,7 @@ import * as priestleyChart from './priestleyChart.js';
 const dateFormat = '%Y';
 
 const dataFile = 'data.csv';
+const parseDate = d3.timeParse(dateFormat);
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -17,8 +18,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = 0;// sets the minimum value on the yAxis
-const xMax = 0;// sets the maximum value on the xAxis
+const xMin = parseDate('1730');// sets the minimum value on the yAxis
+const xMax = parseDate('1950');// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
 const minorAxis = false;// turns on or off the minor axis
 const showRects = true;//extent shades
