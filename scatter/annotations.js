@@ -96,8 +96,9 @@ export function draw() {
 
        textLabel
             .call(d3.drag()
-                .subject(function() { 
+                .subject(function() {
                     const textEl = d3.select(this).select('text');
+                    console.log (textEl)
                     return {x: textEl.attr('x'), y: textEl.attr('y')};
                 })
                 .on('start', dragstarted)
@@ -128,7 +129,6 @@ export function draw() {
 
         function getPathData(label, sourceX, sourceY, el) {
             let labelDim = labelDimansions(label);
-            console.log(el, labelDim)
             let targetX = xScale(el.targetX)
             let targetY = yScale(el.targetY)
             let metrics = [sourceX,(sourceX + labelDim[0]),sourceY,(sourceY + labelDim[1])]
