@@ -21,7 +21,7 @@ const sharedConfig = {
 const xMin = parseDate('1730');// sets the minimum value on the yAxis
 const xMax = parseDate('1950');// sets the maximum value on the xAxis
 const numTicks = 5;// Number of tick on the uAxis
-const minorAxis = false;// turns on or off the minor axis
+const minorAxis = true;// turns on or off the minor axis
 const showRects = true;//extent shades
 const showLines = false;//connecting line
 const showMarkers = false;//marker dots
@@ -120,6 +120,7 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
             .interval(interval)
             .fullYear(true)
             .minorAxis(minorAxis)
+            .minorTickSize(currentFrame.rem() * 0.5)
             .frameName(frameName);
 
         const base = currentFrame.plot().append('g'); // eslint-disable-line
@@ -154,6 +155,11 @@ parseData.load(dataFile, { sort, sortOn, dateFormat })
         if (xAxisAlign === 'top') {
             xAxis.xLabel()
             .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
+        }
+        if (xAxisAlign === 'bottom') {
+            if (minorAxis) {
+                xAxis.xLabelMinor().attr('transform', `translate(0,${currentFrame.dimension().height - (currentFrame.rem() * 0.5)})`);
+            }
         }
 
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
