@@ -39,7 +39,7 @@ export function draw() {
             .text(d => d.title);
 
         let textLabel =annotation.selectAll('text')
-        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc' || el.type === ''}))
+        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc'}))
         .enter()
         .append('g')
 
@@ -80,16 +80,16 @@ export function draw() {
             let xOffset = 0;
             let yOffset = 0;
                 if (posX > plotDim[0]/2) {
-                    xOffset = (0 - (labelDim[0] + radius +rem))
+                    xOffset = (0 - (labelDim[0] + sizeScale(radius) +rem))
                 }
                 if (posX < plotDim[0]/2) {
-                    xOffset = radius + (rem);
+                    xOffset = sizeScale(radius) + (rem);
                 }
                 if (posY > (plotDim[1]/2)) {
-                    yOffset = (0 - ((labelDim[1]) + radius + rem ))
+                    yOffset = (0 - ((labelDim[1]) + sizeScale(radius) + rem ))
                 }
                 if (posY < (plotDim[1]/2)) {
-                    yOffset = labelDim[1] + radius + rem 
+                    yOffset = labelDim[1] + sizeScale(radius) + rem 
                 }
             return[xOffset,yOffset];
         }
@@ -128,6 +128,7 @@ export function draw() {
 
         function getPathData(label, sourceX, sourceY, el) {
             let labelDim = labelDimansions(label);
+            console.log(el, labelDim)
             let targetX = xScale(el.targetX)
             let targetY = yScale(el.targetY)
             let metrics = [sourceX,(sourceX + labelDim[0]),sourceY,(sourceY + labelDim[1])]
