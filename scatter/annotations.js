@@ -277,11 +277,6 @@ export function draw() {
         frameName = d;
         return label;
     };
-    label.seriesNames = (d) => {
-        if (typeof d === 'undefined') return seriesNames;
-        seriesNames = d;
-        return label;
-    };
     // label.sizeScale = (d) => {
     //     if (!d) return sizeScale;
     //     sizeScale = d;
@@ -298,9 +293,19 @@ export function draw() {
         plotDim = d;
         return label;
     };
+    label.rem = (d) => {
+        if (!d) return rem;
+        rem = d;
+        return label;
+    };
     label.scaleFactor = (d) => {
         if (!d) return scaleFactor;
         scaleFactor = d;
+        return label;
+    };
+    label.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
+        seriesNames = d;
         return label;
     };
     label.sizeScale = (d) => {

@@ -115,34 +115,28 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
     // draw, for each frame
     Object.keys(frame).forEach((frameName) => {
         // set up axes
-    const myYAxis = gAxis.yLinear();
-    const myXAxis = gAxis.xLinear();
-    const myAnnotations = annotation.draw();// sets up annotations
-
-
-    const axisLabelX = {
-        tag: xVar,
-        hori:'middle',
-        vert: 'bottom',
-        anchor: 'middle',
-        rotate: 0
-    }
-
-    const axisLabelY = {
-        tag: yVar,
-        hori:'left',
-        vert: 'middle',
-        anchor: 'middle',
-        rotate: 0
-    }
+        const myYAxis = gAxis.yLinear();
+        const myXAxis = gAxis.xLinear();
+        const myAnnotations = annotation.draw();// sets up annotations
         const currentFrame = frame[frameName];
-
-    const sqrtScale = d3.scaleSqrt()
+        const axisLabelX = {
+            tag: xVar,
+            hori:'middle',
+            vert: 'bottom',
+            anchor: 'middle',
+            rotate: 0
+        }
+        const axisLabelY = {
+            tag: yVar,
+            hori:'left',
+            vert: 'middle',
+            anchor: 'middle',
+            rotate: 0
+        }
+        const sqrtScale = d3.scaleSqrt()
             .domain(sizeExtent)
             .range([0,(currentFrame.rem()*scaleFactor)]);
-
-    const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
-
+        const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
@@ -235,13 +229,14 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         myAnnotations
           .xScale(myXAxis.scale())
           .yScale(myYAxis.scale())
+          .rem(currentFrame.rem())
           .sizeScale(sqrtScale)
           .frameName(frameName)
           .lineWidth(currentFrame.rem() * 5)
           .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
         // Draw the annotations before the lines
-        plotAnnotation
+        plotAnnotation  
             .selectAll('.annotations')
             .data(annos)
             .enter()
