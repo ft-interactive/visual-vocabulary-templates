@@ -122,12 +122,13 @@ d3.selectAll('.framed')
   });
 parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
 .then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, annos }) => {
-    Object.keys(frame).forEach((frameName) => {
+    const myYAxis = gAxis.yLinear();// sets up yAxis
+    const myXAxis = gAxis.xDate();// sets up xAxis
+
+        Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
-        const myYAxis = gAxis.yLinear();// sets up yAxis
-        const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
         const myAnnotations = annotation.draw();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
@@ -145,7 +146,6 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .markers(markers)
           .annotate(annotate)
           .interpolation(interpolation);
-
         const highlightedLines = colourPalette(frameName);
 
         function colourPalette(d) {

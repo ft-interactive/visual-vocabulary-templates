@@ -106,7 +106,15 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
     
-    // set up axes
+
+    // define chart
+    const myChart = scatterplot.draw()
+        .seriesNames(seriesNames)
+        .yAxisAlign(yAxisAlign);
+
+    // draw, for each frame
+    Object.keys(frame).forEach((frameName) => {
+        // set up axes
     const myYAxis = gAxis.yLinear();
     const myXAxis = gAxis.xLinear();
     const myAnnotations = annotation.draw();// sets up annotations
@@ -127,14 +135,6 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         anchor: 'middle',
         rotate: 0
     }
-
-    // define chart
-    const myChart = scatterplot.draw()
-        .seriesNames(seriesNames)
-        .yAxisAlign(yAxisAlign);
-
-    // draw, for each frame
-    Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
     const sqrtScale = d3.scaleSqrt()
