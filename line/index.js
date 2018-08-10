@@ -9,8 +9,8 @@ import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
-//import * as annotation from './annotations.js';
 import * as annotation from './annotations.js';
+//import * as annotation from './annotations.js';
 
 const dataFile = 'data.csv';
 
