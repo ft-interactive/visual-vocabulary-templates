@@ -9,7 +9,7 @@ import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
-import * as annotation from './annotations.js';
+import * as annotation from 'g-annotations';
 //import * as annotation from './annotations.js';
 
 const dataFile = 'data.csv';
@@ -129,7 +129,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-        const myAnnotations = annotation.draw();// sets up annotations
+        const myAnnotations = annotation.annotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
