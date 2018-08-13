@@ -39,7 +39,7 @@ export function draw() {
             .text(d => d.title);
 
         let textLabel =annotation.selectAll('text')
-        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc' || el.type === ''}))
+        .data(d => d.annotations.filter((el) => {return el.type === 'curve' || el.type === 'elbow' || el.type === 'arc'}))
         .enter()
         .append('g')
 
@@ -80,23 +80,23 @@ export function draw() {
             let xOffset = 0;
             let yOffset = 0;
                 if (posX > plotDim[0]/2) {
-                    xOffset = (0 - (labelDim[0] + radius +rem))
+                    xOffset = (0 - (labelDim[0] + sizeScale(radius) +rem))
                 }
                 if (posX < plotDim[0]/2) {
-                    xOffset = radius + (rem);
+                    xOffset = sizeScale(radius) + (rem);
                 }
                 if (posY > (plotDim[1]/2)) {
-                    yOffset = (0 - ((labelDim[1]) + radius + rem ))
+                    yOffset = (0 - ((labelDim[1]) + sizeScale(radius) + rem ))
                 }
                 if (posY < (plotDim[1]/2)) {
-                    yOffset = labelDim[1] + radius + rem 
+                    yOffset = labelDim[1] + sizeScale(radius) + rem 
                 }
             return[xOffset,yOffset];
         }
 
        textLabel
             .call(d3.drag()
-                .subject(function() { 
+                .subject(function() {
                     const textEl = d3.select(this).select('text');
                     console.log (textEl)
                     return {x: textEl.attr('x'), y: textEl.attr('y')};
@@ -277,11 +277,6 @@ export function draw() {
         frameName = d;
         return label;
     };
-    label.seriesNames = (d) => {
-        if (typeof d === 'undefined') return seriesNames;
-        seriesNames = d;
-        return label;
-    };
     // label.sizeScale = (d) => {
     //     if (!d) return sizeScale;
     //     sizeScale = d;
@@ -298,9 +293,19 @@ export function draw() {
         plotDim = d;
         return label;
     };
+    label.rem = (d) => {
+        if (!d) return rem;
+        rem = d;
+        return label;
+    };
     label.scaleFactor = (d) => {
         if (!d) return scaleFactor;
         scaleFactor = d;
+        return label;
+    };
+    label.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
+        seriesNames = d;
         return label;
     };
     label.sizeScale = (d) => {
