@@ -160,6 +160,9 @@ parseData.load(dataFile, { dateFormat })
             .call(myChart)
             .call(myXAxis);
 
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
+
     });
     // addSVGSavers('figure.saveable');
 });
