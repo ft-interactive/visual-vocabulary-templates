@@ -29,7 +29,7 @@ const sharedConfig = {
 };
 
 const xAxisAlign = 'bottom'; // alignment of the axis
-const interval = 'years'; // date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'lustrum'; // date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const minorAxis = false; /* turns on or off the minor axis */ // eslint-disable-line
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
