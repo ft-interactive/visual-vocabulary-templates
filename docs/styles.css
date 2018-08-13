@@ -297,6 +297,35 @@ svg {
     font-size: 14px;
 }
 
+.ft-webgraphic-s .annotations-holder path,
+.ft-webgraphic-m .annotations-holder path,
+.ft-webgraphic-m-default .annotations-holder path,
+.ft-webgraphic-l .annotations-holder path {
+    stroke: #66605C;
+    stroke-width: 1px;
+}
+
+.ft-printgraphic .annotations-holder path {
+    stroke: #000000;
+    stroke-width: 0.5px;
+}
+.ft-socialgraphic .annotations-holder path {
+    stroke: #8e9095;
+    stroke-width: 1px;
+}
+.ft-videographic .annotations-holder path {
+    stroke: #8e9095;
+    stroke-width: 3px;
+}
+
+.ft-webgraphic-s .annotations-holder text {
+    font-size: 14px;
+}
+
+.ft-webgraphic-m .annotations-holder text {
+    font-size: 16px;
+}
+
 .ft-webgraphic-m .annotations-holder text {
     font-size: 16px;
 }
