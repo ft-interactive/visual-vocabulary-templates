@@ -195,36 +195,36 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         }
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
-        // myChart
-        //     .yScale(myYAxis.scale())
-        //     .xScale(myXAxis.scale())
-        //     .sizeScale(sqrtScale)
-        //     .scaleFactor(scaleFactor)
-        //     .plotDim(currentFrame.dimension())
-        //     .rem(currentFrame.rem())
-        //     .colourPalette((frameName))
-        //     .xVar(xVar)
-        //     .yVar(yVar)
-        //     .sizeVar(sizeVar)
-        //     .hollowDots(hollowDots)
-        //     .groups(groups)
-        //     .opacity(opacity)
-        //     .scaleDots(scaleDots);
+        myChart
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .sizeScale(sqrtScale)
+            .scaleFactor(scaleFactor)
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette((frameName))
+            .xVar(xVar)
+            .yVar(yVar)
+            .sizeVar(sizeVar)
+            .hollowDots(hollowDots)
+            .groups(groups)
+            .opacity(opacity)
+            .scaleDots(scaleDots);
 
         // draw chart
-        // currentFrame.plot()
-        //     .append('g')
-        //     .attr('id', 'scatterplot')
-        //     .selectAll('.scatterplot')
-        //     .data(data)
-        //     .enter()
-        //     .append('g')
-        //     .attr('class', 'scatterplot')
-        //     .attr('id', d => d.name)
-        //     .call(myChart);
+        currentFrame.plot()
+            .append('g')
+            .attr('id', 'scatterplot')
+            .selectAll('.scatterplot')
+            .data(data)
+            .enter()
+            .append('g')
+            .attr('class', 'scatterplot')
+            .attr('id', d => d.name)
+            .call(myChart);
 
-        // d3.select(currentFrame.plot().node().parentNode)
-        //     .call(currentFrame);
+        d3.select(currentFrame.plot().node().parentNode)
+            .call(currentFrame);
 
         // myAnnotations
         //   .xScale(myXAxis.scale())
