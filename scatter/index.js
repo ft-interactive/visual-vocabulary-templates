@@ -117,7 +117,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         // set up axes
         const myYAxis = gAxis.yLinear();
         const myXAxis = gAxis.xLinear();
-        //const myAnnotations = annotation.annotations();// sets up annotations
+        const myAnnotations = annotation.annotations();// sets up annotations
         const currentFrame = frame[frameName];
         const axisLabelX = {
             tag: xVar,
@@ -226,22 +226,22 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
-        // myAnnotations
-        //   .xScale(myXAxis.scale())
-        //   .yScale(myYAxis.scale())
-        //   .rem(currentFrame.rem())
-        //   .sizeScale(sqrtScale)
-        //   .frameName(frameName)
-        //   .lineWidth(currentFrame.rem() * 5)
-        //   .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+        myAnnotations
+          .xScale(myXAxis.scale())
+          .yScale(myYAxis.scale())
+          .rem(currentFrame.rem())
+          .sizeScale(sqrtScale)
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * 5)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
         // // Draw the annotations before the lines
-        // plotAnnotation  
-        //     .selectAll('.annotations')
-        //     .data(annos)
-        //     .enter()
-        //     .append('g')
-        //     .call(myAnnotations)
+        plotAnnotation  
+            .selectAll('.annotations')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations)
 
         // Set up legend for this frame
         myLegend

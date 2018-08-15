@@ -15,14 +15,6 @@ export function load(url, options) { // eslint-disable-line
         const data = result.data ? result.data : result;
         const {xVar, yVar, sizeVar} = options;
 
-        console.log('xVar', xVar);
-        console.log('yVar', yVar);
-        console.log('sizeVar', sizeVar);
-
-        // let sizeVar = options.sizeVar;
-        // let xVar = options.xVar;
-        // let yVar = options.yVar;
-
         // automatically calculate the seriesnames excluding the reserved "name" and "group" fields
         const seriesNames = getSeriesNames(data.columns);
 
@@ -30,8 +22,6 @@ export function load(url, options) { // eslint-disable-line
         const xValueExtent = extentMulti(data, [xVar]);
         const yValueExtent = extentMulti(data, [yVar]);
         const sizeExtent = extentMulti(data, [sizeVar]);
-
-        console.log(xValueExtent, yValueExtent, sizeExtent)
 
          // Filter data for annotations
         const annotations = data.filter((d) => {return d.label === 'yes'});
