@@ -1,4 +1,4 @@
-﻿name,group,Change in debt as % of GDP,Change in spending on other things as % of GDP,Change in spending on interest as % of GDP,label,type
+name,group,Change in debt as % of GDP,Change in spending on other things as % of GDP,Change in spending on interest as % of GDP,label,type
 Greece,Europe,76.3025,3.8681,-1.3681,,
 Spain,Europe,62.979,1.4025,1.0448,,
 Japan,Europe,62.1315,5.6187,-0.693,,
@@ -20,3 +20,4 @@ Denmark,Europe,9.4321,3.4095,-0.5022,,
 Taiwan,Other,3.5809,-0.5473,-0.341,,
 Germany,Europe,1.0905,3.0252,-1.4426,,
 Sweden,Europe,0.5327,2.7359,-1.2964,,
+

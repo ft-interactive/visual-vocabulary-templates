@@ -207,7 +207,9 @@ parseData.load(dataFile, {
             myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
             myYAxis.yLabel().selectAll('.tick text').attr('dx', -(currentFrame.rem() / 2));
             myYAxis1.yLabel().selectAll('.tick text').attr('dx', (currentFrame.rem() / 2));
-            myYAxis1.yLabelMinor().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            if (minorAxis) {
+                myYAxis1.yLabelMinor().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+            }
 
             d3.select(currentFrame.plot().node().parentNode)
                 .call(currentFrame);

@@ -89,7 +89,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { dateFormat })
-.then(({ valueExtent, seriesNames, plotData, dateDomain }) => {
+.then(({ valueExtent, seriesNames, plotData, dateDomain, annos}) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
@@ -124,9 +124,9 @@ parseData.load(dataFile, { dateFormat })
         // const timelineSpacer = h - (maxCircle / 2);
 
         // set radius scale
-        const rScale = d3.scalePow().exponent(0.5)
-            .domain([0, valueExtent[1]])
-            .range([0, maxCircle]);
+        const sqrtScale = d3.scaleSqrt()
+            .domain(valueExtent)
+            .range([0,maxCircle]);
 
         myChart
             .plotDim(currentFrame.dimension())
@@ -145,7 +145,7 @@ parseData.load(dataFile, { dateFormat })
             .frameName(frameName)
             .interval(interval);
         myChart
-            .rScale(rScale)
+            .rScale(sqrtScale)
             .maxCircle(maxCircle)
             .xScale(myXAxis.scale())
             .setDateFormat(dateFormat);
@@ -159,6 +159,10 @@ parseData.load(dataFile, { dateFormat })
             .attr('class', 'timelineHolder')
             .call(myChart)
             .call(myXAxis);
+
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
+
     });
     // addSVGSavers('figure.saveable');
 });

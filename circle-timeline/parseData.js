@@ -55,6 +55,48 @@ export function load(url, options) { // eslint-disable-line
             item.values = allCategoryData;
             return item;
         });
+
+        // Filter data for annotations
+        const annotations = data.filter((d) => {return d.label === 'yes'});
+        //checks that annotation have a type, if non defined then defaults to 'curve'
+        annotations.forEach((d) => {
+            d.type = testType(d)
+        })
+        function testType(d) {
+            if (d.type === '' || d.type === undefined || d.type === null) {
+                return 'curve'
+            }
+            else {return d.type}
+        }
+
+        console.log (annotations)
+
+        //create an array of listing unique annotations types
+        const anoTypes = annotations.map( d => d.type)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+
+        //builds annotation dataset as grouped by type
+        const annos = anoTypes.map(d => ({
+            type: d,
+            annotations: getAnnotations(d),
+        }));
+
+        function getAnnotations(el) {
+            const types = data.filter(d => (d.type === el))
+            .map((d) => {
+                return {
+                    title: d.name + ' ' + d.value,
+                    //note: '',
+                    targetX: d.date,
+                    targetY: d.category,
+                    radius: d.value,
+                    type: d.type,
+                }
+            })
+            return types
+        }
+
         return {
             valueExtent,
             columnNames,

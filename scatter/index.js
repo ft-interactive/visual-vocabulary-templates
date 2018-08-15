@@ -105,7 +105,7 @@ d3.selectAll('.framed')
 parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annos }) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
-    
+
 
     // define chart
     const myChart = scatterplot.draw()
@@ -134,6 +134,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             rotate: 0
         }
         const sqrtScale = d3.scaleSqrt()
+
             .domain(sizeExtent)
             .range([0,(currentFrame.rem()*scaleFactor)]);
         const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
@@ -242,7 +243,6 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .enter()
             .append('g')
             .call(myAnnotations)
-
 
         // Set up legend for this frame
         myLegend
