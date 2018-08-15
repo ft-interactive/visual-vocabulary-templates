@@ -73,7 +73,7 @@ const frame = {
         .extend('scale', 650),
 
     social: gChartframe.socialFrame(sharedConfig)
-        .margin({ top: 140, left: 40, bottom: 138, right: 40 })
+        .margin({ top: 140, left: 50, bottom: 138, right: 40 })
     // .title("Put headline here")
         .height(750) // 700 is ideal height for Instagram
         .extend('scale', 2200),

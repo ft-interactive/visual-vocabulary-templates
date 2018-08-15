@@ -8,6 +8,7 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
+import * as annotation from 'g-annotations';
 
 // dataset and titles
 const dataURL = 'bubble-data.csv';
@@ -104,26 +105,7 @@ d3.selectAll('.framed')
 parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annos }) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
-    
-    // set up axes
-    const myYAxis = gAxis.yLinear();
-    const myXAxis = gAxis.xLinear();
 
-    const axisLabelX = {
-        tag: xVar,
-        hori:'middle',
-        vert: 'bottom',
-        anchor: 'middle',
-        rotate: 0
-    }
-
-    const axisLabelY = {
-        tag: yVar,
-        hori:'left',
-        vert: 'middle',
-        anchor: 'middle',
-        rotate: 0
-    }
 
     // define chart
     const myChart = scatterplot.draw()
@@ -132,14 +114,29 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
 
     // draw, for each frame
     Object.keys(frame).forEach((frameName) => {
+        // set up axes
+        const myYAxis = gAxis.yLinear();
+        const myXAxis = gAxis.xLinear();
+        const myAnnotations = annotation.annotations();// sets up annotations
         const currentFrame = frame[frameName];
-
-    const sqrtScale = d3.scaleSqrt()
+        const axisLabelX = {
+            tag: xVar,
+            hori:'middle',
+            vert: 'bottom',
+            anchor: 'middle',
+            rotate: 0
+        }
+        const axisLabelY = {
+            tag: yVar,
+            hori:'left',
+            vert: 'middle',
+            anchor: 'middle',
+            rotate: 0
+        }
+        const sqrtScale = d3.scaleSqrt()
             .domain(sizeExtent)
             .range([0,(currentFrame.rem()*scaleFactor)]);
-
-    const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
-
+        const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
         // define other functions to be called
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
@@ -229,6 +226,22 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
+        myAnnotations
+          .xScale(myXAxis.scale())
+          .yScale(myYAxis.scale())
+          .rem(currentFrame.rem())
+          .sizeScale(sqrtScale)
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * 5)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+
+        // // Draw the annotations before the lines
+        plotAnnotation  
+            .selectAll('.annotations')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations)
 
         // Set up legend for this frame
         myLegend

@@ -9,6 +9,7 @@ import gChartcolour from 'g-chartcolour';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
+import * as annotation from 'g-annotations';
 
 const dataFile = 'data.csv';
 
@@ -28,7 +29,7 @@ const dateFormat = '%d/%m/%Y';
 
 const sharedConfig = {
     title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    subtitle: 'Subhead',
     source: 'Source not yet added',
 };
 
@@ -36,7 +37,7 @@ const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 1400;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
+const numTicksy = 7;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
@@ -51,6 +52,7 @@ const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
+const turnWidth = 6.5
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -96,7 +98,7 @@ const frame = {
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
-            top: 140, left: 40, bottom: 138, right: 40,
+            top: 140, left: 50, bottom: 138, right: 40,
         })
     // .title("Put headline here")
         .width(612)
@@ -126,7 +128,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-        const myAnnotations = lineChart.drawAnnotations();// sets up annotations
+        const myAnnotations = annotation.annotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
@@ -290,19 +292,21 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .attr('class', 'highlights')
           .call(myHighlights);
 
-        // Set up highlights for this frame
+        //Set up highlights for this frame
         myAnnotations
-          .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
-          .rem(currentFrame.rem());
+          .yScale(myYAxis.scale())
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * turnWidth)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
         // Draw the annotations before the lines
         plotAnnotation
-          .selectAll('.annotation')
-          .data(annos)
-          .enter()
-          .append('g')
-          .call(myAnnotations);
+            .selectAll('.annotations')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations)
 
 
         // Set up legend for this frame

@@ -60,16 +60,6 @@ export function draw() {
                 return 0;
             });
 
-        // create text labels required
-        parent.filter(d => d.label === 'yes')
-            .append('text')
-            .attr('class', 'highlighted-label')
-            .attr('x', d => xScale(d[xVar]))
-            .attr('y', d => yScale(d[yVar]))
-            .attr('dy', -(rem))
-            .attr('text-anchor', 'middle')
-            .text(d => d.name);
-
         // bring labelled objects to front
         parent.filter(d => d.label === 'yes').each(function bringLabelledObjectsToFront() {
             this.parentNode.appendChild(this);
