@@ -8,7 +8,7 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as scatterplot from './scatter.js';
-import * as annotation from './annotations.js';
+import * as annotation from 'g-annotations';
 
 // dataset and titles
 const dataURL = 'bubble-data.csv';
@@ -117,7 +117,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         // set up axes
         const myYAxis = gAxis.yLinear();
         const myXAxis = gAxis.xLinear();
-        const myAnnotations = annotation.draw();// sets up annotations
+        const myAnnotations = annotation.annotations();// sets up annotations
         const currentFrame = frame[frameName];
         const axisLabelX = {
             tag: xVar,

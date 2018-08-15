@@ -14,7 +14,6 @@ export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
         const {xVar, yVar, sizeVar} = options;
-        console.log(xVar, yVar, sizeVar)
 
         // let sizeVar = options.sizeVar;
         // let xVar = options.xVar;
@@ -65,8 +64,6 @@ export function load(url, options) { // eslint-disable-line
             })
             return types
         }
-
-        console.log(annos)
 
         return {
             seriesNames,
