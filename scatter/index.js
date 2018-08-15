@@ -187,13 +187,13 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         currentFrame.plot()
             .call(myXAxis);
 
-        // if (xAxisAlign === 'bottom') {
-        //     myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        // }
-        // if (xAxisAlign === 'top') {
-        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        // }
-        // const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+        if (xAxisAlign === 'bottom') {
+            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        }
+        if (xAxisAlign === 'top') {
+            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        }
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         // myChart
         //     .yScale(myYAxis.scale())
