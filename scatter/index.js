@@ -102,7 +102,7 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annos }) => { // eslint-disable-line
+parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annos}) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
 
@@ -117,7 +117,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         // set up axes
         const myYAxis = gAxis.yLinear();
         const myXAxis = gAxis.xLinear();
-        const myAnnotations = annotation.annotations();// sets up annotations
+        //const myAnnotations = annotation.annotations();// sets up annotations
         const currentFrame = frame[frameName];
         const axisLabelX = {
             tag: xVar,
@@ -134,7 +134,6 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             rotate: 0
         }
         const sqrtScale = d3.scaleSqrt()
-
             .domain(sizeExtent)
             .range([0,(currentFrame.rem()*scaleFactor)]);
         const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
@@ -188,29 +187,29 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         currentFrame.plot()
             .call(myXAxis);
 
-        if (xAxisAlign === 'bottom') {
-            myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
-        }
-        if (xAxisAlign === 'top') {
-            myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
-        }
-        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+        // if (xAxisAlign === 'bottom') {
+        //     myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);
+        // }
+        // if (xAxisAlign === 'top') {
+        //     myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
+        // }
+        // const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
-        myChart
-            .yScale(myYAxis.scale())
-            .xScale(myXAxis.scale())
-            .sizeScale(sqrtScale)
-            .scaleFactor(scaleFactor)
-            .plotDim(currentFrame.dimension())
-            .rem(currentFrame.rem())
-            .colourPalette((frameName))
-            .xVar(xVar)
-            .yVar(yVar)
-            .sizeVar(sizeVar)
-            .hollowDots(hollowDots)
-            .groups(groups)
-            .opacity(opacity)
-            .scaleDots(scaleDots);
+        // myChart
+        //     .yScale(myYAxis.scale())
+        //     .xScale(myXAxis.scale())
+        //     .sizeScale(sqrtScale)
+        //     .scaleFactor(scaleFactor)
+        //     .plotDim(currentFrame.dimension())
+        //     .rem(currentFrame.rem())
+        //     .colourPalette((frameName))
+        //     .xVar(xVar)
+        //     .yVar(yVar)
+        //     .sizeVar(sizeVar)
+        //     .hollowDots(hollowDots)
+        //     .groups(groups)
+        //     .opacity(opacity)
+        //     .scaleDots(scaleDots);
 
         // draw chart
         // currentFrame.plot()
