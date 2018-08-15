@@ -213,36 +213,36 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .scaleDots(scaleDots);
 
         // draw chart
-        currentFrame.plot()
-            .append('g')
-            .attr('id', 'scatterplot')
-            .selectAll('.scatterplot')
-            .data(data)
-            .enter()
-            .append('g')
-            .attr('class', 'scatterplot')
-            .attr('id', d => d.name)
-            .call(myChart);
+        // currentFrame.plot()
+        //     .append('g')
+        //     .attr('id', 'scatterplot')
+        //     .selectAll('.scatterplot')
+        //     .data(data)
+        //     .enter()
+        //     .append('g')
+        //     .attr('class', 'scatterplot')
+        //     .attr('id', d => d.name)
+        //     .call(myChart);
 
-        d3.select(currentFrame.plot().node().parentNode)
-            .call(currentFrame);
+        // d3.select(currentFrame.plot().node().parentNode)
+        //     .call(currentFrame);
 
-        myAnnotations
-          .xScale(myXAxis.scale())
-          .yScale(myYAxis.scale())
-          .rem(currentFrame.rem())
-          .sizeScale(sqrtScale)
-          .frameName(frameName)
-          .lineWidth(currentFrame.rem() * 5)
-          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+        // myAnnotations
+        //   .xScale(myXAxis.scale())
+        //   .yScale(myYAxis.scale())
+        //   .rem(currentFrame.rem())
+        //   .sizeScale(sqrtScale)
+        //   .frameName(frameName)
+        //   .lineWidth(currentFrame.rem() * 5)
+        //   .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
-        // Draw the annotations before the lines
-        plotAnnotation  
-            .selectAll('.annotations')
-            .data(annos)
-            .enter()
-            .append('g')
-            .call(myAnnotations)
+        // // Draw the annotations before the lines
+        // plotAnnotation  
+        //     .selectAll('.annotations')
+        //     .data(annos)
+        //     .enter()
+        //     .append('g')
+        //     .call(myAnnotations)
 
         // Set up legend for this frame
         myLegend
