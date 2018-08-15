@@ -15,7 +15,9 @@ export function load(url, options) { // eslint-disable-line
         const data = result.data ? result.data : result;
         const {xVar, yVar, sizeVar} = options;
 
-        console.log('xVar', xVar, 'yVar', yVar, 'sizeVar', sizeVar)
+        console.log('xVar', xVar);
+        console.log('yVar', yVar);
+        console.log('sizeVar', sizeVar);
 
         // let sizeVar = options.sizeVar;
         // let xVar = options.xVar;
