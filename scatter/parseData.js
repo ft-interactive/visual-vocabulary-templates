@@ -15,6 +15,8 @@ export function load(url, options) { // eslint-disable-line
         const data = result.data ? result.data : result;
         const {xVar, yVar, sizeVar} = options;
 
+        console.log('xVar', xVar, 'yVar', yVar, 'sizeVar', sizeVar)
+
         // let sizeVar = options.sizeVar;
         // let xVar = options.xVar;
         // let yVar = options.yVar;
@@ -26,6 +28,8 @@ export function load(url, options) { // eslint-disable-line
         const xValueExtent = extentMulti(data, [xVar]);
         const yValueExtent = extentMulti(data, [yVar]);
         const sizeExtent = extentMulti(data, [sizeVar]);
+
+        console.log(xValueExtent, yValueExtent, sizeExtent)
 
          // Filter data for annotations
         const annotations = data.filter((d) => {return d.label === 'yes'});
