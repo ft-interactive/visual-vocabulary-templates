@@ -107,6 +107,7 @@ export function load(url, options) { // eslint-disable-line
             seriesNames,
             plotData,
             data,
+            annos,
         };
     });
 }

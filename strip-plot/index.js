@@ -102,7 +102,7 @@ d3.selectAll('.framed')
 
 parseData.load(dataURL, { sort, sortOn })
     .then(({
-        groupNames, plotData, valueExtent, data,
+        groupNames, plotData, valueExtent, data, annos,
     }) => { // eslint-disable-line no-unused-vars
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
@@ -115,6 +115,7 @@ parseData.load(dataURL, { sort, sortOn })
             const myQuartiles = dotPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
             const tickSize = currentFrame.dimension().height; /* Used when drawing the yAxis ticks */ // eslint-disable-line no-unused-vars
+            const turnWidth = 8
             // const plotDim=currentFrame.dimension(); // useful variable to carry the current frame dimensions
 
             yAxis
@@ -135,6 +136,7 @@ parseData.load(dataURL, { sort, sortOn })
             // console.log(xMin,xMax,valueExtent, xAxis.domain)
 
             const base = currentFrame.plot().append('g'); // eslint-disable-line no-unused-vars
+            const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
             // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
             currentFrame.plot()
@@ -166,8 +168,6 @@ parseData.load(dataURL, { sort, sortOn })
                 xAxis.xLabel()
                     .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
             }
-            const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
-
             myChart
             // .paddingInner(0.06)
                 .colourProperty(colourProperty)
@@ -235,6 +235,22 @@ parseData.load(dataURL, { sort, sortOn })
                     .attr('class', 'quantiles dotHighlight axis xAxis')
                     .call(myQuartiles);
             }
+
+            myAnnotations
+                .xScale(xAxis.scale())
+                .yScale(yAxis.scale())
+                .frameName(frameName)
+                .lineWidth(currentFrame.rem() * turnWidth)
+                .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+
+            // Draw the annotations before the lines
+            plotAnnotation
+                .selectAll('.annotations')
+                .data(annos)
+                .enter()
+                .append('g')
+                .call(myAnnotations)
+
         });
     // addSVGSavers('figure.saveable');
     });
