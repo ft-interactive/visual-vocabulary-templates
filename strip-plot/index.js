@@ -110,6 +110,7 @@ parseData.load(dataURL, { sort, sortOn })
             // define other functions to be called
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
+            const myAnnotations = annotation.annotations();// sets up annotations
             const myChart = dotPlot.draw();
             const myQuartiles = dotPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
@@ -165,6 +166,7 @@ parseData.load(dataURL, { sort, sortOn })
                 xAxis.xLabel()
                     .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
             }
+            const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
             myChart
             // .paddingInner(0.06)
