@@ -85,13 +85,13 @@ export function load(url, options) { // eslint-disable-line
         }));
 
         console.log ('annos', annos)
-        let numberFormat = d3.format(",")
 
         function getAnnotations(el) {
             const types = data.filter(d => (d.type === el))
             .map((d) => {
+                let formatComma = d3.format(",")
                 return {
-                    title: d.name + ' ' + d.value,
+                    title: d.name + ' ' + formatComma(d.value),
                     //note: '',
                     targetX: Number(d.value),
                     targetY: d.group,
