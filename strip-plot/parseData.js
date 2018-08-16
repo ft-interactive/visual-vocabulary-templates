@@ -85,6 +85,7 @@ export function load(url, options) { // eslint-disable-line
         }));
 
         console.log ('annos', annos)
+        let numberFormat = d3.format(",")
 
         function getAnnotations(el) {
             const types = data.filter(d => (d.type === el))
