@@ -45,8 +45,6 @@ export function load(url, options) { // eslint-disable-line
             };
         });
 
-        console.log(plotData);
-
         if (sort === 'descending') {
             plotData.sort((a, b) =>
             // console.log("sortON=",sortOn)
@@ -64,27 +62,20 @@ export function load(url, options) { // eslint-disable-line
         })
         function testType(d) {
             if (d.type === '' || d.type === undefined || d.type === null) {
-                return 'curve'
+                return 'arc'
             }
             else {return d.type}
         }
 
-        console.log (annotations)
-
         //create an array of listing unique annotations types
         const anoTypes = annotations.map( d => d.type)
             .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        console.log(anoTypes)
-
 
         //builds annotation dataset as grouped by type
         const annos = anoTypes.map(d => ({
             type: d,
             annotations: getAnnotations(d),
         }));
-
-        console.log ('annos', annos)
 
         function getAnnotations(el) {
             const types = data.filter(d => (d.type === el))
@@ -95,7 +86,7 @@ export function load(url, options) { // eslint-disable-line
                     //note: '',
                     targetX: Number(d.value),
                     targetY: d.group,
-                    radius: 20,
+                    radius: 5,
                     type: d.type,
                 }
             })
