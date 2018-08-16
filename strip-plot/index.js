@@ -4,7 +4,7 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as dotPlot from './dotplot.js';
-import * as annotation from 'g-annotations';
+import * as annotation from '/annotations.js';
 
 
 const dataURL = 'data.csv';
@@ -110,7 +110,7 @@ parseData.load(dataURL, { sort, sortOn })
             // define other functions to be called
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
-            const myAnnotations = annotation.annotations();// sets up annotations
+            const myAnnotations = annotation.draw();// sets up annotations
             const myChart = dotPlot.draw();
             const myQuartiles = dotPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
@@ -234,47 +234,6 @@ parseData.load(dataURL, { sort, sortOn })
                     .attr('class', 'quantiles dotHighlight axis xAxis')
                     .call(myQuartiles);
             }
-
-
-
-            // Filter data for annotations
-        const annotations = data.filter((d) => {return d.highlight === 'yes'});
-        //checks that annotation have a type, if non defined then defaults to 'curve'
-        annotations.forEach((d) => {
-            d.type = testType(d)
-        })
-        function testType(d) {
-            if (d.type === '' || d.type === undefined || d.type === null) {
-                return 'arc'
-            }
-            else {return d.type}
-        }
-
-        //create an array of listing unique annotations types
-        const anoTypes = annotations.map( d => d.type)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        //builds annotation dataset as grouped by type
-        const annos = anoTypes.map(d => ({
-            type: d,
-            annotations: getAnnotations(d),
-        }));
-
-        function getAnnotations(el) {
-            const types = data.filter(d => (d.type === el))
-            .map((d) => {
-                let formatComma = d3.format(",")
-                return {
-                    title: d.name + ' ' + formatComma(d.value),
-                    //note: '',
-                    targetX: Number(d.value),
-                    targetY: d.group,
-                    radius: 0,
-                    type: d.type,
-                }
-            })
-            return types
-        }
 
             myAnnotations
                 .xScale(xAxis.scale())
