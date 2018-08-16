@@ -4,6 +4,7 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as dotPlot from './dotplot.js';
+import * as annotation from 'g-annotations';
 
 
 const dataURL = 'data.csv';
