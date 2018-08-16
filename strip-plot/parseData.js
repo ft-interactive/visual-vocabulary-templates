@@ -62,7 +62,7 @@ export function load(url, options) { // eslint-disable-line
         })
         function testType(d) {
             if (d.type === '' || d.type === undefined || d.type === null) {
-                return 'arc'
+                return 'curve'
             }
             else {return d.type}
         }
