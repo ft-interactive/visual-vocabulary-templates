@@ -56,6 +56,51 @@ export function load(url, options) { // eslint-disable-line
             plotData.sort((a, b) => a.groups[sortOn].value - b.groups[sortOn].value);
         } // Sorts biggest rects to the left
 
+        // Filter data for annotations
+        const annotations = data.filter((d) => {return d.highlight === 'yes'});
+        //checks that annotation have a type, if non defined then defaults to 'curve'
+        annotations.forEach((d) => {
+            d.type = testType(d)
+        })
+        function testType(d) {
+            if (d.type === '' || d.type === undefined || d.type === null) {
+                return 'curve'
+            }
+            else {return d.type}
+        }
+
+        console.log (annotations)
+
+        //create an array of listing unique annotations types
+        const anoTypes = annotations.map( d => d.type)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        console.log(anoTypes)
+
+
+        //builds annotation dataset as grouped by type
+        const annos = anoTypes.map(d => ({
+            type: d,
+            annotations: getAnnotations(d),
+        }));
+
+        console.log ('annos', annos)
+
+        function getAnnotations(el) {
+            const types = data.filter(d => (d.type === el))
+            .map((d) => {
+                return {
+                    title: d.name + ' ' + d.value,
+                    //note: '',
+                    targetX: Number(d.value),
+                    targetY: d.group,
+                    radius: 20,
+                    type: d.type,
+                }
+            })
+            return types
+        }
+
         return {
             groupNames,
             valueExtent,
