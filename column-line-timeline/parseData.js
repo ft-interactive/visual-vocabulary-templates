@@ -80,7 +80,6 @@ export function load([url, url2], options) { // eslint-disable-line
         function getAnnotations(el) {
             const types = data2.filter(d => (d.type === el))
             .map((d) => {
-                console.log(Number(d[lineData[0].name]))
                 return {
                     title: d.annotate,
                     //note: '',
