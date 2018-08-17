@@ -5,6 +5,7 @@ import * as gAxis from 'g-axis';
 import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as columnLineTimeline from './columnLineTimeline.js';
+import * as annotation from 'g-annotations';
 
 const barFile = 'dataBar2.csv';
 const lineFile = 'dataLine2.csv';
@@ -37,6 +38,7 @@ const divisorR = 1// formatting for '000 and millions
 const yAxisHighlight = 100; /* sets which tick to highlight on the yAxis */ // eslint-disable-line no-unused-vars
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 5;// Number of tick on the uAxis
+const turnWidth = 5;
 const xAxisAlign = 'bottom';// alignment of the axis
 const minorAxis = true;
 const invertScaleR = false;
