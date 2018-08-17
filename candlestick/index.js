@@ -9,7 +9,7 @@ import * as gAxis from 'g-axis';
 import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as candlestick from './candlestick.js';
-import * as annotation from 'g-annotations';
+import * as annotation from './annotations.js';
 
 const dataFile = 'data.csv';
 
@@ -49,8 +49,8 @@ const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const invertScale = false;
 const logScale = false; // eslint-disable-line
-const intraday = false;
-const turnWidth = 5
+const intraday = true;
+const turnWidth = 5;
 const chartColour = d3.scaleOrdinal()
     .domain(Object.keys(gChartcolour.categorical_line))
     .range(Object.values(gChartcolour.categorical_line));
@@ -134,7 +134,7 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
         // define other functions to be called
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
-        const myAnnotations = annotation.annotations();// sets up annotations
+        const myAnnotations = annotation.draw();// sets up annotations
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = candlestick.draw();
@@ -148,7 +148,6 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
         const axisHighlight = currentFrame.plot().append('g');
 
         // create a 'g' element behind the chart and in front of the highlights
-        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
         myYAxis
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
@@ -252,6 +251,9 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             .append('g')
             .call(myHighlights);
         //Set up highlights for this frame
+
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
         myAnnotations
             .xScale(myXAxis.scale())
             .yScale(myYAxis.scale())
