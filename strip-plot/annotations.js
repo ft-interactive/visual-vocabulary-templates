@@ -1,6 +1,7 @@
 import d3 from 'd3';
 
-export function draw() {let lineWidth = 100
+export function draw() {
+    let lineWidth = 100;
     let plotDim = [100,100];
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleLinear();
