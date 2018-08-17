@@ -4,7 +4,7 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as dotPlot from './dotplot.js';
-import * as annotation from './annotations.js';
+import * as annotation from 'g-annotations';
 
 
 const dataURL = 'data.csv';
@@ -110,7 +110,7 @@ parseData.load(dataURL, { sort, sortOn })
             // define other functions to be called
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
-            const myAnnotations = annotation.draw();// sets up annotations
+            const myAnnotations = annotation.annotations();// sets up annotations
             const myChart = dotPlot.draw();
             const myQuartiles = dotPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
