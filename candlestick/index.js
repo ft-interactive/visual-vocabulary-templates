@@ -49,7 +49,8 @@ const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const invertScale = false;
 const logScale = false; // eslint-disable-line
-const intraday = true;
+const intraday = false;
+const turnWidth = 5
 const chartColour = d3.scaleOrdinal()
     .domain(Object.keys(gChartcolour.categorical_line))
     .range(Object.values(gChartcolour.categorical_line));
@@ -250,6 +251,21 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             .enter()
             .append('g')
             .call(myHighlights);
+        //Set up highlights for this frame
+        myAnnotations
+            .xScale(myXAxis.scale())
+            .yScale(myYAxis.scale())
+            .frameName(frameName)
+            .lineWidth(currentFrame.rem() * turnWidth)
+            .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+
+        // Draw the annotations before the lines
+        plotAnnotation
+            .selectAll('.annotations')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations)
 
         
     });
