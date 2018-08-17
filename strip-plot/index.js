@@ -240,8 +240,6 @@ parseData.load(dataURL, { sort, sortOn })
                 })
 
             });
-            console.log('currentFrame.rem()* 0.5', currentFrame.rem()* 0.5)
-            console.log('annos', annos)
 
             myAnnotations
                 .xScale(xAxis.scale())
