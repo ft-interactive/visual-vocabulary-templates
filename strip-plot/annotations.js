@@ -19,21 +19,14 @@ export function draw() {let lineWidth = 100
             .on('mouseover', pointer);
         let yOrdinal = false;
         let xOrdinal = false
-
-        const yDomain = yScale.domain()
-        yDomain.forEach((d) => {
-            if (/[a-zA-Z]/.test(d)) {
-                yOrdinal = true
-            }
-        })
-
-        const xDomain = xScale.domain()
-        xDomain.forEach((d) => {
-            if (/[a-zA-Z]/.test(d)) {
-                xOrdinal = true
-            }
-        })
-
+        
+        //test for ordinal axis
+        if(typeof yScale.bandwidth === "function") {
+            yOrdinal = true
+        }
+        if(typeof xScale.bandwidth === "function") {
+            xOrdinal = true
+        }
                 
         annotation.selectAll('line')
         .data(d => d.annotations.filter((el) => {return el.type === 'threshold'}))
@@ -76,7 +69,7 @@ export function draw() {let lineWidth = 100
         textLabel.append('path')
             .attr('id', 'arrow')
             .attr('class', 'annotation')
-            // .attr('stroke', '#000000')// remove when class is updfated to include definition for paths
+            .attr('fill', 'none')// remove when class is updfated to include definition for paths
             // .attr('stroke-width', 1)// remove when class is updfated to include definition for paths
             .attr("d", function(d) {
                 let label = d3.select(this.parentNode).select('text');

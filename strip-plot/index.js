@@ -234,6 +234,13 @@ parseData.load(dataURL, { sort, sortOn })
                     .attr('class', 'quantiles dotHighlight axis xAxis')
                     .call(myQuartiles);
             }
+            annos.map((d) => {
+                d.annotations.forEach((el) => {
+                    el.radius = currentFrame.rem()* 0.5
+                })
+
+            });
+            console.log('annos', annos)
 
             myAnnotations
                 .xScale(xAxis.scale())

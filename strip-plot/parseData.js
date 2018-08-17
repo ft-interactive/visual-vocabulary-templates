@@ -86,7 +86,7 @@ export function load(url, options) { // eslint-disable-line
                     //note: '',
                     targetX: Number(d.value),
                     targetY: d.group,
-                    radius: 0,
+                    radius: 125,
                     type: d.type,
                 }
             })
