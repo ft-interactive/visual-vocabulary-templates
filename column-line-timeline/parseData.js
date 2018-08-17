@@ -75,14 +75,17 @@ export function load([url, url2], options) { // eslint-disable-line
             annotations: getAnnotations(d),
         }));
 
+        //console.log(data2)
+
         function getAnnotations(el) {
             const types = data2.filter(d => (d.type === el))
             .map((d) => {
+                console.log(Number(d[lineData[0].name]))
                 return {
                     title: d.annotate,
                     //note: '',
                     targetX: d.date,
-                    targetY: d[lineData[0].name],
+                    targetY: Number(d[lineData[0].name]),
                     radius: 0,
                     type: d.type,
                 }

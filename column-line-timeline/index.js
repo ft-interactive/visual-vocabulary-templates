@@ -46,7 +46,7 @@ const logScaleL = false;
 const logScaleR = false;
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const joinPoints = true;// Joints gaps in lines where there are no data points
-const interval = 'quarters';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 let barColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
     .domain(Object.keys(gChartcolour.categorical_bar))
     .range(Object.values(gChartcolour.categorical_bar));
@@ -113,14 +113,12 @@ d3.selectAll('.framed')
 parseData.load([barFile, lineFile], { dateFormat, joinPoints })
 .then(({ seriesNamesL, seriesNamesR, valueExtentL, valueExtentR, barData, lineData, dateExtent, data1, data2, annos}) => {
     // define chart
-    const myBars = columnLineTimeline.drawBars() // eslint-disable-line
-    const myLines = columnLineTimeline.drawLines();
-    const myAnnotations = annotation.annotations();// sets up annotations
-
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
-
+        const myBars = columnLineTimeline.drawBars() // eslint-disable-line
+        const myLines = columnLineTimeline.drawLines();
+        const myAnnotations = annotation.annotations();// sets up annotations
         const yAxisL = gAxis.yLinear();
         const yAxisR = gAxis.yLinear();
         const xAxis = gAxis.xDate();
