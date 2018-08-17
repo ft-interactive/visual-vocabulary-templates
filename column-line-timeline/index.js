@@ -5,6 +5,7 @@ import * as gAxis from 'g-axis';
 import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as columnLineTimeline from './columnLineTimeline.js';
+import * as annotation from 'g-annotations';
 
 const barFile = 'dataBar2.csv';
 const lineFile = 'dataLine2.csv';
@@ -37,6 +38,7 @@ const divisorR = 1// formatting for '000 and millions
 const yAxisHighlight = 100; /* sets which tick to highlight on the yAxis */ // eslint-disable-line no-unused-vars
 const numTicksL = 7;// Number of tick on the uAxis
 const numTicksR = 5;// Number of tick on the uAxis
+const turnWidth = 5;
 const xAxisAlign = 'bottom';// alignment of the axis
 const minorAxis = true;
 const invertScaleR = false;
@@ -44,7 +46,7 @@ const logScaleL = false;
 const logScaleR = false;
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const joinPoints = true;// Joints gaps in lines where there are no data points
-const interval = 'quarters';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 let barColour = d3.scaleOrdinal() // eslint-disable-line no-unused-vars
     .domain(Object.keys(gChartcolour.categorical_bar))
     .range(Object.values(gChartcolour.categorical_bar));
@@ -109,14 +111,14 @@ d3.selectAll('.framed')
     });
 
 parseData.load([barFile, lineFile], { dateFormat, joinPoints })
-.then(({ seriesNamesL, seriesNamesR, valueExtentL, valueExtentR, barData, lineData, dateExtent, data1, data2}) => {
+.then(({ seriesNamesL, seriesNamesR, valueExtentL, valueExtentR, barData, lineData, dateExtent, data1, data2, annos}) => {
     // define chart
-    const myBars = columnLineTimeline.drawBars() // eslint-disable-line
-    const myLines = columnLineTimeline.drawLines();
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
-
+        const myBars = columnLineTimeline.drawBars() // eslint-disable-line
+        const myLines = columnLineTimeline.drawLines();
+        const myAnnotations = annotation.annotations();// sets up annotations
         const yAxisL = gAxis.yLinear();
         const yAxisR = gAxis.yLinear();
         const xAxis = gAxis.xDate();
@@ -322,6 +324,24 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
                 .append('g')
                 .classed('legend', true)
             .call(lineLegend);
+
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
+        //Set up highlights for this frame
+        myAnnotations
+          .xScale(xAxis.scale())
+          .yScale(yAxisR.scale())
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * turnWidth)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+
+        // Draw the annotations before the lines
+        plotAnnotation
+            .selectAll('.annotations')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations)
 
         const moveLegend = currentFrame.plot().select('#lineLegend');
         const legwidth = ((currentFrame.plot().select('#legend')).node().getBBox().width);

@@ -52,6 +52,45 @@ export function load([url, url2], options) { // eslint-disable-line
         const dateExtent2 = d3.extent(data2, d => d.date);
         const dateExtent = [Math.min(dateExtent1[0], dateExtent2[0]), Math.max(dateExtent1[1], dateExtent2[1])];
 
+        // Filter data for annotations
+        const annotations = data2.filter((d) => {return d.annotate != ''});
+        //checks that annotation have a type, if non defined then defaults to 'threshold'
+        annotations.forEach((d) => {
+            d.type = testType(d)
+        })
+        function testType(d) {
+            if (d.type === '' || d.type === undefined || d.type === null) {
+                return 'threshold'
+            }
+            else {return d.type}
+        }
+
+        //create an array of listing unique annotations types
+        const anoTypes = annotations.map( d => d.type)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        //builds annotation dataset as grouped by type
+        const annos = anoTypes.map(d => ({
+            type: d,
+            annotations: getAnnotations(d),
+        }));
+
+        //console.log(data2)
+
+        function getAnnotations(el) {
+            const types = data2.filter(d => (d.type === el))
+            .map((d) => {
+                return {
+                    title: d.annotate,
+                    //note: '',
+                    targetX: d.date,
+                    targetY: Number(d[lineData[0].name]),
+                    radius: 0,
+                    type: d.type,
+                }
+            })
+            return types
+        }
         return {
             seriesNamesL,
             seriesNamesR,
@@ -62,13 +101,14 @@ export function load([url, url2], options) { // eslint-disable-line
             dateExtent,
             data1,
             data2,
+            annos,
         };
     });
 }
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight']; // adjust column headings to match your dataset
+    const exclude = ['date', 'annotate', 'highlight', 'type']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
