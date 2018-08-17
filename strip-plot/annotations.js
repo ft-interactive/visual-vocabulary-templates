@@ -107,7 +107,6 @@ export function draw() {let lineWidth = 100
             .call(d3.drag()
                 .subject(function() {
                     const textEl = d3.select(this).select('text');
-                    console.log (textEl)
                     return {x: textEl.attr('x'), y: textEl.attr('y')};
                 })
                 .on('start', dragstarted)
