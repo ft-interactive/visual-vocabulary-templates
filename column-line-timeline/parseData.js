@@ -106,7 +106,7 @@ export function load([url, url2], options) { // eslint-disable-line
 
 // a function that returns the columns headers from the top of the dataset, excluding specified
 function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight']; // adjust column headings to match your dataset
+    const exclude = ['date', 'annotate', 'highlight', 'type']; // adjust column headings to match your dataset
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 

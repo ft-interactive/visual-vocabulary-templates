@@ -111,7 +111,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load([barFile, lineFile], { dateFormat, joinPoints })
-.then(({ seriesNamesL, seriesNamesR, valueExtentL, valueExtentR, barData, lineData, dateExtent, data1, data2}) => {
+.then(({ seriesNamesL, seriesNamesR, valueExtentL, valueExtentR, barData, lineData, dateExtent, data1, data2, annos}) => {
     // define chart
     const myBars = columnLineTimeline.drawBars() // eslint-disable-line
     const myLines = columnLineTimeline.drawLines();
@@ -326,6 +326,24 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
                 .append('g')
                 .classed('legend', true)
             .call(lineLegend);
+
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
+        //Set up highlights for this frame
+        myAnnotations
+          .xScale(xAxis.scale())
+          .yScale(yAxisR.scale())
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * turnWidth)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+
+        // Draw the annotations before the lines
+        plotAnnotation
+            .selectAll('.annotations')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations)
 
         const moveLegend = currentFrame.plot().select('#lineLegend');
         const legwidth = ((currentFrame.plot().select('#legend')).node().getBBox().width);
