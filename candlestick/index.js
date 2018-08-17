@@ -9,7 +9,7 @@ import * as gAxis from 'g-axis';
 import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as candlestick from './candlestick.js';
-import * as annotation from './annotations.js';
+import * as annotation from 'g-annotations';
 
 const dataFile = 'data.csv';
 
@@ -134,7 +134,7 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
         // define other functions to be called
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
-        const myAnnotations = annotation.draw();// sets up annotations
+        const myAnnotations = annotation.annotations();// sets up annotations
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = candlestick.draw();
