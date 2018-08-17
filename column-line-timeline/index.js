@@ -115,6 +115,8 @@ parseData.load([barFile, lineFile], { dateFormat, joinPoints })
     // define chart
     const myBars = columnLineTimeline.drawBars() // eslint-disable-line
     const myLines = columnLineTimeline.drawLines();
+    const myAnnotations = annotation.annotations();// sets up annotations
+
 
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
