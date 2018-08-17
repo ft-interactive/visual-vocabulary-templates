@@ -251,19 +251,7 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             .append('g')
             .call(myHighlights);
 
-        // Set up highlights for this frame
-        myAnnotations
-            .yScale(myYAxis.scale())
-            .xScale(myXAxis.scale())
-            .rem(currentFrame.rem());
-
-        // Draw the annotations before the lines
-        plotAnnotation
-            .selectAll('.annotation')
-            .data(annos)
-            .enter()
-            .append('g')
-            .call(myAnnotations);
+        
     });
     // addSVGSavers('figure.saveable');
 });
