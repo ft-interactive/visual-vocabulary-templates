@@ -52,16 +52,16 @@ export function draw() {
                 });
         }
 
-        parent.selectAll('text')
-            .data(d => d.values.filter(el => el.highlight === 'yes'))
-            .enter()
-            .append('text')
-            .attr('id', d => currentFrame + d.name)
-            .attr('class', 'xAxis text')
-            .attr('text-anchor', 'middle')
-            .attr('x', d => xScale(d.value))
-            .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
-            .text(d => `${d.name} ${d.value}`);
+        // parent.selectAll('text')
+        //     .data(d => d.values.filter(el => el.highlight === 'yes'))
+        //     .enter()
+        //     .append('text')
+        //     .attr('id', d => currentFrame + d.name)
+        //     .attr('class', 'xAxis text')
+        //     .attr('text-anchor', 'middle')
+        //     .attr('x', d => xScale(d.value))
+        //     .attr('y', d => yScale(d.group) + (yScale.bandwidth() * 0.15))
+        //     .text(d => `${d.name} ${d.value}`);
     }
 
     dots.frameName = (d) => {

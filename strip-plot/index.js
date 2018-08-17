@@ -4,6 +4,7 @@ import * as gLegend from 'g-legend';
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as dotPlot from './dotplot.js';
+import * as annotation from 'g-annotations';
 
 
 const dataURL = 'data.csv';
@@ -28,7 +29,7 @@ const logscale = false;
 const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
 const sort = '';// specify 'ascending', 'descending
 const sortOn = 0;// refers to the column in the dataset (or index in seriesNames) that the sort is performed on to sort on (ignores name column)
-
+const turnWidth = 12
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -101,7 +102,7 @@ d3.selectAll('.framed')
 
 parseData.load(dataURL, { sort, sortOn })
     .then(({
-        groupNames, plotData, valueExtent, data,
+        groupNames, plotData, valueExtent, data, annos,
     }) => { // eslint-disable-line no-unused-vars
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
@@ -109,6 +110,7 @@ parseData.load(dataURL, { sort, sortOn })
             // define other functions to be called
             const yAxis = gAxis.yOrdinal();// sets up yAxis
             const xAxis = gAxis.xLinear();
+            const myAnnotations = annotation.annotations();// sets up annotations
             const myChart = dotPlot.draw();
             const myQuartiles = dotPlot.drawQuartiles();
             const myLegend = gLegend.legend(); // eslint-disable-line no-unused-vars
@@ -133,6 +135,7 @@ parseData.load(dataURL, { sort, sortOn })
             // console.log(xMin,xMax,valueExtent, xAxis.domain)
 
             const base = currentFrame.plot().append('g'); // eslint-disable-line no-unused-vars
+            const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
             // Draw the yAxis first, this will position the yAxis correctly and measure the width of the label text
             currentFrame.plot()
@@ -164,7 +167,6 @@ parseData.load(dataURL, { sort, sortOn })
                 xAxis.xLabel()
                     .attr('transform', `translate(0,${-currentFrame.dimension().top})`);
             }
-
             myChart
             // .paddingInner(0.06)
                 .colourProperty(colourProperty)
@@ -232,6 +234,28 @@ parseData.load(dataURL, { sort, sortOn })
                     .attr('class', 'quantiles dotHighlight axis xAxis')
                     .call(myQuartiles);
             }
+            annos.map((d) => {
+                d.annotations.forEach((el) => {
+                    el.radius = currentFrame.rem()* 0.5
+                })
+
+            });
+
+            myAnnotations
+                .xScale(xAxis.scale())
+                .yScale(yAxis.scale())
+                .frameName(frameName)
+                .lineWidth(currentFrame.rem() * turnWidth)
+                .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+
+            // Draw the annotations before the lines
+            plotAnnotation
+                .selectAll('.annotations')
+                .data(annos)
+                .enter()
+                .append('g')
+                .call(myAnnotations)
+
         });
     // addSVGSavers('figure.saveable');
     });
