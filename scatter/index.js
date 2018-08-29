@@ -11,7 +11,7 @@ import * as scatterplot from './scatter.js';
 import * as annotation from 'g-annotations';
 
 // dataset and titles
-const dataURL = 'bubble-data.csv';
+const dataURL = 'scatter-data.csv';
 
 const sharedConfig = {
     title: 'Title not yet added',
@@ -20,18 +20,18 @@ const sharedConfig = {
 };
 
 // display options
-const xVar = 'Change in spending on interest as % of GDP';// these should be series (column) names from your data
-const xMin = -2;// sets the minimum value on the xAxis - will autoextend to include range of your data
-const xMax = 1.5;// sets the maximum value on the xAxis - will autoextend to include range of your data
+const xVar = 'var a';// these should be series (column) names from your data
+const xMin = 0;// sets the minimum value on the xAxis - will autoextend to include range of your data
+const xMax = 20;// sets the maximum value on the xAxis - will autoextend to include range of your data
 const divisorX = 1;// sets the formatting on linear axis for ’000s and millions
 
-const yVar = 'Change in spending on other things as % of GDP';
-const yMin = -15;// sets the minimum value on the yAxis - will autoextend to include range of your data
-const yMax = 10;// sets the maximum value on the yAxis - will autoextend to include range of your data
+const yVar = 'var b';
+const yMin = 2;// sets the minimum value on the yAxis - will autoextend to include range of your data
+const yMax = 14;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
-const scaleDots = true;
-const sizeVar = 'Change in debt as % of GDP';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
+const scaleDots = false;
+const sizeVar = 'var c';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
 const scaleFactor=1;//controls how big in appearance bubbles are
 
 const opacity = 0.7;// sets the fill opacity of the dots...
@@ -262,6 +262,56 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .append('g')
             .classed('legend', true)
             .call(myLegend);
+
+        // get the x and y values for least squares
+        var xLabels = [xValueExtent[0], xValueExtent[1]]
+        var xSeries = data.map(function (d) { return Number(d[xVar]); })
+        var ySeries = data.map(function(d) { return Number(d[yVar]) });
+        
+        var leastSquaresCoeff = leastSquares(xSeries, ySeries);
+        
+        // apply the reults of the least squares regression
+        var x1 = xValueExtent[0];
+        var y1 = leastSquaresCoeff[0] + leastSquaresCoeff[1];
+        var x2 = xLabels[xLabels.length - 1];
+        var y2 = leastSquaresCoeff[0] * xSeries.length + leastSquaresCoeff[1];
+        var trendData = [[x1,y1,x2,y2]];
+
+        var trendline = currentFrame.plot().selectAll(".trendline")
+            .data(trendData);
+            
+        trendline.enter()
+            .append("line")
+            .attr("class", "trendline")
+            .attr("x1", function(d) { return myXAxis.scale()(d[0]); })
+            .attr("y1", function(d) { return myYAxis.scale()(d[1]); })
+            .attr("x2", function(d) { return myXAxis.scale()(d[2]); })
+            .attr("y2", function(d) { return myYAxis.scale()(d[3]); })
+            .attr("stroke", "black")
+            .attr("stroke-width", 1);
+
+        // returns slope, intercept and r-square of the line
+        function leastSquares(xSeries, ySeries) {
+            var reduceSumFunc = function(prev, cur) { return prev + cur; };
+            
+            var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+            var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+
+            var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+                .reduce(reduceSumFunc);
+            
+            var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+                .reduce(reduceSumFunc);
+                
+            var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+                .reduce(reduceSumFunc);
+                
+            var slope = ssXY / ssXX;
+            var intercept = yBar - (xBar * slope);
+            var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+            
+            return [slope, intercept, rSquare];
+        }
 
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
