@@ -264,8 +264,8 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .call(myLegend);
 
         // get the x and y values for least squares
-        var xSeries = data.map(function (d) { return Number(d[xVar]); })
-        var ySeries = data.map(function(d) { return Number(d[yVar]) });    
+        var xSeries = data.map(function(d) { return Number(d[xVar])});
+        var ySeries = data.map(function(d) { return Number(d[yVar])});    
         var leastSquaresCoeff = leastSquares(xSeries, ySeries);
         
         // apply the reults of the least squares regression
