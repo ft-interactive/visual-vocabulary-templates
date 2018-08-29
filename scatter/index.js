@@ -264,16 +264,14 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .call(myLegend);
 
         // get the x and y values for least squares
-        var xLabels = [xValueExtent[0], xValueExtent[1]]
         var xSeries = data.map(function (d) { return Number(d[xVar]); })
-        var ySeries = data.map(function(d) { return Number(d[yVar]) });
-        
+        var ySeries = data.map(function(d) { return Number(d[yVar]) });    
         var leastSquaresCoeff = leastSquares(xSeries, ySeries);
         
         // apply the reults of the least squares regression
         var x1 = xValueExtent[0];
         var y1 = leastSquaresCoeff[0] + leastSquaresCoeff[1];
-        var x2 = xLabels[xLabels.length - 1];
+        var x2 = xValueExtent[1];
         var y2 = leastSquaresCoeff[0] * xSeries.length + leastSquaresCoeff[1];
         var trendData = [[x1,y1,x2,y2]];
 
