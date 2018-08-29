@@ -34,6 +34,7 @@ const scaleDots = false;
 const sizeVar = 'var c';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
 const scaleFactor=1;//controls how big in appearance bubbles are
 
+const lineOf Regression = true;
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
 
@@ -264,18 +265,18 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .call(myLegend);
 
         // get the x and y values for least squares
-        var xSeries = data.map(function(d) { return Number(d[xVar])});
-        var ySeries = data.map(function(d) { return Number(d[yVar])});    
-        var leastSquaresCoeff = leastSquares(xSeries, ySeries);
+        const xSeries = data.map(function(d) { return Number(d[xVar])});
+        const ySeries = data.map(function(d) { return Number(d[yVar])});    
+        const leastSquaresCoeff = leastSquares(xSeries, ySeries);
         
         // apply the reults of the least squares regression
-        var x1 = xValueExtent[0];
-        var y1 = leastSquaresCoeff[0] + leastSquaresCoeff[1];
-        var x2 = xValueExtent[1];
-        var y2 = leastSquaresCoeff[0] * xSeries.length + leastSquaresCoeff[1];
-        var trendData = [[x1,y1,x2,y2]];
+        const x1 = xValueExtent[0];
+        const y1 = (xValueExtent[0] *leastSquaresCoeff[0]) + leastSquaresCoeff[1];
+        const x2 = xValueExtent[1];
+        const y2 = leastSquaresCoeff[0] * xValueExtent[1] + leastSquaresCoeff[1];
+        const trendData = [[x1,y1,x2,y2]];
 
-        var trendline = currentFrame.plot().selectAll(".trendline")
+        const trendline = currentFrame.plot().selectAll(".trendline")
             .data(trendData);
             
         trendline.enter()
@@ -290,23 +291,23 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
 
         // returns slope, intercept and r-square of the line
         function leastSquares(xSeries, ySeries) {
-            var reduceSumFunc = function(prev, cur) { return prev + cur; };
+            const reduceSumFunc = function(prev, cur) { return prev + cur; };
             
-            var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
-            var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+            const xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+            const yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
 
-            var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+            let ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
                 .reduce(reduceSumFunc);
             
-            var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+            let ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
                 .reduce(reduceSumFunc);
                 
-            var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+            let ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
                 .reduce(reduceSumFunc);
                 
-            var slope = ssXY / ssXX;
-            var intercept = yBar - (xBar * slope);
-            var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+            let slope = ssXY / ssXX;
+            let intercept = yBar - (xBar * slope);
+            let rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
             
             return [slope, intercept, rSquare];
         }
