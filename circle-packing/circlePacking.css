@@ -1,0 +1,8 @@
+.node text {
+  text-anchor: middle;
+  fill: #000000;
+}
+
+.node text tspan:last-child {
+  font-weight: 600;
+}
