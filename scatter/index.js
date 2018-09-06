@@ -14,8 +14,8 @@ import * as annotation from 'g-annotations';
 const dataURL = 'scatter-data.csv';
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Scatter/Bubble plot',
+    subtitle: 'With line of regression',
     source: 'Source not yet added',
 };
 
