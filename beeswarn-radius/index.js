@@ -149,11 +149,11 @@ parseData.load(dataFile, {})
               yAxis.yLabel()
                   .attr('transform', `translate(${currentFrame.dimension().width},${0})`)
               yAxis.yLabel().selectAll('text')
-                .attr('y', 0-(currentFrame.rem() * 1.5))
+                .attr('y', -yAxis.bandwidth() / 2)
           }
           else {
               yAxis.yLabel().selectAll('text')
-                .attr('y', 0-(currentFrame.rem() * 1.5))
+                .attr('y', -yAxis.bandwidth() / 2)
                 .style('text-anchor', 'start')
               
               // Use newMargin re define the new margin and range of xAxis
