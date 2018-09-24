@@ -11,7 +11,7 @@ import * as lineChart from './drawChart.js';
 
 const dataFile = 'data.csv';
 
-const dateFormat = '%d/%m/%Y';
+const dateFormat = '%m/%d/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -35,9 +35,9 @@ const yMin = 0;// sets the minimum value on the yAxis
 const yMax = 0;// sets the maximum value on the xAxis
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
+const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'fiscal';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const interval = 'lustrum';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
@@ -75,7 +75,7 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 20, bottom: 86, right: 25,
         })
     // .title("Put headline here")
         .height(500),
@@ -94,7 +94,7 @@ const frame = {
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
-            top: 140, left: 50, bottom: 138, right: 40,
+            top: 140, left: 40, bottom: 138, right: 40,
         })
     // .title("Put headline here")
         .width(612)
@@ -117,22 +117,17 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
-  .then(({ plotData }) => {
+parseData.load(dataFile, { dateFormat})
+  .then(({ data,}) => {
+
       Object.keys(frame).forEach((frameName) => {
           const currentFrame = frame[frameName];
 
-          // define other functions to be called
+         
 
-          const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
-          // create a 'g' element at the back of the chart to add time period
-          const background = currentFrame.plot().append('g');
 
-          background.append('rect')
-            .attr('width', currentFrame.dimension().width)
-            .attr('height', currentFrame.dimension().height)
-            .attr('fill', '#ededee');
+          
       });
       // addSVGSavers('figure.saveable');
   });
