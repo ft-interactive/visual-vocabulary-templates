@@ -20,6 +20,7 @@ export function draw() {
             .y1(d => yScale(d[1]));
 
         parent.append('path')
+            .attr('id',d=> d.key)
             .attr('d', area)
             .style('fill', d => colourScale(d.key));
     }

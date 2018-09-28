@@ -8,10 +8,11 @@ import * as gLegend from 'g-legend';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as areaChart from './areaChart.js';
+import gChartcolour from 'g-chartcolour';
 
 const dataFile = 'data.csv';
 
-const dateFormat = '%d/%m/%y';
+const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -33,13 +34,13 @@ const sharedConfig = {
 
 /* eslint-disable */
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 0;// sets the maximum value on the xAxis
+const yMax = 35;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 9;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'months';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
 const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = false;// show dots on lines
 const legendAlign = 'hori';// hori or vert, alignment of the legend
@@ -228,16 +229,34 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         plotAnnotation
             .selectAll('.annotation')
             .data(annos)
-            .enter()
+            .enter() 
             .append('g')
             .call(myAnnotations);
 
+        let legendColours = d3.scaleOrdinal()
+            .domain(seriesNames)
+
+        if ((frameName) === 'social' || frameName === 'video') {
+            legendColours.range(gChartcolour.lineSocial);
+        } else if ((frameName) === 'webS' || (frameName) === 'webM' || (frameName) === 'webMDefault' || (frameName) === 'webL') {
+            legendColours.range(gChartcolour.categorical_bar);
+        } else if ((frameName) === 'print') {
+            legendColours.range(gChartcolour.linePrint);
+        }
+        legendColours.range().slice(0,seriesNames.length)
+
+        // console.log('colours',legendColours.range())
+        // console.log('names',legendColours.domain())
+        // console.log('seriesNames',seriesNames)
         // Set up legend for this frame
+        const legendNames = [...seriesNames].reverse()
+        // console.log('legendNames',legendNames)
+
         myLegend
             .frameName(frameName)
             .geometry(legendType)
             .seriesNames(seriesNames)
-            .colourPalette((frameName))
+            .colourPalette(legendColours)
             .rem(myChart.rem())
             .alignment(legendAlign);
 
@@ -246,7 +265,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
             .append('g')
             .attr('id', 'legend')
             .selectAll('.legend')
-            .data(seriesNames)
+            .data(legendNames)
             .enter()
             .append('g')
             .classed('legend', true)
