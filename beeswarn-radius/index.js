@@ -41,7 +41,6 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'fiscal';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const legendType = 'dots';// rect, line or circ, geometry of legend marker
 const invertScale = false;
-const logScale = false;
 const banding = true
 const divisor = 1;
 const opacity = 0.7;
@@ -175,7 +174,6 @@ parseData.load(dataFile, {})
             .numTicks(numTicks)
             .xAxisHighlight(xAxisHighlight)
             .frameName(frameName)
-            .logScale(logScale)
             .divisor(divisor);
 
           currentFrame.plot()
