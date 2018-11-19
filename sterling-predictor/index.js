@@ -14,7 +14,8 @@ import * as annotation from 'g-annotations';
 
 //const dataFile =  'data.csv'
 const dataFile =  'https://ig.ft.com/autograph/data/gbpusd-ref.csv'
-const predFile = 'http://bertha.ig.ft.com/view/publish/dsv/1LXtp1IGDrbFz47wf15IzQ8tQMQtN1s4GtuNWtDHiyyA/data.csv';
+//const predFile = 'http://bertha.ig.ft.com/view/publish/dsv/1LXtp1IGDrbFz47wf15IzQ8tQMQtN1s4GtuNWtDHiyyA/data.csv';
+const predFile = 'projection.csv';
 const dateFormat = '%Y-%m-%d';
 /*
   some common formatting parsers....
@@ -35,8 +36,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 1400;// sets the maximum value on the xAxis
+const yMin = 1;// sets the minimum value on the yAxis
+const yMax = 1;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 7;// Number of tick on the uAxis
@@ -129,10 +130,10 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
         // define other functions to be called
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
-        // const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
+        const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
         // const myAnnotations = annotation.annotations();// sets up annotations
         // const myLegend = gLegend.legend();// sets up the legend
-        // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
+        const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         // const myChart = lineChart.draw()
         //   .seriesNames(seriesNames)

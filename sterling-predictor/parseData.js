@@ -18,7 +18,7 @@ export function load([url, url2], options) { // eslint-disable-line
     ]).then(([result1, result2]) => {
         const data = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
-        const { dateFormat} = options; // eslint-disable-line no-unused-vars
+        const { dateFormat, highlightNames} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
         
         const parseDate = d3.timeParse(dateFormat);
@@ -28,23 +28,25 @@ export function load([url, url2], options) { // eslint-disable-line
         console.log('data', data)
         console.log('data2', data2)
 
-        // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        // const seriesNames = getSeriesNames(data.columns);
-        // // Use the seriesNames array to calculate the minimum and max values in the dataset
-        // const valueExtent = extentMulti(data, seriesNames, yMin);
+        //Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
+        console.log('seriesNames', seriesNames)
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
+        console.log('valueExtent', valueExtent)
 
-        // const isLineHighlighted = (el) => highlightNames.some(d => d === el);
+        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
 
-        // // Format the dataset that is used to draw the lines
-        // let highlightLines = {};
-        // let plotData = seriesNames.map(d => ({
-        //     name: d,
-        //     lineData: getlines(data, d),
-        //     highlightLine: isLineHighlighted(d),
-        // }));
+        // Format the dataset that is used to draw the lines
+        let highlightLines = {};
+        let plotData = seriesNames.map(d => ({
+            name: d,
+            lineData: getlines(data, d),
+            highlightLine: isLineHighlighted(d),
+        }));
 
-        // highlightLines = plotData.filter(d => d.highlightLine === true);
-        // plotData = plotData.filter(d => d.highlightLine === false);
+        highlightLines = plotData.filter(d => d.highlightLine === true);
+        plotData = plotData.filter(d => d.highlightLine === false);
 
         // // Filter data for annotations
         // const annotations = data.filter((d) => {return d.annotate != ''});
@@ -85,22 +87,22 @@ export function load([url, url2], options) { // eslint-disable-line
         // }
 
         // Format the data that is used to draw highlight tonal bands
-        // const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
-        // const highlights = [];
+        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const highlights = [];
 
-        // boundaries.forEach((d, i) => {
-        //     if (d.highlight === 'begin') {
-        //         highlights.push({ begin: d.date, end: boundaries[i + 1].date });
-        //     }
-        // });
+        boundaries.forEach((d, i) => {
+            if (d.highlight === 'begin') {
+                highlights.push({ begin: d.date, end: boundaries[i + 1].date });
+            }
+        });
 
         return {
             data,
-            // seriesNames,
-            // plotData,
-            // highlightLines,
-            // valueExtent,
-            // highlights,
+            seriesNames,
+            plotData,
+            highlightLines,
+            valueExtent,
+            highlights,
             // annos,
         };
     });
