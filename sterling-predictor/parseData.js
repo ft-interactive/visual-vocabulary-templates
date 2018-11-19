@@ -24,39 +24,49 @@ export function load([url, url2], options) { // eslint-disable-line
         const isLineHighlighted = (el) => highlightNames.some(d => d === el);
         
         const parseDate = d3.timeParse(dateFormat);
-        const parseDate2 = d3.timeParse('%Y-%m-%dT%H:%M:%S.%Z');
+
 
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
-        data2.forEach((d) => {
+        data2.forEach((d,i) => {
             const date = new Date(d.projectiondate)
             d.date = date;
+            d.highlight = getHighlight(i);
         });
-        console.log('data', data)
-        console.log('data2', data2)
+
+        data2.sort((a, b) => a.date - b.date);
+        data2.forEach((d,i) => {
+            d.highlight = getHighlight(i);
+        });
+
+        // console.log('data', data)
+        // console.log('data2', data2)
+
+        function getHighlight(i) {
+            if (i === 0) {return 'begin'}
+            if (i+1 === data2.length) {return 'end'}
+        }
+
+        let seriesNames = getSeriesNames(data.columns);
+        const predNames = data2.map( d => d.bank)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
 
         const dateExtent1 = d3.extent(data, d => d.date);
         const dateExtent2 = d3.extent(data2, d => d.date);
-        const dateExtent = [Math.min(dateExtent1[0], dateExtent2[0]), Math.max(dateExtent1[1], dateExtent2[1])];
+        const dateExtent = [Math.min(dateExtent1[0], dateExtent2[0]), Math.max(dateExtent1[1], dateExtent2[1])];    
 
-        //Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        let seriesNames = getSeriesNames(data.columns);
-        console.log('seriesNames', seriesNames)
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
         console.log('valueExtent', valueExtent)
 
         // Format the dataset that is used to draw the lines
         let highlightLines = {};
-        let plotData = seriesNames.map(d => ({
+        let plotData = seriesNames.map((d, i) => ({
             name: d,
             lineData: getlines(data, d),
             highlightLine: isLineHighlighted(d),
         }));
-
-        const predNames = data2.map( d => d.bank)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
 
         const predData = predNames.map((d) => {
             return {
@@ -68,7 +78,6 @@ export function load([url, url2], options) { // eslint-disable-line
 
         function getPredLines(d) {
             const banks = data2.filter(el => el.bank === d)
-            banks.sort((a, b) => a.date - b.date);
             let lineData = [];
             banks.forEach((bank) => {
                 const column = {};
@@ -83,6 +92,7 @@ export function load([url, url2], options) { // eslint-disable-line
             })
             return lineData
         }
+
         predData.forEach((d) => {
             plotData.push(d)
         })
@@ -93,7 +103,8 @@ export function load([url, url2], options) { // eslint-disable-line
 
 
         // Format the data that is used to draw highlight tonal bands
-        const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        console.log('boundaries', boundaries)
         const highlights = [];
 
         boundaries.forEach((d, i) => {
