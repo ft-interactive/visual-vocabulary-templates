@@ -10,17 +10,23 @@ import loadData from '@financial-times/load-data';
  * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function load(url, options) { // eslint-disable-line
-    return loadData(url).then((result) => {
-        const data = result.data ? result.data : result;
-        const { dateFormat, yMin, joinPoints, highlightNames } = options; // eslint-disable-line no-unused-vars
+export function load([url, url2], options) { // eslint-disable-line
+
+    return loadData([ // ... and with multiple files
+        url,
+        url2,
+    ]).then(([result1, result2]) => {
+        const data = result1.data ? result1.data : result1;
+        const data2 = result2.data ? result2.data : result2;
+        const { dateFormat} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
         
         const parseDate = d3.timeParse(dateFormat);
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
-        //console.log('data', data)
+        console.log('data', data)
+        console.log('data2', data2)
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         // const seriesNames = getSeriesNames(data.columns);
