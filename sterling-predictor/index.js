@@ -123,7 +123,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, predFile], { dateFormat, highlightNames })
-.then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, annos }) => {
+.then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, dateExtent, }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -135,18 +135,18 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
         // const myLegend = gLegend.legend();// sets up the legend
         const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-        // const myChart = lineChart.draw()
-        //   .seriesNames(seriesNames)
-        //   .highlightNames(highlightNames)
-        //   .markers(markers)
-        //   .annotate(annotate)
-        //   .interpolation(interpolation);
-        // // const myHighLines = lineChart.draw()
-        //   .seriesNames(seriesNames)
-        //   .highlightNames(highlightNames)
-        //   .markers(markers)
-        //   .annotate(annotate)
-        //   .interpolation(interpolation);
+        const myChart = lineChart.draw()
+          .seriesNames(seriesNames)
+          .highlightNames(highlightNames)
+          .markers(markers)
+          .annotate(annotate)
+          .interpolation(interpolation);
+        const myHighLines = lineChart.draw()
+          .seriesNames(seriesNames)
+          .highlightNames(highlightNames)
+          .markers(markers)
+          .annotate(annotate)
+          .interpolation(interpolation);
 
         // const highlightedLines = colourPalette(frameName);
 
@@ -213,10 +213,11 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
         //   .attr("width", currentFrame.dimension().width)
         //   .attr("height",currentFrame.dimension().height)
         //   .attr("fill","#ededee");
+
         let xDomain;
         if (intraday) {
             xDomain = data.map(d => d.date);
-        } else { xDomain = d3.extent(data, d => d.date); }
+        } else { xDomain = dateExtent}
 
         // Set up xAxis for this frame
         myXAxis
@@ -247,12 +248,12 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
         }
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
-        // myChart
-        //   .yScale(myYAxis.scale())
-        //   .xScale(myXAxis.scale())
-        //   .plotDim(currentFrame.dimension())
-        //   .rem(currentFrame.rem())
-        //   .colourPalette((frameName));
+        myChart
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
 
         // myHighLines
         //   .yScale(myYAxis.scale())

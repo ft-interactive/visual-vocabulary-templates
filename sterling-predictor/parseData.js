@@ -31,7 +31,15 @@ export function load([url, url2], options) { // eslint-disable-line
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
+        data2.forEach((d) => {
+            d.date = parseDate2(d.date);
+        });
 
+        const dateExtent1 = d3.extent(data, d => d.date);
+        const dateExtent2 = d3.extent(data2, d => d.date);
+        const dateExtent = [Math.min(dateExtent1[0], dateExtent2[0]), Math.max(dateExtent1[1], dateExtent2[1])];
+        console.log('dateExtent', dateExtent)
+        
         //Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
         console.log('seriesNames', seriesNames)
@@ -65,7 +73,7 @@ export function load([url, url2], options) { // eslint-disable-line
             banks.forEach((bank) => {
                 const column = {};
                 column.name = bank;
-                column.date = parseDate2(bank.date);
+                column.date = bank.date;
                 column.value = +bank.projectionSpot;
                 column.highlight = 'to come';
                 column.annotate = 'to come';
@@ -78,8 +86,8 @@ export function load([url, url2], options) { // eslint-disable-line
         predData.forEach((d) => {
             plotData.push(d)
         })
-        console.log(plotData)
-
+        console.log('plotData', plotData)
+        
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
 
@@ -101,6 +109,7 @@ export function load([url, url2], options) { // eslint-disable-line
             highlightLines,
             valueExtent,
             highlights,
+            dateExtent,
             // annos,
         };
     });
