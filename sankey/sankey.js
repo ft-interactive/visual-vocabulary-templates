@@ -124,7 +124,7 @@ export function draw() {
   };
 
   chart.plotDim = (d) => {
-    if (!d) return window.plotDim;
+    if (!d) return plotDim;
     plotDim = d;
     return chart;
   };
