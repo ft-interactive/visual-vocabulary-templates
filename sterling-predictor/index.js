@@ -49,7 +49,7 @@ const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
-const highlightNames = ['value','Citi']; // create an array names you want to highlight eg. ['series1','series2']
+const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
@@ -132,7 +132,7 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
         // const myAnnotations = annotation.annotations();// sets up annotations
-        // const myLegend = gLegend.legend();// sets up the legend
+        const myLegend = gLegend.legend();// sets up the legend
         const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = lineChart.draw()
@@ -313,33 +313,33 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
         //     .call(myAnnotations)
 
 
-        // // Set up legend for this frame
-        // myLegend
-        //   .frameName(frameName)
-        //   .seriesNames(seriesNames)
-        //   .colourPalette((frameName))
-        //   .rem(myChart.rem())
-        //   .geometry(legendType)
-        //   .alignment(legendAlign);
+        // Set up legend for this frame
+        myLegend
+          .frameName(frameName)
+          .seriesNames(seriesNames)
+          .colourPalette((frameName))
+          .rem(myChart.rem())
+          .geometry(legendType)
+          .alignment(legendAlign);
 
-        // // Draw the Legend
-        // currentFrame.plot()
-        //   .append('g')
-        //   .attr('id', 'legend')
-        //   .selectAll('.legend')
-        //     .data(() => {
-        //         if (highlightNames.length > 0) {
-        //             return highlightNames;
-        //         }
-        //         return seriesNames;
-        //     })
-        //     .enter()
-        //     .append('g')
-        //     .classed('legend', true)
-        //     .call(myLegend);
+        // Draw the Legend
+        currentFrame.plot()
+          .append('g')
+          .attr('id', 'legend')
+          .selectAll('.legend')
+            .data(() => {
+                if (highlightNames.length > 0) {
+                    return highlightNames;
+                }
+                return seriesNames;
+            })
+            .enter()
+            .append('g')
+            .classed('legend', true)
+            .call(myLegend);
 
-        // const legendSelection = currentFrame.plot().select('#legend');
-        // legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+        const legendSelection = currentFrame.plot().select('#legend');
+        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
     });
     // addSVGSavers('figure.saveable');
 });

@@ -40,7 +40,7 @@ export function load([url, url2], options) { // eslint-disable-line
         const dateExtent = [Math.min(dateExtent1[0], dateExtent2[0]), Math.max(dateExtent1[1], dateExtent2[1])];
 
         //Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        const seriesNames = getSeriesNames(data.columns);
+        let seriesNames = getSeriesNames(data.columns);
         console.log('seriesNames', seriesNames)
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
@@ -100,6 +100,8 @@ export function load([url, url2], options) { // eslint-disable-line
                 highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+
+        seriesNames = seriesNames.concat(predNames);
 
         return {
             data,
