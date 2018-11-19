@@ -61,21 +61,21 @@ const turnWidth = 6.5
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+ .margin({ top: 100, left: 15, bottom: 82, right: 20 })
  // .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 20, bottom: 86, right: 20,
         })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 5,
+            top: 100, left: 20, bottom: 104, right: 20,
         })
     // .title("Put headline here")
         .height(700)
@@ -83,7 +83,7 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 5,
+            top: 100, left: 20, bottom: 86, right: 20,
         })
     // .title("Put headline here")
         .height(500),
