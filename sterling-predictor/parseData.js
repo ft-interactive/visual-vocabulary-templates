@@ -20,7 +20,7 @@ export function load(url, options) { // eslint-disable-line
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
-        console.log('data', data)
+        //console.log('data', data)
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         // const seriesNames = getSeriesNames(data.columns);
