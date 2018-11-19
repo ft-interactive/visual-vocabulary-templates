@@ -36,8 +36,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 1;// sets the minimum value on the yAxis
-const yMax = 1;// sets the maximum value on the xAxis
+const yMin = 1.2;// sets the minimum value on the yAxis
+const yMax = 1.5;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 7;// Number of tick on the uAxis
@@ -49,7 +49,7 @@ const markers = false;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
-const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
+const highlightNames = ['value','Citi']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
@@ -148,7 +148,7 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
           .annotate(annotate)
           .interpolation(interpolation);
 
-        // const highlightedLines = colourPalette(frameName);
+        const highlightedLines = colourPalette(frameName);
 
         function colourPalette(d) {
             const newPalette = d3.scaleOrdinal();
@@ -255,46 +255,46 @@ parseData.load([dataFile, predFile], { dateFormat, highlightNames })
           .rem(currentFrame.rem())
           .colourPalette((frameName));
 
-        // myHighLines
-        //   .yScale(myYAxis.scale())
-        //   .xScale(myXAxis.scale())
-        //   .plotDim(currentFrame.dimension())
-        //   .rem(currentFrame.rem())
-        //   .colourPalette(highlightedLines);
+        myHighLines
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette(highlightedLines);
 
-        // // Draw the lines
-        // currentFrame.plot()
-        //   .selectAll('.lines')
-        //   .data(plotData)
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'lines')
-        //   .attr('id', d => d.name)
-        //   .call(myChart);
+        // Draw the lines
+        currentFrame.plot()
+          .selectAll('.lines')
+          .data(plotData)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .attr('id', d => d.name)
+          .call(myChart);
 
-        // currentFrame.plot()
-        //   .selectAll('.lines.highlighlines')
-        //   .data(highlightLines)
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'lines highlighlines')
-        //   .attr('id', d => d.name)
-        //   .call(myHighLines);
+        currentFrame.plot()
+          .selectAll('.lines.highlighlines')
+          .data(highlightLines)
+          .enter()
+          .append('g')
+          .attr('class', 'lines highlighlines')
+          .attr('id', d => d.name)
+          .call(myHighLines);
 
-        // // Set up highlights for this frame
-        // myHighlights
-        //   .yScale(myYAxis.scale())
-        //   .xScale(myXAxis.scale())
-        //   .invertScale(invertScale);
+        // Set up highlights for this frame
+        myHighlights
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .invertScale(invertScale);
 
-        // // Draw the highlights before the lines and xAxis
-        // axisHighlight
-        //   .selectAll('.highlights')
-        //   .data(highlights)
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'highlights')
-        //   .call(myHighlights);
+        // Draw the highlights before the lines and xAxis
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .attr('class', 'highlights')
+          .call(myHighlights);
 
         // //Set up highlights for this frame
         // myAnnotations
