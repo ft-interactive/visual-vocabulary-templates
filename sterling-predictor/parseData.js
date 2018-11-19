@@ -28,6 +28,25 @@ export function load([url, url2], options) { // eslint-disable-line
         console.log('data', data)
         console.log('data2', data2)
 
+        data.forEach((d) => {
+            d.date = parseDate(d.date);
+        });
+
+        //Automatically calculate the seriesnames excluding the "marker" and "annotate column"
+        const seriesNames = getSeriesNames(data.columns);
+        console.log('seriesNames', seriesNames)
+        // Use the seriesNames array to calculate the minimum and max values in the dataset
+        const valueExtent = extentMulti(data, seriesNames);
+        console.log('valueExtent', valueExtent)
+
+        // Format the dataset that is used to draw the lines
+        let highlightLines = {};
+        let plotData = seriesNames.map(d => ({
+            name: d,
+            lineData: getlines(data, d),
+            highlightLine: isLineHighlighted(d),
+        }));
+
         const predNames = data2.map( d => d.bank)
             .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
 
@@ -56,26 +75,10 @@ export function load([url, url2], options) { // eslint-disable-line
             })
             return lineData
         }
-
-
-        data.forEach((d) => {
-            d.date = parseDate(d.date);
-        });
-
-        //Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        const seriesNames = getSeriesNames(data.columns);
-        console.log('seriesNames', seriesNames)
-        // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data, seriesNames);
-        console.log('valueExtent', valueExtent)
-
-        // Format the dataset that is used to draw the lines
-        let highlightLines = {};
-        let plotData = seriesNames.map(d => ({
-            name: d,
-            lineData: getlines(data, d),
-            highlightLine: isLineHighlighted(d),
-        }));
+        predData.forEach((d) => {
+            plotData.push(d)
+        })
+        console.log(plotData)
 
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
