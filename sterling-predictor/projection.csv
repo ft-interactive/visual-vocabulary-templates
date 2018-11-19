@@ -1,4 +1,4 @@
-special.restrict,update..date,bank,projection.reportedDate..date,date,projection.spot,projection.high,projection.low
+special.restrict,update date,bank,projection date,date,projectionSpot,projection high,projection low
 no,29/10/2018,JP Morgan,30/10/2018,31/12/2018,1.31,,
 no,29/10/2018,JP Morgan,30/10/2018,30/03/2019,1.35,,
 no,29/10/2018,Citi,19/10/2018,30/03/2019,1.33,,

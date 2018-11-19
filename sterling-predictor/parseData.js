@@ -20,13 +20,47 @@ export function load([url, url2], options) { // eslint-disable-line
         const data2 = result2.data ? result2.data : result2;
         const { dateFormat, highlightNames} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
+        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
         
         const parseDate = d3.timeParse(dateFormat);
+        const parseDate2 = d3.timeParse('%d/%m/%Y');
+
+        console.log('data', data)
+        console.log('data2', data2)
+
+        const predNames = data2.map( d => d.bank)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        const predData = predNames.map((d) => {
+            return {
+                name: d,
+                lineData: getPredLines(d),
+                highlightLine: isLineHighlighted(d),
+            }
+        })
+
+        function getPredLines(d) {
+            const banks = data2.filter(el => el.bank === d)
+            banks.sort((a, b) => a.date - b.date);
+            let lineData = [];
+            banks.forEach((bank) => {
+                const column = {};
+                column.name = bank;
+                column.date = parseDate2(bank.date);
+                column.value = +bank.projectionSpot;
+                column.highlight = 'to come';
+                column.annotate = 'to come';
+                if (bank) {
+                    lineData.push(column);
+                }
+            })
+            return lineData
+        }
+
+
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
-        console.log('data', data)
-        console.log('data2', data2)
 
         //Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
@@ -34,8 +68,6 @@ export function load([url, url2], options) { // eslint-disable-line
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
         console.log('valueExtent', valueExtent)
-
-        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
 
         // Format the dataset that is used to draw the lines
         let highlightLines = {};
@@ -48,43 +80,6 @@ export function load([url, url2], options) { // eslint-disable-line
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
 
-        // // Filter data for annotations
-        // const annotations = data.filter((d) => {return d.annotate != ''});
-        // //checks that annotation have a type, if non defined then defaults to 'threshold'
-        // annotations.forEach((d) => {
-        //     d.type = testType(d)
-        // })
-        // function testType(d) {
-        //     if (d.type === '' || d.type === undefined || d.type === null) {
-        //         return 'threshold'
-        //     }
-        //     else {return d.type}
-        // }
-
-        // //create an array of listing unique annotations types
-        // const anoTypes = annotations.map( d => d.type)
-        //     .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        // //builds annotation dataset as grouped by type
-        // const annos = anoTypes.map(d => ({
-        //     type: d,
-        //     annotations: getAnnotations(d),
-        // }));
-
-        // function getAnnotations(el) {
-        //     const types = data.filter(d => (d.type === el))
-        //     .map((d) => {
-        //         return {
-        //             title: d.annotate,
-        //             //note: '',
-        //             targetX: d.date,
-        //             targetY: d[plotData[0].name],
-        //             radius: 0,
-        //             type: d.type,
-        //         }
-        //     })
-        //     return types
-        // }
 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
