@@ -2,217 +2,138 @@ import * as d3 from 'd3';
 import gChartcolour from 'g-chartcolour';
 import { sankey, sankeyLinkHorizontal } from 'd3-sankey';
 
-function uid() {
-    let text = '';
-    const possible =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < 5; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-}
-
 export function draw() {
-    let rem = 10;
-    let yScale = d3.scaleLinear();
-    let xScale = d3.scaleTime();
-    const seriesNames = [];
-    let highlightNames = [];
-    const includeAnnotations = d =>
-        d.annotate !== '' && d.annotate !== undefined; // eslint-disable-line
-    let annotate = false; // eslint-disable-line
-    let interpolation = d3.curveLinear;
-    const colourScale = (d) => {
-        switch (d) {
-        case 'US':
-        case 'GB':
-        case 'FR':
-        case 'DE':
-        case 'IT':
-        case 'CA':
-            return gChartcolour.diverging_3[0];
-        default:
-            return gChartcolour.diverging_3[2];
-        }
+  const colorScale = d3.scaleOrdinal();
+  let frameName;
+  let plotDim;
+  let rem = 10;
+  const idify = name => name.replace(' ', '_').toLowerCase();
+
+  function chart(parent) {
+    const data = parent.datum();
+    const generator = sankey()
+      .nodeId(d => d.name)
+      .nodeWidth(rem)
+      .nodePadding(rem / 2)
+      .extent([[1, 1], [plotDim.width, plotDim.height]])
+      .iterations(0);
+    const { nodes, links } = generator({
+      nodes: data.nodes.map(d => ({ ...d })),
+      links: data.links.map(d => ({ ...d })),
+    });
+    const color = (name) => {
+      colorScale.domain(data.nodes.map(node => node.name));
+
+      return colorScale(name);
     };
-    const nodesKey = 'nodes';
-    const linksKey = 'links';
-    const nodeId = 'name';
-    let plotDim;
-    let numberOfLinks = 10;
+    // Need different blending modes for light and dark backgrounds
+    const blendingMode =
+      frameName === 'social' || frameName === 'video' ? 'normal' : 'multiply';
 
-    function chart(parent) {
-        const data = parent.datum();
+    parent
+      .append('g')
+      .attr('stroke', '#000')
+      .selectAll('rect')
+      .data(nodes)
+      .enter()
+      .append('rect')
+      .attr('x', d => d.x0)
+      .attr('y', d => d.y0)
+      .attr('width', d => d.x1 - d.x0)
+      .attr('height', d => d.y1 - d.y0)
+      .attr('fill', d => color(d.name))
+      .attr('stroke', d => color(d.name))
+      .append('title')
+      .text(d => `${d.name}\n${d.value}`);
 
-        data.links = data.links.sort((a, b) => b.value - a.value).slice(0, numberOfLinks);
-        data.nodes = [
-            ...new Set(
-                data.links.reduce(
-                    (acc, cur) => [...acc, cur.source, cur.target],
-                    [],
-                ),
-            ),
-        ].map(name => ({ name }));
+    const link = parent
+      .append('g')
+      .attr('fill', 'none')
+      .attr('stroke-opacity', 0.8)
+      .selectAll('g')
+      .data(links)
+      .enter()
+      .append('g')
+      .style('mix-blend-mode', blendingMode);
 
-        const generator = sankey()
-            .nodes(d => d[nodesKey])
-            .links(d => d[linksKey])
-            .nodeId(d => d[nodeId])
-            .extent([[1, 1], [plotDim.width, plotDim.height]]);
+    const gradient = link
+      .append('linearGradient')
+      .attr('id', (d) => {
+        const sourceName = idify(d.source.name);
+        const targetName = idify(d.target.name);
 
-        const { nodes, links } = generator({
-            nodes: data.nodes.map(d => Object.assign({}, d)),
-            links: data.links.map(d => Object.assign({}, d)),
-        });
+        return `${sourceName}-link-${targetName}-${frameName.toLowerCase()}`;
+      })
+      .attr('gradientUnits', 'userSpaceOnUse')
+      .attr('x1', d => d.source.x1)
+      .attr('x2', d => d.target.x0);
 
-        parent
-            .append('g')
-            .attr('stroke', '#000')
-            .selectAll('rect')
-            .data(nodes)
-            .enter()
-            .append('rect')
-            .attr('x', d => d.x0)
-            .attr('y', d => d.y0)
-            .attr('height', d => d.y1 - d.y0)
-            .attr('width', d => d.x1 - d.x0)
-            .attr('fill', d => colourScale(d.name))
-            .append('title')
-            .text(d => `${d.name}\n${d.value}`);
-        // .attr('fill', d => color(d.name))
-        // .append('title')
-        // .text(d => `${d.name}\n${format(d.value)}`);
+    gradient
+      .append('stop')
+      .attr('offset', '0%')
+      .attr('stop-color', d => color(d.source.name));
 
-        const link = parent
-            .append('g')
-            .attr('fill', 'none')
-            .attr('stroke-opacity', 0.5)
-            .selectAll('g')
-            .data(links)
-            .enter()
-            .append('g')
-            .style('mix-blend-mode', 'multiply');
+    gradient
+      .append('stop')
+      .attr('offset', '100%')
+      .attr('stop-color', d => color(d.target.name));
 
-        const gradient = link
-            .append('linearGradient')
-            .attr('id', (d) => {
-                d.uid = uid();
-                return d.uid;
-            })
-            .attr('gradientUnits', 'userSpaceOnUse')
-            .attr('x1', d => d.source.x1)
-            .attr('x2', d => d.target.x0);
+    link
+      .append('path')
+      .attr(
+        'd',
+        // Shorten the links so they don't meet the nodes
+        sankeyLinkHorizontal()
+          .source(d => [d.source.x1 + (rem / 4), d.y0])
+          .target(d => [d.target.x0 - (rem / 4), d.y1]),
+      )
+      .attr('stroke', (d) => {
+        const sourceName = idify(d.source.name);
+        const targetName = idify(d.target.name);
 
-        gradient
-            .append('stop')
-            .attr('offset', '0%')
-            .attr('stop-color', d => colourScale(d.source.name));
+        return `url(#${sourceName}-link-${targetName}-${frameName.toLowerCase()})`;
+      })
+      .attr('stroke-width', d => Math.max(1, d.width));
 
-        gradient
-            .append('stop')
-            .attr('offset', '100%')
-            .attr('stop-color', d => colourScale(d.target.name));
+    link
+      .append('title')
+      .text(d => `${d.source.name} → ${d.target.name}\n${d.value}`);
+  }
 
-        link.append('path')
-            .attr('d', sankeyLinkHorizontal())
-            .attr('stroke', d => `url(#${d.uid})`)
-            .attr('stroke-width', d => Math.max(1, d.width));
-
-        link.append('title').text(
-            d => `${d.source.name} → ${d.target.name}\n${d.value}`,
-        );
-
-        parent
-            .append('g')
-            .style('font', '10px sans-serif')
-            .selectAll('text')
-            .data(nodes)
-            .enter()
-            .append('text')
-            .attr('x', d => (d.x0 < plotDim.width / 2 ? d.x1 + 6 : d.x0 - 6))
-            .attr('y', d => (d.y1 + d.y0) / 2)
-            .attr('dy', '0.35em')
-            .attr('fill', 'black')
-            .attr(
-                'text-anchor',
-                d => (d.x0 < plotDim.width / 2 ? 'start' : 'end'),
-            )
-            .text(d => d.name);
+  chart.colourPalette = (d) => {
+    if (!d) return colorScale;
+    if (d === 'social' || d === 'video') {
+      colorScale.range(gChartcolour.lineSocial);
+    } else if (
+      d === 'webS' ||
+      d === 'webM' ||
+      d === 'webMDefault' ||
+      d === 'webL'
+    ) {
+      colorScale.range(gChartcolour.lineWeb);
+    } else if (d === 'print') {
+      colorScale.range(gChartcolour.linePrint);
     }
-
-    chart.yScale = (d) => {
-        if (!d) return yScale;
-        yScale = d;
-        return chart;
-    };
-
-    chart.highlightNames = (d) => {
-        highlightNames = d;
-        return chart;
-    };
-
-    chart.xScale = (d) => {
-        if (!d) return xScale;
-        xScale = d;
-        return chart;
-    };
-
-    chart.plotDim = (d) => {
-        if (!d) return window.plotDim;
-        window.plotDim = plotDim = d; // eslint-disable-line
-        return chart;
-    };
-
-    chart.rem = (d) => {
-        if (!d) return rem;
-        rem = d;
-        return chart;
-    };
-
-    chart.annotate = (d) => {
-        annotate = d;
-        return chart;
-    };
-
-    chart.interpolation = (d) => {
-        if (!d) return interpolation;
-        interpolation = d;
-        return chart;
-    };
-
-    chart.colourPalette = (d) => {
-        if (!d) return colourScale;
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (
-                d === 'webS' ||
-                d === 'webM' ||
-                d === 'webMDefault' ||
-                d === 'webL'
-            ) {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            }
-            return chart;
-        }
-        if (d === 'social' || d === 'video') {
-            colourScale.range(gChartcolour.lineSocial);
-        } else if (
-            d === 'webS' ||
-            d === 'webM' ||
-            d === 'webMDefault' ||
-            d === 'webL'
-        ) {
-            colourScale.range(gChartcolour.lineWeb);
-        } else if (d === 'print') {
-            colourScale.range(gChartcolour.linePrint);
-        }
-        return chart;
-    };
-
     return chart;
+  };
+
+  chart.frameName = (d) => {
+    if (!d) return frameName;
+    frameName = d;
+    return chart;
+  };
+
+  chart.plotDim = (d) => {
+    if (!d) return window.plotDim;
+    plotDim = d;
+    return chart;
+  };
+
+  chart.rem = (d) => {
+    if (!d) return rem;
+    rem = d;
+    return chart;
+  };
+
+  return chart;
 }
