@@ -15,7 +15,8 @@ import * as annotation from 'g-annotations';
 //const dataFile =  'data.csv'
 const dataFile =  'https://ig.ft.com/autograph/data/gbpusd-ref.csv'
 //const predFile = 'http://bertha.ig.ft.com/view/publish/dsv/1LXtp1IGDrbFz47wf15IzQ8tQMQtN1s4GtuNWtDHiyyA/data.csv';
-const predFile = 'projection.csv';
+//const predFile = 'projection.csv';
+const predFile = 'http://bertha.ig.ft.com/republish/publish/dsv/1LXtp1IGDrbFz47wf15IzQ8tQMQtN1s4GtuNWtDHiyyA/data.csv';
 const dateFormat = '%Y-%m-%d';
 /*
   some common formatting parsers....
@@ -122,7 +123,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load([dataFile, predFile], { dateFormat, highlightNames })
+parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
 .then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, dateExtent, }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];

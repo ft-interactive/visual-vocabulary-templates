@@ -15,25 +15,26 @@ export function load([url, url2], options) { // eslint-disable-line
     return loadData([ // ... and with multiple files
         url,
         url2,
-    ]).then(([result1, result2]) => {
+    ]).then(([result1, result2,]) => {
         const data = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
+
         const { dateFormat, highlightNames} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
         const isLineHighlighted = (el) => highlightNames.some(d => d === el);
         
         const parseDate = d3.timeParse(dateFormat);
-        const parseDate2 = d3.timeParse('%d/%m/%Y');
-
-        console.log('data', data)
-        console.log('data2', data2)
+        const parseDate2 = d3.timeParse('%Y-%m-%dT%H:%M:%S.%Z');
 
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
         data2.forEach((d) => {
-            d.date = parseDate2(d.date);
+            const date = new Date(d.projectiondate)
+            d.date = date;
         });
+        console.log('data', data)
+        console.log('data2', data2)
 
         const dateExtent1 = d3.extent(data, d => d.date);
         const dateExtent2 = d3.extent(data2, d => d.date);
@@ -73,7 +74,7 @@ export function load([url, url2], options) { // eslint-disable-line
                 const column = {};
                 column.name = bank;
                 column.date = bank.date;
-                column.value = +bank.projectionSpot;
+                column.value = +bank.projectionspot;
                 column.highlight = 'to come';
                 column.annotate = 'to come';
                 if (bank) {
