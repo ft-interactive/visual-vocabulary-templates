@@ -3,6 +3,7 @@
  */
 
 import * as d3 from 'd3';
+import * as ss from 'simple-statistics';
 import loadData from '@financial-times/load-data';
 
 /**
@@ -31,18 +32,23 @@ export function load([url, url2], options) { // eslint-disable-line
             d.date = new Date(d.projectiondate);
             d.projectiondate = new Date(d.projectiondate);
             d.reporteddate = new Date(d.reporteddate);
+            d.projectionspot = getSpot(d)
         });
+
+        function getSpot(d) {
+            if (d.projectionlow) { return (d.projectionlow + d.projectionhigh)/2 }
+            return d.projectionspot
+        }
 
         data2.sort((a, b) => a.date - b.date);
         data2.forEach((d,i) => {
-            d.highlight = getHighlight(i);
+            d.highlight = getHighlight(d, i);
         });
 
         // console.log('data', data)
-        //console.log('data2', data2)
+         console.log('data2', data2)
 
-        function getHighlight(i) {
-            if (i === 0) {return 'begin'}
+        function getHighlight(d, i) {
             if (i+1 === data2.length) {return 'end'}
         }
 
@@ -103,7 +109,8 @@ export function load([url, url2], options) { // eslint-disable-line
 
 
         // Format the data that is used to draw highlight tonal bands
-        const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
+        const boundaries = data2.filter(d => (d.highlight === 'end'));
+        boundaries.unshift({'projectionspot': '', 'projectionlow':'','projectionhigh':'','notes':'','update': '','date': new Date('2019-03-29T00:00:00.000Z'),'projectiondate': new Date('2019-03-29T00:00:00.000Z'),'highlight': 'begin','bank': '',})
         console.log('boundaries', boundaries)
         const highlights = [];
 
