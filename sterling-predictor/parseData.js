@@ -21,18 +21,16 @@ export function load([url, url2], options) { // eslint-disable-line
 
         const { dateFormat, highlightNames} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
-        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
         
         const parseDate = d3.timeParse(dateFormat);
-
 
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
         data2.forEach((d,i) => {
-            const date = new Date(d.projectiondate)
-            d.date = date;
-            d.highlight = getHighlight(i);
+            d.date = new Date(d.projectiondate);
+            d.projectiondate = new Date(d.projectiondate);
+            d.reporteddate = new Date(d.reporteddate);
         });
 
         data2.sort((a, b) => a.date - b.date);
@@ -41,7 +39,7 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         // console.log('data', data)
-        // console.log('data2', data2)
+        //console.log('data2', data2)
 
         function getHighlight(i) {
             if (i === 0) {return 'begin'}
@@ -59,6 +57,8 @@ export function load([url, url2], options) { // eslint-disable-line
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
         console.log('valueExtent', valueExtent)
+
+        const isLineHighlighted = (el) => highlightNames.some(d => d === el);
 
         // Format the dataset that is used to draw the lines
         let highlightLines = {};
@@ -82,7 +82,7 @@ export function load([url, url2], options) { // eslint-disable-line
             banks.forEach((bank) => {
                 const column = {};
                 column.name = bank;
-                column.date = bank.date;
+                column.date = bank.projectiondate;
                 column.value = +bank.projectionspot;
                 column.highlight = 'to come';
                 column.annotate = 'to come';
