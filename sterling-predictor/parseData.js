@@ -79,8 +79,26 @@ export function load([url, url2], options) { // eslint-disable-line
                 name: d,
                 lineData: getPredLines(d),
                 highlightLine: isLineHighlighted(d),
+                dotsData: getDots(d)
             }
         })
+
+        function getDots(d) {
+            console.log('d',d)
+            const banks = data2.filter(el => el.bank === d && el.projectionlow !== '')
+            let dotsData = [];
+             banks.forEach((bank) => {
+                const column = {};
+                column.name = bank;
+                column.date = bank.projectiondate;
+                column.projectionlow = banks.projectionlow;
+                column.projectionhigh = banks.projectionhigh
+                if (bank) {
+                    dotsData.push(column);
+                }
+            })
+             return dotsData
+        }
 
         function getPredLines(d) {
             const banks = data2.filter(el => el.bank === d)
@@ -121,6 +139,7 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         seriesNames = seriesNames.concat(predNames);
+
 
         return {
             data,
