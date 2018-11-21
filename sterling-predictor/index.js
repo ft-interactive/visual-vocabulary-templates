@@ -237,6 +237,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         // Draw the xAxis
         currentFrame.plot()
           .call(myXAxis);
+        console.log(myXAxis.xLabelMinor)
 
         if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);

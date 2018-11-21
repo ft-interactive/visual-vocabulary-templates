@@ -36,7 +36,7 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         function getSpot(d) {
-            if (d.projectionlow) { return (d.projectionlow + d.projectionhigh)/2 }
+            if (d.projectionlow !== '') { return (Number(d.projectionlow) + Number(d.projectionhigh))/2 }
             return d.projectionspot
         }
 
@@ -62,7 +62,6 @@ export function load([url, url2], options) { // eslint-disable-line
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
-        console.log('valueExtent', valueExtent)
 
         const isLineHighlighted = (el) => highlightNames.some(d => d === el);
 
@@ -70,6 +69,7 @@ export function load([url, url2], options) { // eslint-disable-line
         let highlightLines = {};
         let plotData = seriesNames.map((d, i) => ({
             name: d,
+            dotsData: [],
             lineData: getlines(data, d),
             highlightLine: isLineHighlighted(d),
         }));
@@ -84,15 +84,14 @@ export function load([url, url2], options) { // eslint-disable-line
         })
 
         function getDots(d) {
-            console.log('d',d)
             const banks = data2.filter(el => el.bank === d && el.projectionlow !== '')
             let dotsData = [];
              banks.forEach((bank) => {
                 const column = {};
-                column.name = bank;
-                column.date = bank.projectiondate;
-                column.projectionlow = banks.projectionlow;
-                column.projectionhigh = banks.projectionhigh
+                column.name = bank.bank;
+                column.date = Number(bank.projectiondate);
+                column.low = Number(bank.projectionlow);
+                column.high = Number(bank.projectionhigh)
                 if (bank) {
                     dotsData.push(column);
                 }

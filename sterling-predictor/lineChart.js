@@ -16,6 +16,7 @@ export function draw() {
     let colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
+    let boxWidth = 20;
 
     function chart(parent) {
         const lineData = d3.line()
@@ -41,24 +42,67 @@ export function draw() {
             })
             .attr('d', d => lineData(d.lineData));
 
-        if (markers) {
-            parent.selectAll('.markers')
-        .data((d) => {
-            if (markers) {
-                return d.lineData;
-            }
+        // const range = parent.selectAll('circle')
+        //     .data(d => d.dotsData)
+        //     .enter()
+        
+        // range.append('circle')
+        //     .classed('markers', true)
+        //     .attr('id', d => `date: ${d.date} value: ${d.value}`)
+        //     .attr('cx', d => xScale(d.date))
+        //     .attr('cy', (d) => {
+        //         return yScale(d.low)})
+        //     .attr('r', rem * 0.2)
+        //     .attr('opacity', 0.6)
+        //     .attr('fill', (d) => {return colourScale(d.name);
+        //     });
 
-            return undefined;
-        })
-        .enter()
-        .append('circle')
-        .classed('markers', true)
-        .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        .attr('cx', d => xScale(d.date))
-        .attr('cy', d => yScale(d.value))
-        .attr('r', rem * 0.25)
-        .attr('fill', d => colourScale(d.name));
-        }
+        // range.append('circle')
+        //     .classed('markers', true)
+        //     .attr('id', d => `date: ${d.date} value: ${d.value}`)
+        //     .attr('cx', d => xScale(d.date))
+        //     .attr('cy', (d) => {
+        //         return yScale(d.high)
+        //     })
+        //     .attr('r', rem * 0.2)
+        //     .attr('opacity', 0.6)
+        //     .attr('fill', (d) => {return colourScale(d.name);
+        //     });
+
+        const range2 = parent.selectAll('line')
+            .data(d => d.dotsData)
+            .enter()
+        range2.append('line')
+            .attr('opacity', 0.6)
+            .attr('y1', d =>  yScale(d.high))
+            .attr('x1', d => xScale(d.date))
+            .attr('y2', (d) => yScale(d.low))
+            .attr('x2', d => xScale(d.date))
+            .attr('stroke',d => colourScale(d.name))
+            .attr('stroke-width', 1)
+            .attr('class', 'whisker')
+
+        range2.append('line')
+            .attr('y1', d => yScale(d.high))
+            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
+            .attr('y2', d => yScale(d.high))
+            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
+            .attr('stroke',d => colourScale(d.name))
+            .attr('stroke-width', 1)
+            .attr('class', 'whisker');
+
+        range2.append('line')
+            .attr('y1', d => yScale(d.low))
+            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
+            .attr('y2', d => yScale(d.low))
+            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
+            .attr('stroke',d => colourScale(d.name))
+            .attr('stroke-width', 1)
+            .attr('class', 'whisker');
+
+
+
+
     }
 
     chart.yScale = (d) => {
