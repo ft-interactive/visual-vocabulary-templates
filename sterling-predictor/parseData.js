@@ -36,7 +36,7 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         function getSpot(d) {
-            if (d.projectionlow !== '') { return (Number(d.projectionlow) + Number(d.projectionhigh))/2 }
+            //if (d.projectionlow !== '') { return (Number(d.projectionlow) + Number(d.projectionhigh))/2 }
             return d.projectionspot
         }
 
@@ -104,12 +104,13 @@ export function load([url, url2], options) { // eslint-disable-line
             let lineData = [];
             banks.forEach((bank) => {
                 const column = {};
-                column.name = bank;
+                column.name = bank.bank;
                 column.date = bank.projectiondate;
                 column.value = +bank.projectionspot;
                 column.highlight = 'to come';
                 column.annotate = 'to come';
-                if (bank) {
+                if (bank.projectionspot) {
+                // if (bank) {
                     lineData.push(column);
                 }
             })
@@ -119,7 +120,36 @@ export function load([url, url2], options) { // eslint-disable-line
         predData.forEach((d) => {
             plotData.push(d)
         })
-        console.log('plotData', plotData)
+
+        const uniqueDates =  data2.map( d => d.projectiondate)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        const currentMinMax = uniqueDates.map(d => ({
+            date: d,
+            range: getRange(d)
+        }))
+
+        function getRange(d) {
+            let filtered = data2.filter(el => el.projectiondate ===d)
+            let values = []
+            filtered.forEach(obj => {
+                if (obj.projectionlow !== '') {
+                    values.push(Number(obj.projectionlow))
+                }
+                if (obj.projectionhigh !== '') {
+                    values.push(Number(obj.projectionhigh))
+                }
+                if (obj.projectionspot !== '') {
+                    values.push(Number(obj.projectionspot))
+                }
+                return d3.extent(values)
+            })
+            console.log(values)
+            let range = d3.extent(values);
+            return {min: range[0], max: range[1]}
+        }
+        
+        console.log('currentMinMax', currentMinMax)
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
@@ -128,7 +158,6 @@ export function load([url, url2], options) { // eslint-disable-line
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'end'));
         boundaries.unshift({'projectionspot': '', 'projectionlow':'','projectionhigh':'','notes':'','update': '','date': new Date('2019-03-29T00:00:00.000Z'),'projectiondate': new Date('2019-03-29T00:00:00.000Z'),'highlight': 'begin','bank': '',})
-        console.log('boundaries', boundaries)
         const highlights = [];
 
         boundaries.forEach((d, i) => {

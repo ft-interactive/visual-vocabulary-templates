@@ -46,7 +46,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
-const markers = false;// show dots on lines
+const markers = true;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
@@ -237,7 +237,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         // Draw the xAxis
         currentFrame.plot()
           .call(myXAxis);
-        console.log(myXAxis.xLabelMinor)
+        // console.log(myXAxis)
 
         if (xAxisAlign === 'bottom') {
             myXAxis.xLabel().attr('transform', `translate(0,${currentFrame.dimension().height})`);

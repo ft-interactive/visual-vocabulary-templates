@@ -41,6 +41,27 @@ export function draw() {
                 } return 1;
             })
             .attr('d', d => lineData(d.lineData));
+        
+        if (markers) {
+            parent.selectAll('circle')
+                .data(d => d.lineData)
+                .enter()
+                .append('circle')
+                .attr('id', d => `date: ${d.date} value: ${d.value}`)
+                .attr('cx', d => xScale(d.date))
+                .attr('cy', d => yScale(d.value))
+                .attr('r', rem * 0.2)
+                .attr('fill', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return colourScale.range()[0];
+                }
+                if (highlightNames.length > 0 && d.highlightLine === true) {
+                    return colourScale(d.name);
+                } 
+                return colourScale(d.name);
+            })
+
+        }
 
         // const range = parent.selectAll('circle')
         //     .data(d => d.dotsData)
@@ -79,8 +100,8 @@ export function draw() {
             .attr('y2', (d) => yScale(d.low))
             .attr('x2', d => xScale(d.date))
             .attr('stroke',d => colourScale(d.name))
-            .attr('stroke-width', 1)
-            .attr('class', 'whisker')
+            .attr('stroke-width', 1.5)
+            //.attr('class', 'whisker')
 
         range2.append('line')
             .attr('y1', d => yScale(d.high))
@@ -88,8 +109,8 @@ export function draw() {
             .attr('y2', d => yScale(d.high))
             .attr('x2', d => xScale(d.date) + (boxWidth / 4))
             .attr('stroke',d => colourScale(d.name))
-            .attr('stroke-width', 1)
-            .attr('class', 'whisker');
+            .attr('stroke-width', 1.5)
+            //.attr('class', 'whisker');
 
         range2.append('line')
             .attr('y1', d => yScale(d.low))
@@ -97,8 +118,8 @@ export function draw() {
             .attr('y2', d => yScale(d.low))
             .attr('x2', d => xScale(d.date) + (boxWidth / 4))
             .attr('stroke',d => colourScale(d.name))
-            .attr('stroke-width', 1)
-            .attr('class', 'whisker');
+            .attr('stroke-width', 1.5)
+            //.attr('class', 'whisker');
 
 
 
