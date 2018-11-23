@@ -110,6 +110,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
     const seriesNames = parseData.getSeriesNames(data.columns);
 
     // create stack data object
+    console.log(data)
     const plotData = d3.stack();
     plotData.keys(seriesNames);
 
@@ -202,6 +203,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
+        console.log(plotData(data))
 
         myChart
             .yScale(myYAxis.scale())

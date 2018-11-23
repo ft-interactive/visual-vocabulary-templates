@@ -46,7 +46,21 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         // console.log('data', data)
-         console.log('data2', data2)
+        console.log('data2', data2)
+        
+        const uniqueDates =  data2.map(d => d.projectiondate)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        console.log('uniqueDates', uniqueDates)
+
+        const fanData = uniqueDates.map((d) => {
+            return {
+                date: d,
+                min: getRange(d)[0],
+                max: getRange(d)[1],
+            }
+        })
+        console.log('fanData', fanData)
 
         function getHighlight(d, i) {
             if (i+1 === data2.length) {return 'end'}
@@ -121,14 +135,6 @@ export function load([url, url2], options) { // eslint-disable-line
             plotData.push(d)
         })
 
-        const uniqueDates =  data2.map( d => d.projectiondate)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        const currentMinMax = uniqueDates.map(d => ({
-            date: d,
-            range: getRange(d)
-        }))
-
         function getRange(d) {
             let filtered = data2.filter(el => el.projectiondate ===d)
             let values = []
@@ -144,12 +150,11 @@ export function load([url, url2], options) { // eslint-disable-line
                 }
                 return d3.extent(values)
             })
-            console.log(values)
             let range = d3.extent(values);
-            return {min: range[0], max: range[1]}
+            return range
         }
-        
-        console.log('currentMinMax', currentMinMax)
+
+        console.log(plotData[0].lineData)
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
@@ -171,6 +176,7 @@ export function load([url, url2], options) { // eslint-disable-line
 
         return {
             data,
+            fanData,
             seriesNames,
             plotData,
             highlightLines,

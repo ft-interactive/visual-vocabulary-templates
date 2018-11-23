@@ -10,6 +10,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
+import * as areaChart from './areaChart.js';
 
 
 //const dataFile =  'data.csv'
@@ -124,7 +125,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
-.then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, dateExtent, }) => {
+.then(({data, fanData, seriesNames, plotData, highlightLines, valueExtent, highlights, dateExtent, currentMinMax }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -148,6 +149,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .markers(markers)
           .annotate(annotate)
           .interpolation(interpolation);
+        const area = areaChart.draw()
 
         const highlightedLines = colourPalette(frameName);
 
@@ -249,6 +251,21 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
+        area
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
+        
+        currentFrame.plot()
+          .selectAll('areas')
+          .data([fanData])
+          .enter()
+          .append('g')
+          .attr('class', 'areas')
+          .call(area);
 
         myChart
           .yScale(myYAxis.scale())
