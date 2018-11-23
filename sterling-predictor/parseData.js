@@ -46,12 +46,11 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         // console.log('data', data)
-        console.log('data2', data2)
+        // console.log('data2', data2)
         
-        const uniqueDates =  data2.map(d => d.projectiondate)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        console.log('uniqueDates', uniqueDates)
+        let uniqueDates =  data2.map(d => d.projectiondate)
+        // console.log(uniqueDates[0] == uniqueDates[1])
+            .filter((item, pos, anoTypes) => anoTypes.findIndex(d => d.getTime() === item.getTime()) === pos);
 
         const fanData = uniqueDates.map((d) => {
             return {
@@ -136,7 +135,7 @@ export function load([url, url2], options) { // eslint-disable-line
         })
 
         function getRange(d) {
-            let filtered = data2.filter(el => el.projectiondate ===d)
+            let filtered = data2.filter(el => el.projectiondate.getTime() === d.getTime())
             let values = []
             filtered.forEach(obj => {
                 if (obj.projectionlow !== '') {

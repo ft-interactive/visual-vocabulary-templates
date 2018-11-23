@@ -14,14 +14,11 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
-        const area = d3.area()
-            .x(d => xScale(d.date))
-            .y0(d => yScale(d.min))
-            .y1(d => yScale(d.max));
+        
 
-        parent.append('path')
-            .attr('d', area)
-            .style('fill', '#D9CCC3');
+
+
+        
     }
 
     chart.yScale = (d) => {
@@ -102,54 +99,4 @@ export function draw() {
     };
 
     return chart;
-}
-
-
-export function drawAnnotations() {
-    let yScale = d3.scaleLinear();
-    let xScale = d3.scaleTime();
-
-    function annotations(parent) {
-        parent.append('line')
-            .attr('class', 'annotation')
-            .attr('x1', d => xScale(d.date))
-            .attr('x2', d => xScale(d.date))
-            .attr('y1', yScale.range()[0])
-            .attr('y2', yScale.range()[1] - 5);
-
-        parent.append('text')
-            .attr('class', 'annotation')
-            .attr('text-anchor', 'middle')
-            .attr('x', d => xScale(d.date))
-            .attr('y', yScale.range()[1] - (rem / 2))
-            .text(d => d.annotate);
-    }
-
-    annotations.yScale = (d) => {
-        yScale = d;
-        return annotations;
-    };
-
-    annotations.xScale = (d) => {
-        xScale = d;
-        return annotations;
-    };
-
-    annotations.yRange = (d) => {
-        yScale.range(d);
-        return annotations;
-    };
-
-    annotations.xRange = (d) => {
-        xScale.range(d);
-        return annotations;
-    };
-
-    annotations.rem = (d) => {
-        if (!d) return rem;
-        rem = d;
-        return annotations;
-    };
-
-    return annotations;
 }

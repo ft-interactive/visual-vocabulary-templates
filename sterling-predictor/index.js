@@ -11,6 +11,7 @@ import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
 import * as areaChart from './areaChart.js';
+import * as delaunayPlot from './delaunay.js';
 
 
 //const dataFile =  'data.csv'
@@ -150,6 +151,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .annotate(annotate)
           .interpolation(interpolation);
         const area = areaChart.draw()
+        const boundingShape = delaunayPlot.draw()
 
         const highlightedLines = colourPalette(frameName);
 
@@ -251,21 +253,28 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
-
-        area
+        
+        boundingShape
           .yScale(myYAxis.scale())
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
+
+        // area
+        //   .yScale(myYAxis.scale())
+        //   .xScale(myXAxis.scale())
+        //   .plotDim(currentFrame.dimension())
+        //   .rem(currentFrame.rem())
+        //   .colourPalette((frameName));
         
-        currentFrame.plot()
-          .selectAll('areas')
-          .data([fanData])
-          .enter()
-          .append('g')
-          .attr('class', 'areas')
-          .call(area);
+        // currentFrame.plot()
+        //   .selectAll('areas')
+        //   .data([fanData])
+        //   .enter()
+        //   .append('g')
+        //   .attr('class', 'areas')
+        //   .call(area);
 
         myChart
           .yScale(myYAxis.scale())
@@ -307,13 +316,13 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .invertScale(invertScale);
 
         // Draw the highlights before the lines and xAxis
-        axisHighlight
-          .selectAll('.highlights')
-          .data(highlights)
-          .enter()
-          .append('g')
-          .attr('class', 'highlights')
-          .call(myHighlights);
+        // axisHighlight
+        //   .selectAll('.highlights')
+        //   .data(highlights)
+        //   .enter()
+        //   .append('g')
+        //   .attr('class', 'highlights')
+        //   .call(myHighlights);
 
         // //Set up highlights for this frame
         // myAnnotations
