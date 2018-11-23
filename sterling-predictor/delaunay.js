@@ -1,8 +1,7 @@
 import * as d3 from 'd3';
+import {Delaunay} from "d3-delaunay";
 import gChartcolour from 'g-chartcolour';
-import * as geom from 'd3-geom';
-
-let rem = 10;
+//let rem = 10;
 
 export function draw() {
     let yScale = d3.scaleLinear();
@@ -11,26 +10,25 @@ export function draw() {
     const colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
     let vertices = [];
+    let rem = 10;
 
     function chart(parent) {
-        console.log('called')
+       
+        vertices = vertices.map((d) => {
+            //console.log(d)
+            return [xScale(d[0]),yScale(d[1])]
+        })
+
         
-        let alpha = 50;
-        let offset = function(a,dx,dy) {
-            return a.map(function(d) { return [d[0]+dx,d[1]+dy]; });
-        }
-        let dsq = function(a,b) {
-                var dx = a[0]-b[0], dy = a[1]-b[1];
-                return dx*dx+dy*dy;
-            }
-        let asq = alpha*alpha
-        let mesh = d3.geom.delaunay(offset(vertices,600,0)).filter(function(t) {
-            return dsq(t[0],t[1]) < asq && dsq(t[0],t[2]) < asq && dsq(t[1],t[2]) < asq;
-        });
-
-
-
-
+        let outline = Delaunay.from(vertices)
+        const { points, triangles } = outline;
+        // console.log(points, triangles)
+        console.log(outline.render())
+        parent.append('path')
+            .attr('fill', '#FCE6D6')
+            .attr('opacity',0.5)
+            .attr('stroke', '#000000')
+            .attr('d', outline.render());
     }
 
     chart.yScale = (d) => {

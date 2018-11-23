@@ -57,7 +57,7 @@ export function load([url, url2], options) { // eslint-disable-line
 
         });
 
-        console.log('vertices', vertices)
+        //console.log('vertices', vertices)
         // console.log('data', data)
         // console.log('data2', data2)
 

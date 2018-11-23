@@ -12,7 +12,6 @@ import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
 import * as areaChart from './areaChart.js';
 import * as delaunayPlot from './delaunay.js';
-import geom from 'd3-geom';
 
 //const dataFile =  'data.csv'
 const dataFile =  'https://ig.ft.com/autograph/data/gbpusd-ref.csv'
