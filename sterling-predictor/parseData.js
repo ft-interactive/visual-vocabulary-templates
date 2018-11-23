@@ -41,25 +41,25 @@ export function load([url, url2], options) { // eslint-disable-line
         }
 
         data2.sort((a, b) => a.date - b.date);
+        let vertices = []
+        
         data2.forEach((d,i) => {
             d.highlight = getHighlight(d, i);
+            if (d.projectionlow !== '') {
+                    vertices.push([d.projectiondate, Number(d.projectionlow)])
+                }
+                if (d.projectionhigh !== '') {
+                    vertices.push([d.projectiondate, Number(d.projectionhigh)])
+                }
+                if (d.projectionspot !== '') {
+                    vertices.push([d.projectiondate, Number(d.projectionspot)])
+                }
+
         });
 
+        console.log('vertices', vertices)
         // console.log('data', data)
         // console.log('data2', data2)
-        
-        let uniqueDates =  data2.map(d => d.projectiondate)
-        // console.log(uniqueDates[0] == uniqueDates[1])
-            .filter((item, pos, anoTypes) => anoTypes.findIndex(d => d.getTime() === item.getTime()) === pos);
-
-        const fanData = uniqueDates.map((d) => {
-            return {
-                date: d,
-                min: getRange(d)[0],
-                max: getRange(d)[1],
-            }
-        })
-        console.log('fanData', fanData)
 
         function getHighlight(d, i) {
             if (i+1 === data2.length) {return 'end'}
@@ -133,27 +133,6 @@ export function load([url, url2], options) { // eslint-disable-line
         predData.forEach((d) => {
             plotData.push(d)
         })
-
-        function getRange(d) {
-            let filtered = data2.filter(el => el.projectiondate.getTime() === d.getTime())
-            let values = []
-            filtered.forEach(obj => {
-                if (obj.projectionlow !== '') {
-                    values.push(Number(obj.projectionlow))
-                }
-                if (obj.projectionhigh !== '') {
-                    values.push(Number(obj.projectionhigh))
-                }
-                if (obj.projectionspot !== '') {
-                    values.push(Number(obj.projectionspot))
-                }
-                return d3.extent(values)
-            })
-            let range = d3.extent(values);
-            return range
-        }
-
-        console.log(plotData[0].lineData)
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
@@ -175,7 +154,7 @@ export function load([url, url2], options) { // eslint-disable-line
 
         return {
             data,
-            fanData,
+            vertices,
             seriesNames,
             plotData,
             highlightLines,

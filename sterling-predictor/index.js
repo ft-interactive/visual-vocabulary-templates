@@ -12,7 +12,7 @@ import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
 import * as areaChart from './areaChart.js';
 import * as delaunayPlot from './delaunay.js';
-
+import geom from 'd3-geom';
 
 //const dataFile =  'data.csv'
 const dataFile =  'https://ig.ft.com/autograph/data/gbpusd-ref.csv'
@@ -126,7 +126,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
-.then(({data, fanData, seriesNames, plotData, highlightLines, valueExtent, highlights, dateExtent, currentMinMax }) => {
+.then(({data, vertices, seriesNames, plotData, highlightLines, valueExtent, highlights, dateExtent, currentMinMax }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -259,22 +259,16 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName));
+          .colourPalette((frameName))
+          .vertices(vertices);
 
-        // area
-        //   .yScale(myYAxis.scale())
-        //   .xScale(myXAxis.scale())
-        //   .plotDim(currentFrame.dimension())
-        //   .rem(currentFrame.rem())
-        //   .colourPalette((frameName));
-        
-        // currentFrame.plot()
-        //   .selectAll('areas')
-        //   .data([fanData])
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'areas')
-        //   .call(area);
+        currentFrame.plot()
+          .selectAll('areas')
+          .data([vertices])
+          .enter()
+          .append('g')
+          .attr('class', 'areas')
+          .call(boundingShape);
 
         myChart
           .yScale(myYAxis.scale())
