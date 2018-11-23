@@ -19,11 +19,12 @@ export function draw() {
             return [xScale(d[0]),yScale(d[1])]
         })
 
+        let alpha = 5
+
         
         let outline = Delaunay.from(vertices)
-        const { points, triangles } = outline;
-        // console.log(points, triangles)
-        console.log(outline.render())
+        //let { points, triangles } = outline;
+        
         parent.append('path')
             .attr('fill', '#FCE6D6')
             .attr('opacity',0.5)
