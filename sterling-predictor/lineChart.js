@@ -40,9 +40,7 @@ export function draw() {
                     return 0.5;
                 } return 1;
             })
-            .attr('d', (d) => {
-                console.log(d.lineData)
-                lineData(d.lineData)});
+            .attr('d', d => lineData(d.lineData));
         
         if (markers) {
             parent.selectAll('circle')
