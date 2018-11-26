@@ -8,6 +8,7 @@ import gChartframe from 'g-chartframe';
 import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
+import * as annotation from 'g-annotations';
 
 const dataFile = 'data.csv';
 
@@ -135,7 +136,7 @@ parseData.load(dataFile, {
             const myXAxis = gAxis.xLinear();// sets up xAxis
             const myXAxis1 = gAxis.xLinear();// sets up xAxis
             const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-            const myAnnotations = lineChart.drawAnnotations();// sets up annotations
+            const myAnnotations = annotation.annotations();// sets up annotations
             const myLegend = gLegend.legend();// sets up the legend
             // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
             const tickSize = currentFrame.dimension().height + (currentFrame.rem() * 0.75);
@@ -285,6 +286,7 @@ parseData.load(dataFile, {
                 .enter()
                 .append('g')
                 .call(myHighlights);
+
 
             // Set up highlights for this frame
             myAnnotations

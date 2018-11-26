@@ -44,7 +44,43 @@ export function load(url, options) { // eslint-disable-line
         if (highlightNames.length > 0) { plotData.sort(dataSorter); }
 
         // Filter data for annotations
-        const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
+        // Filter data for annotations
+        const annotations = data.filter((d) => {return d.annotate != ''});
+        //checks that annotation have a type, if non defined then defaults to 'threshold'
+        annotations.forEach((d) => {
+            d.type = testType(d)
+        })
+        function testType(d) {
+            if (d.type === '' || d.type === undefined || d.type === null) {
+                return 'threshold'
+            }
+            else {return d.type}
+        }
+
+        //create an array of listing unique annotations types
+        const anoTypes = annotations.map( d => d.type)
+            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+
+        //builds annotation dataset as grouped by type
+        const annos = anoTypes.map(d => ({
+            type: d,
+            annotations: getAnnotations(d),
+        }));
+
+        function getAnnotations(el) {
+            const types = data.filter(d => (d.type === el))
+            .map((d) => {
+                return {
+                    title: d.annotate,
+                    //note: '',
+                    targetX: d[plotData[0].name],
+                    targetY: d.date,
+                    radius: 0,
+                    type: d.type,
+                }
+            })
+            return types
+        }
 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
