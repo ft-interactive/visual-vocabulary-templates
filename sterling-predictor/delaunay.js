@@ -18,7 +18,7 @@ export function draw() {
             //console.log(d)
             return [xScale(d[0]),yScale(d[1])]
         })
-        let alpha = 30
+        let alpha = 0.001
     
         let dsq = function(a,b) {
             var dx = a[0]-b[0], dy = a[1]-b[1];
@@ -41,10 +41,14 @@ export function draw() {
                 points[triangles[i + 2]]
             ]);
         })
-        coordinates = coordinates.filter((t) => {
-            console.log(t)
-            return t[0] != undefined && t[1] != undefined && t[2] != undefined
-        })
+        coordinates = coordinates
+            .filter((el) => {
+                return el[0] != undefined && el[1] != undefined && el[2] != undefined
+            })
+            .filter(function(t,i) {
+                //console.log(t,i, dsq(t[0],t[1]))
+                return i, dsq(t[0],t[1]) < asq && dsq(t[0],t[2]) < asq && dsq(t[1],t[2]) < asq;
+            })
 
         console.log(coordinates)
         
