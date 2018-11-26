@@ -18,20 +18,19 @@ export function draw() {
             //console.log(d)
             return [xScale(d[0]),yScale(d[1])]
         })
-        let alpha = 0.001
+        let alpha = 50
     
         let dsq = function(a,b) {
-            var dx = a[0]-b[0], dy = a[1]-b[1];
-            return dx*dx+dy*dy;
+            const dx = a[0]-b[0]
+            const dy = a[1]-b[1];
+            return (((dx*dx)+dy)*dy);
         }
         let asq = alpha*alpha
         
-        // vertices = vertices.filter(function(t) {
-        //     return dsq(t[0],t[1]) < asq && dsq(t[0],t[2]) < asq && dsq(t[1],t[2]) < asq;
-        // })
 
         let outline = Delaunay.from(vertices)
-        const {points, triangles} = outline;
+        let {points, triangles, hull} = outline;
+        console.log ('outline', outline)
         let coordinates = []
 
         triangles.forEach((d,i) => {
@@ -41,16 +40,11 @@ export function draw() {
                 points[triangles[i + 2]]
             ]);
         })
-        coordinates = coordinates
-            .filter((el) => {
-                return el[0] != undefined && el[1] != undefined && el[2] != undefined
-            })
-            .filter(function(t,i) {
-                //console.log(t,i, dsq(t[0],t[1]))
-                return i, dsq(t[0],t[1]) < asq && dsq(t[0],t[2]) < asq && dsq(t[1],t[2]) < asq;
-            })
+        // hull = hull.filter(function(t,i) {
+        //         return dsq(t[0],t[1]) < asq && dsq(t[0],t[2]) < asq && dsq(t[1],t[2]) < asq;
+        //     })
 
-        console.log(coordinates)
+        // console.log(coordinates)
         
 
         // const t0 = triangles[i * 3 + 0];
