@@ -26,15 +26,19 @@ export function draw() {
         }
         let asq = alpha*alpha
         
-        console.log (vertices)
-     
         // vertices = vertices.filter(function(t) {
         //     return dsq(t[0],t[1]) < asq && dsq(t[0],t[2]) < asq && dsq(t[1],t[2]) < asq;
         // })
-        console.log ('vertices', vertices)
 
         let outline = Delaunay.from(vertices)
         let { points, triangles } = outline;
+        // const t0 = triangles[i * 3 + 0];
+        // const t1 = triangles[i * 3 + 1];
+        // const t2 = triangles[i * 3 + 2];
+        // context.moveTo(points[t0 * 2], points[t0 * 2 + 1]);
+        // context.lineTo(points[t1 * 2], points[t1 * 2 + 1]);
+        // context.lineTo(points[t2 * 2], points[t2 * 2 + 1]);
+        // context.closePath();
         
         parent.append('path')
             .attr('fill', '#FCE6D6')
