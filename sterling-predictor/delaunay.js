@@ -31,7 +31,24 @@ export function draw() {
         // })
 
         let outline = Delaunay.from(vertices)
-        let { points, triangles } = outline;
+        const {points, triangles} = outline;
+        let coordinates = []
+
+        triangles.forEach((d,i) => {
+            coordinates.push([
+                points[triangles[i]],
+                points[triangles[i + 1]],
+                points[triangles[i + 2]]
+            ]);
+        })
+        coordinates = coordinates.filter((t) => {
+            console.log(t)
+            return t[0] != undefined && t[1] != undefined && t[2] != undefined
+        })
+
+        console.log(coordinates)
+        
+
         // const t0 = triangles[i * 3 + 0];
         // const t1 = triangles[i * 3 + 1];
         // const t2 = triangles[i * 3 + 2];
