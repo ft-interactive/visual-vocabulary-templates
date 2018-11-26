@@ -13,17 +13,28 @@ export function draw() {
     let rem = 10;
 
     function chart(parent) {
-       
+        //vertices values created in earlier code, le
         vertices = vertices.map((d) => {
             //console.log(d)
             return [xScale(d[0]),yScale(d[1])]
         })
-
-        let alpha = 5
-
+        let alpha = 30
+    
+        let dsq = function(a,b) {
+            var dx = a[0]-b[0], dy = a[1]-b[1];
+            return dx*dx+dy*dy;
+        }
+        let asq = alpha*alpha
         
+        console.log (vertices)
+     
+        // vertices = vertices.filter(function(t) {
+        //     return dsq(t[0],t[1]) < asq && dsq(t[0],t[2]) < asq && dsq(t[1],t[2]) < asq;
+        // })
+        console.log ('vertices', vertices)
+
         let outline = Delaunay.from(vertices)
-        //let { points, triangles } = outline;
+        let { points, triangles } = outline;
         
         parent.append('path')
             .attr('fill', '#FCE6D6')
