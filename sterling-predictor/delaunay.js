@@ -88,7 +88,7 @@ export function draw() {
                     }
                 }
             }
-
+            
             console.log(result)
 
             const lineData = d3.line()
