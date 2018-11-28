@@ -245,24 +245,25 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
+
         const plotHull = currentFrame.plot().append('g')
-        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
         const plotPredictions = currentFrame.plot().append('g')
         const series = currentFrame.plot().append('g')
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+
 
         const hulls = concaveHull(vertices.map((d) => {
             return [myXAxis.scale()(d[0]),myYAxis.scale()(d[1])]
         })); 
-        console.dir(hulls)
 
-        var drawLine = d3.line().curve(d3.curveLinear);
+        let drawLine = d3.line().curve(d3.curveLinear);
         plotHull
           .selectAll('.hulls')
           .data(hulls)
           .enter()
           .append('path').classed('hull', true)
           .attr('fill', '#FCE6D6')
-          .attr('d', function(points){ return drawLine(points); })
+          .attr('d', d => { return drawLine(d); })
 
         predictions
           .yScale(myYAxis.scale())
