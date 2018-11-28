@@ -32,11 +32,12 @@ export function load([url, url2], options) { // eslint-disable-line
             d.date = new Date(d.projectiondate);
             d.projectiondate = new Date(d.projectiondate);
             d.reporteddate = new Date(d.reporteddate);
-            d.projectionspot = getSpot(d)
+            d.projectionspot = getSpot(d);
+            d.highlight = d.highlight;
+            d.annotate = d.annotate;
         });
 
         function getSpot(d) {
-            //if (d.projectionlow !== '') { return (Number(d.projectionlow) + Number(d.projectionhigh))/2 }
             return d.projectionspot
         }
 
@@ -44,7 +45,6 @@ export function load([url, url2], options) { // eslint-disable-line
         let vertices = []
         
         data2.forEach((d,i) => {
-            d.highlight = getHighlight(d, i);
             if (d.projectionlow !== '') {
                     vertices.push([d.projectiondate, Number(d.projectionlow)])
                 }
@@ -60,10 +60,6 @@ export function load([url, url2], options) { // eslint-disable-line
         //console.log('vertices', vertices)
         // console.log('data', data)
         // console.log('data2', data2)
-
-        function getHighlight(d, i) {
-            if (i+1 === data2.length) {return 'end'}
-        }
 
         let seriesNames = getSeriesNames(data.columns);
         const predNames = data2.map( d => d.bank)
@@ -82,7 +78,7 @@ export function load([url, url2], options) { // eslint-disable-line
         let highlightLines = {};
         let plotData = seriesNames.map((d, i) => ({
             name: d,
-            dotsData: [],
+            rangeData: [],
             lineData: getlines(data, d),
             highlightLine: isLineHighlighted(d),
         }));
@@ -92,24 +88,25 @@ export function load([url, url2], options) { // eslint-disable-line
                 name: d,
                 lineData: getPredLines(d),
                 highlightLine: isLineHighlighted(d),
-                dotsData: getDots(d)
+                rangeData: getRange(d)
             }
         })
 
-        function getDots(d) {
+        function getRange(d) {
             const banks = data2.filter(el => el.bank === d && el.projectionlow !== '')
-            let dotsData = [];
+            let rangeData = [];
              banks.forEach((bank) => {
                 const column = {};
                 column.name = bank.bank;
                 column.date = Number(bank.projectiondate);
                 column.low = Number(bank.projectionlow);
-                column.high = Number(bank.projectionhigh)
+                column.high = Number(bank.projectionhigh);
+                column.highlightLine = isLineHighlighted(bank.bank);
                 if (bank) {
-                    dotsData.push(column);
+                    rangeData.push(column);
                 }
             })
-             return dotsData
+             return rangeData
         }
 
         function getPredLines(d) {
@@ -120,7 +117,7 @@ export function load([url, url2], options) { // eslint-disable-line
                 column.name = bank.bank;
                 column.date = bank.projectiondate;
                 column.value = +bank.projectionspot;
-                column.highlight = 'to come';
+                column.highlight = isLineHighlighted(bank.bank);
                 column.annotate = 'to come';
                 if (bank.projectionspot) {
                 // if (bank) {
@@ -129,18 +126,13 @@ export function load([url, url2], options) { // eslint-disable-line
             })
             return lineData
         }
-
-        // predData.forEach((d) => {
-        //     plotData.push(d)
-        // })
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
+        console.log (highlightLines)
         plotData = plotData.filter(d => d.highlightLine === false);
 
-
         // Format the data that is used to draw highlight tonal bands
-        const boundaries = data2.filter(d => (d.highlight === 'end'));
-        boundaries.unshift({'projectionspot': '', 'projectionlow':'','projectionhigh':'','notes':'','update': '','date': new Date('2019-03-29T00:00:00.000Z'),'projectiondate': new Date('2019-03-29T00:00:00.000Z'),'highlight': 'begin','bank': '',})
+        const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
 
         boundaries.forEach((d, i) => {

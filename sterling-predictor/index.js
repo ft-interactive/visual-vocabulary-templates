@@ -152,26 +152,20 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .interpolation(interpolation);
         const boundingShape = hull.draw()
 
-        const highlightedLines = colourPalette(frameName);
+        let colourDomain = seriesNames.map(d => d)
+        colourDomain.unshift('other')
+        const colourScale = d3.scaleOrdinal()
+          .domain(colourDomain)
+          .range(Object.values(gChartcolour.mutedFirstLineWeb));
 
-        function colourPalette(d) {
-            const newPalette = d3.scaleOrdinal();
-            if (d === 'social' || d === 'video') {
-                newPalette
-                .domain(highlightNames)
-                .range(Object.values(gChartcolour.lineSocial));
-            }
-            if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                newPalette
-                .domain(highlightNames)
-                .range(Object.values(gChartcolour.lineWeb));
-            }
-            if (d === 'print') {
-                newPalette
-                .domain(highlightNames)
-                .range(Object.values(gChartcolour.linePrint));
-            }
-            return newPalette;
+        if (frameName === 'social' || frameName === 'video') {
+          colourScale.range(Object.values(gChartcolour.mutedFirstLineSocial));
+        }
+        if (frameName === 'webS' || frameName === 'webM' || frameName === 'webMDefault' || frameName === 'webL') {
+          colourScale.range(Object.values(gChartcolour.mutedFirstLineWeb));
+        }
+        if (frameName === 'print') {
+          colourScale.range(Object.values(gChartcolour.mutedFirstLinePrint));
         }
 
         // create a 'g' element at the back of the chart to add time period
@@ -278,7 +272,9 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName));
+          .colourPalette(colourScale);
+
+        console.log(predData)
 
         plotPredictions
           .selectAll('.lines')
@@ -294,7 +290,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette((frameName));
+          .colourPalette(colourScale);
 
         // Draw the lines
         series
@@ -311,7 +307,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .xScale(myXAxis.scale())
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
-          .colourPalette(highlightedLines);
+          .colourPalette(colourScale);
 
 
         currentFrame.plot()
@@ -358,8 +354,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         // Set up legend for this frame
         myLegend
           .frameName(frameName)
-          .seriesNames(seriesNames)
-          .colourPalette((frameName))
+          .seriesNames(colourDomain)
+          .colourPalette(colourScale)
           .rem(myChart.rem())
           .geometry(legendType)
           .alignment(legendAlign);

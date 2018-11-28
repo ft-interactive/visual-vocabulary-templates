@@ -50,14 +50,19 @@ export function draw() {
                 .attr('cy', d => yScale(d.value))
                 .attr('r', rem * 0.2)
                 .attr('fill', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
+                if (highlightNames.length > 0 && d.highlight=== false) {
                     return colourScale.range()[0];
                 }
-                if (highlightNames.length > 0 && d.highlightLine === true) {
+                if (highlightNames.length > 0 && d.highlight=== true) {
                     return colourScale(d.name);
                 } 
                 return colourScale(d.name);
             })
+                .attr('opacity', (d) => {
+                    if (highlightNames.length > 0 && d.highlightLine === false) {
+                        return 0.5;
+                    } return 1;
+                })
 
         }
 
@@ -89,7 +94,7 @@ export function draw() {
         //     });
 
         const range2 = parent.selectAll('line')
-            .data(d => d.dotsData)
+            .data(d => d.rangeData)
             .enter()
         range2.append('line')
             .attr('opacity', 0.6)
@@ -97,27 +102,63 @@ export function draw() {
             .attr('x1', d => xScale(d.date))
             .attr('y2', (d) => yScale(d.low))
             .attr('x2', d => xScale(d.date))
-            .attr('stroke',d => colourScale(d.name))
+            .attr('stroke', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return colourScale.range()[0];
+                }
+                if (highlightNames.length > 0 && d.highlightLine === true) {
+                    return colourScale(d.name);
+                } 
+                return colourScale(d.name);
+            })
             .attr('stroke-width', 1.5)
-            //.attr('class', 'whisker')
+            .attr('opacity', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false) {
+                    return 0.5;
+                } return 1;
+            })
 
         range2.append('line')
             .attr('y1', d => yScale(d.high))
             .attr('x1', d => xScale(d.date) - (boxWidth / 4))
             .attr('y2', d => yScale(d.high))
             .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('stroke',d => colourScale(d.name))
+            .attr('stroke', (d) => {
+                if (highlightNames.length > 0 && d.highlight === false) {
+                    return colourScale.range()[0];
+                }
+                if (highlightNames.length > 0 && d.highlight === true) {
+                    return colourScale(d.name);
+                } 
+                return colourScale(d.name);
+            })
             .attr('stroke-width', 1.5)
-            //.attr('class', 'whisker');
+            .attr('opacity', (d) => {
+                if (highlightNames.length > 0 && d.highlight === false) {
+                    return 0.5;
+                } return 1;
+            })
 
         range2.append('line')
             .attr('y1', d => yScale(d.low))
             .attr('x1', d => xScale(d.date) - (boxWidth / 4))
             .attr('y2', d => yScale(d.low))
             .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('stroke',d => colourScale(d.name))
+            .attr('stroke', (d) => {
+                if (highlightNames.length > 0 && d.highlight === false) {
+                    return colourScale.range()[0];
+                }
+                if (highlightNames.length > 0 && d.highlight === true) {
+                    return colourScale(d.name);
+                } 
+                return colourScale(d.name);
+            })
             .attr('stroke-width', 1.5)
-            //.attr('class', 'whisker');
+            .attr('opacity', (d) => {
+                if (highlightNames.length > 0 && d.highlight === false) {
+                    return 0.5;
+                } return 1;
+            })
 
 
 
@@ -204,24 +245,14 @@ export function draw() {
 
     chart.colourPalette = (d) => {
         if (!d) return colourScale;
-        if (highlightNames.length > 0) {
-            if (d === 'social' || d === 'video') {
-                colourScale.range(gChartcolour.mutedFirstLineSocial);
-            } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-                colourScale.range(gChartcolour.mutedFirstLineWeb);
-            } else if (d === 'print') {
-                colourScale.range(gChartcolour.mutedFirstLinePrint);
-            } else if (d && d.name && d.name === 'scale') {
-                colourScale = d;
-            }
-            return chart;
-        }
         if (d === 'social' || d === 'video') {
             colourScale.range(gChartcolour.lineSocial);
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
-            colourScale.range(gChartcolour.lineWeb);
+            colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };
