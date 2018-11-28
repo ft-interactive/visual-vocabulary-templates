@@ -130,9 +130,9 @@ export function load([url, url2], options) { // eslint-disable-line
             return lineData
         }
 
-        predData.forEach((d) => {
-            plotData.push(d)
-        })
+        // predData.forEach((d) => {
+        //     plotData.push(d)
+        // })
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
         plotData = plotData.filter(d => d.highlightLine === false);
@@ -157,6 +157,7 @@ export function load([url, url2], options) { // eslint-disable-line
             vertices,
             seriesNames,
             plotData,
+            predData,
             highlightLines,
             valueExtent,
             highlights,

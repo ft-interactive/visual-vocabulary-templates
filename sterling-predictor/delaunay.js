@@ -89,17 +89,13 @@ export function draw() {
                 }
             }
             result = result[0]
-            console.log('result',result);
 
             result = result.map((d) => {
-                console.log(d)
                 return {
                     x: d[0],
                     y: d[1],
                 }
             })
-            console.log('result',result);
-            
 
             const lineData = d3.line()
                 .defined(d => d)

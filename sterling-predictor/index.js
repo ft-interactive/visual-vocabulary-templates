@@ -10,7 +10,6 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
-import * as areaChart from './areaChart.js';
 import * as delaunayPlot from './delaunay.js';
 
 //const dataFile =  'data.csv'
@@ -125,7 +124,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
-.then(({data, vertices, seriesNames, plotData, highlightLines, valueExtent, highlights, dateExtent, currentMinMax }) => {
+.then(({data, vertices, seriesNames, plotData, predData, highlightLines, valueExtent, highlights, dateExtent}) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -137,10 +136,16 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const myLegend = gLegend.legend();// sets up the legend
         const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-        const myChart = lineChart.draw()
+        const predictions = lineChart.draw()
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
           .markers(markers)
+          .annotate(annotate)
+          .interpolation(interpolation);
+        const myChart = lineChart.draw()
+          .seriesNames(seriesNames)
+          .highlightNames(highlightNames)
+          .markers(false)
           .annotate(annotate)
           .interpolation(interpolation);
         const myHighLines = lineChart.draw()
@@ -149,7 +154,6 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .markers(markers)
           .annotate(annotate)
           .interpolation(interpolation);
-        const area = areaChart.draw()
         const boundingShape = delaunayPlot.draw()
 
         const highlightedLines = colourPalette(frameName);
@@ -251,7 +255,11 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
+        const plotHull = currentFrame.plot().append('g')
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+        const plotPredictions = currentFrame.plot().append('g')
+        const series = currentFrame.plot().append('g')
+
         
         boundingShape
           .yScale(myYAxis.scale())
@@ -261,13 +269,29 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .colourPalette((frameName))
           .vertices(vertices);
 
-        currentFrame.plot()
+        plotHull
           .selectAll('areas')
           .data([vertices])
           .enter()
           .append('g')
           .attr('class', 'areas')
           .call(boundingShape);
+
+        predictions
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette((frameName));
+
+        plotPredictions
+          .selectAll('.lines')
+          .data(predData)
+          .enter()
+          .append('g')
+          .attr('class', 'lines')
+          .attr('id', d => d.name)
+          .call(predictions);
 
         myChart
           .yScale(myYAxis.scale())
@@ -276,15 +300,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .rem(currentFrame.rem())
           .colourPalette((frameName));
 
-        myHighLines
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette(highlightedLines);
-
         // Draw the lines
-        currentFrame.plot()
+        series
           .selectAll('.lines')
           .data(plotData)
           .enter()
@@ -292,6 +309,14 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .attr('class', 'lines')
           .attr('id', d => d.name)
           .call(myChart);
+
+        myHighLines
+          .yScale(myYAxis.scale())
+          .xScale(myXAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette(highlightedLines);
+
 
         currentFrame.plot()
           .selectAll('.lines.highlighlines')
