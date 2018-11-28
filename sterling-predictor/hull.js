@@ -42,7 +42,8 @@ export function draw() {
             return mean + dev;
         }
 
-        var longEdge = calculateDistance(triangles);
+        var longEdge = stdevDistance(triangles);
+         var longEdge = rem * 11.99
 
         let mesh = triangles.filter(function (d) {
         return distance(d[0],d[1]) < longEdge && distance(d[0],d[2]) < longEdge && distance(d[1],d[2]) < longEdge
