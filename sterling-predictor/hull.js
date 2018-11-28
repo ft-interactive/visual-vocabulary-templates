@@ -19,7 +19,6 @@ export function draw() {
             return [xScale(d[0]),yScale(d[1])]
         })
         let calculateDistance = stdevDistance
-        let padding = 0
  
         let triangles =d3.voronoi().triangles(vertices);
         
