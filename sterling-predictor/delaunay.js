@@ -88,19 +88,27 @@ export function draw() {
                     }
                 }
             }
+            result = result[0]
+            console.log('result',result);
+
+            result = result.map((d) => {
+                console.log(d)
+                return {
+                    x: d[0],
+                    y: d[1],
+                }
+            })
+            console.log('result',result);
             
-            console.log(result)
 
             const lineData = d3.line()
                 .defined(d => d)
                 .curve(d3.curveLinear)
-                .x(d => xScale(d[0]))
-                .y(d => yScale(d[1]));
+                .x(d => d.x)
+                .y(d => d.y);
 
-            parent.append('path')
+            let hull = parent.append('path')
                 .attr('fill', '#FCE6D6')
-                .attr('opacity',0.5)
-                .attr('stroke', '#000000')
                 .attr('d',  d => lineData(result));
 
         } 
