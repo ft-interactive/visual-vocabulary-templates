@@ -10,7 +10,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
-import * as delaunayPlot from './delaunay.js';
+import * as hull from './hull.js';
 
 //const dataFile =  'data.csv'
 const dataFile =  'https://ig.ft.com/autograph/data/gbpusd-ref.csv'
@@ -45,7 +45,6 @@ const numTicksy = 7;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
-const annotate = true; // show annotations, defined in the 'annotate' column
 const markers = true;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
@@ -56,7 +55,7 @@ const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
-const turnWidth = 6.5
+// const turnWidth = 6.5
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -140,21 +139,18 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
           .markers(markers)
-          .annotate(annotate)
           .interpolation(interpolation);
         const myChart = lineChart.draw()
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
           .markers(false)
-          .annotate(annotate)
           .interpolation(interpolation);
         const myHighLines = lineChart.draw()
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
           .markers(markers)
-          .annotate(annotate)
           .interpolation(interpolation);
-        const boundingShape = delaunayPlot.draw()
+        const boundingShape = hull.draw()
 
         const highlightedLines = colourPalette(frameName);
 

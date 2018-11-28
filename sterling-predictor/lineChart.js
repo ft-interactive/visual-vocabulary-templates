@@ -10,8 +10,6 @@ export function draw() {
     let highlightNames = [];
     let yAxisAlign = 'right';
     let markers = false;
-    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
-    let annotate = false; // eslint-disable-line
     let interpolation = d3.curveLinear;
     let colourScale = d3.scaleOrdinal()
     // .range(gChartcolour.lineWeb)
@@ -192,11 +190,6 @@ export function draw() {
         return chart;
     };
 
-    chart.annotate = (d) => {
-        annotate = d;
-        return chart;
-    };
-
     chart.markers = (d) => {
         if (typeof d === 'undefined') return markers;
         markers = d;
@@ -286,53 +279,4 @@ export function drawHighlights() {
     };
 
     return highlights;
-}
-
-export function drawAnnotations() {
-    let yScale = d3.scaleLinear();
-    let xScale = d3.scaleTime();
-
-    function annotations(parent) {
-        parent.append('line')
-      .attr('class', 'annotation')
-      .attr('x1', d => xScale(d.date))
-      .attr('x2', d => xScale(d.date))
-      .attr('y1', yScale.range()[0])
-      .attr('y2', yScale.range()[1] - 5);
-
-        parent.append('text')
-      .attr('class', 'annotation')
-      .attr('text-anchor', 'middle')
-      .attr('x', d => xScale(d.date))
-      .attr('y', yScale.range()[1] - (rem / 2))
-      .text(d => d.annotate);
-    }
-
-    annotations.yScale = (d) => {
-        yScale = d;
-        return annotations;
-    };
-
-    annotations.xScale = (d) => {
-        xScale = d;
-        return annotations;
-    };
-
-    annotations.yRange = (d) => {
-        yScale.range(d);
-        return annotations;
-    };
-
-    annotations.xRange = (d) => {
-        xScale.range(d);
-        return annotations;
-    };
-
-    annotations.rem = (d) => {
-        if (!d) return rem;
-        rem = d;
-        return annotations;
-    };
-
-    return annotations;
 }
