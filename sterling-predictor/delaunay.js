@@ -11,6 +11,13 @@ export function draw() {
         .domain(seriesNames);
     let vertices = [];
     let rem = 10;
+    let calculateDistance = stdevDistance
+    let padding = 0;
+    let distance(a, b) {
+            let dx = a[0]-b[0]
+            let dy = a[1]-b[1];
+            return Math.sqrt((dx * dx) + (dy * dy));
+        }
 
     function chart(parent) {
         //vertices values created in earlier code, le
@@ -18,8 +25,6 @@ export function draw() {
             //console.log(d)
             return [xScale(d[0]),yScale(d[1])]
         })
-        let calculateDistance = stdevDistance
-        let padding = 0
  
         let triangles =d3.voronoi().triangles(vertices);
         
@@ -44,6 +49,7 @@ export function draw() {
         }
 
         var longEdge = calculateDistance(triangles);
+
 
         let mesh = triangles.filter(function (d) {
         return distance(d[0],d[1]) < longEdge && distance(d[0],d[2]) < longEdge && distance(d[1],d[2]) < longEdge
@@ -122,6 +128,15 @@ export function draw() {
         yAxisAlign = d;
         return chart;
     };
+
+    chart.distance = (d) => {
+      if (!d) return calculateDistance;
+      calculateDistance = newDistance;
+      if (typeof d === "number") {
+        calculateDistance =(d) => {return d};
+      }
+      return chart;
+    }
 
     chart.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;

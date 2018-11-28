@@ -10,7 +10,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
-import * as hull from './hull.js';
+import concaveHullGenerator from './concaveHull.js';
 
 //const dataFile =  'data.csv'
 const dataFile =  'https://ig.ft.com/autograph/data/gbpusd-ref.csv'
@@ -36,7 +36,6 @@ const sharedConfig = {
     subtitle: 'Subhead',
     source: 'Source not yet added',
 };
-
 const yMin = 1.2;// sets the minimum value on the yAxis
 const yMax = 1.5;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
@@ -150,7 +149,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .highlightNames(highlightNames)
           .markers(markers)
           .interpolation(interpolation);
-        const boundingShape = hull.draw()
+
+        const concaveHull = concaveHullGenerator().distance(200);
 
         let colourDomain = seriesNames.map(d => d)
         colourDomain.unshift('other')
@@ -250,22 +250,19 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const plotPredictions = currentFrame.plot().append('g')
         const series = currentFrame.plot().append('g')
 
-        
-        boundingShape
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette((frameName))
-          .vertices(vertices);
+        const hulls = concaveHull(vertices.map((d) => {
+            return [myXAxis.scale()(d[0]),myYAxis.scale()(d[1])]
+        })); 
+        console.dir(hulls)
 
+        var drawLine = d3.line().curve(d3.curveLinear);
         plotHull
-          .selectAll('areas')
-          .data([vertices])
+          .selectAll('.hulls')
+          .data(hulls)
           .enter()
-          .append('g')
-          .attr('class', 'areas')
-          .call(boundingShape);
+          .append('path').classed('hull', true)
+          .attr('fill', '#FCE6D6')
+          .attr('d', function(points){ return drawLine(points); })
 
         predictions
           .yScale(myYAxis.scale())
@@ -273,8 +270,6 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette(colourScale);
-
-        console.log(predData)
 
         plotPredictions
           .selectAll('.lines')
@@ -309,21 +304,6 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .rem(currentFrame.rem())
           .colourPalette(colourScale);
 
-
-        currentFrame.plot()
-          .selectAll('.lines.highlighlines')
-          .data(highlightLines)
-          .enter()
-          .append('g')
-          .attr('class', 'lines highlighlines')
-          .attr('id', d => d.name)
-          .call(myHighLines);
-
-        // Set up highlights for this frame
-        myHighlights
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .invertScale(invertScale);
 
         // Draw the highlights before the lines and xAxis
         // axisHighlight
