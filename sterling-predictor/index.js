@@ -52,7 +52,6 @@ const highlightNames = []; // create an array names you want to highlight eg. ['
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
-const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 // const turnWidth = 6.5
 
