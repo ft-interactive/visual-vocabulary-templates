@@ -53,6 +53,7 @@ const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAft
 const invertScale = false;
 const logScale = false;
 const intraday = false;
+const excludeSize = 3.3 //Number between 0 and 10
 // const turnWidth = 6.5
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
@@ -149,7 +150,10 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .markers(markers)
           .interpolation(interpolation);
 
-        const concaveHull = concaveHullGenerator().distance(200);
+        const hullScale =  d3.scaleLinear()
+            .range([0, currentFrame.dimension().width])
+            .domain([0,10])
+        const concaveHull = concaveHullGenerator().distance(hullScale(excludeSize));
 
         let colourDomain = seriesNames.map(d => d)
         colourDomain.unshift('other')
@@ -174,16 +178,16 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         // create a 'g' element behind the chart and in front of the highlights
 
         myYAxis
-          .divisor(divisor)
-          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-          .range([currentFrame.dimension().height, 0])
-          .numTicks(numTicksy)
-          .tickSize(tickSize)
-          .yAxisHighlight(yAxisHighlight)
-          .align(yAxisAlign)
-          .frameName(frameName)
-          .invert(invertScale)
-          .logScale(logScale);
+            .divisor(divisor)
+            .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+            .range([currentFrame.dimension().height, 0])
+            .numTicks(numTicksy)
+            .tickSize(tickSize)
+            .yAxisHighlight(yAxisHighlight)
+            .align(yAxisAlign)
+            .frameName(frameName)
+            .invert(invertScale)
+            .logScale(logScale);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
@@ -218,17 +222,17 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
 
         // Set up xAxis for this frame
         myXAxis
-          .domain(xDomain)
-          .range([0, currentFrame.dimension().width])
-          .align(xAxisAlign)
-          .fullYear(false)
-          .interval(interval)
-          .tickSize(currentFrame.rem() * 0.75)
-          .minorAxis(minorAxis)
-          .minorTickSize(currentFrame.rem() * 0.3)
-          .fullYear(false)
-          .frameName(frameName)
-          .intraday(intraday);
+            .domain(xDomain)
+            .range([0, currentFrame.dimension().width])
+            .align(xAxisAlign)
+            .fullYear(false)
+            .interval(interval)
+            .tickSize(currentFrame.rem() * 0.75)
+            .minorAxis(minorAxis)
+            .minorTickSize(currentFrame.rem() * 0.3)
+            .fullYear(false)
+            .frameName(frameName)
+            .intraday(intraday);
 
         // Draw the xAxis
         currentFrame.plot()
@@ -257,52 +261,52 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
 
         let drawLine = d3.line().curve(d3.curveLinear);
         plotHull
-          .selectAll('.hulls')
-          .data(hulls)
-          .enter()
-          .append('path').classed('hull', true)
-          .attr('fill', '#FCE6D6')
-          .attr('d', d => { return drawLine(d); })
+            .selectAll('.hulls')
+            .data(hulls)
+            .enter()
+            .append('path').classed('hull', true)
+            .attr('fill', '#FCE6D6')
+            .attr('d', d => { return drawLine(d); })
 
         predictions
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette(colourScale);
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette(colourScale);
 
         plotPredictions
-          .selectAll('.lines')
-          .data(predData)
-          .enter()
-          .append('g')
-          .attr('class', 'lines')
-          .attr('id', d => d.name)
-          .call(predictions);
+            .selectAll('.lines')
+            .data(predData)
+            .enter()
+            .append('g')
+            .attr('class', 'lines')
+            .attr('id', d => d.name)
+            .call(predictions);
 
         myChart
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette(colourScale);
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette(colourScale);
 
         // Draw the lines
         series
-          .selectAll('.lines')
-          .data(plotData)
-          .enter()
-          .append('g')
-          .attr('class', 'lines')
-          .attr('id', d => d.name)
-          .call(myChart);
+            .selectAll('.lines')
+            .data(plotData)
+            .enter()
+            .append('g')
+            .attr('class', 'lines')
+            .attr('id', d => d.name)
+            .call(myChart);
 
         myHighLines
-          .yScale(myYAxis.scale())
-          .xScale(myXAxis.scale())
-          .plotDim(currentFrame.dimension())
-          .rem(currentFrame.rem())
-          .colourPalette(colourScale);
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette(colourScale);
 
 
         // Draw the highlights before the lines and xAxis
