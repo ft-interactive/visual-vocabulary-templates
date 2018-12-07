@@ -125,7 +125,7 @@ parseData.load(dataFile, {
     dateFormat, xMin, joinPoints, highlightNames,
 })
     .then(({
-        seriesNames, data, plotData, valueExtent, highlights, annos,
+        seriesNames, data, plotData, valueExtent, highlights, annotations,
     }) => {
         Object.keys(frame).forEach((frameName) => {
             const currentFrame = frame[frameName];
@@ -289,18 +289,18 @@ parseData.load(dataFile, {
 
 
             // Set up highlights for this frame
-            myAnnotations
-                .yScale(myYAxis.scale())
-                .xScale(myXAxis.scale())
-                .rem(currentFrame.rem());
+            // myAnnotations
+            //     .yScale(myYAxis.scale())
+            //     .xScale(myXAxis.scale())
+            //     .rem(currentFrame.rem());
 
-            // Draw the annotations before the lines
-            plotAnnotation
-                .selectAll('.annotation')
-                .data(annos)
-                .enter()
-                .append('g')
-                .call(myAnnotations);
+            // // Draw the annotations before the lines
+            // plotAnnotation
+            //     .selectAll('.annotation')
+            //     .data(annotations)
+            //     .enter()
+            //     .append('g')
+            //     .call(myAnnotations);
 
 
             // Set up legend for this frame

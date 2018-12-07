@@ -43,43 +43,25 @@ export function load(url, options) { // eslint-disable-line
         };
         if (highlightNames.length > 0) { plotData.sort(dataSorter); }
 
-        // Filter data for annotations
-        // Filter data for annotations
-        const annotations = data.filter((d) => {return d.annotate != ''});
-        //checks that annotation have a type, if non defined then defaults to 'threshold'
-        annotations.forEach((d) => {
-            d.type = testType(d)
-        })
-        function testType(d) {
-            if (d.type === '' || d.type === undefined || d.type === null) {
-                return 'threshold'
-            }
-            else {return d.type}
-        }
-
-        //create an array of listing unique annotations types
-        const anoTypes = annotations.map( d => d.type)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        //builds annotation dataset as grouped by type
-        const annos = anoTypes.map(d => ({
-            type: d,
-            annotations: getAnnotations(d),
-        }));
-
-        function getAnnotations(el) {
-            const types = data.filter(d => (d.type === el))
-            .map((d) => {
+        //create an array of annotations
+        const annotations = data.filter(d =>
+                d.annotate != '' && d.annotate !== undefined)
+            .map((el) => {
                 return {
-                    title: d.annotate,
+                   title: el.annotate,
                     //note: '',
-                    targetX: d[plotData[0].name],
-                    targetY: d.date,
+                    targetX: el[plotData[0].name],
+                    targetY: el.date,
                     radius: 0,
-                    type: d.type,
+                    type: getType(el.type),
                 }
-            })
-            return types
+            });
+
+        function getType(type) {
+            if (type !== '') {
+                return type
+            }
+            return 'horizontal'
         }
 
         // Format the data that is used to draw highlight tonal bands
@@ -98,7 +80,7 @@ export function load(url, options) { // eslint-disable-line
             data,
             valueExtent,
             highlights,
-            annos,
+            annotations,
         };
     });
 }
@@ -110,7 +92,7 @@ export function load(url, options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date', 'annotate', 'highlight'];
+    const exclude = ['date', 'annotate', 'highlight', 'type'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
@@ -160,10 +142,6 @@ export function getlines(d, group, joinPoints) {
         if (el[group]) {
             lineData.push(column);
         }
-
-        // if(el[group] == false) {
-        //     lineData.push(null)
-        // }
         if (el[group] === false && joinPoints === false) {
             lineData.push(null);
         }
