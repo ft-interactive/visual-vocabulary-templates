@@ -120,7 +120,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
-.then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, annos }) => {
+.then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, annotations }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -293,20 +293,20 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .call(myHighlights);
 
         //Set up highlights for this frame
-        myAnnotations
-          .xScale(myXAxis.scale())
-          .yScale(myYAxis.scale())
-          .frameName(frameName)
-          .lineWidth(currentFrame.rem() * turnWidth)
-          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+        // myAnnotations
+        //   .xScale(myXAxis.scale())
+        //   .yScale(myYAxis.scale())
+        //   .frameName(frameName)
+        //   .lineWidth(currentFrame.rem() * turnWidth)
+        //   .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
-        // Draw the annotations before the lines
-        plotAnnotation
-            .selectAll('.annotations')
-            .data(annos)
-            .enter()
-            .append('g')
-            .call(myAnnotations)
+        // // Draw the annotations before the lines
+        // plotAnnotation
+        //     .selectAll('.annotations')
+        //     .data(annotations)
+        //     .enter()
+        //     .append('g')
+        //     .call(myAnnotations)
 
 
         // Set up legend for this frame
