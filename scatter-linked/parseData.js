@@ -71,7 +71,7 @@ export function load(url, options) { // eslint-disable-line
             if (type !== '') {
                 return type
             }
-            return 'vertical'
+            return 'curve'
         }
 
         function getAnnotations(el) {
