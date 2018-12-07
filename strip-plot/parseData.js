@@ -55,42 +55,24 @@ export function load(url, options) { // eslint-disable-line
         } // Sorts biggest rects to the left
 
         // Filter data for annotations
-        const annotations = data.filter((d) => {return d.highlight === 'yes'});
-        //checks that annotation have a type, if non defined then defaults to 'curve'
-        annotations.forEach((d) => {
-            d.type = testType(d)
-        })
-        function testType(d) {
-            if (d.type === '' || d.type === undefined || d.type === null) {
-                return 'curve'
-            }
-            else {return d.type}
-        }
-
-        //create an array of listing unique annotations types
-        const anoTypes = annotations.map( d => d.type)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        //builds annotation dataset as grouped by type
-        const annos = anoTypes.map(d => ({
-            type: d,
-            annotations: getAnnotations(d),
-        }));
-
-        function getAnnotations(el) {
-            const types = data.filter(d => (d.type === el))
-            .map((d) => {
+        const annotations = data.filter((d) => {return d.highlight === 'yes'})
+            .map((el) => {
                 let formatComma = d3.format(",")
                 return {
-                    title: d.name + ' ' + formatComma(d.value),
+                    title: el.name + ' ' + formatComma(el.value),
                     //note: '',
-                    targetX: Number(d.value),
-                    targetY: d.group,
+                    targetX: Number(el.value),
+                    targetY: el.group,
                     radius: 125,
-                    type: d.type,
+                    type: getType(el.type),
                 }
-            })
-            return types
+            });
+
+        function getType(type) {
+            if (type !== '') {
+                return type
+            }
+            return 'curve'
         }
 
         return {
@@ -99,7 +81,7 @@ export function load(url, options) { // eslint-disable-line
             seriesNames,
             plotData,
             data,
-            annos,
+            annotations,
         };
     });
 }

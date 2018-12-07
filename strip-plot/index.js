@@ -102,7 +102,7 @@ d3.selectAll('.framed')
 
 parseData.load(dataURL, { sort, sortOn })
     .then(({
-        groupNames, plotData, valueExtent, data, annos,
+        groupNames, plotData, valueExtent, data, annotations,
     }) => { // eslint-disable-line no-unused-vars
     // Draw the frames
         Object.keys(frame).forEach((frameName) => {
@@ -234,27 +234,27 @@ parseData.load(dataURL, { sort, sortOn })
                     .attr('class', 'quantiles dotHighlight axis xAxis')
                     .call(myQuartiles);
             }
-            annos.map((d) => {
-                d.annotations.forEach((el) => {
-                    el.radius = currentFrame.rem()* 0.5
-                })
+            // annotations.map((d) => {
+            //     d.annotations.forEach((el) => {
+            //         el.radius = currentFrame.rem()* 0.5
+            //     })
 
-            });
+            // });
 
-            myAnnotations
-                .xScale(xAxis.scale())
-                .yScale(yAxis.scale())
-                .frameName(frameName)
-                .lineWidth(currentFrame.rem() * turnWidth)
-                .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+            // myAnnotations
+            //     .xScale(xAxis.scale())
+            //     .yScale(yAxis.scale())
+            //     .frameName(frameName)
+            //     .lineWidth(currentFrame.rem() * turnWidth)
+            //     .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
-            // Draw the annotations before the lines
-            plotAnnotation
-                .selectAll('.annotations')
-                .data(annos)
-                .enter()
-                .append('g')
-                .call(myAnnotations)
+            // // Draw the annotations before the lines
+            // plotAnnotation
+            //     .selectAll('.annotations')
+            //     .data(annotations)
+            //     .enter()
+            //     .append('g')
+            //     .call(myAnnotations)
 
         });
     // addSVGSavers('figure.saveable');
