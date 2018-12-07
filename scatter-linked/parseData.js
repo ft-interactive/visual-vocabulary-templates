@@ -55,27 +55,24 @@ export function load(url, options) { // eslint-disable-line
 
 
          // Filter data for annotations
-        const annotations = data.filter((d) => {return d.label === 'yes'});
-        //checks that annotation have a type, if non defined then defaults to 'curve'
-        annotations.forEach((d) => {
-            d.type = testType(d)
-        })
-        function testType(d) {
-            if (d.type === '' || d.type === undefined || d.type === null) {
-                return 'curve'
+        const annotations = data.filter((d) => {return d.label === 'yes'})
+            .map((el) => {
+                return {
+                    title: el.annotation,
+                    //note: '',
+                    targetX: Number(el[xVar]),
+                    targetY: Number(el[yVar]),
+                    radius: Number(el[sizeVar]),
+                    type: getType(el.type),
+                }
+            });
+
+        function getType(type) {
+            if (type !== '') {
+                return type
             }
-            else {return d.type}
+            return 'vertical'
         }
-
-        //create an array of listing unique annotations types
-        const anoTypes = annotations.map( d => d.type)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        //builds annotation dataset as grouped by type
-        const annos = anoTypes.map(d => ({
-            type: d,
-            annotations: getAnnotations(d),
-        }));
 
         function getAnnotations(el) {
             const types = data.filter(d => (d.type === el))
@@ -99,7 +96,7 @@ export function load(url, options) { // eslint-disable-line
             sizeExtent,
             data,
             plotData,
-            annos,
+            annotations,
         };
 
         function getlines(d, group) {
