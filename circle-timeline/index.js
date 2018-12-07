@@ -89,7 +89,7 @@ d3.selectAll('.framed')
     });
 
 parseData.load(dataFile, { dateFormat })
-.then(({ valueExtent, seriesNames, plotData, dateDomain, annos}) => {
+.then(({ valueExtent, seriesNames, plotData, dateDomain, annotations}) => {
     // make sure all the dates in the date column are a date object
     // var parseDate = d3.timeParse("%d/%m/%Y")
     // data.forEach(function(d) {
