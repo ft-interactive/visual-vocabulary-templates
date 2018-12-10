@@ -46,15 +46,15 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const markers = true;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
-const legendType = 'circ';// rect, line or circ, geometry of legend marker
+const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
-const highlightNames = ['value', 'HSBC']; // create an array names you want to highlight eg. ['series1','series2']
+const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
 const intraday = false;
 const excludeSize = 4.0 //Number between 0 and 10
-const shading = true
+const shading = false
 const lines = true
 const turnWidth = 6.5
 
@@ -140,7 +140,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
           .markers(markers)
-          .interpolation(interpolation);
+          .interpolation(interpolation)
+          .lines(lines);
         const myChart = lineChart.draw()
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
@@ -162,8 +163,6 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const colourScale = d3.scaleOrdinal()
           .domain(colourDomain)
           .range(Object.values(gChartcolour.mutedFirstLineWeb));
-
-        // console.log(colourDomain)
 
         if (frameName === 'social' || frameName === 'video') {
           colourScale.range(Object.values(gChartcolour.mutedFirstLineSocial));
@@ -275,7 +274,6 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         }
 
         predictions
-            .lines(lines)
             .yScale(myYAxis.scale())
             .xScale(myXAxis.scale())
             .plotDim(currentFrame.dimension())
@@ -337,7 +335,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         // Draw the annotations before the lines
         plotAnnotation
             .selectAll('.annotations')
-            .data(annos)
+            .data([annos])
             .enter()
             .append('g')
             .call(myAnnotations)

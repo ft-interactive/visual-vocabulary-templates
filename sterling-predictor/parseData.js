@@ -137,6 +137,7 @@ export function load([url, url2], options) { // eslint-disable-line
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
         console.log (highlightLines)
+       
 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
@@ -150,24 +151,22 @@ export function load([url, url2], options) { // eslint-disable-line
 
         seriesNames = seriesNames.concat(predNames);
         // Adds Brexit datw
-        const annos = []
-        annos.push (
-            {type: 'threshold',annotations: getAnnotations()},
-            {type: 'curve',annotations: []},
-            {type: 'elbow',annotations: []},
-        );
+        const annos = {
+            type: 'threshold',
+            annotations: getAnnotations(),
+        };
 
         console.log(annos)
 
         function getAnnotations() {
-            const types = {
+            const types = [{
                     title: 'Brexit',
                     //note: '',
                     targetX: new Date('March 29, 2019 00:00:00'),
                     targetY: 1.5,
                     radius: 0,
                     type: 'threshold',
-                }
+                }]
             // const types = data.filter(d => (d.type === el))
             // .map((d) => {
             //     return {
