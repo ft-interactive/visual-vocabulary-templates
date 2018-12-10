@@ -15,6 +15,7 @@ export function draw() {
     // .range(gChartcolour.lineWeb)
     .domain(seriesNames);
     let boxWidth = 20;
+    let lines = true;
 
     function chart(parent) {
         const lineData = d3.line()
@@ -23,7 +24,8 @@ export function draw() {
         .x(d => xScale(d.date))
         .y(d => yScale(d.value));
 
-        parent.append('path')
+        if(lines) {
+            parent.append('path')
             .attr('stroke', (d) => {
                 if (highlightNames.length > 0 && d.highlightLine === false) {
                     return colourScale.range()[0];
@@ -39,6 +41,8 @@ export function draw() {
                 } return 1;
             })
             .attr('d', d => lineData(d.lineData));
+
+        }
         
         if (markers) {
             parent.selectAll('circle')
@@ -48,7 +52,7 @@ export function draw() {
                 .attr('id', d => `date: ${d.date} value: ${d.value}`)
                 .attr('cx', d => xScale(d.date))
                 .attr('cy', d => yScale(d.value))
-                .attr('r', rem * 0.2)
+                .attr('r', rem * 0.3)
                 .attr('fill', (d) => {
                 if (highlightNames.length > 0 && d.highlight=== false) {
                     return colourScale.range()[0];
@@ -177,18 +181,6 @@ export function draw() {
         return chart;
     };
 
-    chart.yDomain = (d) => {
-        if (typeof d === 'undefined') return yScale.domain();
-        yScale.domain(d);
-        return chart;
-    };
-
-    chart.yRange = (d) => {
-        if (typeof d === 'undefined') return yScale.range();
-        yScale.range(d);
-        return chart;
-    };
-
     chart.highlightNames = (d) => {
         if (!d) return highlightNames;
         highlightNames = d;
@@ -207,15 +199,9 @@ export function draw() {
         return chart;
     };
 
-    chart.xDomain = (d) => {
-        if (typeof d === 'undefined') return xScale.domain();
-        xScale.domain(d);
-        return chart;
-    };
-
-    chart.xRange = (d) => {
-        if (typeof d === 'undefined') return xScale.range();
-        xScale.range(d);
+    chart.lines = (d) => {
+         if (typeof d === 'undefined') return lines;
+        lines = d;
         return chart;
     };
 

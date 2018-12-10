@@ -133,11 +133,10 @@ export function load([url, url2], options) { // eslint-disable-line
         ///possible other method
         const lastDate = data[data.length-1].date
         console.log(lastDate)
-        console.log ('plotData', plotData)
+
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
-        console.log ('highlightLines', highlightLines)
-        //plotData = plotData.filter(d => d.highlightLine === false);
+        console.log (highlightLines)
 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
@@ -151,10 +150,12 @@ export function load([url, url2], options) { // eslint-disable-line
 
         seriesNames = seriesNames.concat(predNames);
         // Adds Brexit datw
-        const annos = {
-            type: 'threshold',
-            annotations: getAnnotations(),
-        };
+        const annos = []
+        annos.push (
+            {type: 'threshold',annotations: getAnnotations()},
+            {type: 'curve',annotations: []},
+            {type: 'elbow',annotations: []},
+        );
 
         console.log(annos)
 

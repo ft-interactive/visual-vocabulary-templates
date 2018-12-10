@@ -46,15 +46,16 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const markers = true;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
-const legendType = 'line';// rect, line or circ, geometry of legend marker
+const legendType = 'circ';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
-const highlightNames = ['value','HSBC','Barclays']; // create an array names you want to highlight eg. ['series1','series2']
+const highlightNames = ['value', 'HSBC']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
 const intraday = false;
 const excludeSize = 4.0 //Number between 0 and 10
 const shading = true
+const lines = true
 const turnWidth = 6.5
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
@@ -162,7 +163,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .domain(colourDomain)
           .range(Object.values(gChartcolour.mutedFirstLineWeb));
 
-        console.log(colourDomain)
+        // console.log(colourDomain)
 
         if (frameName === 'social' || frameName === 'video') {
           colourScale.range(Object.values(gChartcolour.mutedFirstLineSocial));
@@ -274,6 +275,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         }
 
         predictions
+            .lines(lines)
             .yScale(myYAxis.scale())
             .xScale(myXAxis.scale())
             .plotDim(currentFrame.dimension())
@@ -294,7 +296,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             .xScale(myXAxis.scale())
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
-            .colourPalette(colourScale);
+            .colourPalette(colourScale)
+            .lines(true);
 
         // Draw the lines
         series
