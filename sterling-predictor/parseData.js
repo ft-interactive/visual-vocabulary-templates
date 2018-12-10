@@ -25,6 +25,7 @@ export function load([url, url2], options) { // eslint-disable-line
         
         const parseDate = d3.timeParse(dateFormat);
 
+        //makes sure moth datasets have correct date formats
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
@@ -37,13 +38,19 @@ export function load([url, url2], options) { // eslint-disable-line
             d.annotate = d.annotate;
         });
 
+        //calculates the average when a range is given so a single point can be plotted on a line
         function getSpot(d) {
+            // if(d.projectionlow) {
+            //     console.log(d.projectionlow, d.projectionlow);
+            //     return (Number(d.projectionlow) + Number(d.projectionhigh)) / 2
+            // }
             return d.projectionspot
         }
 
         data2.sort((a, b) => a.date - b.date);
         let vertices = []
-        
+
+        //Pushes each prediction point and rane as a set of coordinates to the vertices array, this is so the concave hull can be calculated if theshaded area is wanted
         data2.forEach((d,i) => {
             if (d.projectionlow !== '') {
                     vertices.push([d.projectiondate, Number(d.projectionlow)])
@@ -57,11 +64,8 @@ export function load([url, url2], options) { // eslint-disable-line
 
         });
 
-        //console.log('vertices', vertices)
-        // console.log('data', data)
-        // console.log('data2', data2)
-
         let seriesNames = getSeriesNames(data.columns);
+        //get the names of unique each bank
         const predNames = data2.map( d => d.bank)
             .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
 
@@ -126,6 +130,10 @@ export function load([url, url2], options) { // eslint-disable-line
             })
             return lineData
         }
+        ///possible other method
+        const lastDate = data[data.length-1].date
+        console.log(lastDate)
+
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
         console.log (highlightLines)
@@ -142,6 +150,36 @@ export function load([url, url2], options) { // eslint-disable-line
         });
 
         seriesNames = seriesNames.concat(predNames);
+        // Adds Brexit datw
+        const annos = {
+            type: 'threshold',
+            annotations: getAnnotations(),
+        };
+
+        console.log(annos)
+
+        function getAnnotations() {
+            const types = {
+                    title: 'Brexit',
+                    //note: '',
+                    targetX: new Date('March 29, 2019 00:00:00'),
+                    targetY: 1.5,
+                    radius: 0,
+                    type: 'threshold',
+                }
+            // const types = data.filter(d => (d.type === el))
+            // .map((d) => {
+            //     return {
+            //         title: d.annotate,
+            //         //note: '',
+            //         targetX: d.date,
+            //         targetY: d[plotData[0].name],
+            //         radius: 0,
+            //         type: d.type,
+            //     }
+            // })
+            return types
+        }
 
 
         return {
@@ -154,7 +192,7 @@ export function load([url, url2], options) { // eslint-disable-line
             valueExtent,
             highlights,
             dateExtent,
-            // annos,
+            annos,
         };
     });
 }

@@ -33,11 +33,11 @@ const dateFormat = '%Y-%m-%d';
 
 const sharedConfig = {
     title: 'Sterling against US$',
-    subtitle: 'Subhead',
-    source: 'Source not yet added',
+    subtitle: 'Sterling against US$',
+    source: 'Source: Bloomberg; FT research',
 };
 const yMin = 1.2;// sets the minimum value on the yAxis
-const yMax = 1.5;// sets the maximum value on the xAxis
+const yMax = 1.55;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 7;// Number of tick on the uAxis
@@ -48,13 +48,14 @@ const markers = true;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
-const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
+const highlightNames = ['value','HSBC','Barclays']; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
 const intraday = false;
-const excludeSize = 3.3 //Number between 0 and 10
-// const turnWidth = 6.5
+const excludeSize = 4.0 //Number between 0 and 10
+const shading = true
+const turnWidth = 6.5
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -122,7 +123,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
-.then(({data, vertices, seriesNames, plotData, predData, highlightLines, valueExtent, highlights, dateExtent}) => {
+.then(({data, vertices, seriesNames, plotData, predData, highlightLines, valueExtent, highlights, dateExtent, annos}) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -130,7 +131,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
-        // const myAnnotations = annotation.annotations();// sets up annotations
+        const myAnnotations = annotation.annotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
@@ -160,6 +161,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const colourScale = d3.scaleOrdinal()
           .domain(colourDomain)
           .range(Object.values(gChartcolour.mutedFirstLineWeb));
+
+        console.log(colourDomain)
 
         if (frameName === 'social' || frameName === 'video') {
           colourScale.range(Object.values(gChartcolour.mutedFirstLineSocial));
@@ -252,21 +255,22 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const plotHull = currentFrame.plot().append('g')
         const plotPredictions = currentFrame.plot().append('g')
         const series = currentFrame.plot().append('g')
-        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+        const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder'); 
 
-
-        const hulls = concaveHull(vertices.map((d) => {
-            return [myXAxis.scale()(d[0]),myYAxis.scale()(d[1])]
-        })); 
-
-        let drawLine = d3.line().curve(d3.curveLinear);
-        plotHull
-            .selectAll('.hulls')
-            .data(hulls)
-            .enter()
-            .append('path').classed('hull', true)
-            .attr('fill', '#FCE6D6')
-            .attr('d', d => { return drawLine(d); })
+        //draws the shaded bounding box for the data if sahading is true
+        if(shading) {
+            const hulls = concaveHull(vertices.map((d) => {
+                return [myXAxis.scale()(d[0]),myYAxis.scale()(d[1])]
+            }));
+            let drawLine = d3.line().curve(d3.curveLinear);
+            plotHull
+                .selectAll('.hulls')
+                .data(hulls)
+                .enter()
+                .append('path').classed('hull', true)
+                .attr('fill', '#FCE6D6')
+                .attr('d', d => { return drawLine(d); })
+        }
 
         predictions
             .yScale(myYAxis.scale())
@@ -318,21 +322,21 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         //   .attr('class', 'highlights')
         //   .call(myHighlights);
 
-        // //Set up highlights for this frame
-        // myAnnotations
-        //   .xScale(myXAxis.scale())
-        //   .yScale(myYAxis.scale())
-        //   .frameName(frameName)
-        //   .lineWidth(currentFrame.rem() * turnWidth)
-        //   .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+        //Set up highlights for this frame
+        myAnnotations
+          .xScale(myXAxis.scale())
+          .yScale(myYAxis.scale())
+          .frameName(frameName)
+          .lineWidth(currentFrame.rem() * turnWidth)
+          .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
 
-        // // Draw the annotations before the lines
-        // plotAnnotation
-        //     .selectAll('.annotations')
-        //     .data(annos)
-        //     .enter()
-        //     .append('g')
-        //     .call(myAnnotations)
+        // Draw the annotations before the lines
+        plotAnnotation
+            .selectAll('.annotations')
+            .data(annos)
+            .enter()
+            .append('g')
+            .call(myAnnotations)
 
 
         // Set up legend for this frame
