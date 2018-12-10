@@ -133,11 +133,11 @@ export function load([url, url2], options) { // eslint-disable-line
         ///possible other method
         const lastDate = data[data.length-1].date
         console.log(lastDate)
-
+        console.log ('plotData', plotData)
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
-        console.log (highlightLines)
-        plotData = plotData.filter(d => d.highlightLine === false);
+        console.log ('highlightLines', highlightLines)
+        //plotData = plotData.filter(d => d.highlightLine === false);
 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));

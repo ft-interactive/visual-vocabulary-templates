@@ -257,6 +257,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const series = currentFrame.plot().append('g')
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder'); 
 
+
         //draws the shaded bounding box for the data if sahading is true
         if(shading) {
             const hulls = concaveHull(vertices.map((d) => {
