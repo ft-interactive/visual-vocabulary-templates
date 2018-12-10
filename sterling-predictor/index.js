@@ -32,8 +32,8 @@ const dateFormat = '%Y-%m-%d';
 */
 
 const sharedConfig = {
-    title: 'Sterling against US$',
-    subtitle: 'Sterling against US$',
+    title: 'Opinions vary',
+    subtitle: 'Sterling against US$ and selected predictions',
     source: 'Source: Bloomberg; FT research',
 };
 const yMin = 1.2;// sets the minimum value on the yAxis

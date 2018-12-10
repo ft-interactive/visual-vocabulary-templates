@@ -130,15 +130,9 @@ export function load([url, url2], options) { // eslint-disable-line
             })
             return lineData
         }
-        ///possible other method
-        const lastDate = data[data.length-1].date
-        console.log(lastDate)
-
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
-        console.log (highlightLines)
        
-
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
@@ -156,8 +150,6 @@ export function load([url, url2], options) { // eslint-disable-line
             annotations: getAnnotations(),
         };
 
-        console.log(annos)
-
         function getAnnotations() {
             const types = [{
                     title: 'Brexit',
@@ -166,18 +158,15 @@ export function load([url, url2], options) { // eslint-disable-line
                     targetY: 1.5,
                     radius: 0,
                     type: 'threshold',
+                },
+                {
+                    title: 'Deadline for comons vote',
+                    //note: '',
+                    targetX: new Date('January 21, 2019 00:00:00'),
+                    targetY: 1.5,
+                    radius: 0,
+                    type: 'threshold',
                 }]
-            // const types = data.filter(d => (d.type === el))
-            // .map((d) => {
-            //     return {
-            //         title: d.annotate,
-            //         //note: '',
-            //         targetX: d.date,
-            //         targetY: d[plotData[0].name],
-            //         radius: 0,
-            //         type: d.type,
-            //     }
-            // })
             return types
         }
 
