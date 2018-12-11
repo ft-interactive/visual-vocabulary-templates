@@ -53,10 +53,10 @@ const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAft
 const invertScale = false;
 const logScale = false;
 const intraday = false;
-const excludeSize = 4.0 //Number between 0 and 10
-const shading = false
-const lines = true
-const turnWidth = 6.5
+const excludeSize = 4.0; //Number between 0 and 10
+const shading = false;
+const dotLinks = true;
+const turnWidth = 6.5;
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -141,7 +141,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
           .highlightNames(highlightNames)
           .markers(markers)
           .interpolation(interpolation)
-          .lines(lines);
+          .lines(dotLinks);
         const myChart = lineChart.draw()
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
@@ -279,6 +279,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette(colourScale);
+        
+            console.log(predData)
 
         plotPredictions
             .selectAll('.lines')

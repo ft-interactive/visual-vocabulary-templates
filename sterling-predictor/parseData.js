@@ -64,6 +64,7 @@ export function load([url, url2], options) { // eslint-disable-line
 
         });
 
+
         let seriesNames = getSeriesNames(data.columns);
         //get the names of unique each bank
         const predNames = data2.map( d => d.bank)
@@ -91,6 +92,7 @@ export function load([url, url2], options) { // eslint-disable-line
             return {
                 name: d,
                 lineData: getPredLines(d),
+                forecastLine: getForecasts(d),
                 highlightLine: isLineHighlighted(d),
                 rangeData: getRange(d)
             }
@@ -112,10 +114,19 @@ export function load([url, url2], options) { // eslint-disable-line
             })
              return rangeData
         }
+        const lastValue = 1.2
 
         function getPredLines(d) {
             const banks = data2.filter(el => el.bank === d)
+            console.log('banks', banks)
             let lineData = [];
+            lineData.push({
+                name: banks[0].bank,
+                date: banks[0].reporteddate,
+                value: 1.2,
+                highlight: isLineHighlighted(banks[0].bank),
+                annotate: 'to come'
+            })
             banks.forEach((bank) => {
                 const column = {};
                 column.name = bank.bank;
@@ -129,6 +140,11 @@ export function load([url, url2], options) { // eslint-disable-line
                 }
             })
             return lineData
+        }
+
+        function getForecasts(d) {
+            const banks = data2.filter(el => el.bank === d && el.projectionspot !== '')
+            return banks;
         }
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
