@@ -159,14 +159,7 @@ export function load([url, url2], options) { // eslint-disable-line
                     radius: 0,
                     type: 'threshold',
                 },
-                {
-                    title: 'Deadline for comons vote',
-                    //note: '',
-                    targetX: new Date('January 21, 2019 00:00:00'),
-                    targetY: 1.5,
-                    radius: 0,
-                    type: 'threshold',
-                }]
+                ]
             return types
         }
 
