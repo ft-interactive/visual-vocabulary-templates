@@ -77,7 +77,7 @@ export function draw() {
                 .attr('id', d => `date: ${d.date} value: ${d.value}`)
                 .attr('cx', d => xScale(d.date))
                 .attr('cy', d => yScale(d.value))
-                .attr('r', rem * 0.25)
+                .attr('r', rem * 0.2)
                 .attr('fill', (d) => {
                 if (highlightNames.length > 0 && d.highlight=== false) {
                     return colourScale.range()[0];
