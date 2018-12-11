@@ -41,6 +41,26 @@ export function draw() {
                 } return 1;
             })
             .attr('d', d => lineData(d.lineData));
+            
+            parent.append('g')
+                .attr('class', 'annotations-holder')
+                .append('text')
+                .attr('class', 'annotation')
+                .attr('class', 'chart-subtitle')
+                .attr('x', d => xScale.range()[1] + (rem/2))
+                .attr('y', (d) => {
+                    return yScale(d.lineData[d.lineData.length - 1].value)
+                    })
+                .style('fill', (d) => {
+                    if (highlightNames.length > 0 && d.highlightLine === false) {
+                        return colourScale.range()[0];
+                    }
+                    if (highlightNames.length > 0 && d.highlightLine === true) {
+                        return colourScale(d.name);
+                    }
+                    return colourScale(d.name);
+                    })
+                .text(d => d.name)
 
         }
         
@@ -67,8 +87,6 @@ export function draw() {
                         return 0.5;
                     } return 1;
                 })
-                .append('text')
-
 
         }
 

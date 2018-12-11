@@ -36,18 +36,18 @@ const sharedConfig = {
     subtitle: 'Sterling against US$ and selected predictions',
     source: 'Source: Bloomberg; FT research',
 };
-const yMin = 1.25;// sets the minimum value on the yAxis
+const yMin = 1.2;// sets the minimum value on the yAxis
 const yMax = 1.6;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 7;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'months';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const markers = true;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
-const minorAxis = false;// turns on or off the minor axis
+const minorAxis = true;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
@@ -68,14 +68,14 @@ const frame = {
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 20,
+            top: 100, left: 20, bottom: 86, right: 95,
         })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 20,
+            top: 100, left: 20, bottom: 104, right: 100,
         })
     // .title("Put headline here")
         .height(700)

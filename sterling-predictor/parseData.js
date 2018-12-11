@@ -131,7 +131,7 @@ export function load([url, url2], options) { // eslint-disable-line
                 const column = {};
                 column.name = bank.bank;
                 column.date = bank.projectiondate;
-                column.value = +bank.projectionspot;
+                column.value = Number(bank.projectionspot);
                 column.highlight = isLineHighlighted(bank.bank);
                 column.annotate = 'to come';
                 if (bank.projectionspot) {
@@ -146,7 +146,7 @@ export function load([url, url2], options) { // eslint-disable-line
             const filtered = data.find(el => {
                 return el.date.getTime() === d.getTime();
             })            
-            return filtered.value;
+            return Number(filtered.value);
         }
 
         
