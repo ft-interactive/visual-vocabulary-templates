@@ -49,7 +49,7 @@ export function draw() {
                 .attr('class', 'chart-subtitle')
                 .attr('x', (d) => {
                     if(d.name === 'value') {
-                        return xScale(d.date)
+                        return xScale.range()[0] + (rem / 2)
                     }
                     return xScale.range()[1] + (rem/2)
                 })

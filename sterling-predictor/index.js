@@ -34,7 +34,7 @@ const dateFormat = '%Y-%m-%d';
 const sharedConfig = {
     title: 'Opinions vary',
     subtitle: 'Sterling against US$ and selected predictions',
-    source: 'Source: Bloomberg; FT research',
+    source: 'Source: Bloomberg; companies',
 };
 const yMin = 1.2;// sets the minimum value on the yAxis
 const yMax = 1.6;// sets the maximum value on the xAxis
@@ -45,18 +45,20 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const markers = true;// show dots on lines
+const legend = false //turns the legend off or on
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
 const minorAxis = true;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
-const invertScale = false;
+const invertScale = false; //inverst the y axis
 const logScale = false;
 const intraday = false;
-const excludeSize = 2.8; //Number between 0 and 10
-const shading = false;
-const dotLinks = true;
+const excludeSize = 2.8; //Number between 0 and 10, changes the fit of shading
+const shading = false; //creates a best fit concave hull behind prediction data
+const dotLinks = true; //puts dots on the prediction lines only
 const turnWidth = 6.5;
+
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -340,34 +342,37 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             .append('g')
             .call(myAnnotations)
 
-
         // Set up legend for this frame
-        myLegend
-          .frameName(frameName)
-          .seriesNames(colourDomain)
-          .colourPalette(colourScale)
-          .rem(myChart.rem())
-          .geometry(legendType)
-          .alignment(legendAlign);
+        if(legend) {
+            myLegend
+                .frameName(frameName)
+                .seriesNames(colourDomain)
+                .colourPalette(colourScale)
+                .rem(myChart.rem())
+                .geometry(legendType)
+                .alignment(legendAlign);
 
-        // Draw the Legend
-        currentFrame.plot()
-          .append('g')
-          .attr('id', 'legend')
-          .selectAll('.legend')
-            .data(() => {
-                if (highlightNames.length > 0) {
-                    return highlightNames;
-                }
-                return seriesNames;
-            })
-            .enter()
-            .append('g')
-            .classed('legend', true)
-            .call(myLegend);
+            // Draw the Legend
+            currentFrame.plot()
+                .append('g')
+                .attr('id', 'legend')
+                .selectAll('.legend')
+                .data(() => {
+                    if (highlightNames.length > 0) {
+                        return highlightNames;
+                    }
+                    return seriesNames;
+                })
+                .enter()
+                .append('g')
+                .classed('legend', true)
+                .call(myLegend);
 
-        const legendSelection = currentFrame.plot().select('#legend');
-        legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+            const legendSelection = currentFrame.plot().select('#legend');
+            legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+
+        }
+        
     });
     // addSVGSavers('figure.saveable');
 });
