@@ -13,7 +13,7 @@ import * as annotation from 'g-annotations';
 import concaveHullGenerator from './concaveHull.js';
 
 //const dataFile =  'data.csv'
-const dataFile =  'https://ig.ft.com/autograph/data/gbpusd-ref.csv'
+const dataFile = 'http://bertha.ig.ft.com/republish/publish/dsv/1LXtp1IGDrbFz47wf15IzQ8tQMQtN1s4GtuNWtDHiyyA/bloomberg.csv'
 //const predFile = 'http://bertha.ig.ft.com/view/publish/dsv/1LXtp1IGDrbFz47wf15IzQ8tQMQtN1s4GtuNWtDHiyyA/data.csv';
 //const predFile = 'projection.csv';
 const predFile = 'http://bertha.ig.ft.com/republish/publish/dsv/1LXtp1IGDrbFz47wf15IzQ8tQMQtN1s4GtuNWtDHiyyA/data.csv';
@@ -36,24 +36,24 @@ const sharedConfig = {
     subtitle: 'Sterling against US$ and selected predictions',
     source: 'Source: Bloomberg; FT research',
 };
-const yMin = 1.2;// sets the minimum value on the yAxis
-const yMax = 1.55;// sets the maximum value on the xAxis
+const yMin = 1.25;// sets the minimum value on the yAxis
+const yMax = 1.6;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicksy = 7;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
+const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
+const interval = 'months';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const markers = true;// show dots on lines
 const legendAlign = 'vert';// hori or vert, alignment of the legend
 const legendType = 'line';// rect, line or circ, geometry of legend marker
-const minorAxis = true;// turns on or off the minor axis
+const minorAxis = false;// turns on or off the minor axis
 const highlightNames = []; // create an array names you want to highlight eg. ['series1','series2']
 const interpolation = d3.curveLinear;// curveStep, curveStepBefore, curveStepAfter, curveBasis, curveCardinal, curveCatmullRom
 const invertScale = false;
 const logScale = false;
 const intraday = false;
-const excludeSize = 4.0; //Number between 0 and 10
+const excludeSize = 2.8; //Number between 0 and 10
 const shading = false;
 const dotLinks = true;
 const turnWidth = 6.5;
@@ -83,7 +83,7 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 20,
+            top: 100, left: 20, bottom: 86, right: 100,
         })
     // .title("Put headline here")
         .height(500),
@@ -279,8 +279,6 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette(colourScale);
-        
-            console.log(predData)
 
         plotPredictions
             .selectAll('.lines')

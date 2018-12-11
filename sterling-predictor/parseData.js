@@ -27,12 +27,12 @@ export function load([url, url2], options) { // eslint-disable-line
 
         //makes sure moth datasets have correct date formats
         data.forEach((d) => {
-            d.date = parseDate(d.date);
+            d.date = new Date(d.date);
         });
         data2.forEach((d,i) => {
-            d.date = new Date(d.projectiondate);
-            d.projectiondate = new Date(d.projectiondate);
-            d.reporteddate = new Date(d.reporteddate);
+            d.date = new Date(d.projectiondate.replace(/T.+$/, ''));
+            d.projectiondate = new Date(d.projectiondate.replace(/T.+$/, ''));
+            d.reporteddate = new Date(d.reporteddate.replace(/T.+$/, ''));
             d.projectionspot = getSpot(d);
             d.highlight = d.highlight;
             d.annotate = d.annotate;
@@ -63,6 +63,7 @@ export function load([url, url2], options) { // eslint-disable-line
                 }
 
         });
+        console.log(data[data.length-1].date)
 
 
         let seriesNames = getSeriesNames(data.columns);
@@ -92,7 +93,6 @@ export function load([url, url2], options) { // eslint-disable-line
             return {
                 name: d,
                 lineData: getPredLines(d),
-                forecastLine: getForecasts(d),
                 highlightLine: isLineHighlighted(d),
                 rangeData: getRange(d)
             }
@@ -114,16 +114,16 @@ export function load([url, url2], options) { // eslint-disable-line
             })
              return rangeData
         }
-        const lastValue = 1.2
 
+        //creates plotable line data linking the prediction spots
         function getPredLines(d) {
             const banks = data2.filter(el => el.bank === d)
-            console.log('banks', banks)
             let lineData = [];
+            
             lineData.push({
                 name: banks[0].bank,
                 date: banks[0].reporteddate,
-                value: 1.2,
+                value: getDatedValue(banks[0].reporteddate),
                 highlight: isLineHighlighted(banks[0].bank),
                 annotate: 'to come'
             })
@@ -141,11 +141,14 @@ export function load([url, url2], options) { // eslint-disable-line
             })
             return lineData
         }
-
-        function getForecasts(d) {
-            const banks = data2.filter(el => el.bank === d && el.projectionspot !== '')
-            return banks;
+        //looks up the value of from data on the day the forecast was made
+        function getDatedValue(d) {
+            const filtered = data.find(el => {
+                return el.date.getTime() === d.getTime();
+            })            
+            return filtered.value;
         }
+
         
         highlightLines = plotData.filter(d => d.highlightLine === true);
        
