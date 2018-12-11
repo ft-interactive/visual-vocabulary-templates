@@ -63,8 +63,6 @@ export function load([url, url2], options) { // eslint-disable-line
                 }
 
         });
-        console.log(data[data.length-1].date)
-
 
         let seriesNames = getSeriesNames(data.columns);
         //get the names of unique each bank
@@ -155,14 +153,16 @@ export function load([url, url2], options) { // eslint-disable-line
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
-
+        //work out a date range based on the reporting date as this differs from the prediction datre
+        const reportedExtent = d3.extent(data2, d => d.reporteddate);
         boundaries.forEach((d, i) => {
             if (d.highlight === 'begin') {
                 highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+        //hard code the prediction highlight area
         highlights.push({
-                    begin: dateExtent2[0],
+                    begin: reportedExtent[0],
                     end: dateExtent2[1]
         })
 
@@ -172,7 +172,6 @@ export function load([url, url2], options) { // eslint-disable-line
             type: 'threshold',
             annotations: getAnnotations(),
         };
-        console.log(highlights)
 
         function getAnnotations() {
             const types = [{
@@ -186,7 +185,6 @@ export function load([url, url2], options) { // eslint-disable-line
                 ]
             return types
         }
-
 
         return {
             data,
