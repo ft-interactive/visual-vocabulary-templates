@@ -86,6 +86,7 @@ export function load(url, options) { // eslint-disable-line
                 highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+        console.log (highlights)
 
         return {
             seriesNames,

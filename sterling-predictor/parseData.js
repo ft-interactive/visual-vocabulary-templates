@@ -149,9 +149,9 @@ export function load([url, url2], options) { // eslint-disable-line
             return Number(filtered.value);
         }
 
-        
         highlightLines = plotData.filter(d => d.highlightLine === true);
        
+ 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
@@ -161,6 +161,10 @@ export function load([url, url2], options) { // eslint-disable-line
                 highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+        highlights.push({
+                    begin: dateExtent2[0],
+                    end: dateExtent2[1]
+        })
 
         seriesNames = seriesNames.concat(predNames);
         // Adds Brexit datw
@@ -168,6 +172,7 @@ export function load([url, url2], options) { // eslint-disable-line
             type: 'threshold',
             annotations: getAnnotations(),
         };
+        console.log(highlights)
 
         function getAnnotations() {
             const types = [{

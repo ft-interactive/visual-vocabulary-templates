@@ -177,11 +177,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         }
 
         // create a 'g' element at the back of the chart to add time period
-        // highlights after axis have been created
-        const axisHighlight = currentFrame.plot().append('g');
-
         // create a 'g' element behind the chart and in front of the highlights
-
+        const axisHighlight = currentFrame.plot().append('g');
         myYAxis
             .divisor(divisor)
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
@@ -253,7 +250,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         if (xAxisAlign === 'top') {
             myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
-
+        // highlights after axis have been created
         const plotHull = currentFrame.plot().append('g')
         const plotPredictions = currentFrame.plot().append('g')
         const series = currentFrame.plot().append('g')
@@ -315,16 +312,20 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette(colourScale);
+        
+        myHighlights
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .rem(currentFrame.rem())
 
-
-        // Draw the highlights before the lines and xAxis
-        // axisHighlight
-        //   .selectAll('.highlights')
-        //   .data(highlights)
-        //   .enter()
-        //   .append('g')
-        //   .attr('class', 'highlights')
-        //   .call(myHighlights);
+        //Draw the highlights before the lines and xAxis
+        axisHighlight
+          .selectAll('.highlights')
+          .data(highlights)
+          .enter()
+          .append('g')
+          .attr('class', 'highlights')
+          .call(myHighlights);
 
         //Set up highlights for this frame
         myAnnotations
