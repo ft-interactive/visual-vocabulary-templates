@@ -47,9 +47,14 @@ export function draw() {
                 .append('text')
                 .attr('class', 'annotation')
                 .attr('class', 'chart-subtitle')
-                .attr('x', d => xScale.range()[1] + (rem/2))
+                .attr('x', (d) => {
+                    if(d.name === 'value') {
+                        return xScale(d.date)
+                    }
+                    return xScale.range()[1] + (rem/2)
+                })
                 .attr('y', (d) => {
-                    return yScale(d.lineData[d.lineData.length - 1].value)
+                    return yScale(d.lineData[d.lineData.length - 1].value) + (rem * 0.3)
                     })
                 .style('fill', (d) => {
                     if (highlightNames.length > 0 && d.highlightLine === false) {
