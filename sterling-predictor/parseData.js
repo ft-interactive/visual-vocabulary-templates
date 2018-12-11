@@ -90,11 +90,22 @@ export function load([url, url2], options) { // eslint-disable-line
         const predData = predNames.map((d) => {
             return {
                 name: d,
+                oldPredictions: getPrevious(d),
                 lineData: getPredLines(d),
                 highlightLine: isLineHighlighted(d),
                 rangeData: getRange(d)
             }
         })
+        //works out the line data for previous predictions
+        function getPrevious(d) {
+            const banks = data2.filter(el => el.bank === d)
+            // const uniq = [...new Set(banks.map(d => d.reporteddate.toISOString()))];
+            // console.dir(uniq);
+            console.log('banks', banks)
+            const dateSeries = banks.map(d => d.reporteddate.toISOString())
+                .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+            console.log('dateSeries', dateSeries)
+        }
 
         function getRange(d) {
             const banks = data2.filter(el => el.bank === d && el.projectionlow !== '')
@@ -113,11 +124,10 @@ export function load([url, url2], options) { // eslint-disable-line
              return rangeData
         }
 
-        //creates plotable line data linking the prediction spots
         function getPredLines(d) {
             const banks = data2.filter(el => el.bank === d)
             let lineData = [];
-            
+            //add an extra pint to the data that it the reported date to start the line from
             lineData.push({
                 name: banks[0].bank,
                 date: banks[0].reporteddate,
