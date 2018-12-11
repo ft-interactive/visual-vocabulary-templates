@@ -21,6 +21,7 @@ export function load(url, options) { // eslint-disable-line
         });
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
+        console.log(data)
 
         // create stack data object
         const plotData = d3.stack();

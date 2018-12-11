@@ -75,6 +75,7 @@ export function load(url, options) { // eslint-disable-line
             })
             return types
         }
+        console.log(annos);
 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
@@ -85,6 +86,7 @@ export function load(url, options) { // eslint-disable-line
                 highlights.push({ begin: d.date, end: boundaries[i + 1].date });
             }
         });
+        console.log (highlights)
 
         return {
             seriesNames,
