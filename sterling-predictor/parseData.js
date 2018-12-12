@@ -30,9 +30,9 @@ export function load([url, url2], options) { // eslint-disable-line
             d.date = new Date(d.date);
         });
         data2.forEach((d,i) => {
-            d.date = new Date(d.projectiondate.replace(/T.+$/, ''));
-            d.projectiondate = new Date(d.projectiondate.replace(/T.+$/, ''));
-            d.reporteddate = new Date(d.reporteddate.replace(/T.+$/, ''));
+            d.date = new Date(d.projectiondate);
+            d.projectiondate = new Date(d.projectiondate);
+            d.reporteddate = new Date(d.reporteddate);
             d.projectionspot = getSpot(d);
             d.highlight = d.highlight;
             d.annotate = d.annotate;
@@ -46,9 +46,8 @@ export function load([url, url2], options) { // eslint-disable-line
             // }
             return d.projectionspot
         }
-
         data2.sort((a, b) => a.date - b.date);
-        let vertices = []
+        let vertices = [] //Passed to concave hull creator
 
         //Pushes each prediction point and rane as a set of coordinates to the vertices array, this is so the concave hull can be calculated if theshaded area is wanted
         data2.forEach((d,i) => {
@@ -61,7 +60,6 @@ export function load([url, url2], options) { // eslint-disable-line
                 if (d.projectionspot !== '') {
                     vertices.push([d.projectiondate, Number(d.projectionspot)])
                 }
-
         });
 
         let seriesNames = getSeriesNames(data.columns);
@@ -78,7 +76,7 @@ export function load([url, url2], options) { // eslint-disable-line
 
         const isLineHighlighted = (el) => highlightNames.some(d => d === el);
 
-        // Format the dataset that is used to draw the lines
+        // Format the dataset that is used to draw the sterling line
         let highlightLines = {};
         let plotData = seriesNames.map((d, i) => ({
             name: d,
@@ -87,41 +85,70 @@ export function load([url, url2], options) { // eslint-disable-line
             highlightLine: isLineHighlighted(d),
         }));
 
+        // Format the dataset that is used to draw the forecast lines and dots 
         const predData = predNames.map((d) => {
             return {
                 name: d,
-                oldPredictions: getPrevious(d),
+                predictions: getPredictions(d),
                 lineData: getPredLines(d),
                 highlightLine: isLineHighlighted(d),
                 rangeData: getRange(d)
             }
         })
+        console.log('predData', predData)
         //works out the line data for previous predictions
-        function getPrevious(d) {
-            const banks = data2.filter(el => el.bank === d)
-            // const uniq = [...new Set(banks.map(d => d.reporteddate.toISOString()))];
-            // console.dir(uniq);
-            console.log('banks', banks)
-            const dateSeries = banks.map(d => d.reporteddate.toISOString())
+        function getPredictions(d) {
+            let predictions = []
+            //create an array of data for the bank d
+            const bankData = data2.filter(el => el.bank === d)
+            console.log('bankData', bankData)
+            //create an array of unique reported dates
+            const dateSeries = bankData.map(d => d.reporteddate.toISOString())
                 .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-            console.log('dateSeries', dateSeries)
-        }
+            console.log('dateSeries', dateSeries);
+            let lastValue = dateSeries.length - 1;
+            console.log('lastValue', lastValue);
+            dateSeries.map((d, i) => {
+                //filter bankData by group according to seriesName to get data reported on the sam day
+                let uniqueDate = bankData.filter(el => el.reporteddate.toISOString() === d)
+                console.log('uniqueDate', uniqueDate)
+                let lineData = []
+                //adds the initial reporteddate as the first point to the line
+                lineData.push({
+                    name: uniqueDate[0].bank,
+                    date: uniqueDate[0].reporteddate,
+                    value: getDatedValue(uniqueDate[0].reporteddate),
+                    highlight: isLineHighlighted(uniqueDate[0].bank),
+                    annotate: 'to come'
+                })
+                //loopd through and creates the line data for pint with the same report date
+                uniqueDate.forEach((bank) => {
+                    console.log(bank)
+                    const point = {};
+                    point.name = bank.bank;
+                    point.date = bank.projectiondate;
+                    point.value = Number(bank.projectionspot);
+                    point.highlight = isLineHighlighted(bank.bank);
+                    point.annotate = 'to come';
+                    if (bank.projectionspot) {
+                        // if (bank) {
+                        lineData.push(point);
+                    }   
+                })
+                predictions.push({
+                    name: d,
+                    opacity: getOpacity(i),
+                    lineData: lineData,
+                })
 
-        function getRange(d) {
-            const banks = data2.filter(el => el.bank === d && el.projectionlow !== '')
-            let rangeData = [];
-             banks.forEach((bank) => {
-                const column = {};
-                column.name = bank.bank;
-                column.date = Number(bank.projectiondate);
-                column.low = Number(bank.projectionlow);
-                column.high = Number(bank.projectionhigh);
-                column.highlightLine = isLineHighlighted(bank.bank);
-                if (bank) {
-                    rangeData.push(column);
+                function getOpacity(d) {
+                    if(d === i) {return 1}
+                    return 0.4
                 }
+
+
             })
-             return rangeData
+            return predictions
         }
 
         function getPredLines(d) {
@@ -143,12 +170,31 @@ export function load([url, url2], options) { // eslint-disable-line
                 column.highlight = isLineHighlighted(bank.bank);
                 column.annotate = 'to come';
                 if (bank.projectionspot) {
-                // if (bank) {
+                    // if (bank) {
                     lineData.push(column);
                 }
             })
             return lineData
         }
+
+        function getRange(d) {
+            const banks = data2.filter(el => el.bank === d && el.projectionlow !== '')
+            let rangeData = [];
+             banks.forEach((bank) => {
+                const column = {};
+                column.name = bank.bank;
+                column.date = Number(bank.projectiondate);
+                column.low = Number(bank.projectionlow);
+                column.high = Number(bank.projectionhigh);
+                column.highlightLine = isLineHighlighted(bank.bank);
+                if (bank) {
+                    rangeData.push(column);
+                }
+            })
+             return rangeData
+        }
+
+        
         //looks up the value of from data on the day the forecast was made
         function getDatedValue(d) {
             const filtered = data.find(el => {
