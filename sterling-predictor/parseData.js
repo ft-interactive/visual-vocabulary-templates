@@ -138,11 +138,11 @@ export function load([url, url2], options) { // eslint-disable-line
                 })
                 //return an opacity depending on whether the line is a past prediction or not
                 function getOpacity(d) {
-                    if(d === i) {return 1}
+                    if (d === lastValue) {
+                        return 1
+                    }
                     return 0.4
                 }
-
-
             })
             return predictions
         }
