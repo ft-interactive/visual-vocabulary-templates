@@ -101,17 +101,13 @@ export function load([url, url2], options) { // eslint-disable-line
             let predictions = []
             //create an array of data for the bank d
             const bankData = data2.filter(el => el.bank === d)
-            console.log('bankData', bankData)
             //create an array of unique reported dates
             const dateSeries = bankData.map(d => d.reporteddate.toISOString())
                 .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-            console.log('dateSeries', dateSeries);
             let lastValue = dateSeries.length - 1;
-            console.log('lastValue', lastValue);
             dateSeries.map((d, i) => {
                 //filter bankData by group according to seriesName to get data reported on the sam day
                 let uniqueDate = bankData.filter(el => el.reporteddate.toISOString() === d)
-                console.log('uniqueDate', uniqueDate)
                 let lineData = []
                 //adds the initial reporteddate as the first point to the line
                 lineData.push({
@@ -123,7 +119,6 @@ export function load([url, url2], options) { // eslint-disable-line
                 })
                 //loopd through and creates the line data for pint with the same report date
                 uniqueDate.forEach((bank) => {
-                    console.log(bank)
                     const point = {};
                     point.name = bank.bank;
                     point.date = bank.projectiondate;
@@ -135,12 +130,13 @@ export function load([url, url2], options) { // eslint-disable-line
                         lineData.push(point);
                     }   
                 })
+
                 predictions.push({
                     name: d,
                     opacity: getOpacity(i),
                     lineData: lineData,
                 })
-
+                //return an opacity depending on whether the line is a past prediction or not
                 function getOpacity(d) {
                     if(d === i) {return 1}
                     return 0.4
