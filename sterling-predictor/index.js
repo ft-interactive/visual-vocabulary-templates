@@ -189,6 +189,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             .align(yAxisAlign)
             .frameName(frameName)
             .invert(invertScale)
+            .tickFormat(d3.format('.3f'))
             .logScale(logScale);
 
         // Draw the yAxis first, this will position the yAxis correctly and
