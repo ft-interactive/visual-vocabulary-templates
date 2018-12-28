@@ -249,6 +249,7 @@ export function load([url, url2], options) { // eslint-disable-line
             dateExtent,
             annos,
             predictionsData,
+            rangeData,
         };
     });
 }
