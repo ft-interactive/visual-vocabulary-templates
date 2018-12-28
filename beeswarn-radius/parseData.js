@@ -22,6 +22,8 @@ export function load(url, options) { // eslint-disable-line
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
+        const radiusExtent = extentMulti(data, ['radius']);
+        console.log('radiusExtent', radiusExtent)
 
         // Format the dataset that is used to draw the lines
         const plotData = categroies.map(d => ({
@@ -60,6 +62,7 @@ export function load(url, options) { // eslint-disable-line
             valueExtent,
             plotData,
             annosData,
+            radiusExtent,
         };
     });
 }

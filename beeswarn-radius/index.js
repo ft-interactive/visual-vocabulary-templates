@@ -38,13 +38,12 @@ const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 6;// Number of tick on the uAxis
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
-const interval = 'fiscal';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
-const legendType = 'dots';// rect, line or circ, geometry of legend marker
+//const legendType = 'dots';// rect, line or circ, geometry of legend marker
 const invertScale = false;
 const banding = true
 const divisor = 1;
 const opacity = 0.7;
-const scaleFactor = 1.1;
+const scaleFactor = 8;
 const turnWidth = 100
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
@@ -115,7 +114,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load(dataFile, {})
-  .then(({seriesNames, categroies, valueExtent, plotData, annosData}) => {
+  .then(({seriesNames, categroies, valueExtent, plotData, annosData, radiusExtent}) => {
       Object.keys(frame).forEach((frameName) => {
           const currentFrame = frame[frameName];
 
@@ -180,7 +179,7 @@ parseData.load(dataFile, {})
             .call(xAxis);
 
           const sqrtScale = d3.scaleSqrt()
-            .domain(valueExtent)
+            .domain([0,radiusExtent[1]])
             .range([0,((currentFrame.rem() / 10) * scaleFactor)]);
 
           
