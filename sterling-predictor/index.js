@@ -131,7 +131,6 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             vertices,
             seriesNames,
             plotData,
-            predData,
             highlightLines,
             valueExtent,
             highlights,

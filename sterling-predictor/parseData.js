@@ -87,14 +87,7 @@ export function load([url, url2], options) { // eslint-disable-line
             highlightLine: isLineHighlighted(d),
         }));
 
-        const predData = predNames.map((d) => {
-            return {
-                name: d,
-                highlightLine: isLineHighlighted(d),
-                rangeData: getRange(d)
-            }
-        })
-        console.log('predData', predData)
+        //an array to hold the predictions line information
         let predictionsData = [];
         predNames.map((d) => {
             //filter the data by bank
@@ -115,6 +108,7 @@ export function load([url, url2], options) { // eslint-disable-line
             ))
         })
         console.log('predictionsData', predictionsData)
+        
         //function to determine if the line being drawn is the most current prediction
         function getStatus(latestDate, predDate) {
             if (latestDate === predDate) {
@@ -218,7 +212,6 @@ export function load([url, url2], options) { // eslint-disable-line
             vertices,
             seriesNames,
             plotData,
-            predData,
             highlightLines,
             valueExtent,
             highlights,

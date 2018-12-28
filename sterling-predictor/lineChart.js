@@ -42,6 +42,9 @@ export function draw() {
             })
             .attr('d', d => lineData(d.lineData));
             
+            if(d => d.highlightLine) {
+                
+            }
             parent.append('g')
                 .attr('class', 'annotations-holder')
                 .append('text')
