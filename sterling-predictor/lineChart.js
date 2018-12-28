@@ -122,72 +122,72 @@ export function draw() {
         //     .attr('fill', (d) => {return colourScale(d.name);
         //     });
 
-        const range2 = parent.selectAll('line')
-            .data(d => d.rangeData)
-            .enter()
-        range2.append('line')
-            .attr('opacity', 0.6)
-            .attr('y1', d =>  yScale(d.high))
-            .attr('x1', d => xScale(d.date))
-            .attr('y2', (d) => yScale(d.low))
-            .attr('x2', d => xScale(d.date))
-            .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlightLine === true) {
-                    return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
-            .attr('stroke-width', 1.5)
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return 0.5;
-                } return 1;
-            })
+        // const range2 = parent.selectAll('line')
+        //     .data(d => d.rangeData)
+        //     .enter()
+        // range2.append('line')
+        //     .attr('opacity', 0.6)
+        //     .attr('y1', d =>  yScale(d.high))
+        //     .attr('x1', d => xScale(d.date))
+        //     .attr('y2', (d) => yScale(d.low))
+        //     .attr('x2', d => xScale(d.date))
+        //     .attr('stroke', (d) => {
+        //         if (highlightNames.length > 0 && d.highlightLine === false) {
+        //             return colourScale.range()[0];
+        //         }
+        //         if (highlightNames.length > 0 && d.highlightLine === true) {
+        //             return colourScale(d.name);
+        //         } 
+        //         return colourScale(d.name);
+        //     })
+        //     .attr('stroke-width', 1.5)
+        //     .attr('opacity', (d) => {
+        //         if (highlightNames.length > 0 && d.highlightLine === false) {
+        //             return 0.5;
+        //         } return 1;
+        //     })
 
-        range2.append('line')
-            .attr('y1', d => yScale(d.high))
-            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
-            .attr('y2', d => yScale(d.high))
-            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlight === true) {
-                    return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
-            .attr('stroke-width', 1.5)
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return 0.5;
-                } return 1;
-            })
+        // range2.append('line')
+        //     .attr('y1', d => yScale(d.high))
+        //     .attr('x1', d => xScale(d.date) - (boxWidth / 4))
+        //     .attr('y2', d => yScale(d.high))
+        //     .attr('x2', d => xScale(d.date) + (boxWidth / 4))
+        //     .attr('stroke', (d) => {
+        //         if (highlightNames.length > 0 && d.highlight === false) {
+        //             return colourScale.range()[0];
+        //         }
+        //         if (highlightNames.length > 0 && d.highlight === true) {
+        //             return colourScale(d.name);
+        //         } 
+        //         return colourScale(d.name);
+        //     })
+        //     .attr('stroke-width', 1.5)
+        //     .attr('opacity', (d) => {
+        //         if (highlightNames.length > 0 && d.highlight === false) {
+        //             return 0.5;
+        //         } return 1;
+        //     })
 
-        range2.append('line')
-            .attr('y1', d => yScale(d.low))
-            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
-            .attr('y2', d => yScale(d.low))
-            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlight === true) {
-                    return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
-            .attr('stroke-width', 1.5)
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return 0.5;
-                } return 1;
-            })
+        // range2.append('line')
+        //     .attr('y1', d => yScale(d.low))
+        //     .attr('x1', d => xScale(d.date) - (boxWidth / 4))
+        //     .attr('y2', d => yScale(d.low))
+        //     .attr('x2', d => xScale(d.date) + (boxWidth / 4))
+        //     .attr('stroke', (d) => {
+        //         if (highlightNames.length > 0 && d.highlight === false) {
+        //             return colourScale.range()[0];
+        //         }
+        //         if (highlightNames.length > 0 && d.highlight === true) {
+        //             return colourScale(d.name);
+        //         } 
+        //         return colourScale(d.name);
+        //     })
+        //     .attr('stroke-width', 1.5)
+        //     .attr('opacity', (d) => {
+        //         if (highlightNames.length > 0 && d.highlight === false) {
+        //             return 0.5;
+        //         } return 1;
+        //     })
 
 
 

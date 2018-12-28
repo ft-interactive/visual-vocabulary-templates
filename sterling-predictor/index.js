@@ -126,7 +126,19 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
-.then(({data, vertices, seriesNames, plotData, predData, highlightLines, valueExtent, highlights, dateExtent, annos}) => {
+.then(({
+            data,
+            vertices,
+            seriesNames,
+            plotData,
+            predData,
+            highlightLines,
+            valueExtent,
+            highlights,
+            dateExtent,
+            annos,
+            predictionsData,
+        }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -282,7 +294,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
 
         plotPredictions
             .selectAll('.lines')
-            .data(predData)
+            .data(predictionsData)
             .enter()
             .append('g')
             .attr('class', 'lines')

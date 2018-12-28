@@ -95,27 +95,35 @@ export function load([url, url2], options) { // eslint-disable-line
                 rangeData: getRange(d)
             }
         })
-        let predictions = [];
+        console.log('predData', predData)
+        let predictionsData = [];
         predNames.map((d) => {
             //filter the data by bank
             const banks = data2.filter(el => el.bank === d)
             //determine how many unique reporting dates there are for that particular bank
             const dateSeries = banks.map(d => d.reporteddate.toISOString())
                 .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+            //determine the latest reporting date for this particular bank
+            const latestDate = dateSeries[dateSeries.length - 1];
             let prediction = dateSeries.map(predDate => (
-                predictions.push({
+                predictionsData.push({
                     name: d,
                     date: predDate,
-                    status: 'to come',
-                    highlighted: 'to come',
+                    status: getStatus(latestDate, predDate),
+                    highlighted: isLineHighlighted(banks[0].bank),
                     lineData: getPredLines2(predDate, banks),
                 })
             ))
         })
-        console.log('predictions', predictions)
-
+        console.log('predictionsData', predictionsData)
+        //function to determine if the line being drawn is the most current prediction
+        function getStatus(latestDate, predDate) {
+            if (latestDate === predDate) {
+                return 'current'
+            }
+            return 'old'
+        }
         function getPredLines2(filterDate, bankData) {
-            console.log(filterDate, bankData)
             const banks = bankData.filter(el => el.reporteddate.toISOString() === filterDate)
             let lineData = [];
             //add an extra pint to the data that it the reported date to start the line from
@@ -124,7 +132,6 @@ export function load([url, url2], options) { // eslint-disable-line
                 date: banks[0].reporteddate,
                 value: getDatedValue(banks[0].reporteddate),
                 highlight: isLineHighlighted(banks[0].bank),
-                annotate: 'to come'
             })
             banks.forEach((bank) => {
                 const column = {};
@@ -132,7 +139,6 @@ export function load([url, url2], options) { // eslint-disable-line
                 column.date = bank.projectiondate;
                 column.value = Number(bank.projectionspot);
                 column.highlight = isLineHighlighted(bank.bank);
-                column.annotate = 'to come';
                 if (bank.projectionspot) {
                     // if (bank) {
                     lineData.push(column);
@@ -229,7 +235,7 @@ export function load([url, url2], options) { // eslint-disable-line
                 ]
             return types
         }
-        console.log(plotData)
+        console.log('plotData', plotData)
 
         return {
             data,
@@ -242,6 +248,7 @@ export function load([url, url2], options) { // eslint-disable-line
             highlights,
             dateExtent,
             annos,
+            predictionsData,
         };
     });
 }
