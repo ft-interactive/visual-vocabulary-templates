@@ -125,7 +125,7 @@ parseData.load(dataFile, { dateFormat })
 
         // set radius scale
         const sqrtScale = d3.scaleSqrt()
-            .domain(valueExtent)
+            .domain([0,valueExtent[1]])
             .range([0,maxCircle]);
 
         myChart
