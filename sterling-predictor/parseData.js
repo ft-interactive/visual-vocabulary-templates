@@ -90,7 +90,6 @@ export function load([url, url2], options) { // eslint-disable-line
         const predData = predNames.map((d) => {
             return {
                 name: d,
-                //predictions: getPrevious(d),
                 lineData: getPredLines(d),
                 highlightLine: isLineHighlighted(d),
                 rangeData: getRange(d)
@@ -107,40 +106,16 @@ export function load([url, url2], options) { // eslint-disable-line
             console.log('dateSeries', dateSeries)
             let prediction = dateSeries.map(predDate => (
                 predictions.push({
-                name: d,
-                date: predDate,
-                status: 'to come',
-                highlighted: 'to come',
-                lineData: 'to come',
-            })))
+                    name: d,
+                    date: predDate,
+                    status: 'to come',
+                    highlighted: 'to come',
+                    lineData: 'to come',
+                })
+            ))
         })
         console.log('predictions', predictions)
 
-        //works out the line data for previous predictions
-        function getPrevious(d) {
-            let lineData = []
-            //filter the data by bank
-            const banks = data2.filter(el => el.bank === d)
-            // const uniq = [...new Set(banks.map(d => d.reporteddate.toISOString()))];
-            // console.dir(uniq);
-            console.log('banks', banks)
-            //determine how many unique reporting dates there are for that particular bank
-            const dateSeries = banks.map(d => d.reporteddate.toISOString())
-                .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-            console.log('dateSeries', dateSeries)
-            //create an array to hold the seperate prediction lines
-            //then use deriesNames to filter the bank data by prediction date and creatpath coordinates
-            let prediction = dateSeries.map(predDate => ({
-                name: d,
-                date: predDate,
-                status: 'to come',
-                highlighted: 'to come',
-                lineData: getPredLines2(predDate, banks)
-
-            }))
-            console.log('prediction', prediction)
-
-        }
         function getPredLines2(filterDate, data) {
             const banks = data2.filter(el => el.bank === d)
             let lineData = [];
