@@ -90,7 +90,6 @@ export function load([url, url2], options) { // eslint-disable-line
         const predData = predNames.map((d) => {
             return {
                 name: d,
-                lineData: getPredLines(d),
                 highlightLine: isLineHighlighted(d),
                 rangeData: getRange(d)
             }
@@ -111,7 +110,7 @@ export function load([url, url2], options) { // eslint-disable-line
                     date: predDate,
                     status: getStatus(latestDate, predDate),
                     highlightLine: isLineHighlighted(banks[0].bank),
-                    lineData: getPredLines2(predDate, banks, (getStatus(latestDate, predDate))),
+                    lineData: getPredLines(predDate, banks, (getStatus(latestDate, predDate))),
                 })
             ))
         })
@@ -123,7 +122,7 @@ export function load([url, url2], options) { // eslint-disable-line
             }
             return 'old'
         }
-        function getPredLines2(filterDate, bankData, status) {
+        function getPredLines(filterDate, bankData, status) {
             const banks = bankData.filter(el => el.reporteddate.toISOString() === filterDate)
             let lineData = [];
             //add an extra pint to the data that it the reported date to start the line from
@@ -166,32 +165,7 @@ export function load([url, url2], options) { // eslint-disable-line
             })
              return rangeData
         }
-
-        function getPredLines(d) {
-            const banks = data2.filter(el => el.bank === d)
-            let lineData = [];
-            //add an extra pint to the data that it the reported date to start the line from
-            lineData.push({
-                name: banks[0].bank,
-                date: banks[0].reporteddate,
-                value: getDatedValue(banks[0].reporteddate),
-                highlight: isLineHighlighted(banks[0].bank),
-                annotate: 'to come'
-            })
-            banks.forEach((bank) => {
-                const column = {};
-                column.name = bank.bank;
-                column.date = bank.projectiondate;
-                column.value = Number(bank.projectionspot);
-                column.highlight = isLineHighlighted(bank.bank);
-                column.annotate = 'to come';
-                if (bank.projectionspot) {
-                // if (bank) {
-                    lineData.push(column);
-                }
-            })
-            return lineData
-        }
+        
         //looks up the value of from data on the day the forecast was made
         function getDatedValue(d) {
             const filtered = data.find(el => {
@@ -202,7 +176,6 @@ export function load([url, url2], options) { // eslint-disable-line
 
         highlightLines = plotData.filter(d => d.highlightLine === true);
        
- 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
