@@ -99,25 +99,24 @@ export function load([url, url2], options) { // eslint-disable-line
         predNames.map((d) => {
             //filter the data by bank
             const banks = data2.filter(el => el.bank === d)
-            console.log('banks', banks)
             //determine how many unique reporting dates there are for that particular bank
             const dateSeries = banks.map(d => d.reporteddate.toISOString())
                 .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-            console.log('dateSeries', dateSeries)
             let prediction = dateSeries.map(predDate => (
                 predictions.push({
                     name: d,
                     date: predDate,
                     status: 'to come',
                     highlighted: 'to come',
-                    lineData: 'to come',
+                    lineData: getPredLines2(predDate, banks),
                 })
             ))
         })
         console.log('predictions', predictions)
 
-        function getPredLines2(filterDate, data) {
-            const banks = data2.filter(el => el.bank === d)
+        function getPredLines2(filterDate, bankData) {
+            console.log(filterDate, bankData)
+            const banks = bankData.filter(el => el.reporteddate.toISOString() === filterDate)
             let lineData = [];
             //add an extra pint to the data that it the reported date to start the line from
             lineData.push({
