@@ -36,8 +36,8 @@ export function draw() {
                 return colourScale(d.name);
             })
             .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return 0.5;
+                if (highlightNames.length > 0 && d.highlightLine === false || d.status === 'old') {
+                    return 0.3;
                 } return 1;
             })
             .attr('d', d => lineData(d.lineData));
@@ -79,17 +79,17 @@ export function draw() {
                 .attr('cy', d => yScale(d.value))
                 .attr('r', rem * 0.2)
                 .attr('fill', (d) => {
-                if (highlightNames.length > 0 && d.highlight=== false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlight=== true) {
+                    if (highlightNames.length > 0 && d.highlight=== false) {
+                        return colourScale.range()[0];
+                    }
+                    if (highlightNames.length > 0 && d.highlight=== true) {
+                        return colourScale(d.name);
+                    } 
                     return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
+                })
                 .attr('opacity', (d) => {
-                    if (highlightNames.length > 0 && d.highlightLine === false) {
-                        return 0.5;
+                    if (highlightNames.length > 0 && d.highlight === false || d.status === 'old') {
+                        return 0.3;
                     } return 1;
                 })
 

@@ -110,8 +110,8 @@ export function load([url, url2], options) { // eslint-disable-line
                     name: d,
                     date: predDate,
                     status: getStatus(latestDate, predDate),
-                    highlighted: isLineHighlighted(banks[0].bank),
-                    lineData: getPredLines2(predDate, banks),
+                    highlightLine: isLineHighlighted(banks[0].bank),
+                    lineData: getPredLines2(predDate, banks, (getStatus(latestDate, predDate))),
                 })
             ))
         })
@@ -123,19 +123,22 @@ export function load([url, url2], options) { // eslint-disable-line
             }
             return 'old'
         }
-        function getPredLines2(filterDate, bankData) {
+        function getPredLines2(filterDate, bankData, status) {
             const banks = bankData.filter(el => el.reporteddate.toISOString() === filterDate)
             let lineData = [];
             //add an extra pint to the data that it the reported date to start the line from
             lineData.push({
                 name: banks[0].bank,
+                status: status,
                 date: banks[0].reporteddate,
                 value: getDatedValue(banks[0].reporteddate),
                 highlight: isLineHighlighted(banks[0].bank),
             })
             banks.forEach((bank) => {
                 const column = {};
-                column.name = bank.bank;
+                column.status = status,
+                column.name = bank.bank,
+                column.status = status,
                 column.date = bank.projectiondate;
                 column.value = Number(bank.projectionspot);
                 column.highlight = isLineHighlighted(bank.bank);
