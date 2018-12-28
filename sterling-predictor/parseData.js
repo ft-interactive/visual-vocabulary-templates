@@ -90,6 +90,7 @@ export function load([url, url2], options) { // eslint-disable-line
         const predData = predNames.map((d) => {
             return {
                 name: d,
+                predictions: getPrevious(d),
                 lineData: getPredLines(d),
                 highlightLine: isLineHighlighted(d),
                 rangeData: getRange(d)
@@ -97,6 +98,7 @@ export function load([url, url2], options) { // eslint-disable-line
         })
         //works out the line data for previous predictions
         function getPrevious(d) {
+            let lineData = []
             //filter the data by bank
             const banks = data2.filter(el => el.bank === d)
             // const uniq = [...new Set(banks.map(d => d.reporteddate.toISOString()))];
@@ -108,13 +110,14 @@ export function load([url, url2], options) { // eslint-disable-line
             console.log('dateSeries', dateSeries)
             //create an array to hold the seperate prediction lines
             //then use deriesNames to filter the bank data by prediction date and creatpath coordinates
-            let predictions = dateSeries.map(predDate => ({
+            let prediction = dateSeries.map(predDate => ({
                 name: d,
                 date: predDate,
                 status: 'to come',
+                highlighted: 'to come',
 
             }))
-            console.log('predictions', predictions)
+            console.log('prediction', prediction)
 
         }
 
