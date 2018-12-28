@@ -57,6 +57,7 @@ const intraday = false;
 const excludeSize = 2.8; //Number between 0 and 10, changes the fit of shading
 const shading = false; //creates a best fit concave hull behind prediction data
 const dotLinks = true; //puts dots on the prediction lines only
+const ranges = true;
 const turnWidth = 6.5;
 
 
