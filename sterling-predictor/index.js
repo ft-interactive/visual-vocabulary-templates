@@ -151,7 +151,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const myAnnotations = annotation.annotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const myArea = areaChart.draw() 
+        const myArea = areaChart.draw();
         const tickSize = currentFrame.dimension().width; // Used when drawing the yAxis ticks
         const predictions = lineChart.draw()
           .seriesNames(seriesNames)
