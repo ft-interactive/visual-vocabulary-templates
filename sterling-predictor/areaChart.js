@@ -15,14 +15,17 @@ export function draw() {
 
     function chart(parent) {
         const area = d3.area()
-            .x(d => xScale(d.data.date))
-            .y0(d => yScale(d[0]))
-            .y1(d => yScale(d[1]));
+            .x(d => xScale(d.date))
+            .y0(d => yScale(d.low))
+            .y1(d => yScale(d.high));
 
         parent.append('path')
-            .attr('id', d => d.key)
-            .attr('d', area)
-            .style('fill', d => colourScale(d.key));
+            .attr('id', (d) => {
+                console.log(d.name);
+                return d.name})
+            .attr('d', d => area(d.areaData))
+            .style('fill', d => colourScale(d.name));
+
     }
 
     chart.yScale = (d) => {

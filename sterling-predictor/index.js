@@ -268,11 +268,10 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         }
         // highlights after axis have been created
         const plotHull = currentFrame.plot().append('g')
-        const plotArea = currentFrame.plot().append('g')
         const plotPredictions = currentFrame.plot().append('g')
         const series = currentFrame.plot().append('g')
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder'); 
-
+        const plotArea = currentFrame.plot().append('g')
 
         //draws the shaded bounding box for the data if sahading is true
         if(shading) {
@@ -288,6 +287,21 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
                 .attr('fill', '#FCE6D6')
                 .attr('d', d => { return drawLine(d); })
         }
+
+        myArea
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette(colourScale);
+
+        plotArea
+            .selectAll('areas')
+            .data(rangeData)
+            .enter()
+            .append('g')
+            .attr('class', 'areas')
+            .call(myArea);
 
         predictions
             .yScale(myYAxis.scale())
