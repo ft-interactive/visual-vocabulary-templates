@@ -106,50 +106,6 @@ export function draw() {
         .attr('fill', 'none')
         .attr('d', d => lowerLine(d.areaData));
 
-        if (markers) {
-            parent.selectAll('circle')
-                .data(d => d.areaData)
-                .enter()
-                .append('circle')
-                .attr('id', d => `date: ${d.date} value: ${d.value}`)
-                .attr('cx', d => xScale(d.date))
-                .attr('cy', d => yScale(d.low))
-                .attr('r', rem * 0.2)
-                .attr('fill', (d) => {
-                    if (highlightNames.length > 0 && d.highlight=== false) {
-                        return colourScale.range()[0];
-                    }
-                    if (highlightNames.length > 0 && d.highlight=== true) {
-                        return colourScale(d.name);
-                    } 
-                    return colourScale(d.name);
-                })
-                .attr('opacity', (d) => {
-                    if (highlightNames.length > 0 && d.highlight === false || d.status === 'old') {
-                        return 0.3;
-                    } return 1;
-                })
-                .append('circle')
-                .attr('id', d => `date: ${d.date} value: ${d.value}`)
-                .attr('cx', d => xScale(d.date))
-                .attr('cy', d => yScale(d.high))
-                .attr('r', rem * 0.2)
-                .attr('fill', (d) => {
-                    if (highlightNames.length > 0 && d.highlight=== false) {
-                        return colourScale.range()[0];
-                    }
-                    if (highlightNames.length > 0 && d.highlight=== true) {
-                        return colourScale(d.name);
-                    } 
-                    return colourScale(d.name);
-                })
-                .attr('opacity', (d) => {
-                    if (highlightNames.length > 0 && d.highlight === false || d.status === 'old') {
-                        return 0.3;
-                    } return 1;
-                })
-
-        }
 
     }
 
