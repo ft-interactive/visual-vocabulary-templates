@@ -8,6 +8,7 @@ export function draw() {
     let xScale = d3.scaleTime();
     let highlightNames = [];
     let interpolation = d3.curveLinear;
+    let markers = false;
     let seriesNames = [];
     let yAxisAlign = 'right';
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
@@ -103,6 +104,51 @@ export function draw() {
         })
         .attr('d', d => lowerLine(d.areaData));
 
+        if (markers) {
+            parent.selectAll('circle')
+                .data(d => d.areaData)
+                .enter()
+                .append('circle')
+                .attr('id', d => `date: ${d.date} value: ${d.value}`)
+                .attr('cx', d => xScale(d.date))
+                .attr('cy', d => yScale(d.low))
+                .attr('r', rem * 0.2)
+                .attr('fill', (d) => {
+                    if (highlightNames.length > 0 && d.highlight=== false) {
+                        return colourScale.range()[0];
+                    }
+                    if (highlightNames.length > 0 && d.highlight=== true) {
+                        return colourScale(d.name);
+                    } 
+                    return colourScale(d.name);
+                })
+                .attr('opacity', (d) => {
+                    if (highlightNames.length > 0 && d.highlight === false || d.status === 'old') {
+                        return 0.3;
+                    } return 1;
+                })
+                .append('circle')
+                .attr('id', d => `date: ${d.date} value: ${d.value}`)
+                .attr('cx', d => xScale(d.date))
+                .attr('cy', d => yScale(d.high))
+                .attr('r', rem * 0.2)
+                .attr('fill', (d) => {
+                    if (highlightNames.length > 0 && d.highlight=== false) {
+                        return colourScale.range()[0];
+                    }
+                    if (highlightNames.length > 0 && d.highlight=== true) {
+                        return colourScale(d.name);
+                    } 
+                    return colourScale(d.name);
+                })
+                .attr('opacity', (d) => {
+                    if (highlightNames.length > 0 && d.highlight === false || d.status === 'old') {
+                        return 0.3;
+                    } return 1;
+                })
+
+        }
+
     }
 
 
@@ -180,6 +226,12 @@ export function draw() {
     chart.interpolation = (d) => {
         if (!d) return interpolation;
         interpolation = d;
+        return chart;
+    };
+
+    chart.markers = (d) => {
+        if (typeof d === 'undefined') return markers;
+        markers = d;
         return chart;
     };
 
