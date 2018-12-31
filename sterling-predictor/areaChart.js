@@ -85,6 +85,7 @@ export function draw() {
                 return 0.3;
             } return 1;
         })
+        .attr('fill', 'none')
         .attr('d', d => upperLine(d.areaData));
 
         parent.append('path')
@@ -102,6 +103,7 @@ export function draw() {
                 return 0.3;
             } return 1;
         })
+        .attr('fill', 'none')
         .attr('d', d => lowerLine(d.areaData));
 
         if (markers) {
