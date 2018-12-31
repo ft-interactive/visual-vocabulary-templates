@@ -7,6 +7,7 @@ export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
     let highlightNames = [];
+    let interpolation = d3.curveLinear;
     let seriesNames = [];
     let yAxisAlign = 'right';
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
@@ -19,6 +20,18 @@ export function draw() {
             .x(d => xScale(d.date))
             .y0(d => yScale(d.low))
             .y1(d => yScale(d.high));
+
+        const upperLine = d3.line()
+        .defined(d => d)
+        .curve(interpolation)
+        .x(d => xScale(d.date))
+        .y(d => yScale(d.high));
+
+        const lowerLine = d3.line()
+        .defined(d => d)
+        .curve(interpolation)
+        .x(d => xScale(d.date))
+        .y(d => yScale(d.low));
 
         parent.append('path')
             .attr('id', d => d.name)
@@ -56,7 +69,42 @@ export function draw() {
                     }
                 })
 
+        parent.append('path')
+        .attr('stroke', (d) => {
+            if (highlightNames.length > 0 && d.highlightLine === false) {
+                return colourScale.range()[0];
+            }
+            if (highlightNames.length > 0 && d.highlightLine === true) {
+                return colourScale(d.name);
+            } 
+            return colourScale(d.name);
+        })
+        .attr('opacity', (d) => {
+            if (highlightNames.length > 0 && d.highlightLine === false || d.status === 'old') {
+                return 0.3;
+            } return 1;
+        })
+        .attr('d', d => upperLine(d.areaData));
+
+        parent.append('path')
+        .attr('stroke', (d) => {
+            if (highlightNames.length > 0 && d.highlightLine === false) {
+                return colourScale.range()[0];
+            }
+            if (highlightNames.length > 0 && d.highlightLine === true) {
+                return colourScale(d.name);
+            } 
+            return colourScale(d.name);
+        })
+        .attr('opacity', (d) => {
+            if (highlightNames.length > 0 && d.highlightLine === false || d.status === 'old') {
+                return 0.3;
+            } return 1;
+        })
+        .attr('d', d => lowerLine(d.areaData));
+
     }
+
 
     chart.yScale = (d) => {
         if (!d) return yScale;
@@ -126,6 +174,12 @@ export function draw() {
 
     chart.annotate = (d) => {
         annotate = d;
+        return chart;
+    };
+
+    chart.interpolation = (d) => {
+        if (!d) return interpolation;
+        interpolation = d;
         return chart;
     };
 

@@ -292,6 +292,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
             .yScale(myYAxis.scale())
             .xScale(myXAxis.scale())
             .highlightNames(highlightNames)
+            .interpolation(interpolation)
             .plotDim(currentFrame.dimension())
             .rem(currentFrame.rem())
             .colourPalette(colourScale);
