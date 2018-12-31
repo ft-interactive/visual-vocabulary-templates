@@ -41,10 +41,7 @@ export function draw() {
                 } return 1;
             })
             .attr('d', d => lineData(d.lineData));
-            
-            if(d => d.highlightLine) {
-                
-            }
+
             parent.append('g')
                 .attr('class', 'annotations-holder')
                 .append('text')
@@ -68,7 +65,11 @@ export function draw() {
                     }
                     return colourScale(d.name);
                     })
-                .text(d => d.name)
+                .text(d => {
+                    if(d.status === 'current') {
+                        return d.name
+                    }
+                })
 
         }
         

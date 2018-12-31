@@ -29,7 +29,7 @@ export function draw() {
             .attr('opacity', (d) => {
                 if (highlightNames.length > 0 && d.highlightLine === false || d.status === 'old') {
                     return 0.2;
-                } return 0.5;
+                } return 0.4;
             })
 
     }
