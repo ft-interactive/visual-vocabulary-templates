@@ -21,9 +21,7 @@ export function draw() {
             .y1(d => yScale(d.high));
 
         parent.append('path')
-            .attr('id', (d) => {
-                console.log(d.name);
-                return d.name})
+            .attr('id', d => d.name)
             .attr('d', d => area(d.areaData))
             .attr('fill', d => colourScale(d.name))
             .attr('opacity', (d) => {
@@ -31,6 +29,32 @@ export function draw() {
                     return 0.2;
                 } return 0.4;
             })
+
+        parent.append('g')
+                .attr('class', 'annotations-holder')
+                .append('text')
+                .attr('class', 'annotation')
+                .attr('class', 'chart-subtitle')
+                .attr('x', xScale.range()[1] + (rem/2))
+                .attr('y', (d) => {
+                    return yScale(
+                        ((d.areaData[d.areaData.length - 1].high - d.areaData[d.areaData.length - 1].low)/2) +
+                        d.areaData[d.areaData.length - 1].low) + (rem * 0.3)
+                    })
+                .style('fill', (d) => {
+                    if (highlightNames.length > 0 && d.highlightLine === false) {
+                        return colourScale.range()[0];
+                    }
+                    if (highlightNames.length > 0 && d.highlightLine === true) {
+                        return colourScale(d.name);
+                    }
+                    return colourScale(d.name);
+                    })
+                .text(d => {
+                    if(d.status === 'current') {
+                        return d.name
+                    }
+                })
 
     }
 
