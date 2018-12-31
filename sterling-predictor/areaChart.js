@@ -6,11 +6,12 @@ let rem = 10;
 export function draw() {
     let yScale = d3.scaleLinear();
     let xScale = d3.scaleTime();
+    let highlightNames = [];
     let seriesNames = [];
     let yAxisAlign = 'right';
     const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
     let annotate = false; // eslint-disable-line
-    const colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
@@ -24,7 +25,12 @@ export function draw() {
                 console.log(d.name);
                 return d.name})
             .attr('d', d => area(d.areaData))
-            .style('fill', d => colourScale(d.name));
+            .attr('fill', d => colourScale(d.name))
+            .attr('opacity', (d) => {
+                if (highlightNames.length > 0 && d.highlightLine === false || d.status === 'old') {
+                    return 0.2;
+                } return 0.5;
+            })
 
     }
 
@@ -55,6 +61,12 @@ export function draw() {
     chart.seriesNames = (d) => {
         if (typeof d === 'undefined') return seriesNames;
         seriesNames = d;
+        return chart;
+    };
+
+    chart.highlightNames = (d) => {
+        if (typeof d === 'undefined') return highlightNames;
+        highlightNames = d;
         return chart;
     };
 
@@ -101,6 +113,8 @@ export function draw() {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
             colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };
