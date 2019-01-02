@@ -36,12 +36,12 @@ export function draw() {
                 return colourScale(d.name);
             })
             .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return 0.5;
+                if (highlightNames.length > 0 && d.highlightLine === false || d.status === 'old') {
+                    return 0.3;
                 } return 1;
             })
             .attr('d', d => lineData(d.lineData));
-            
+
             parent.append('g')
                 .attr('class', 'annotations-holder')
                 .append('text')
@@ -65,7 +65,11 @@ export function draw() {
                     }
                     return colourScale(d.name);
                     })
-                .text(d => d.name)
+                .text(d => {
+                    if(d.status === 'current') {
+                        return d.name
+                    }
+                })
 
         }
         
@@ -79,118 +83,21 @@ export function draw() {
                 .attr('cy', d => yScale(d.value))
                 .attr('r', rem * 0.2)
                 .attr('fill', (d) => {
-                if (highlightNames.length > 0 && d.highlight=== false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlight=== true) {
+                    if (highlightNames.length > 0 && d.highlight=== false) {
+                        return colourScale.range()[0];
+                    }
+                    if (highlightNames.length > 0 && d.highlight=== true) {
+                        return colourScale(d.name);
+                    } 
                     return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
+                })
                 .attr('opacity', (d) => {
-                    if (highlightNames.length > 0 && d.highlightLine === false) {
-                        return 0.5;
+                    if (highlightNames.length > 0 && d.highlight === false || d.status === 'old') {
+                        return 0.3;
                     } return 1;
                 })
 
         }
-
-        // const range = parent.selectAll('circle')
-        //     .data(d => d.dotsData)
-        //     .enter()
-        
-        // range.append('circle')
-        //     .classed('markers', true)
-        //     .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        //     .attr('cx', d => xScale(d.date))
-        //     .attr('cy', (d) => {
-        //         return yScale(d.low)})
-        //     .attr('r', rem * 0.2)
-        //     .attr('opacity', 0.6)
-        //     .attr('fill', (d) => {return colourScale(d.name);
-        //     });
-
-        // range.append('circle')
-        //     .classed('markers', true)
-        //     .attr('id', d => `date: ${d.date} value: ${d.value}`)
-        //     .attr('cx', d => xScale(d.date))
-        //     .attr('cy', (d) => {
-        //         return yScale(d.high)
-        //     })
-        //     .attr('r', rem * 0.2)
-        //     .attr('opacity', 0.6)
-        //     .attr('fill', (d) => {return colourScale(d.name);
-        //     });
-
-        const range2 = parent.selectAll('line')
-            .data(d => d.rangeData)
-            .enter()
-        range2.append('line')
-            .attr('opacity', 0.6)
-            .attr('y1', d =>  yScale(d.high))
-            .attr('x1', d => xScale(d.date))
-            .attr('y2', (d) => yScale(d.low))
-            .attr('x2', d => xScale(d.date))
-            .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlightLine === true) {
-                    return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
-            .attr('stroke-width', 1.5)
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlightLine === false) {
-                    return 0.5;
-                } return 1;
-            })
-
-        range2.append('line')
-            .attr('y1', d => yScale(d.high))
-            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
-            .attr('y2', d => yScale(d.high))
-            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlight === true) {
-                    return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
-            .attr('stroke-width', 1.5)
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return 0.5;
-                } return 1;
-            })
-
-        range2.append('line')
-            .attr('y1', d => yScale(d.low))
-            .attr('x1', d => xScale(d.date) - (boxWidth / 4))
-            .attr('y2', d => yScale(d.low))
-            .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('stroke', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return colourScale.range()[0];
-                }
-                if (highlightNames.length > 0 && d.highlight === true) {
-                    return colourScale(d.name);
-                } 
-                return colourScale(d.name);
-            })
-            .attr('stroke-width', 1.5)
-            .attr('opacity', (d) => {
-                if (highlightNames.length > 0 && d.highlight === false) {
-                    return 0.5;
-                } return 1;
-            })
-
-
-
 
     }
 

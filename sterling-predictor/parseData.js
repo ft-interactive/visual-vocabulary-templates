@@ -87,79 +87,110 @@ export function load([url, url2], options) { // eslint-disable-line
             highlightLine: isLineHighlighted(d),
         }));
 
-        const predData = predNames.map((d) => {
-            return {
-                name: d,
-                lineData: getPredLines(d),
-                highlightLine: isLineHighlighted(d),
-                rangeData: getRange(d)
-            }
-        })
-        //works out the line data for previous predictions
-        function getPrevious(d) {
+        //an array to hold the predictions line information
+        let predictionsData = [];
+        predNames.map((d) => {
             //filter the data by bank
             const banks = data2.filter(el => el.bank === d)
-            // const uniq = [...new Set(banks.map(d => d.reporteddate.toISOString()))];
-            // console.dir(uniq);
-            console.log('banks', banks)
             //determine how many unique reporting dates there are for that particular bank
             const dateSeries = banks.map(d => d.reporteddate.toISOString())
                 .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-            console.log('dateSeries', dateSeries)
-            //create an array to hold the seperate prediction lines
-            //then use deriesNames to filter the bank data by prediction date and creatpath coordinates
-            let predictions = dateSeries.map(predDate => ({
-                name: d,
-                date: predDate,
-                status: 'to come',
+            //determine the latest reporting date for this particular bank
+            const latestDate = dateSeries[dateSeries.length - 1];
+            let prediction = dateSeries.map(predDate => (
+                predictionsData.push({
+                    name: d,
+                    date: predDate,
+                    status: getStatus(latestDate, predDate),
+                    highlightLine: isLineHighlighted(banks[0].bank),
+                    lineData: getPredLines(predDate, banks, (getStatus(latestDate, predDate))),
+                })
+            ))
+        })
+        console.log('predictionsData', predictionsData)
 
-            }))
-            console.log('predictions', predictions)
-
-        }
-
-        function getRange(d) {
+        //an array to hold the range data
+        let rangeData = [];
+        predNames.map((d) => {
+            //filter the data by bank
             const banks = data2.filter(el => el.bank === d && el.projectionlow !== '')
-            let rangeData = [];
-             banks.forEach((bank) => {
-                const column = {};
-                column.name = bank.bank;
-                column.date = Number(bank.projectiondate);
-                column.low = Number(bank.projectionlow);
-                column.high = Number(bank.projectionhigh);
-                column.highlightLine = isLineHighlighted(bank.bank);
-                if (bank) {
-                    rangeData.push(column);
-                }
-            })
-             return rangeData
-        }
+            //determine how many unique reporting dates there are for that particular bank
+            const dateSeries = banks.map(d => d.reporteddate.toISOString())
+                .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
+            //determine the latest reporting date for this particular bank
+            const latestDate = dateSeries[dateSeries.length - 1];
+            let range = dateSeries.map(predDate => (
+                rangeData.push({
+                    name: d,
+                    date: predDate,
+                    status: getStatus(latestDate, predDate),
+                    highlightLine: isLineHighlighted(banks[0].bank),
+                    areaData: getAreas(predDate, banks, (getStatus(latestDate, predDate))),
+                })
+            ))
+        })
+        console.log('rangeData', rangeData)
 
-        function getPredLines(d) {
-            const banks = data2.filter(el => el.bank === d)
+        function getAreas(filterDate, bankData, status) {
+            const banks = bankData.filter(el => el.reporteddate.toISOString() === filterDate)
+            let areaData = [];
+            //add an extra pint to the data that it the reported date to start the line from
+            areaData.push({
+                name: banks[0].bank,
+                status: status,
+                date: banks[0].reporteddate,
+                low: getDatedValue(banks[0].reporteddate),
+                high: getDatedValue(banks[0].reporteddate),
+                highlight: isLineHighlighted(banks[0].bank),
+            })
+            banks.forEach((bank) => {
+                const column = {};
+                    column.name = bank.bank,
+                    column.status = status,
+                    column.date = bank.projectiondate;
+                    column.low = Number(bank.projectionlow);
+                    column.high = Number(bank.projectionhigh);
+                    column.highlight = isLineHighlighted(bank.bank);
+                    if (bank.projectionlow) {
+                        areaData.push(column);
+                    }
+            })
+            return areaData
+        }
+        
+        //function to determine if the line being drawn is the most current prediction
+        function getStatus(latestDate, predDate) {
+            if (latestDate === predDate) {
+                return 'current'
+            }
+            return 'old'
+        }
+        function getPredLines(filterDate, bankData, status) {
+            const banks = bankData.filter(el => el.reporteddate.toISOString() === filterDate)
             let lineData = [];
             //add an extra pint to the data that it the reported date to start the line from
             lineData.push({
                 name: banks[0].bank,
+                status: status,
                 date: banks[0].reporteddate,
                 value: getDatedValue(banks[0].reporteddate),
                 highlight: isLineHighlighted(banks[0].bank),
-                annotate: 'to come'
             })
             banks.forEach((bank) => {
                 const column = {};
-                column.name = bank.bank;
+                column.status = status,
+                column.name = bank.bank,
+                column.status = status,
                 column.date = bank.projectiondate;
                 column.value = Number(bank.projectionspot);
                 column.highlight = isLineHighlighted(bank.bank);
-                column.annotate = 'to come';
                 if (bank.projectionspot) {
-                // if (bank) {
                     lineData.push(column);
                 }
             })
             return lineData
         }
+
         //looks up the value of from data on the day the forecast was made
         function getDatedValue(d) {
             const filtered = data.find(el => {
@@ -170,7 +201,6 @@ export function load([url, url2], options) { // eslint-disable-line
 
         highlightLines = plotData.filter(d => d.highlightLine === true);
        
- 
         // Format the data that is used to draw highlight tonal bands
         const boundaries = data2.filter(d => (d.highlight === 'begin' || d.highlight === 'end'));
         const highlights = [];
@@ -206,18 +236,20 @@ export function load([url, url2], options) { // eslint-disable-line
                 ]
             return types
         }
+        console.log('plotData', plotData)
 
         return {
             data,
             vertices,
             seriesNames,
             plotData,
-            predData,
             highlightLines,
             valueExtent,
             highlights,
             dateExtent,
             annos,
+            predictionsData,
+            rangeData,
         };
     });
 }

@@ -10,6 +10,7 @@ import * as gAxis from 'g-axis';
 import * as parseData from './parseData.js';
 import * as lineChart from './lineChart.js';
 import * as annotation from 'g-annotations';
+import * as areaChart from './areaChart.js';
 import concaveHullGenerator from './concaveHull.js';
 
 //const dataFile =  'data.csv'
@@ -57,6 +58,7 @@ const intraday = false;
 const excludeSize = 2.8; //Number between 0 and 10, changes the fit of shading
 const shading = false; //creates a best fit concave hull behind prediction data
 const dotLinks = true; //puts dots on the prediction lines only
+const ranges = true; //draw shaded range fans
 const turnWidth = 6.5;
 
 
@@ -126,7 +128,19 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
-.then(({data, vertices, seriesNames, plotData, predData, highlightLines, valueExtent, highlights, dateExtent, annos}) => {
+.then(({
+            data,
+            vertices,
+            seriesNames,
+            plotData,
+            highlightLines,
+            valueExtent,
+            highlights,
+            dateExtent,
+            annos,
+            predictionsData,
+            rangeData,
+        }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -137,7 +151,8 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         const myAnnotations = annotation.annotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
-        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
+        const myArea = areaChart.draw();
+        const tickSize = currentFrame.dimension().width; // Used when drawing the yAxis ticks
         const predictions = lineChart.draw()
           .seriesNames(seriesNames)
           .highlightNames(highlightNames)
@@ -253,10 +268,10 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
         }
         // highlights after axis have been created
         const plotHull = currentFrame.plot().append('g')
+        const plotArea = currentFrame.plot().append('g')
         const plotPredictions = currentFrame.plot().append('g')
         const series = currentFrame.plot().append('g')
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder'); 
-
 
         //draws the shaded bounding box for the data if sahading is true
         if(shading) {
@@ -273,6 +288,24 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
                 .attr('d', d => { return drawLine(d); })
         }
 
+        myArea
+            .yScale(myYAxis.scale())
+            .xScale(myXAxis.scale())
+            .highlightNames(highlightNames)
+            .interpolation(interpolation)
+            .markers(markers)
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette(colourScale);
+
+        plotArea
+            .selectAll('areas')
+            .data(rangeData)
+            .enter()
+            .append('g')
+            .attr('class', 'areas')
+            .call(myArea);
+
         predictions
             .yScale(myYAxis.scale())
             .xScale(myXAxis.scale())
@@ -282,7 +315,7 @@ parseData.load([dataFile, predFile,], { dateFormat, highlightNames })
 
         plotPredictions
             .selectAll('.lines')
-            .data(predData)
+            .data(predictionsData)
             .enter()
             .append('g')
             .attr('class', 'lines')
