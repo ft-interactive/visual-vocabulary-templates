@@ -103,7 +103,7 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annos }) => { // eslint-disable-line
+parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, annotations }) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
 
@@ -135,7 +135,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             rotate: 0
         }
         const sqrtScale = d3.scaleSqrt()
-            .domain(sizeExtent)
+            .domain([0, sizeExtent[1]])
             .range([0,(currentFrame.rem()*scaleFactor)]);
         const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
         // define other functions to be called
@@ -239,7 +239,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
         // // Draw the annotations before the lines
         plotAnnotation  
             .selectAll('.annotations')
-            .data(annos)
+            .data(annotations)
             .enter()
             .append('g')
             .call(myAnnotations)

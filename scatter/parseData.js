@@ -23,43 +23,27 @@ export function load(url, options) { // eslint-disable-line
         const yValueExtent = extentMulti(data, [yVar]);
         const sizeExtent = extentMulti(data, [sizeVar]);
 
-         // Filter data for annotations
-        const annotations = data.filter((d) => {return d.label === 'yes'});
-        //checks that annotation have a type, if non defined then defaults to 'curve'
-        annotations.forEach((d) => {
-            d.type = testType(d)
-        })
-        function testType(d) {
-            if (d.type === '' || d.type === undefined || d.type === null) {
-                return 'curve'
-            }
-            else {return d.type}
-        }
-
-        //create an array of listing unique annotations types
-        const anoTypes = annotations.map( d => d.type)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        //builds annotation dataset as grouped by type
-        const annos = anoTypes.map(d => ({
-            type: d,
-            annotations: getAnnotations(d),
-        }));
-
-        function getAnnotations(el) {
-            const types = data.filter(d => (d.type === el))
-            .map((d) => {
-                return {
-                    title: d.name,
+        //create an array of annotations
+         const annotations = data.filter(d => d.label === 'yes')
+             .map((el) => {
+                 return {
+                    title: el.name,
                     //note: '',
-                    targetX: Number(d[xVar]),
-                    targetY: Number(d[yVar]),
-                    radius: Number(d[sizeVar]),
-                    type: d.type,
-                }
-            })
-            return types
-        }
+                    targetX: Number(el[xVar]),
+                    targetY: Number(el[yVar]),
+                    radius: Number(el[sizeVar]),
+                    type: getType(el.type),
+                 }
+             });
+
+         function getType(type) {
+             console.log (type)
+             if (type === '' || type === undefined || type === null) {
+                 return 'curve'
+             }
+             return type
+         }
+         console.log (annotations)
 
         return {
             seriesNames,
@@ -67,7 +51,7 @@ export function load(url, options) { // eslint-disable-line
             yValueExtent,
             sizeExtent,
             data,
-            annos,
+            annotations,
         };
     });
 }
