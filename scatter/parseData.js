@@ -41,7 +41,7 @@ export function load(url, options) { // eslint-disable-line
                 return 'curve'
             }
             return type
-         }
+        }
 
         return {
             seriesNames,
