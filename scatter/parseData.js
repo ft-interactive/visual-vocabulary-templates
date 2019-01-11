@@ -24,26 +24,24 @@ export function load(url, options) { // eslint-disable-line
         const sizeExtent = extentMulti(data, [sizeVar]);
 
         //create an array of annotations
-         const annotations = data.filter(d => d.label === 'yes')
-             .map((el) => {
-                 return {
-                    title: el.name,
-                    //note: '',
-                    targetX: Number(el[xVar]),
-                    targetY: Number(el[yVar]),
-                    radius: Number(el[sizeVar]),
-                    type: getType(el.type),
-                 }
-             });
+        const annotations = data.filter(d => d.label === 'yes')
+            .map((el) => {
+                return {
+                title: el.name,
+                //note: '',
+                targetX: Number(el[xVar]),
+                targetY: Number(el[yVar]),
+                radius: Number(el[sizeVar]),
+                type: getType(el.type),
+                }
+            });
 
-         function getType(type) {
-             console.log (type)
-             if (type === '' || type === undefined || type === null) {
-                 return 'curve'
-             }
-             return type
+        function getType(type) {
+            if (type === '' || type === undefined || type === null) {
+                return 'curve'
+            }
+            return type
          }
-         console.log (annotations)
 
         return {
             seriesNames,
