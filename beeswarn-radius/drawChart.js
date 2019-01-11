@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import gChartcolour from 'g-chartcolour';
+import * as annotation from 'g-annotations';
 
 
 export function draw() {
@@ -35,6 +36,7 @@ export function draw() {
                     if (d.label) { return dotOutline}
                     else{return 'none'}
                 })
+                
 
             function sim(dots) {
                 const data = dots.data()
@@ -47,6 +49,7 @@ export function draw() {
 
 
     }
+    
     chart.opacity = (d) => {
         if (!d) return opacity;
         opacity = d;

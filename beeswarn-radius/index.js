@@ -182,7 +182,6 @@ parseData.load(dataFile, {})
             .domain([0,radiusExtent[1]])
             .range([0,((currentFrame.rem() / 10) * scaleFactor)]);
 
-          
           const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
 
           beeswarm
@@ -194,7 +193,7 @@ parseData.load(dataFile, {})
             .xScale(xAxis.scale())
             .rem(currentFrame.rem())
             .plotDim([currentFrame.dimension().width,currentFrame.dimension().width])
-          
+        
           currentFrame.plot()
             .selectAll('swarms')
             .data(plotData)
@@ -203,23 +202,52 @@ parseData.load(dataFile, {})
             .attr('id', d => `bees__${d.name.toLowerCase()}`)
             .call(beeswarm);
 
-          // myAnnotations
-          //           .xScale(xAxis.scale())
-          //           .yScale(yAxis.scale())
-          //           .rem(currentFrame.rem())
-          //           .sizeScale(sqrtScale)
-          //           .frameName(frameName)
-          //           .lineWidth(turnWidth)
-          //           .plotDim([currentFrame.dimension().width,currentFrame.dimension().width])
+            const annos = []
+            plotData.forEach(d => {
+                annos.push(d.dots.filter(el => el.label === 'yes'))
+            })
+            const annotations = [].concat.apply([], annos)
+                .map((el) => {
+                    return {
+                        title: el.id,
+                        //note: '',
+                        targetX: Number(el.x),
+                        targetY: Number(el.y),
+                        radius: Number(el.radius),
+                        type: getType(el.type),
+                    }
+                });
 
-          // plotAnnotation
-          //           .selectAll('.annotations')
-          //           .data(annosData)
-          //           .enter()
-          //           .append('g')
-          //           .call(myAnnotations)
+            function getType(type) {
+                if (type === '' || type === undefined || type === null) {
+                    return 'curve'
+                }
+                return type
+            };
+            
+            const yAnnosAxis = gAxis.yLinear()
+                .range([0, currentFrame.dimension().height])
+                .domain([0, currentFrame.dimension().height])
+            
+            const xAnnosAxis = gAxis.xLinear()
+                .range([0, currentFrame.dimension().width])
+                .domain([0, currentFrame.dimension().width])
 
+            myAnnotations
+                .xScale(xAnnosAxis.scale())
+                .yScale(yAnnosAxis.scale())
+                .rem(currentFrame.rem())
+                .sizeScale(sqrtScale)
+                .frameName(frameName)
+                .lineWidth(turnWidth)
+                .plotDim([currentFrame.dimension().width, currentFrame.dimension().width])
 
+            plotAnnotation
+                .selectAll('.annotations')
+                .data(annotations)
+                .enter()
+                .append('g')
+                .call(myAnnotations)
 
       });
       // addSVGSavers('figure.saveable');

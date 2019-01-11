@@ -23,7 +23,6 @@ export function load(url, options) { // eslint-disable-line
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data, seriesNames);
         const radiusExtent = extentMulti(data, ['radius']);
-        console.log('radiusExtent', radiusExtent)
 
         // Format the dataset that is used to draw the lines
         const plotData = categroies.map(d => ({
@@ -31,37 +30,12 @@ export function load(url, options) { // eslint-disable-line
             dots: getdots(data, d),
         }));
 
-        // Filter data for annotations
-                let annosData = data.filter((d) => {return d.label === 'yes'})
-                    .map((d) => {
-                        return {
-                            title: d.name,
-                            //note: '',
-                            targetX: Number(d.value),
-                            targetY: d.category,
-                            radius: d.radius,
-                            type: d.type,
-                        }
-                    })
-                //checks that annotation have a type, if non defined then defaults to 'curve'  
-
-                annosData.forEach((d) => {
-                    d.type = testType(d)
-                })
-
-                function testType(d) {
-                    if (d.type === '' || d.type === undefined || d.type === null) {
-                        return 'curve'
-                    }
-                    else {return d.type}
-                }
 
         return {
             seriesNames,
             categroies,
             valueExtent,
             plotData,
-            annosData,
             radiusExtent,
         };
     });
