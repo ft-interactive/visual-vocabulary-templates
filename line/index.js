@@ -120,7 +120,15 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
-.then(({ seriesNames, data, plotData, highlightLines, valueExtent, highlights, annos }) => {
+.then(({
+            seriesNames,
+            data,
+            plotData,
+            highlightLines,
+            valueExtent,
+            highlights,
+            annotations,
+        }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -303,7 +311,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         // Draw the annotations before the lines
         plotAnnotation
             .selectAll('.annotations')
-            .data(annos)
+            .data(annotations)
             .enter()
             .append('g')
             .call(myAnnotations)
