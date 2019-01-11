@@ -117,7 +117,20 @@ d3.selectAll('.framed')
         figure.select('svg').call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load(dataURL,{dateFormat, xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent, yValueExtent, sizeExtent, data, plotData, annos, }) => { // eslint-disable-line
+parseData.load(dataURL, {
+        dateFormat,
+        xVar,
+        yVar,
+        sizeVar
+    }).then(({
+            seriesNames,
+            xValueExtent,
+            yValueExtent,
+            sizeExtent,
+            data,
+            plotData,
+            annotations,
+        }) => { // eslint-disable-line
     // identify groups
     const groups = d3.map(data, d => d.group).keys();
 
@@ -253,7 +266,7 @@ parseData.load(dataURL,{dateFormat, xVar, yVar, sizeVar}).then(({ seriesNames, x
         // // Draw the annotations before the lines
         plotAnnotation  
             .selectAll('.annotations')
-            .data(annos)
+            .data(annotations)
             .enter()
             .append('g')
             .call(myAnnotations)

@@ -23,8 +23,6 @@ export function load(url, options) { // eslint-disable-line
         const seriesNames = getSeriesNames(data.columns);
         const groupNames = data.map( d => d.group)
             .filter((item, pos, groupNames) => groupNames.indexOf(item) === pos);
-        console.log('groupNames', groupNames)
-
 
         // determin extents for each scale
         const xValueExtent = extentMulti(data, [xVar]);
@@ -36,8 +34,6 @@ export function load(url, options) { // eslint-disable-line
             lineData: getlines(data, d),
             dotsData: getDots(data, d),
         }));
-
-        console.log('plotData', plotData)
 
         function getDots (d, group) {
             const dots = d.filter((el) => {return el.label === 'yes'})
@@ -54,43 +50,26 @@ export function load(url, options) { // eslint-disable-line
         }
 
 
-         // Filter data for annotations
-        const annotations = data.filter((d) => {return d.label === 'yes'});
-        //checks that annotation have a type, if non defined then defaults to 'curve'
-        annotations.forEach((d) => {
-            d.type = testType(d)
-        })
-        function testType(d) {
-            if (d.type === '' || d.type === undefined || d.type === null) {
+        //create an array of annotations
+        const annotations = data.filter(d => d.label === 'yes')
+            .map((el) => {
+                return {
+                    title: el.annotation,
+                    //note: '',
+                    targetX: Number(el[xVar]),
+                    targetY: Number(el[yVar]),
+                    radius: Number(el[sizeVar]),
+                    type: getType(el.type),
+                }
+            });
+
+        function getType(type) {
+            if (type === '' || type === undefined || type === null) {
                 return 'curve'
             }
-            else {return d.type}
+            return type
         }
-
-        //create an array of listing unique annotations types
-        const anoTypes = annotations.map( d => d.type)
-            .filter((item, pos, anoTypes) => anoTypes.indexOf(item) === pos);
-
-        //builds annotation dataset as grouped by type
-        const annos = anoTypes.map(d => ({
-            type: d,
-            annotations: getAnnotations(d),
-        }));
-
-        function getAnnotations(el) {
-            const types = data.filter(d => (d.type === el))
-            .map((d) => {
-                return {
-                    title: d.annotation,
-                    //note: '',
-                    targetX: Number(d[xVar]),
-                    targetY: Number(d[yVar]),
-                    radius: Number(d[sizeVar]),
-                    type: d.type,
-                }
-            })
-            return types
-        }
+        console.log(annotations)
 
         return {
             seriesNames,
@@ -99,7 +78,7 @@ export function load(url, options) { // eslint-disable-line
             sizeExtent,
             data,
             plotData,
-            annos,
+            annotations,
         };
 
         function getlines(d, group) {
