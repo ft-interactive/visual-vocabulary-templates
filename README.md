@@ -3,6 +3,18 @@
 A library of data driven graphics -- to be used as starting points for static graphics to be further refined through Illustrator.
 [Viewable here](http://ft-interactive.github.io/visual-vocabulary/)
 
+## Offline mode
+
+If you want to use a template offline, `cd` into the relevant directory and run the following:
+
+```
+npx @financial-times/d3-bootloader
+```
+
+This will download all dependencies into your local ./offline folder and rewrite index.html to use local dependencies.
+
+N.b., you need to be online the first time you run this. Afterwards `npx` should have a cached copy it can use.
+
 ## Code style
 
 Files in this repo use the AirBnb base ESLint standard. It is recommended you install [linter-eslint][atom]
