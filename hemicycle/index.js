@@ -94,7 +94,6 @@ parseData.load(dataFile).then(({ data, plotData, seriesNames }) => {
             .append('g')
             .attr('class', 'hemicycle')
             .attr('transform', `translate(${width / 2}, ${height})`)
-            .attr('id', d => d.name)
             .datum({
                 data: plotData,
                 width,
