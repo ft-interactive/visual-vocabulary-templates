@@ -14,8 +14,8 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const xMin = -5;// sets the minimum value on the yAxis
-const xMax = 60;// sets the maximum value on the xAxis
+const xMin = 0;// sets the minimum value on the yAxis
+const xMax = 0;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const xAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 3;// Number of tick on the yAxis
