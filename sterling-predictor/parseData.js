@@ -292,7 +292,7 @@ export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
         const values = columns.map(key => row[key])
         .map((item) => {
-            if (!item || item === '*') {
+            if (item !== 0 && (!item || item === '*')) {
                 return yMin;
             }
             return Number(item);
