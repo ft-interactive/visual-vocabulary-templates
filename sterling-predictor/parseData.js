@@ -233,6 +233,22 @@ export function load([url, url2], options) { // eslint-disable-line
                     radius: 0,
                     type: 'threshold',
                 },
+                {
+                    title: 'Extension',
+                    //note: '',
+                    targetX: new Date('April 12, 2019 00:00:00'),
+                    targetY: 1.5,
+                    radius: 0,
+                    type: 'threshold',
+                },
+                {
+                    title: 'Extension',
+                    //note: '',
+                    targetX: new Date('June 30, 2019 00:00:00'),
+                    targetY: 1.5,
+                    radius: 0,
+                    type: 'threshold',
+                },
                 ]
             return types
         }
