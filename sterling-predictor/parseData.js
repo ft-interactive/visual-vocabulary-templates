@@ -242,9 +242,17 @@ export function load([url, url2], options) { // eslint-disable-line
                     type: 'threshold',
                 },
                 {
+                    title: 'Review',
+                    //note: '',
+                    targetX: new Date('June 20, 2019 00:00:00'),
+                    targetY: 1.5,
+                    radius: 0,
+                    type: 'threshold',
+                },
+                {
                     title: 'Extension',
                     //note: '',
-                    targetX: new Date('June 30, 2019 00:00:00'),
+                    targetX: new Date('October 31, 2019 00:00:00'),
                     targetY: 1.5,
                     radius: 0,
                     type: 'threshold',
