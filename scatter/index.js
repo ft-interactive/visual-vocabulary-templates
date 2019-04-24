@@ -11,7 +11,7 @@ import * as scatterplot from './scatter.js';
 import * as annotation from 'g-annotations';
 
 // dataset and titles
-const dataURL = 'scatter-data.csv';
+const dataURL = 'bubble-data.csv';
 
 const sharedConfig = {
     title: 'Scatter/Bubble plot',
@@ -30,11 +30,11 @@ const yMin = 2// sets the minimum value on the yAxis - will autoextend to includ
 const yMax = 14;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
 
-const scaleDots = false;
+const scaleDots = true;
 const sizeVar = 'var c';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
 const scaleFactor=.8;//controls how big in appearance bubbles are
 
-const lineOfRegression = true;
+const lineOfRegression = false;
 const opacity = 0.7;// sets the fill opacity of the dots...
 const hollowDots = false;// ...or you can set dots to be hollow (will need to adjust key in illustrator)
 
