@@ -29,10 +29,12 @@ const yVar = 'var b';
 const yMin = 2// sets the minimum value on the yAxis - will autoextend to include range of your data
 const yMax = 14;// sets the maximum value on the yAxis - will autoextend to include range of your data
 const divisorY = 1;// sets the formatting on linear axis for ’000s and millions
+const logScaleX = false;
 
 const scaleDots = true;
 const sizeVar = 'var c';//controls size of scatter dots - for a regular scatter, assign to a column with constant values
 const scaleFactor=.8;//controls how big in appearance bubbles are
+const logScaleY = false;
 
 const lineOfRegression = false;
 const opacity = 0.7;// sets the fill opacity of the dots...
@@ -150,6 +152,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .divisor(divisorY)
             .rem(currentFrame.rem())
             .plotDim(plotDim)
+            .logScale(logScaleY)
             .label(axisLabelY);
 
         currentFrame.plot()
@@ -178,6 +181,7 @@ parseData.load(dataURL,{xVar, yVar, sizeVar}).then(({ seriesNames, xValueExtent,
             .tickSize(currentFrame.rem() * 0.75)
             .range([0, currentFrame.dimension().width])
             .align(xAxisAlign)
+            .logScale(logScaleX)
             .frameName(frameName)
             .divisor(divisorX)
             .rem(currentFrame.rem())
