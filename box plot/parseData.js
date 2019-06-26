@@ -38,7 +38,7 @@ export function load(url, options) { // eslint-disable-line
                 quantiles: getQuantiles(qValues, d),
                 min: d3.min(qValues),
                 max: d3.max(qValues),
-                mean: d3.mean(qValues),
+                median: d3.median(qValues),
             }
             console.log(plotData)
           
