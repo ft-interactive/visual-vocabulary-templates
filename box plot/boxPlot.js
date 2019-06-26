@@ -10,7 +10,7 @@ export function draw() {
     const colourScale = d3.scaleOrdinal()
     let rem = 10;
     let lines = false;
-    let mean = false;
+    let median = false;
     let frameName;
     let quantile;
 
@@ -58,11 +58,11 @@ export function draw() {
                 .attr('x2', d => xScale(d.q2))
                 .attr('y1', d => yScale(d.group) - (yScale.bandwidth() / 4))
                 .attr('y2', d => yScale(d.group) + (yScale.bandwidth() / 4));
-            if (mean) {
+            if (median) {
                 parent.append('line')
                     .attr('class', 'line')
-                    .attr('x1', d => xScale(d.mean))
-                    .attr('x2', d => xScale(d.mean))
+                    .attr('x1', d => xScale(d.median))
+                    .attr('x2', d => xScale(d.median))
                     .attr('y1', d => yScale(d.group) - (yScale.bandwidth() / 4))
                     .attr('y2', d => yScale(d.group) + (yScale.bandwidth() / 4))
                     .style('stroke', colourScale.range()[2]);
@@ -140,9 +140,9 @@ export function draw() {
                 .text(d => d.name+' '+d.value)
 
 
-            if (mean) {
+            if (median) {
                 parent.append('circle')
-                    .attr('cx', d => xScale(d.mean))
+                    .attr('cx', d => xScale(d.median))
                     .attr('cy', d => yScale(d.group))
                     .attr('r', rem / 2)
                     .attr('fill', colourScale.range()[2]);
@@ -166,9 +166,9 @@ export function draw() {
         lines = d;
         return dots;
     };
-    dots.mean = (d) => {
-        if (d === undefined) return mean;
-        mean = d;
+    dots.median = (d) => {
+        if (d === undefined) return median;
+        median = d;
         return dots;
     };
     dots.quantile = (d) => {
