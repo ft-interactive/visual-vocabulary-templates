@@ -22,7 +22,7 @@ const colourProperty = 'name';
 const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;//connecting lines on circles
-const mean = false;//add a marker to show mean
+const median = false;//add a marker to show median
 const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
 const logScale = false;
 const quantile = false; // circle geometry only
@@ -170,7 +170,7 @@ parseData.load(dataURL)
                 .geometry(geometry)
                 .frameName(frameName)
                 .seriesNames(seriesNames)
-                .mean(mean)
+                .median(median)
                 .quantile(quantile);
 
             // Draw unhighlighted circles first
