@@ -115,7 +115,7 @@ parseData.load(dataFile, { dateFormat }).then((data) => {
     plotData.keys(seriesNames);
 
     plotData.order(d3.stackOrderNone);
-    plotData.offset(d3.stackOffsetNone);
+    plotData.offset(d3.stackOffsetDiverging);
 
     // Filter data for annotations
     const annos = data.filter(d => (d.annotate !== '' && d.annotate !== undefined));
