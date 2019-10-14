@@ -350,30 +350,57 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         let altString = 'Line chart showing ' + sharedConfig.subtitle + ' ';
         altString = altString + getSpokenSeriesNames(seriesNames)
         altString = altString + getSpokenEndDates(xDomain)
-        altString = altString + getSpokenMinMax(valueExtent, plotData)
+        if (highlightNames.length > 0) {
+          altString = altString + getSpokenHighlights(valueExtent, highlightLines)
+        }
+        else {altString = altString + getSpokenMinMax(valueExtent, plotData)}
+        
         console.log(altString)
         newText.html = 'test'
     });
     // addSVGSavers('figure.saveable');
 
+    function getSpokenHighlights(values, spokenHighlights) {
+      let seriesString = ''
+      spokenHighlights.forEach((d) => {
+        console.log('d', d)
+        let lowest = values[1]
+        let highest = values[0]
+        let found = [];
+        d.lineData.forEach((el) => {
+          if (Number(el.value) < lowest) {
+              lowest = Math.min(Number(el.value), lowest);
+              found[0] = el
+          }
+          if (Number(el.value) > highest) {
+              highest = Math.max(el.value, highest)
+              found[1] = el
+          }
+        })
+        seriesString = seriesString + '\nThe ' + d.name + ' line is highlighted'
+        seriesString = seriesString + '\nThe lowest value is ' + found[0].value + ' on ' + getSpokenDate(found[0].date) + ' and the highest is ' + found[1].value + ' on ' + getSpokenDate(found[1].date) + ' '
+      })
+      return seriesString
+    }
+
+
     function getSpokenMinMax(values, plotdata) {
       let lowest = values[1]
       let highest = values[0]
-      let dates = [0,0]
+      let found = []
       plotData.forEach((d) => {
         d.lineData.forEach((el) => {
           if (Number(el.value)<lowest) {
             lowest = Math.min(Number(el.value), lowest);
-            dates[0] = getSpokenDate(el.date)
+            found[0] = el
           }
           if (Number(el.value) > highest) {
               highest = Math.max(el.value, highest)
-              dates[1] = getSpokenDate(el.date)
+              found[1] = el
           }
-          highest = Math.max(el.value, highest)
         })
       });
-      return ('The lowest value is ' + lowest + ' on ' + dates[0] + ' and the highest is ' + highest + ' on ' + dates[1] + ' ')
+      return ('\nThe lowest value is ' + found[0].value + ' on ' + getSpokenDate(found[0].date) + ' for ' + found[0].name + ' and the highest is ' + found[1].value + ' on ' + getSpokenDate(found[1].date) + ' for '+ found[1].name + ' ')
     }
 
     function getSpokenSeriesNames(series) {
