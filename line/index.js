@@ -29,7 +29,7 @@ const dateFormat = '%d/%m/%Y';
 
 const sharedConfig = {
     title: 'Title not yet added',
-    subtitle: 'Subhead',
+    subtitle: 'Selected media comapnies share price (pence)',
     source: 'Source not yet added',
 };
 
@@ -344,6 +344,66 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
 
         const legendSelection = currentFrame.plot().select('#legend');
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
+
+        // Add alText suggestions
+        let newText = d3.select('suggestedText');
+        let altString = 'Line chart showing ' + sharedConfig.subtitle + ' ';
+        altString = altString + getSpokenSeriesNames(seriesNames)
+        altString = altString + getSpokenEndDates(xDomain)
+        altString = altString + getSpokenMinMax(valueExtent, plotData)
+        console.log(altString)
+        newText.html = 'test'
     });
     // addSVGSavers('figure.saveable');
+
+    function getSpokenMinMax(values, plotdata) {
+      let lowest = values[1]
+      let highest = values[0]
+      let dates = [0,0]
+      plotData.forEach((d) => {
+        d.lineData.forEach((el) => {
+          if (Number(el.value)<lowest) {
+            lowest = Math.min(Number(el.value), lowest);
+            dates[0] = getSpokenDate(el.date)
+          }
+          if (Number(el.value) > highest) {
+              highest = Math.max(el.value, highest)
+              dates[1] = getSpokenDate(el.date)
+          }
+          highest = Math.max(el.value, highest)
+        })
+      });
+      return ('The lowest value is ' + lowest + ' on ' + dates[0] + ' and the highest is ' + highest + ' on ' + dates[1] + ' ')
+    }
+
+    function getSpokenSeriesNames(series) {
+      let seriesString = ''
+      if (series.length > 5) {
+        seriesString = ', there are ' + (series.length) + ' lines, '
+      }
+      else {
+        seriesString = 'for '
+        series.forEach((d,i) => {
+          if (i < (series.length -1)) {
+            seriesString = seriesString + d + ', '
+          }
+          else {seriesString = seriesString + 'and ' + d +'. ' }
+        })
+      }
+      return seriesString
+    }
+
+    function getSpokenEndDates(enddates) {
+      let spokenDates = []
+      let spokenFormat = d3.timeFormat('%B %d %Y')
+      enddates.forEach((d) => {
+        spokenDates.push(getSpokenDate(d))
+      })
+      return 'from ' + spokenDates[0] + ' to ' + spokenDates[1] + ' '
+
+    }
+    function getSpokenDate(date) {
+      let spokenFormat = d3.timeFormat('%B %d %Y')
+      return String(spokenFormat(date))
+    }
 });
