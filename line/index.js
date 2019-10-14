@@ -346,7 +346,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         legendSelection.attr('transform', `translate(0,${-currentFrame.rem()})`);
 
         // Add alText suggestions
-        let newText = d3.select('suggestedText');
+        let newText = d3.select('#suggestedText');
         let altString = 'Line chart showing ' + sharedConfig.subtitle + ' ';
         altString = altString + getSpokenSeriesNames(seriesNames)
         altString = altString + getSpokenEndDates(xDomain)
