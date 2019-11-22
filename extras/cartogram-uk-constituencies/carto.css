@@ -1,0 +1,42 @@
+.ft-webgraphic-s .chart-label,
+.ft-webgraphic-m .chart-label,
+.ft-webgraphic-m-default .chart-label,
+.ft-webgraphic-l .chart-label {
+  fill: #66605c;
+}
+
+.ft-socialgraphic .chart-label,
+.ft-videographic .chart-label {
+    fill: #ffffff;
+    opacity: 0.7
+}
+
+.ft-webgraphic-s .chart-label {
+    font-size: 12px;
+}
+
+.ft-webgraphic-m .chart-label {
+    font-size: 14px;
+}
+
+
+.ft-webgraphic-m-default .chart-label {
+    font-size: 18px;
+}
+
+.ft-webgraphic-l .chart-label {
+    font-size: 16px;
+}
+
+.ft-printgraphic .chart-label {
+    font-size: 8px;
+    fill: #000000;
+}
+
+.ft-socialgraphic .chart-label {
+    font-size: 18px;
+}
+
+.ft-videographic .chart-label {
+    font-size: 36px;
+}

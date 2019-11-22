@@ -1,0 +1,392 @@
+id,cellName,ft_name,regionCode,regionName,2010,2011,2012
+N09000011,Aberavon,Aberavon,W08000001,Wales,95,46,10
+E06000001,Aberconwy,Aberconwy,W08000001,Wales,98,42,32
+S12000005,Aberdeen North,Aberdeen North,S92000003,Scotland,83,52,28
+S12000006,Aberdeen South,Aberdeen South,S92000003,Scotland,64,79,40
+S12000008,West Aberdeenshire and Kincardine,West Aberdeenshire and Kincardine,S92000003,Scotland,90,57,25
+E06000002,Airdrie and Shotts,Airdrie and Shotts,S92000003,Scotland,92,78,26
+E06000003,Aldershot,Aldershot,E15000008,South East,67,69,20
+S12000010,Aldridge-Brownhills,Aldridge-Brownhills,E15000005,West Midlands,65,67,33
+E06000004,Altrincham and Sale West,Altrincham and Sale West,E15000002,North West,61,61,19
+E06000005,Alyn and Deeside,Alyn and Deeside,W08000001,Wales,74,71,20
+S12000011,Amber Valley,Amber Valley,E15000004,East Midlands,86,65,11
+S12000013,Angus,Angus,S92000003,Scotland,64,69,21
+E06000006,East Antrim,East Antrim,N92000002,Northern Ireland,95,49,28
+E06000007,North Antrim,North Antrim,N92000002,Northern Ireland,91,56,40
+S12000014,South Antrim,South Antrim,N92000002,Northern Ireland,90,64,29
+E07000004,Arfon,Arfon,W08000001,Wales,83,66,19
+S12000015,Argyll and Bute,Argyll and Bute,S92000003,Scotland,97,72,26
+E06000008,Arundel and South Downs,Arundel and South Downs,E15000008,South East,70,72,33
+E07000005,Ashfield,Ashfield,E15000004,East Midlands,51,57,13
+S12000017,Ashford,Ashford,E15000008,South East,61,69,36
+E06000009,Ashton-under-Lyne,Ashton-under-Lyne,E15000002,North West,60,76,21
+E07000006,Aylesbury,Aylesbury,E15000008,South East,65,42,27
+S12000018,"Ayr, Carrick and Cumnock","Ayr, Carrick and Cumnock",S92000003,Scotland,77,50,32
+E06000010,Central Ayrshire,Central Ayrshire,S92000003,Scotland,73,79,10
+E07000007,North Ayrshire and Arran,North Ayrshire and Arran,S92000003,Scotland,64,73,37
+S12000019,Banbury,Banbury,E15000008,South East,59,71,12
+E06000011,Banff and Buchan,Banff and Buchan,S92000003,Scotland,89,64,30
+E07000008,Barking,Barking,E15000007,London,63,70,12
+S12000020,Barnsley Central,Barnsley Central,E15000003,Yorkshire and The Humber,90,60,39
+E06000012,Barnsley East,Barnsley East,E15000003,Yorkshire and The Humber,57,64,15
+E07000009,Barrow and Furness,Barrow and Furness,E15000002,North West,85,61,23
+S12000021,Basildon and Billericay,Basildon and Billericay,E15000006,Eastern,97,41,26
+E06000013,South Basildon and East Thurrock,South Basildon and East Thurrock,E15000006,Eastern,69,62,18
+E07000010,Basingstoke,Basingstoke,E15000008,South East,92,79,15
+S12000023,Bassetlaw,Bassetlaw,E15000004,East Midlands,91,45,23
+E06000014,Bath,Bath,E15000009,South West,57,42,24
+E07000011,Batley and Spen,Batley and Spen,E15000003,Yorkshire and The Humber,66,46,27
+S12000024,Battersea,Battersea,E15000007,London,72,74,25
+E06000015,Beaconsfield,Beaconsfield,E15000008,South East,74,68,33
+E07000012,Beckenham,Beckenham,E15000007,London,94,71,13
+S12000026,Bedford,Bedford,E15000006,Eastern,61,42,31
+E06000016,Mid Bedfordshire,Mid Bedfordshire,E15000006,Eastern,96,46,12
+E07000026,North East Bedfordshire,North East Bedfordshire,E15000006,Eastern,57,62,28
+S12000027,South West Bedfordshire,South West Bedfordshire,E15000006,Eastern,62,60,40
+E06000017,Belfast East,Belfast East,N92000002,Northern Ireland,83,40,12
+E07000027,Belfast North,Belfast North,N92000002,Northern Ireland,86,67,34
+S12000028,Belfast South,Belfast South,N92000002,Northern Ireland,53,47,25
+E06000018,Belfast West,Belfast West,N92000002,Northern Ireland,87,72,19
+E07000028,Bermondsey and Old Southwark,Bermondsey and Old Southwark,E15000007,London,59,44,21
+S12000029,Berwick-upon-Tweed,Berwick-upon-Tweed,E15000001,North East,92,61,31
+E06000019,"Berwickshire, Roxburgh and Selkirk","Berwickshire, Roxburgh and Selkirk",S92000003,Scotland,73,69,38
+E07000029,Bethnal Green and Bow,Bethnal Green and Bow,E15000007,London,93,74,25
+S12000030,Beverley and Holderness,Beverley and Holderness,E15000003,Yorkshire and The Humber,55,65,35
+E06000020,Bexhill and Battle,Bexhill and Battle,E15000008,South East,99,75,38
+E07000030,Bexleyheath and Crayford,Bexleyheath and Crayford,E15000007,London,91,43,19
+S12000033,Birkenhead,Birkenhead,E15000002,North West,81,73,28
+E06000021,"Birmingham, Edgbaston","Birmingham, Edgbaston",E15000005,West Midlands,63,70,33
+E07000031,"Birmingham, Erdington","Birmingham, Erdington",E15000005,West Midlands,100,54,13
+S12000034,"Birmingham, Hall Green","Birmingham, Hall Green",E15000005,West Midlands,70,50,38
+E06000022,"Birmingham, Hodge Hill","Birmingham, Hodge Hill",E15000005,West Midlands,52,64,39
+E07000032,"Birmingham, Ladywood","Birmingham, Ladywood",E15000005,West Midlands,68,66,40
+S12000035,"Birmingham, Northfield","Birmingham, Northfield",E15000005,West Midlands,55,74,28
+E06000023,"Birmingham, Perry Barr","Birmingham, Perry Barr",E15000005,West Midlands,53,58,29
+E07000033,"Birmingham, Selly Oak","Birmingham, Selly Oak",E15000005,West Midlands,64,76,23
+S12000036,"Birmingham, Yardley","Birmingham, Yardley",E15000005,West Midlands,89,66,24
+E06000024,Bishop Auckland,Bishop Auckland,E15000001,North East,63,55,28
+E07000034,Blackburn,Blackburn,E15000002,North West,96,50,39
+S12000038,Blackley and Broughton,Blackley and Broughton,E15000002,North West,57,43,22
+E06000025,Blackpool North and Cleveleys,Blackpool North and Cleveleys,E15000002,North West,88,63,15
+E07000035,Blackpool South,Blackpool South,E15000002,North West,50,64,29
+S12000039,Blaenau Gwent,Blaenau Gwent,W08000001,Wales,91,67,26
+E06000026,Blaydon,Blaydon,E15000001,North East,66,43,15
+E07000036,Blyth Valley,Blyth Valley,E15000001,North East,60,42,19
+S12000040,Bognor Regis and Littlehampton,Bognor Regis and Littlehampton,E15000008,South East,97,67,11
+E06000027,Bolsover,Bolsover,E15000004,East Midlands,77,64,15
+E07000037,Bolton North East,Bolton North East,E15000002,North West,81,78,12
+S12000041,Bolton South East,Bolton South East,E15000002,North West,52,62,39
+E06000028,Bolton West,Bolton West,E15000002,North West,84,43,21
+E07000038,Bootle,Bootle,E15000002,North West,80,43,36
+S12000042,Boston and Skegness,Boston and Skegness,E15000004,East Midlands,77,42,18
+E06000029,Bosworth,Bosworth,E15000004,East Midlands,50,64,30
+E07000039,Bournemouth East,Bournemouth East,E15000009,South West,77,60,19
+S12000044,Bournemouth West,Bournemouth West,E15000009,South West,72,63,13
+E06000030,Bracknell,Bracknell,E15000008,South East,98,51,23
+E07000040,Bradford East,Bradford East,E15000003,Yorkshire and The Humber,94,52,40
+S12000045,Bradford South,Bradford South,E15000003,Yorkshire and The Humber,90,40,38
+E06000031,Bradford West,Bradford West,E15000003,Yorkshire and The Humber,69,56,24
+E07000041,Braintree,Braintree,E15000006,Eastern,81,79,33
+S12000046,Brecon and Radnorshire,Brecon and Radnorshire,W08000001,Wales,76,77,34
+E06000032,Brent Central,Brent Central,E15000007,London,90,57,37
+E07000042,Brent North,Brent North,E15000007,London,71,76,12
+W06000001,Brentford and Isleworth,Brentford and Isleworth,E15000007,London,51,65,40
+E06000033,Brentwood and Ongar,Brentwood and Ongar,E15000006,Eastern,55,78,33
+E07000043,Bridgend,Bridgend,W08000001,Wales,61,68,38
+W06000002,Bridgwater and West Somerset,Bridgwater and West Somerset,E15000009,South West,77,68,17
+E06000034,Brigg and Goole,Brigg and Goole,E15000003,Yorkshire and The Humber,74,57,39
+E07000044,"Brighton, Kemptown","Brighton, Kemptown",E15000008,South East,73,62,18
+W06000003,"Brighton, Pavilion","Brighton, Pavilion",E15000008,South East,92,77,22
+E06000035,Bristol East,Bristol East,E15000009,South West,85,78,33
+E07000045,Bristol North West,Bristol North West,E15000009,South West,96,75,10
+W06000004,Bristol South,Bristol South,E15000009,South West,71,69,24
+E06000036,Bristol West,Bristol West,E15000009,South West,88,49,37
+E07000046,Broadland,Broadland,E15000006,Eastern,66,49,19
+W06000005,Bromley and Chislehurst,Bromley and Chislehurst,E15000007,London,56,47,32
+E06000037,Bromsgrove,Bromsgrove,E15000005,West Midlands,69,68,32
+E07000047,Broxbourne,Broxbourne,E15000006,Eastern,96,63,15
+W06000006,Broxtowe,Broxtowe,E15000004,East Midlands,58,56,31
+E06000038,Buckingham,Buckingham,E15000008,South East,79,54,17
+E07000048,Burnley,Burnley,E15000002,North West,89,51,12
+E07000049,Burton,Burton,E15000005,West Midlands,62,62,32
+E07000050,Bury North,Bury North,E15000002,North West,55,60,32
+E07000051,Bury South,Bury South,E15000002,North West,76,75,20
+E07000052,Bury St Edmunds,Bury St Edmunds,E15000006,Eastern,78,66,33
+E07000053,Caerphilly,Caerphilly,W08000001,Wales,91,57,23
+E07000061,"Caithness, Sutherland and Easter Ross","Caithness, Sutherland and Easter Ross",S92000003,Scotland,99,53,39
+E07000062,Calder Valley,Calder Valley,E15000003,Yorkshire and The Humber,98,80,26
+E07000063,Camberwell and Peckham,Camberwell and Peckham,E15000007,London,55,63,19
+E07000064,Camborne and Redruth,Camborne and Redruth,E15000009,South West,59,43,30
+E07000065,Cambridge,Cambridge,E15000006,Eastern,80,65,20
+E07000066,North East Cambridgeshire,North East Cambridgeshire,E15000006,Eastern,86,69,30
+E07000067,North West Cambridgeshire,North West Cambridgeshire,E15000006,Eastern,84,74,21
+E07000068,South Cambridgeshire,South Cambridgeshire,E15000006,Eastern,85,53,30
+E07000069,South East Cambridgeshire,South East Cambridgeshire,E15000006,Eastern,84,44,26
+E07000070,Cannock Chase,Cannock Chase,E15000005,West Midlands,63,65,28
+E07000071,Canterbury,Canterbury,E15000008,South East,96,64,19
+E07000072,Cardiff Central,Cardiff Central,W08000001,Wales,79,60,23
+E07000073,Cardiff North,Cardiff North,W08000001,Wales,74,55,29
+E07000074,Cardiff South and Penarth,Cardiff South and Penarth,W08000001,Wales,98,50,28
+E07000075,Cardiff West,Cardiff West,W08000001,Wales,74,49,15
+E07000076,Carlisle,Carlisle,E15000002,North West,51,46,36
+E07000077,Carmarthen East and Dinefwr,Carmarthen East and Dinefwr,W08000001,Wales,66,79,18
+E07000078,Carmarthen West and South Pembrokeshire,Carmarthen West and South Pembrokeshire,W08000001,Wales,68,76,17
+E07000079,Carshalton and Wallington,Carshalton and Wallington,E15000007,London,82,57,34
+E07000207,Castle Point,Castle Point,E15000006,Eastern,54,65,25
+W06000008,Ceredigion,Ceredigion,W08000001,Wales,99,73,40
+E07000208,Charnwood,Charnwood,E15000004,East Midlands,53,49,20
+W06000009,Chatham and Aylesford,Chatham and Aylesford,E15000008,South East,50,47,21
+E07000209,Cheadle,Cheadle,E15000002,North West,63,40,36
+W06000010,Chelmsford,Chelmsford,E15000006,Eastern,73,71,27
+E06000039,Chelsea and Fulham,Chelsea and Fulham,E15000007,London,76,78,20
+E07000210,Cheltenham,Cheltenham,E15000009,South West,84,52,17
+W06000011,Chesham and Amersham,Chesham and Amersham,E15000008,South East,83,59,28
+E06000040,City of Chester,City of Chester,E15000002,North West,63,59,23
+E07000211,Chesterfield,Chesterfield,E15000004,East Midlands,73,74,34
+W06000012,Chichester,Chichester,E15000008,South East,90,59,35
+E06000041,Chingford and Woodford Green,Chingford and Woodford Green,E15000007,London,93,58,30
+E07000212,Chippenham,Chippenham,E15000009,South West,92,48,27
+W06000013,Chipping Barnet,Chipping Barnet,E15000007,London,69,40,32
+E06000042,Chorley,Chorley,E15000002,North West,50,76,27
+E07000213,Christchurch,Christchurch,E15000009,South West,80,65,12
+W06000014,Cities of London and Westminster,Cities of London and Westminster,E15000007,London,66,61,27
+E06000043,Clacton,Clacton,E15000006,Eastern,75,62,17
+E07000214,Cleethorpes,Cleethorpes,E15000003,Yorkshire and The Humber,93,46,25
+W06000015,Clwyd South,Clwyd South,W08000001,Wales,93,66,18
+E06000044,Clwyd West,Clwyd West,W08000001,Wales,62,61,31
+E07000215,"Coatbridge, Chryston and Bellshill","Coatbridge, Chryston and Bellshill",S92000003,Scotland,91,73,19
+W06000016,Colchester,Colchester,E15000006,Eastern,99,77,40
+E06000045,Colne Valley,Colne Valley,E15000003,Yorkshire and The Humber,77,63,40
+E07000216,Congleton,Congleton,E15000002,North West,78,61,12
+W06000018,Copeland,Copeland,E15000002,North West,89,53,28
+E06000046,Corby,Corby,E15000004,East Midlands,59,73,35
+E07000217,North Cornwall,North Cornwall,E15000009,South West,54,71,34
+W06000019,South East Cornwall,South East Cornwall,E15000009,South West,83,60,17
+E06000047,The Cotswolds,The Cotswolds,E15000009,South West,89,66,31
+E07000218,Coventry North East,Coventry North East,E15000005,West Midlands,64,51,24
+W06000020,Coventry North West,Coventry North West,E15000005,West Midlands,54,69,17
+E06000049,Coventry South,Coventry South,E15000005,West Midlands,59,64,12
+E07000219,Crawley,Crawley,E15000008,South East,61,50,25
+W06000021,Crewe and Nantwich,Crewe and Nantwich,E15000002,North West,87,48,36
+E06000050,Croydon Central,Croydon Central,E15000007,London,69,75,33
+E07000220,Croydon North,Croydon North,E15000007,London,71,78,25
+W06000022,Croydon South,Croydon South,E15000007,London,69,55,17
+E06000051,"Cumbernauld, Kilsyth and Kirkintilloch East","Cumbernauld, Kilsyth and Kirkintilloch East",S92000003,Scotland,95,55,25
+E07000221,Cynon Valley,Cynon Valley,W08000001,Wales,84,43,13
+W06000023,Dagenham and Rainham,Dagenham and Rainham,E15000007,London,71,78,16
+E06000052,Darlington,Darlington,E15000001,North East,62,56,11
+E07000222,Dartford,Dartford,E15000008,South East,67,45,11
+W06000024,Daventry,Daventry,E15000004,East Midlands,57,54,38
+E06000053,Delyn,Delyn,W08000001,Wales,75,50,32
+E07000223,Denton and Reddish,Denton and Reddish,E15000002,North West,69,63,11
+E06000054,Derby North,Derby North,E15000004,East Midlands,55,53,35
+E07000224,Derby South,Derby South,E15000004,East Midlands,50,71,37
+E06000055,Derbyshire Dales,Derbyshire Dales,E15000004,East Midlands,66,50,18
+E07000225,Mid Derbyshire,Mid Derbyshire,E15000004,East Midlands,84,66,11
+E06000056,North East Derbyshire,North East Derbyshire,E15000004,East Midlands,69,79,27
+E07000226,South Derbyshire,South Derbyshire,E15000004,East Midlands,96,62,22
+E06000057,Devizes,Devizes,E15000009,South West,50,58,17
+E07000227,Central Devon,Central Devon,E15000009,South West,78,65,21
+E07000228,East Devon,East Devon,E15000009,South West,59,63,15
+E07000229,North Devon,North Devon,E15000009,South West,52,55,25
+E07000234,South West Devon,South West Devon,E15000009,South West,100,56,33
+E07000235,Torridge and West Devon,Torridge and West Devon,E15000009,South West,56,70,39
+E07000236,Dewsbury,Dewsbury,E15000003,Yorkshire and The Humber,91,72,24
+E07000237,Don Valley,Don Valley,E15000003,Yorkshire and The Humber,75,80,33
+E07000238,Doncaster Central,Doncaster Central,E15000003,Yorkshire and The Humber,85,80,29
+E07000239,Doncaster North,Doncaster North,E15000003,Yorkshire and The Humber,87,72,20
+E07000240,Mid Dorset and North Poole,Mid Dorset and North Poole,E15000009,South West,60,73,14
+E07000241,North Dorset,North Dorset,E15000009,South West,58,79,38
+E07000242,South Dorset,South Dorset,E15000009,South West,74,42,13
+E07000243,West Dorset,West Dorset,E15000009,South West,87,72,32
+E08000001,Dover,Dover,E15000008,South East,90,65,32
+E08000002,North Down,North Down,N92000002,Northern Ireland,86,65,26
+E08000003,South Down,South Down,N92000002,Northern Ireland,83,72,17
+E08000004,Dudley North,Dudley North,E15000005,West Midlands,75,64,15
+E08000005,Dudley South,Dudley South,E15000005,West Midlands,57,42,19
+E08000006,Dulwich and West Norwood,Dulwich and West Norwood,E15000007,London,62,49,10
+E08000007,Dumfries and Galloway,Dumfries and Galloway,S92000003,Scotland,74,45,36
+E08000008,"Dumfriesshire, Clydesdale and Tweeddale","Dumfriesshire, Clydesdale and Tweeddale",S92000003,Scotland,59,47,29
+E08000009,East Dunbartonshire,East Dunbartonshire,S92000003,Scotland,85,73,15
+E08000010,West Dunbartonshire,West Dunbartonshire,S92000003,Scotland,83,63,20
+E08000011,Dundee East,Dundee East,S92000003,Scotland,55,70,33
+E08000012,Dundee West,Dundee West,S92000003,Scotland,92,40,12
+E08000025,Dunfermline and West Fife,Dunfermline and West Fife,S92000003,Scotland,75,62,20
+E08000013,City of Durham,City of Durham,E15000001,North East,81,55,29
+E08000014,North Durham,North Durham,E15000001,North East,83,77,15
+E08000015,North West Durham,North West Durham,E15000001,North East,91,67,13
+E08000016,Dwyfor Meirionnydd,Dwyfor Meirionnydd,W08000001,Wales,76,54,16
+E08000017,Ealing Central and Acton,Ealing Central and Acton,E15000007,London,100,55,32
+E08000018,Ealing North,Ealing North,E15000007,London,77,62,14
+E08000019,"Ealing, Southall","Ealing, Southall",E15000007,London,67,70,32
+E08000021,Easington,Easington,E15000001,North East,75,42,26
+E08000022,East Ham,East Ham,E15000007,London,61,58,18
+E08000023,"East Kilbride, Strathaven and Lesmahagow","East Kilbride, Strathaven and Lesmahagow",S92000003,Scotland,97,80,16
+E08000024,East Lothian,East Lothian,S92000003,Scotland,76,64,15
+E07000080,Eastbourne,Eastbourne,E15000008,South East,82,47,38
+E08000026,Eastleigh,Eastleigh,E15000008,South East,61,42,21
+E07000081,Eddisbury,Eddisbury,E15000002,North West,72,67,16
+E08000027,Edinburgh East,Edinburgh East,S92000003,Scotland,65,68,25
+E07000082,Edinburgh North and Leith,Edinburgh North and Leith,S92000003,Scotland,55,59,10
+E08000028,Edinburgh South,Edinburgh South,S92000003,Scotland,67,68,22
+E07000083,Edinburgh South West,Edinburgh South West,S92000003,Scotland,92,50,39
+E08000029,Edinburgh West,Edinburgh West,S92000003,Scotland,66,46,10
+E07000084,Edmonton,Edmonton,E15000007,London,74,80,15
+E08000030,Ellesmere Port and Neston,Ellesmere Port and Neston,E15000002,North West,80,73,16
+E07000085,Elmet and Rothwell,Elmet and Rothwell,E15000003,Yorkshire and The Humber,63,55,15
+E08000031,Eltham,Eltham,E15000007,London,96,56,38
+E07000086,Enfield North,Enfield North,E15000007,London,72,53,19
+E08000032,"Enfield, Southgate","Enfield, Southgate",E15000007,London,98,58,38
+E07000087,Epping Forest,Epping Forest,E15000006,Eastern,64,63,10
+E08000033,Epsom and Ewell,Epsom and Ewell,E15000008,South East,74,40,18
+E07000088,Erewash,Erewash,E15000004,East Midlands,82,74,17
+E08000034,Erith and Thamesmead,Erith and Thamesmead,E15000007,London,91,46,10
+E07000089,Esher and Walton,Esher and Walton,E15000008,South East,67,49,19
+E08000035,Exeter,Exeter,E15000009,South West,94,75,11
+E07000090,Falkirk,Falkirk,S92000003,Scotland,53,70,33
+E08000036,Fareham,Fareham,E15000008,South East,64,43,27
+E07000091,Faversham and Mid Kent,Faversham and Mid Kent,E15000008,South East,55,72,28
+E08000037,Feltham and Heston,Feltham and Heston,E15000007,London,69,79,27
+E07000092,Fermanagh and South Tyrone,Fermanagh and South Tyrone,N92000002,Northern Ireland,88,77,17
+E09000001,North East Fife,North East Fife,S92000003,Scotland,55,43,15
+E07000093,Filton and Bradley Stoke,Filton and Bradley Stoke,E15000009,South West,84,46,39
+E09000002,Finchley and Golders Green,Finchley and Golders Green,E15000007,London,66,79,13
+E07000094,Folkestone and Hythe,Folkestone and Hythe,E15000008,South East,61,64,17
+E09000003,Forest of Dean,Forest of Dean,E15000009,South West,59,60,12
+E07000095,Foyle,Foyle,N92000002,Northern Ireland,58,79,11
+E09000004,Fylde,Fylde,E15000002,North West,63,55,27
+E07000096,Gainsborough,Gainsborough,E15000004,East Midlands,90,71,17
+E09000005,Garston and Halewood,Garston and Halewood,E15000002,North West,73,77,27
+E07000098,Gateshead,Gateshead,E15000001,North East,71,57,40
+E09000006,Gedling,Gedling,E15000004,East Midlands,67,42,25
+E07000099,Gillingham and Rainham,Gillingham and Rainham,E15000008,South East,90,46,16
+E09000007,Glasgow Central,Glasgow Central,S92000003,Scotland,57,40,32
+E07000102,Glasgow East,Glasgow East,S92000003,Scotland,67,72,15
+E09000008,Glasgow North,Glasgow North,S92000003,Scotland,52,45,11
+E07000103,Glasgow North East,Glasgow North East,S92000003,Scotland,59,56,31
+E09000009,Glasgow North West,Glasgow North West,S92000003,Scotland,60,59,24
+E07000105,Glasgow South,Glasgow South,S92000003,Scotland,87,64,38
+E09000010,Glasgow South West,Glasgow South West,S92000003,Scotland,71,70,38
+E07000106,Glenrothes,Glenrothes,S92000003,Scotland,92,47,25
+E09000011,Gloucester,Gloucester,E15000009,South West,98,74,20
+E07000107,Gordon,Gordon,S92000003,Scotland,81,49,39
+E09000012,Gosport,Gosport,E15000008,South East,56,53,24
+E07000108,Gower,Gower,W08000001,Wales,90,73,33
+E09000013,Grantham and Stamford,Grantham and Stamford,E15000004,East Midlands,75,59,12
+E07000109,Gravesham,Gravesham,E15000008,South East,93,67,24
+E09000014,Great Grimsby,Great Grimsby,E15000003,Yorkshire and The Humber,98,52,40
+E07000110,Great Yarmouth,Great Yarmouth,E15000006,Eastern,51,54,25
+E09000015,Greenwich and Woolwich,Greenwich and Woolwich,E15000007,London,81,57,23
+E07000111,Guildford,Guildford,E15000008,South East,93,74,14
+E09000016,Hackney North and Stoke Newington,Hackney North and Stoke Newington,E15000007,London,98,70,26
+E07000112,Hackney South and Shoreditch,Hackney South and Shoreditch,E15000007,London,94,45,32
+E09000017,Halesowen and Rowley Regis,Halesowen and Rowley Regis,E15000005,West Midlands,66,67,10
+E07000113,Halifax,Halifax,E15000003,Yorkshire and The Humber,66,40,31
+E09000018,Haltemprice and Howden,Haltemprice and Howden,E15000003,Yorkshire and The Humber,80,48,26
+E07000114,Halton,Halton,E15000002,North West,93,58,22
+E09000019,Hammersmith,Hammersmith,E15000007,London,78,48,23
+E07000115,East Hampshire,East Hampshire,E15000008,South East,62,40,23
+E07000116,North East Hampshire,North East Hampshire,E15000008,South East,86,64,38
+E09000020,North West Hampshire,North West Hampshire,E15000008,South East,96,40,26
+E07000117,Hampstead and Kilburn,Hampstead and Kilburn,E15000007,London,80,66,13
+E09000021,Harborough,Harborough,E15000004,East Midlands,58,56,23
+E07000118,Harlow,Harlow,E15000006,Eastern,52,48,21
+E09000022,Harrogate and Knaresborough,Harrogate and Knaresborough,E15000003,Yorkshire and The Humber,52,55,27
+E07000119,Harrow East,Harrow East,E15000007,London,91,64,40
+E09000023,Harrow West,Harrow West,E15000007,London,53,77,11
+E07000120,Hartlepool,Hartlepool,E15000001,North East,94,66,35
+E09000024,Harwich and North Essex,Harwich and North Essex,E15000006,Eastern,56,58,20
+E07000121,Hastings and Rye,Hastings and Rye,E15000008,South East,66,62,35
+E09000025,Havant,Havant,E15000008,South East,70,56,25
+E07000122,Hayes and Harlington,Hayes and Harlington,E15000007,London,100,61,36
+E09000026,Hazel Grove,Hazel Grove,E15000002,North West,72,63,36
+E07000123,Hemel Hempstead,Hemel Hempstead,E15000006,Eastern,50,66,22
+E09000027,Hemsworth,Hemsworth,E15000003,Yorkshire and The Humber,82,50,30
+E07000124,Hendon,Hendon,E15000007,London,72,44,39
+E09000028,Henley,Henley,E15000008,South East,88,56,30
+E07000125,Hereford and South Herefordshire,Hereford and South Herefordshire,E15000005,West Midlands,87,72,20
+E09000029,North Herefordshire,North Herefordshire,E15000005,West Midlands,75,40,12
+E07000126,Hertford and Stortford,Hertford and Stortford,E15000006,Eastern,77,65,33
+E09000030,North East Hertfordshire,North East Hertfordshire,E15000006,Eastern,75,63,24
+E07000127,South West Hertfordshire,South West Hertfordshire,E15000006,Eastern,72,58,26
+E09000031,Hertsmere,Hertsmere,E15000006,Eastern,99,66,40
+E07000128,Hexham,Hexham,E15000001,North East,86,41,18
+E09000032,Heywood and Middleton,Heywood and Middleton,E15000002,North West,82,52,30
+E07000129,High Peak,High Peak,E15000004,East Midlands,56,55,14
+E09000033,Hitchin and Harpenden,Hitchin and Harpenden,E15000006,Eastern,95,61,16
+E07000130,Holborn and St Pancras,Holborn and St Pancras,E15000007,London,64,74,37
+N09000001,Hornchurch and Upminster,Hornchurch and Upminster,E15000007,London,86,68,16
+E07000131,Hornsey and Wood Green,Hornsey and Wood Green,E15000007,London,89,71,28
+N09000002,Horsham,Horsham,E15000008,South East,53,74,26
+E07000132,Houghton and Sunderland South,Houghton and Sunderland South,E15000001,North East,52,73,28
+N09000003,Hove,Hove,E15000008,South East,80,55,39
+E07000133,Huddersfield,Huddersfield,E15000003,Yorkshire and The Humber,85,51,36
+N09000004,Kingston upon Hull East,Kingston upon Hull East,E15000003,Yorkshire and The Humber,53,56,12
+E07000134,Kingston upon Hull North,Kingston upon Hull North,E15000003,Yorkshire and The Humber,99,79,24
+N09000005,Kingston upon Hull West and Hessle,Kingston upon Hull West and Hessle,E15000003,Yorkshire and The Humber,50,65,19
+E07000135,Huntingdon,Huntingdon,E15000006,Eastern,95,77,32
+N09000006,Hyndburn,Hyndburn,E15000002,North West,80,77,24
+N09000007,Ilford North,Ilford North,E15000007,London,60,53,11
+N09000008,Ilford South,Ilford South,E15000007,London,76,61,24
+N09000009,Inverclyde,Inverclyde,S92000003,Scotland,92,64,35
+N09000010,"Inverness, Nairn, Badenoch and Strathspey","Inverness, Nairn, Badenoch and Strathspey",S92000003,Scotland,50,76,26
+E07000136,Ipswich,Ipswich,E15000006,Eastern,69,80,15
+E07000137,Isle of Wight,Isle of Wight,E15000008,South East,84,68,19
+E07000138,Islington North,Islington North,E15000007,London,84,51,31
+E07000139,Islington South and Finsbury,Islington South and Finsbury,E15000007,London,97,72,23
+E07000140,Islwyn,Islwyn,W08000001,Wales,88,74,34
+E07000141,Jarrow,Jarrow,E15000001,North East,88,66,33
+E07000142,Keighley,Keighley,E15000003,Yorkshire and The Humber,64,58,10
+E07000143,Kenilworth and Southam,Kenilworth and Southam,E15000005,West Midlands,63,78,37
+E07000144,Kensington,Kensington,E15000007,London,94,79,40
+E07000145,Kettering,Kettering,E15000004,East Midlands,95,57,30
+E07000146,Kilmarnock and Loudoun,Kilmarnock and Loudoun,S92000003,Scotland,93,65,28
+E07000147,Kingston and Surbiton,Kingston and Surbiton,E15000007,London,64,62,12
+E07000148,Kingswood,Kingswood,E15000009,South West,67,53,27
+E07000149,Kirkcaldy and Cowdenbeath,Kirkcaldy and Cowdenbeath,S92000003,Scotland,75,58,20
+E07000150,Knowsley,Knowsley,E15000002,North West,79,42,18
+E07000151,Lagan Valley,Lagan Valley,N92000002,Northern Ireland,54,66,31
+E07000152,Lanark and Hamilton East,Lanark and Hamilton East,S92000003,Scotland,87,78,19
+E07000153,West Lancashire,West Lancashire,E15000002,North West,72,78,30
+E07000154,Lancaster and Fleetwood,Lancaster and Fleetwood,E15000002,North West,67,67,27
+E07000155,Leeds Central,Leeds Central,E15000003,Yorkshire and The Humber,94,64,25
+E07000156,Leeds East,Leeds East,E15000003,Yorkshire and The Humber,53,70,36
+E07000163,Leeds North East,Leeds North East,E15000003,Yorkshire and The Humber,61,42,32
+E07000164,Leeds North West,Leeds North West,E15000003,Yorkshire and The Humber,75,46,29
+E07000165,Leeds West,Leeds West,E15000003,Yorkshire and The Humber,71,51,15
+E07000166,Leicester East,Leicester East,E15000004,East Midlands,65,47,13
+E07000167,Leicester South,Leicester South,E15000004,East Midlands,89,72,21
+E07000168,Leicester West,Leicester West,E15000004,East Midlands,99,44,29
+E07000169,North West Leicestershire,North West Leicestershire,E15000004,East Midlands,50,43,27
+E07000170,South Leicestershire,South Leicestershire,E15000004,East Midlands,89,64,23
+E07000171,Leigh,Leigh,E15000002,North West,79,66,19
+E07000172,Lewes,Lewes,E15000008,South East,57,76,17
+E07000173,"Lewisham, Deptford","Lewisham, Deptford",E15000007,London,77,73,26
+E07000174,Lewisham East,Lewisham East,E15000007,London,100,65,21
+E07000175,Lewisham West and Penge,Lewisham West and Penge,E15000007,London,87,59,27
+E07000176,Leyton and Wanstead,Leyton and Wanstead,E15000007,London,100,57,36
+E07000177,Lichfield,Lichfield,E15000005,West Midlands,88,51,19
+E07000178,Lincoln,Lincoln,E15000004,East Midlands,97,67,10
+E07000179,Linlithgow and East Falkirk,Linlithgow and East Falkirk,S92000003,Scotland,69,51,30
+E07000180,"Liverpool, Riverside","Liverpool, Riverside",E15000002,North West,78,53,20
+E07000181,"Liverpool, Walton","Liverpool, Walton",E15000002,North West,85,52,10
+E07000187,"Liverpool, Wavertree","Liverpool, Wavertree",E15000002,North West,85,66,33
+E07000188,"Liverpool, West Derby","Liverpool, West Derby",E15000002,North West,52,69,40
+E07000189,Livingston,Livingston,S92000003,Scotland,77,51,36
+E07000190,Llanelli,Llanelli,W08000001,Wales,69,51,34
+E07000191,East Londonderry,East Londonderry,N92000002,Northern Ireland,73,62,21
+E07000192,Loughborough,Loughborough,E15000004,East Midlands,73,56,25
+E07000193,Louth and Horncastle,Louth and Horncastle,E15000004,East Midlands,56,48,16
+E07000194,Ludlow,Ludlow,E15000005,West Midlands,87,42,12
+E07000195,Luton North,Luton North,E15000006,Eastern,76,79,40
+E07000196,Luton South,Luton South,E15000006,Eastern,76,62,31
+E07000197,Macclesfield,Macclesfield,E15000002,North West,87,65,13
+E07000198,Maidenhead,Maidenhead,E15000008,South East,79,47,16
+E07000199,Maidstone and The Weald,Maidstone and The Weald,E15000008,South East,53,72,35
+E07000200,Makerfield,Makerfield,E15000002,North West,84,75,22
+E07000201,Maldon,Maldon,E15000006,Eastern,91,67,28
+E07000202,Manchester Central,Manchester Central,E15000002,North West,78,53,22
+E07000203,"Manchester, Gorton","Manchester, Gorton",E15000002,North West,52,72,30
+E07000204,"Manchester, Withington","Manchester, Withington",E15000002,North West,79,66,35
+E07000205,Mansfield,Mansfield,E15000004,East Midlands,65,44,11
+E07000206,Meon Valley,Meon Valley,E15000008,South East,98,42,34
