@@ -15,7 +15,7 @@ import * as columnGroupedChart from './columnGroupedChart.js';
 
 
 const yMin = 0
-const yMax = 150
+const yMax = 250
 const dataFile = 'general-constituencies.csv';
 const shapefile = 'choropleth.json';
 const scaleType = 'political' //linear, jenks or manual sets the type of colour scale
@@ -161,7 +161,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
 
         console.log(barsData)
 
-        const myXAxis0 = gAxis.xOrdinal();// sets up yAxis
+        const myXAxis = gAxis.xOrdinal();// sets up yAxis
         const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
         const myYAxis = gAxis.yLinear();
         const myChart = columnGroupedChart.draw(); // eslint-disable-line no-unused-vars
@@ -196,21 +196,16 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         d3.select(currentFrame.plot().node().parentNode)
           .call(currentFrame);
         
-        myXAxis0
+        myXAxis
           .tickSize(0)
           .align(xAxisAlign)
-          .domain(barsData.map(d => d.partyName))
+          .domain(barsSeriesName)
           .rangeRound([0, currentFrame.dimension().width], 10)
           .frameName(frameName);
         
-        myXAxis1
-          .align(xAxisAlign)
-          .domain(barsSeriesName)
-          .rangeRound([0, myXAxis0.bandwidth()]);
         
         myChart
-          .xScale0(myXAxis0.scale())
-          .xScale1(myXAxis1.scale())
+          .xScale0(myXAxis.scale())
           .yScale(myYAxis.scale())
           .plotDim([currentFrame.dimension().width,barsDim[1]])
           .rem(currentFrame.rem())
@@ -219,13 +214,13 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .showNumberLabels(showNumberLabels);
         
         currentFrame.plot()
-          .call(myXAxis0);
+          .call(myXAxis);
         
         if (xAxisAlign === 'bottom') {
-          myXAxis0.xLabel().attr('transform', `translate(0,${barsDim[1]})`);
+          myXAxis.xLabel().attr('transform', `translate(0,${barsDim[1]})`);
         }
         if (xAxisAlign === 'top') {
-          myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+          myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
         currentFrame.plot()
@@ -235,10 +230,6 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .append('g')
           .attr('class', 'columnHolder')
           .call(myChart);
-        
-
-
-
 
         carto
           .mapDim(mapDim)
@@ -264,24 +255,24 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
               return `translate(${(((mapDim[0] + (currentFrame.rem() * 1.5)) * xPos))}, ${yPos})`;
           });
         
-        myLegend
-          .seriesNames(legColours)
-          .geometry(legendType)
-          .frameName(frameName)
-          .rem(currentFrame.rem())
-          .alignment(legendAlign)
-          .colourPalette(colorScale);
+        // myLegend
+        //   .seriesNames(legColours)
+        //   .geometry(legendType)
+        //   .frameName(frameName)
+        //   .rem(currentFrame.rem())
+        //   .alignment(legendAlign)
+        //   .colourPalette(colorScale);
 
-        // Draw the Legend
-        currentFrame.plot()
-          .append('g')
-          .attr('id', 'legend')
-          .selectAll('.legend')
-          .data(legColours)
-          .enter()
-          .append('g')
-          .classed('legend', true)
-          .call(myLegend);
+        // // Draw the Legend
+        // currentFrame.plot()
+        //   .append('g')
+        //   .attr('id', 'legend')
+        //   .selectAll('.legend')
+        //   .data(legColours)
+        //   .enter()
+        //   .append('g')
+        //   .classed('legend', true)
+        //   .call(myLegend);
         
 
       });

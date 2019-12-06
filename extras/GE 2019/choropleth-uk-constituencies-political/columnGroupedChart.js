@@ -18,46 +18,42 @@ export function draw() {
         .domain(seriesNames);
 
     function chart(parent) {
+
         const min = yScale.domain()[0];
 
-        parent.attr('transform', d => `translate(${xScale0(d.partyName)},0)`)
-            .attr('width', xScale0.bandwidth());
-
-        parent.selectAll('rect')
-            .data(d => d.groups)
-            .enter()
+        parent
             .append('rect')
             .attr('class', 'columns')
-            .attr('x', d => xScale1(d.name))
-            .attr('width', () => Math.max(1, xScale1.bandwidth()))
+            .attr('x', d => xScale0(d.partyName))
+            .attr('width', () => Math.max(1, xScale0.bandwidth()))
             .attr('y', (d) => {
                 if (logScale) {
-                    return yScale(Math.max(min, d.value))
+                    return yScale(Math.max(min, d.numSeats))
                 }
-                return yScale(Math.max(0, d.value))
+                return yScale(Math.max(0, d.numSeats))
             })
             .attr('height', (d) => {
                 if (logScale) {
-                    return Math.abs(yScale(d.value) - yScale(min))
+                    return Math.abs(yScale(d.numSeats) - yScale(min))
                 }
-                return Math.abs(yScale(d.value) - yScale(0))
+                return Math.abs(yScale(d.numSeats) - yScale(0))
             })
-            .attr('fill', d => colourScale(d.name));
+            .attr('fill', '#000000');
 
-        if (showNumberLabels) {
-            parent.selectAll('text')
-                .data(d => d.groups)
-                .enter()
-                .append('text')
-                .html(d => d.value)
-                .attr('class', 'column-label')
-                .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
-                .attr('y', () => yScale(0))
-                .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
-                .attr('font-size', rem)
-                .attr('fill', '#ffffff')
-                .style('text-anchor', 'middle');
-        }
+        // if (showNumberLabels) {
+        //     parent.selectAll('text')
+        //         .data(d => d.groups)
+        //         .enter()
+        //         .append('text')
+        //         .html(d => d.value)
+        //         .attr('class', 'column-label')
+        //         .attr('x', d => xScale1(d.name) + (xScale1.bandwidth() / 2))
+        //         .attr('y', () => yScale(0))
+        //         .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
+        //         .attr('font-size', rem)
+        //         .attr('fill', '#ffffff')
+        //         .style('text-anchor', 'middle');
+        // }
     }
 
     chart.yScale = (d) => {

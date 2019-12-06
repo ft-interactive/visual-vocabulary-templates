@@ -35,23 +35,15 @@ export function load([url, url2, ], options) { // eslint-disable-line
         }));
 
         const allWiners = data1.map(d => d[seriesNames[0]]).filter(d => d)
-        const barsData = partyNames.map(d => ({
+        const allBars = partyNames.map(d => ({
             partyName: d,
             numSeats: getNumberOfSeats(d),
-            groups: getGroups(d, getNumberOfSeats(d),),
         }))
 
-        function getGroups(party, seats) {
-            return ({
-                name: 'party',
-                value: seats,
-            });
-        }
-
-        barsData.sort((a, b) =>
+        allBars.sort((a, b) =>
             b.numSeats - a.numSeats);
         
-        barsData.slice(0, 5);
+        const barsData = allBars.slice(0, 5);
 
         const barsSeriesName = barsData.map((d) =>{
             return d.partyName
@@ -59,15 +51,11 @@ export function load([url, url2, ], options) { // eslint-disable-line
         const barsValues = barsData.map((d) => {
             return d.numSeats
         })
-
         console.log('barsSeriesName', barsSeriesName)
-        console.log('barsValues', barsValues)
 
         const valueExtent = d3.extent(barsValues);
         console.log('valueExtent', valueExtent)
 
-
-        
         
         function getNumberOfSeats(party) {
             let count = allWiners.filter((v) => (v === party)).length;
