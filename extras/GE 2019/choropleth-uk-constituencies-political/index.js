@@ -12,11 +12,16 @@ import * as ss from 'simple-statistics';
 import * as gLegend from 'g-legend';
 import * as columnGroupedChart from './columnGroupedChart.js';
 
+//var myVar = setInterval(myTimer, 60000);
 
+function myTimer() {
+  console.log('reloading page')
+  location.reload();
+}
 
 const yMin = 0
 const yMax = 350
-const dataFile = 'general-constituencies.csv';
+const dataFile = 'https://ft-ig-content-prod.s3-eu-west-1.amazonaws.com/v2/Financial-Times/ig-pa-election-backend/test-2019-12-05-general-full/latest/general-constituencies.csv';
 const shapefile = 'choropleth.json';
 const scaleType = 'political' //linear, jenks or manual sets the type of colour scale
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
@@ -58,8 +63,8 @@ const ftColorScale = 'sequentialSingle'
 //   .range(Object.values(gChartcolour.ukPoliticalParties));
 
 const colorScale = d3.scaleOrdinal()
-  .domain(['UUIP', 'UKIP', 'SNP', 'Sin Fein', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit','Independent Group for Change', 'Alliance'])
-  .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BF77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4228B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D']);
+  .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
+  .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BF77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4B28B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D', '#ffffff']);
 
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
