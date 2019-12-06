@@ -45,6 +45,7 @@ var myVar = setInterval(myTimer, 10000);
 function myTimer() {
   console.log('reloading page')
   const exportFrame = document.getElementsByClassName("ft-socialgraphic")[0];
+  console.log(exportFrame)
   exportFrame.addEventListener("load", runExportPNG(exportFrame));
   location.reload();
 }
