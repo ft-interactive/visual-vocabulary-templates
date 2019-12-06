@@ -12,11 +12,69 @@ import * as ss from 'simple-statistics';
 import * as gLegend from 'g-legend';
 import * as columnGroupedChart from './columnGroupedChart.js';
 
-//var myVar = setInterval(myTimer, 60000);
+const classes = [
+  '.annotation',
+  '.lines',
+  '.highlights',
+  '.axis path',
+  '.axis text',
+  '.axis line',
+  '.axis',
+  '.baseline',
+  '.baseline line',
+  '.legend',
+  '.legend text',
+  '.chart-goalposts',
+  '.chart-title',
+  '.chart-subtitle',
+  '.chart-source',
+  '.chart-copyright',
+  '.chart-watermark',
+  '.annotations-holder',
+  '.lines highlighlines',
+  '.highlights',
+  '.annotation',
+  '.annotations-holder line',
+  '.annotations-holder text',
+  '.line path',
+  '.highlights rects',
+];
+
+var myVar = setInterval(myTimer, 10000);
 
 function myTimer() {
   console.log('reloading page')
+  const exportFrame = document.getElementsByClassName("ft-socialgraphic")[0];
+  exportFrame.addEventListener("load", runExportPNG(exportFrame));
   location.reload();
+}
+function runExportPNG(frame) {
+  console.log('export')
+  savePNG(frame,2)
+}
+
+function savePNG(svg, scaleFactor) {
+  svg.selectAll(classes.join(', ')).each(function inlineProps() {
+    const element = this;
+    const computedStyle = getComputedStyle(element, null);
+
+    // loop through and compute inline svg styles
+    for (let i = 0; i < computedStyle.length; i += 1) {
+      const property = computedStyle.item(i);
+      const value = computedStyle.getPropertyValue(property);
+      element.style[property] = value;
+    }
+  });
+
+  saveSvgAsPng(
+    svg.node(),
+    `${svg
+      .select('title')
+      .text()
+      .replace(/\s/g, '-')
+      .toLowerCase()}.png`,
+    { scale: scaleFactor },
+  );
 }
 
 const yMin = 0
