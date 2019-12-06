@@ -15,7 +15,7 @@ import * as columnGroupedChart from './columnGroupedChart.js';
 
 
 const yMin = 0
-const yMax = 250
+const yMax = 350
 const dataFile = 'general-constituencies.csv';
 const shapefile = 'choropleth.json';
 const scaleType = 'political' //linear, jenks or manual sets the type of colour scale
@@ -29,7 +29,7 @@ const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const logScale = false
-const showNumberLabels = false;// show numbers on end of bars
+const showNumberLabels = true;// show numbers on end of bars
 const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
@@ -162,7 +162,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
         const myYAxis = gAxis.yLinear();
         const myChart = columnGroupedChart.draw(); // eslint-disable-line no-unused-vars
-
+        const chart = currentFrame.plot().append('g')
         myYAxis
           .range([barsDim[1], 0])
           .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
@@ -174,7 +174,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .frameName(frameName)
           .divisor(divisor);
         
-        currentFrame.plot()
+        chart
           .call(myYAxis);
         
         // return the value in the variable newMargin
@@ -210,7 +210,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .logScale(logScale)
           .showNumberLabels(showNumberLabels);
         
-        currentFrame.plot()
+        chart
           .call(myXAxis);
         
         if (xAxisAlign === 'bottom') {
@@ -220,7 +220,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           myXAxis.xLabel().attr('transform', `translate(0,${myXAxis.tickSize()})`);
         }
 
-        currentFrame.plot()
+        chart
           .selectAll('.columnHolder')
           .data(barsData)
           .enter()
@@ -245,12 +245,20 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .attr("preserveAspectRatio", "xMinYMin")
           .call(carto);
         
+        chart
+          .attr('transform', (d, i) => {
+            const yPos = currentFrame.rem() * -1;
+            const xPos = 0;
+            return `translate(${(((mapDim[0] + (currentFrame.rem() * 1.5)) * xPos))}, ${yPos})`;
+          });
+        
         map
           .attr('transform', (d, i) => {
             const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()));
               const xPos = i % currentFrame.numberOfColumns();
               return `translate(${(((mapDim[0] + (currentFrame.rem() * 1.5)) * xPos))}, ${yPos})`;
           });
+        
         
         // myLegend
         //   .seriesNames(legColours)

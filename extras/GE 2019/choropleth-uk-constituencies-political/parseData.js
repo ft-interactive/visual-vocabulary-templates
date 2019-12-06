@@ -43,7 +43,7 @@ export function load([url, url2, ], options) { // eslint-disable-line
         allBars.sort((a, b) =>
             b.numSeats - a.numSeats);
         
-        const barsData = allBars.slice(0, 5);
+        const barsData = allBars.slice(0, numOfBars);
 
         const barsSeriesName = barsData.map((d) =>{
             return d.partyName
