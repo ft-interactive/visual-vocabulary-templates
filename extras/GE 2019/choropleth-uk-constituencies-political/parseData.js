@@ -51,12 +51,9 @@ export function load([url, url2, ], options) { // eslint-disable-line
         const barsValues = barsData.map((d) => {
             return d.numSeats
         })
-        console.log('barsSeriesName', barsSeriesName)
 
         const valueExtent = d3.extent(barsValues);
-        console.log('valueExtent', valueExtent)
-
-        
+   
         function getNumberOfSeats(party) {
             let count = allWiners.filter((v) => (v === party)).length;
             return count

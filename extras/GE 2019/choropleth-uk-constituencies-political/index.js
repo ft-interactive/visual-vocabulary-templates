@@ -68,7 +68,7 @@ const frame = {
      .margin({ top: 100, left: 15, bottom: 25, right: 15 })
      // .title('Put headline here') // use this if you need to override the defaults
      // .subtitle("Put headline |here") //use this if you need to override the defaults
-     .height(450)
+     .height(500)
      .extend('numberOfColumns', 1)
      .extend('numberOfRows', 1),
 
@@ -77,7 +77,7 @@ const frame = {
           top: 100, left: 40, bottom: 86, right: 15,
       })
   // .title("Put headline here")
-      .height(850)
+      .height(1050)
       .extend('numberOfColumns', 1)
       .extend('numberOfRows', 1),
 
@@ -86,7 +86,7 @@ const frame = {
           top: 100, left: 20, bottom: 104, right: 15,
       })
   // .title("Put headline here")
-      .height(1400)
+      .height(1800)
       .fullYear(true)
       .extend('numberOfColumns', 1)
       .extend('numberOfRows', 1),
@@ -96,7 +96,7 @@ const frame = {
           top: 100, left: 20, bottom: 86, right: 15,
       })
   // .title("Put headline here")
-      .height(880)
+      .height(1080)
       .extend('numberOfColumns', 1)
       .extend('numberOfRows', 1),
 
@@ -110,7 +110,7 @@ const frame = {
       // .width(287.88)// 5 col
       // .width(346.43)// 6 col
       // .width(74)// markets std print
-      .height(100)
+      .height(170)
       .extend('numberOfColumns', 1)
       .extend('numberOfRows', 1), // std print (Use 58.21mm for markets charts that matter)
 
@@ -157,9 +157,6 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         const myLegend = gLegend.legend();
         const barsDim = [plotDim[0], (plotDim[1]/4)]
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
-
-
-        console.log(barsData)
 
         const myXAxis = gAxis.xOrdinal();// sets up yAxis
         const myXAxis1 = gAxis.xOrdinal();// sets up yAxis

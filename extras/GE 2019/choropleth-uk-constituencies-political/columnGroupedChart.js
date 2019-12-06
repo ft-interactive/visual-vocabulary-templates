@@ -14,7 +14,7 @@ export function draw() {
     let includeMarker = undefined; // eslint-disable-line
     let interpolation = d3.curveLinear;
     let showNumberLabels = false; // show numbers on end of bars
-    const colourScale = d3.scaleOrdinal()
+    let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
@@ -38,7 +38,7 @@ export function draw() {
                 }
                 return Math.abs(yScale(d.numSeats) - yScale(0))
             })
-            .attr('fill', '#000000');
+            .attr('fill', d => colourScale(d.partyName));
 
         // if (showNumberLabels) {
         //     parent.selectAll('text')
@@ -161,7 +161,9 @@ export function draw() {
         } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
             colourScale.range(gChartcolour.categorical_bar);
         } else if (d === 'print') {
-            colourScale.range(gChartcolour.barPrint);
+            colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
         }
         return chart;
     };
