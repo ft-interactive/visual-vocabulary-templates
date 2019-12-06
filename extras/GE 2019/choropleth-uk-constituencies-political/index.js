@@ -4,21 +4,32 @@
 
 import * as d3 from 'd3';
 import gChartframe from 'g-chartframe';
+import * as gAxis from 'g-axis';
 import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as cartogram from './drawChart.js';
 import * as ss from 'simple-statistics';
 import * as gLegend from 'g-legend';
+import * as columnGroupedChart from './columnGroupedChart.js';
 
 
 
-const dataFile = 'results.csv';
+const yMin = 0
+const yMax = 150
+const dataFile = 'general-constituencies.csv';
 const shapefile = 'choropleth.json';
-const regionsfile = 'uk-regions.json';
 const scaleType = 'political' //linear, jenks or manual sets the type of colour scale
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-
+const columnNames = ['constituencyPartyWinning']
+const numOfBars = 5;
+const divisor = 1// formatting for '000 and millions
+const yAxisHighlight = 10; // sets which tick to highlight on the yAxis
+const numTicksy = 5;// Number of tick on the uAxis
+const yAxisAlign = 'right';// alignment of the axis
+const xAxisAlign = 'bottom';// alignment of the axis
+const logScale = false
+const showNumberLabels = false;// show numbers on end of bars
 const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
@@ -35,147 +46,26 @@ const dateFormat = '%d/%m/%Y';
 
 const sharedConfig = {
     title: 'Results summary',
-    subtitle: 'By constituency',
+    subtitle: '',
     source: 'Source: Not yet added',
 };
 //Defines the scale from the g-chartcolour library when using the jenks calculation
 const ftColorScale = 'sequentialSingle'
 
 //Imput values into the domain of this scale to create manual scale breaks
-let colorScale = d3.scaleThreshold()
-  .domain([0.1, 0.2, 0.4, 0.5, 0.6,])
-  .range(['#F3DEC8', '#CEBFAB', '#A9A18F', '#848273', '#5F6456', '#3A453A', '#3A453A']);
+// const colorScale = d3.scaleOrdinal()
+//   .domain(Object.keys(gChartcolour.ukPoliticalParties))
+//   .range(Object.values(gChartcolour.ukPoliticalParties));
 
-ss.jenksMatrices = function (data, n_classes) {
-
-  // in the original implementation, these matrices are referred to
-  // as `LC` and `OP`
-  //
-  // * lower_class_limits (LC): optimal lower class limits
-  // * variance_combinations (OP): optimal variance combinations for all classes
-  var lower_class_limits = [],
-    variance_combinations = [],
-    // loop counters
-    i, j,
-    // the variance, as computed at each step in the calculation
-    variance = 0;
-
-  // Initialize and fill each matrix with zeroes
-  for (i = 0; i < data.length + 1; i++) {
-    var tmp1 = [], tmp2 = [];
-    for (j = 0; j < n_classes + 1; j++) {
-      tmp1.push(0);
-      tmp2.push(0);
-    }
-    lower_class_limits.push(tmp1);
-    variance_combinations.push(tmp2);
-  }
-
-  for (i = 1; i < n_classes + 1; i++) {
-    lower_class_limits[1][i] = 1;
-    variance_combinations[1][i] = 0;
-    // in the original implementation, 9999999 is used but
-    // since Javascript has `Infinity`, we use that.
-    for (j = 2; j < data.length + 1; j++) {
-      variance_combinations[j][i] = Infinity;
-    }
-  }
-
-  for (var l = 2; l < data.length + 1; l++) {
-
-    // `SZ` originally. this is the sum of the values seen thus
-    // far when calculating variance.
-    var sum = 0,
-      // `ZSQ` originally. the sum of squares of values seen
-      // thus far
-      sum_squares = 0,
-      // `WT` originally. This is the number of 
-      w = 0,
-      // `IV` originally
-      i4 = 0;
-
-    // in several instances, you could say `Math.pow(x, 2)`
-    // instead of `x * x`, but this is slower in some browsers
-    // introduces an unnecessary concept.
-    for (var m = 1; m < l + 1; m++) {
-
-      // `III` originally
-      var lower_class_limit = l - m + 1,
-        val = data[lower_class_limit - 1];
-
-      // here we're estimating variance for each potential classing
-      // of the data, for each potential number of classes. `w`
-      // is the number of data points considered so far.
-      w++;
-
-      // increase the current sum and sum-of-squares
-      sum += val;
-      sum_squares += val * val;
-
-      // the variance at this point in the sequence is the difference
-      // between the sum of squares and the total x 2, over the number
-      // of samples.
-      variance = sum_squares - (sum * sum) / w;
-
-      i4 = lower_class_limit - 1;
-
-      if (i4 !== 0) {
-        for (j = 2; j < n_classes + 1; j++) {
-          if (variance_combinations[l][j] >=
-            (variance + variance_combinations[i4][j - 1])) {
-            lower_class_limits[l][j] = lower_class_limit;
-            variance_combinations[l][j] = variance +
-              variance_combinations[i4][j - 1];
-          }
-        }
-      }
-    }
-
-    lower_class_limits[l][1] = 1;
-    variance_combinations[l][1] = variance;
-  }
-
-  return {
-    lower_class_limits: lower_class_limits,
-    variance_combinations: variance_combinations
-  };
-};
-
-ss.jenks = function (data, n_classes) {
-
-  // sort data in numerical order
-  data = data.slice().sort(function (a, b) { return a - b; });
-
-  // get our basic matrices
-  var matrices = ss.jenksMatrices(data, n_classes),
-    // we only need lower class limits here
-    lower_class_limits = matrices.lower_class_limits,
-    k = data.length - 1,
-    kclass = [],
-    countNum = n_classes;
-
-  // the calculation of classes will never include the upper and
-  // lower bounds, so we need to explicitly set them
-  kclass[n_classes] = data[data.length - 1];
-  kclass[0] = data[0];
-
-  // the lower_class_limits matrix is used as indexes into itself
-  // here: the `k` variable is reused in each iteration.
-  while (countNum > 1) {
-    kclass[countNum - 1] = data[lower_class_limits[k][countNum] - 2];
-    k = lower_class_limits[k][countNum] - 1;
-    countNum--;
-  }
-
-  return kclass;
-};
-
+const colorScale = d3.scaleOrdinal()
+  .domain(['UUIP', 'UKIP', 'SNP', 'Sin Fein', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit','Independent Group for Change', 'Alliance'])
+  .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BF77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4228B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D']);
 
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
-     .margin({ top: 100, left: 15, bottom: 25, right: 5 })
+     .margin({ top: 100, left: 15, bottom: 25, right: 15 })
      // .title('Put headline here') // use this if you need to override the defaults
      // .subtitle("Put headline |here") //use this if you need to override the defaults
      .height(450)
@@ -184,7 +74,7 @@ const frame = {
 
     webM: gChartframe.webFrameM(sharedConfig)
       .margin({
-          top: 100, left: 40, bottom: 86, right: 5,
+          top: 100, left: 40, bottom: 86, right: 15,
       })
   // .title("Put headline here")
       .height(850)
@@ -193,7 +83,7 @@ const frame = {
 
     webL: gChartframe.webFrameL(sharedConfig)
       .margin({
-          top: 100, left: 20, bottom: 104, right: 5,
+          top: 100, left: 20, bottom: 104, right: 15,
       })
   // .title("Put headline here")
       .height(1400)
@@ -203,7 +93,7 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
       .margin({
-          top: 100, left: 20, bottom: 86, right: 5,
+          top: 100, left: 20, bottom: 86, right: 15,
       })
   // .title("Put headline here")
       .height(880)
@@ -230,9 +120,11 @@ const frame = {
         })
     // .title("Put headline here")
         .width(612)
-        .height(612)
+        .height(950)
         .extend('numberOfColumns', 1)
-        .extend('numberOfRows', 1), // 700 is ideal height for Instagram
+        .extend('numberOfRows', 1) // 700 is ideal height for Instagram
+        .titleX(50)
+        .titleY(90), 
 
     video: gChartframe.videoFrame(sharedConfig)
         .margin({
@@ -253,8 +145,8 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load([dataFile, shapefile, regionsfile], { dateFormat})
-  .then(({ plotData, shapeData, regionData, valueExtent, jenksValues}) => {
+parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
+  .then(({ barsSeriesName, valueExtent, plotData, shapeData, barsData,}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -262,31 +154,99 @@ parseData.load([dataFile, shapefile, regionsfile], { dateFormat})
         const mapWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
         const mapDim = [mapWidth, (mapWidth * 1.07) + currentFrame.rem() * 2];
         const carto = cartogram.draw();
-        const numberofBreaks = Object.values(gChartcolour[ftColorScale]).length;
         const myLegend = gLegend.legend();
+        const barsDim = [plotDim[0], (plotDim[1]/4)]
+        const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
-        if (scaleType === 'jenks') {
-          let jenksDomain = ss.jenks(jenksValues.map(function (d) { return +d.value; }), (numberofBreaks))
-          jenksDomain.shift();
-          jenksDomain.pop();
-          colorScale
-            .domain(jenksDomain)
-            .range(Object.values(gChartcolour[ftColorScale]));
-        }
 
-        if (scaleType === 'political') {
-          colorScale = d3.scaleOrdinal()
-            .domain(Object.keys(gChartcolour.ukPoliticalParties))
-            .range(Object.values(gChartcolour.ukPoliticalParties));
-        }
-        console.log(plotData)
+        console.log(barsData)
+
+        const myXAxis0 = gAxis.xOrdinal();// sets up yAxis
+        const myXAxis1 = gAxis.xOrdinal();// sets up yAxis
+        const myYAxis = gAxis.yLinear();
+        const myChart = columnGroupedChart.draw(); // eslint-disable-line no-unused-vars
+
+        myYAxis
+          .range([barsDim[1], 0])
+          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+          .numTicks(numTicksy)
+          .tickSize(tickSize)
+          .yAxisHighlight(yAxisHighlight)
+          .align(yAxisAlign)
+          .logScale(logScale)
+          .frameName(frameName)
+          .divisor(divisor);
         
+        currentFrame.plot()
+          .call(myYAxis);
+        
+        // return the value in the variable newMargin
+        if (yAxisAlign === 'right') {
+          const newMargin = myYAxis.labelWidth() + currentFrame.margin().right;
+          // Use newMargin redefine the new margin and range of xAxis
+          currentFrame.margin({ right: newMargin });
+          // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        }
+        if (yAxisAlign === 'left') {
+          const newMargin = myYAxis.labelWidth() + currentFrame.margin().left;
+          // Use newMargin redefine the new margin and range of xAxis
+          currentFrame.margin({ left: newMargin });
+          myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
+        }
+        d3.select(currentFrame.plot().node().parentNode)
+          .call(currentFrame);
+        
+        myXAxis0
+          .tickSize(0)
+          .align(xAxisAlign)
+          .domain(barsData.map(d => d.partyName))
+          .rangeRound([0, currentFrame.dimension().width], 10)
+          .frameName(frameName);
+        
+        myXAxis1
+          .align(xAxisAlign)
+          .domain(barsSeriesName)
+          .rangeRound([0, myXAxis0.bandwidth()]);
+        
+        myChart
+          .xScale0(myXAxis0.scale())
+          .xScale1(myXAxis1.scale())
+          .yScale(myYAxis.scale())
+          .plotDim([currentFrame.dimension().width,barsDim[1]])
+          .rem(currentFrame.rem())
+          .colourPalette(colorScale)
+          .logScale(logScale)
+          .showNumberLabels(showNumberLabels);
+        
+        currentFrame.plot()
+          .call(myXAxis0);
+        
+        if (xAxisAlign === 'bottom') {
+          myXAxis0.xLabel().attr('transform', `translate(0,${barsDim[1]})`);
+        }
+        if (xAxisAlign === 'top') {
+          myXAxis0.xLabel().attr('transform', `translate(0,${myXAxis0.tickSize()})`);
+        }
+
+        currentFrame.plot()
+          .selectAll('.columnHolder')
+          .data(barsData)
+          .enter()
+          .append('g')
+          .attr('class', 'columnHolder')
+          .call(myChart);
+        
+
+
+
+
         carto
           .mapDim(mapDim)
           .shapeData(shapeData)
-          .regionData(regionData)
           .valueExtent(valueExtent)
           .colourPalette(colorScale);
+        
+        const legColours = colorScale.domain()
 
         const map = currentFrame.plot()
           .selectAll('.cartoHolder')
@@ -299,13 +259,13 @@ parseData.load([dataFile, shapefile, regionsfile], { dateFormat})
         
         map
           .attr('transform', (d, i) => {
-              const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] ));
+            const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()));
               const xPos = i % currentFrame.numberOfColumns();
               return `translate(${(((mapDim[0] + (currentFrame.rem() * 1.5)) * xPos))}, ${yPos})`;
           });
         
         myLegend
-          .seriesNames(colorScale.domain())
+          .seriesNames(legColours)
           .geometry(legendType)
           .frameName(frameName)
           .rem(currentFrame.rem())
@@ -317,7 +277,7 @@ parseData.load([dataFile, shapefile, regionsfile], { dateFormat})
           .append('g')
           .attr('id', 'legend')
           .selectAll('.legend')
-          .data(colorScale.domain())
+          .data(legColours)
           .enter()
           .append('g')
           .classed('legend', true)

@@ -5,7 +5,10 @@ import gChartcolour from 'g-chartcolour';
 export function draw() {
     let rem = 10;
     let mapDim = [210,297];
-    let colourScale = d3.scaleLinear();
+    let colourScale = d3.scaleOrdinal()
+        .domain(['UUIP', 'UKIP', 'SNP', 'Sin Fein', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent', 'Green', 'DUP', 'Conservative', 'Brexit', 'Change', 'Alliance'])
+        .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BN77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4228B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D']);
+
     let shapeData;
     let regionData;
     let valueExtent;
@@ -20,10 +23,6 @@ export function draw() {
         //create geo.path object, set the projection to merator bring it to the svg-viewport
 
         function drawMap(mapName, mapHolder) {
-            mapHolder.append('text')
-            .attr('class', 'chart-label')
-            .attr('dy', rem *1.5)
-            .text(d => d.mapName);
             
             let cells = allCells.find((d) => {return d.mapName === mapName});
 
@@ -46,33 +45,16 @@ export function draw() {
                 .attr('fill', d => lookup(cells.mapData, d.properties.CODE))
                 .attr('stroke', '#ffffff')
                 .attr('stroke-width', 0.4);
-            
-            const borders = mapHolder
-                .selectAll('.borders')
-                .data(regionData.features)
-                .enter()
-                .append('path')
-                .attr('class', 'borders')
-                .attr('d', path)
-                .attr('fill','none')
-                .attr('stroke', '#fff1e5')
-                .attr('stroke-width', 2);
 
             function lookup(row, idName) {
                 const uniqueCell = row.find((d) => {return d.cellId === idName});
-                if(!uniqueCell || uniqueCell.value === 0) {
+                if(!uniqueCell || uniqueCell.value === '') {
                     return 'none'
                 }
-                return colourScale(uniqueCell.value)
+                
+                return colourScale.domain().includes(uniqueCell.value) ? colourScale(uniqueCell.value) : '#00ff00'
             }
 
-            function getSroke(row, idName) {
-                const uniqueCell = row.find((d) => {return d.cellId === idName});
-                if(!uniqueCell || uniqueCell.value === 0) {
-                    return colourScale.range()[0]
-                }
-                return 'none'
-            }
         }
 
     }

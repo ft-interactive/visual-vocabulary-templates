@@ -10,44 +10,77 @@ import loadData from '@financial-times/load-data';
  * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function load([url, url2, url3], options) { // eslint-disable-line
-    return loadData([url, url2, url3]).then(([result1, result2, result3]) => {
+export function load([url, url2, ], options) { // eslint-disable-line
+    return loadData([url, url2, ]).then(([result1, result2]) => {
         
         const data1 = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
-        const data3 = result3.data ? result3.data : result3;
 
-        const {dateFormat} = options; // eslint-disable-line no-unused-vars
+        const { dateFormat, columnNames, numOfBars} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
 
         const parseDate = d3.timeParse(dateFormat);
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        const seriesNames = getSeriesNames(data1.columns);
+        //const seriesNames = getSeriesNames(data1.columns);
+        const seriesNames = columnNames
+        const partyNames = data1.map(d => d[seriesNames[0]])
+            .filter((item, pos, groupNames) => groupNames.indexOf(item) === pos && item !== '');
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
-        const valueExtent = extentMulti(data1, seriesNames);
-        let jenksValues = []
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map(d => ({
             mapName: d,
             mapData: getMapData(d),
-            regionData: getRegions()
         }));
-        function getRegions() {
-            return 'to come'
 
+        const allWiners = data1.map(d => d[seriesNames[0]]).filter(d => d)
+        const barsData = partyNames.map(d => ({
+            partyName: d,
+            numSeats: getNumberOfSeats(d),
+            groups: getGroups(d, getNumberOfSeats(d),),
+        }))
+
+        function getGroups(party, seats) {
+            return ({
+                name: 'party',
+                value: seats,
+            });
+        }
+
+        barsData.sort((a, b) =>
+            b.numSeats - a.numSeats);
+        
+        barsData.slice(0, 5);
+
+        const barsSeriesName = barsData.map((d) =>{
+            return d.partyName
+        })
+        const barsValues = barsData.map((d) => {
+            return d.numSeats
+        })
+
+        console.log('barsSeriesName', barsSeriesName)
+        console.log('barsValues', barsValues)
+
+        const valueExtent = d3.extent(barsValues);
+        console.log('valueExtent', valueExtent)
+
+
+        
+        
+        function getNumberOfSeats(party) {
+            let count = allWiners.filter((v) => (v === party)).length;
+            return count
         }
 
         function getMapData(group) {
             let mapData = data1.map((d) =>{
-                
-                jenksValues.push({value: Number(d[group])})
-                console.log(d)
+
                 return {
                     mapName: group,
-                    cellId: d.id,
-                    cellName: d.constituency,
+                    cellId: d.constituencyCode,
+                    cellName: d.constituencyName,
                     ft_name: d.ft_name,
                     value: d[group]
                 }
@@ -56,17 +89,16 @@ export function load([url, url2, url3], options) { // eslint-disable-line
         }
         
         const shapeData = data2
-        const regionData = data3
 
         //console.log('plotDatap',plotData);
         //console.log('valueExtent',valueExtent)
 
         return {
+            barsSeriesName,
+            valueExtent,
             plotData,
             shapeData,
-            regionData,
-            valueExtent,
-            jenksValues,
+            barsData,
         };
     });
 }
