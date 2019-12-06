@@ -45,17 +45,15 @@ var myVar = setInterval(myTimer, 10000);
 function myTimer() {
   console.log('reloading page')
   const exportFrame = document.getElementsByClassName("ft-socialgraphic")[0];
-  console.log(exportFrame)
-  exportFrame.addEventListener("load", runExportPNG(exportFrame));
+  exportFrame.addEventListener("load", savePNG(exportFrame,2));
   location.reload();
 }
-function runExportPNG(frame) {
-  console.log('export')
-  savePNG(frame,2)
-}
+
 
 function savePNG(svg, scaleFactor) {
-  svg.selectAll(classes.join(', ')).each(function inlineProps() {
+  let frame = d3.select(svg)
+  console.log(svg)
+  frame.selectAll(classes.join(', ')).each(function inlineProps() {
     const element = this;
     const computedStyle = getComputedStyle(element, null);
 
