@@ -36,7 +36,7 @@ export function load([url, url2, ], options) { // eslint-disable-line
 
         const allWiners = data1.map(d => d[seriesNames[0]]).filter(d => d)
         const allBars = partyNames.map(d => ({
-            partyName: d,
+            partyName: nameTest(d),
             numSeats: getNumberOfSeats(d),
         }))
 
@@ -46,7 +46,7 @@ export function load([url, url2, ], options) { // eslint-disable-line
         const barsData = allBars.slice(0, numOfBars);
 
         const barsSeriesName = barsData.map((d) =>{
-            return d.partyName
+            return nameTest(d.partyName)
         })
         const barsValues = barsData.map((d) => {
             return d.numSeats
@@ -67,10 +67,17 @@ export function load([url, url2, ], options) { // eslint-disable-line
                     cellId: d.constituencyCode,
                     cellName: d.constituencyName,
                     ft_name: d.ft_name,
-                    value: d[group]
+                    value: nameTest(d[group])
                 }
             })
             return mapData
+        }
+
+        function nameTest (name) {
+            if (name ==='Liberal Democrats') {
+                return 'Lib Dems'
+            }
+            return name
         }
         
         const shapeData = data2
