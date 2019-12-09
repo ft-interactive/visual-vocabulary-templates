@@ -42,14 +42,15 @@ export function draw() {
                 .attr('id', (d) => {
                     return d.properties.id + ' ' +d.properties.name})
                 .attr('d', path)
+                .attr('fill', '#333333')
                 .attr('fill', d => lookup(cells.mapData, d.properties.CODE))
-                .attr('stroke', '#ffffff')
-                .attr('stroke-width', 0.4);
+                .attr('stroke', '#262a33')
+                .attr('stroke-width', 0.6);
 
             function lookup(row, idName) {
                 const uniqueCell = row.find((d) => {return d.cellId === idName});
                 if(!uniqueCell || uniqueCell.value === '') {
-                    return 'none'
+                    return '#4C5466'
                 }
                 
                 return colourScale.domain().includes(uniqueCell.value) ? colourScale(uniqueCell.value) : '#00ff00'

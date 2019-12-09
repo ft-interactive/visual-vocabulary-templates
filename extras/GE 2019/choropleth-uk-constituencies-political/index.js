@@ -102,9 +102,9 @@ function savePNG(svg, scaleFactor) {
 }
 
 const sharedConfig = {
-    title: 'Results summary',
-    subtitle: '',
-    source: 'Source: Not yet added',
+    title: 'How the election night unfolded',
+    subtitle: 'Number of seats won',
+    source: 'Source: PA',
 };
 //Defines the scale from the g-chartcolour library when using the jenks calculation
 const ftColorScale = 'sequentialSingle'
@@ -118,77 +118,19 @@ const colorScale = d3.scaleOrdinal()
   .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
   .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BF77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4B28B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D', '#ffffff']);
 
-
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
-    webS: gChartframe.webFrameS(sharedConfig)
-     .margin({ top: 100, left: 15, bottom: 25, right: 15 })
-     // .title('Put headline here') // use this if you need to override the defaults
-     // .subtitle("Put headline |here") //use this if you need to override the defaults
-     .height(500)
-     .extend('numberOfColumns', 1)
-     .extend('numberOfRows', 1),
-
-    webM: gChartframe.webFrameM(sharedConfig)
-      .margin({
-          top: 100, left: 40, bottom: 86, right: 15,
-      })
-  // .title("Put headline here")
-      .height(1050)
-      .extend('numberOfColumns', 1)
-      .extend('numberOfRows', 1),
-
-    webL: gChartframe.webFrameL(sharedConfig)
-      .margin({
-          top: 100, left: 20, bottom: 104, right: 15,
-      })
-  // .title("Put headline here")
-      .height(1800)
-      .fullYear(true)
-      .extend('numberOfColumns', 1)
-      .extend('numberOfRows', 1),
-
-    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
-      .margin({
-          top: 100, left: 20, bottom: 86, right: 15,
-      })
-  // .title("Put headline here")
-      .height(1080)
-      .extend('numberOfColumns', 1)
-      .extend('numberOfRows', 1),
-
-    print: gChartframe.printFrame(sharedConfig)
-     .margin({ top: 30, left: 7, bottom: 35, right: 7 })
-      // .title("Put headline here")
-      //.width(53.71)// 1 col
-      .width(112.25)// 2 col
-      //.width(170.8)// 3 col
-      // .width(229.34)// 4 col
-      // .width(287.88)// 5 col
-      // .width(346.43)// 6 col
-      // .width(74)// markets std print
-      .height(170)
-      .extend('numberOfColumns', 1)
-      .extend('numberOfRows', 1), // std print (Use 58.21mm for markets charts that matter)
-
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
-            top: 140, left: 50, bottom: 138, right: 40,
+            top: 140, left: 40, bottom: 138, right: 40,
         })
     // .title("Put headline here")
         .width(612)
         .height(950)
         .extend('numberOfColumns', 1)
         .extend('numberOfRows', 1) // 700 is ideal height for Instagram
-        .titleX(50)
-        .titleY(90), 
-
-    video: gChartframe.videoFrame(sharedConfig)
-        .margin({
-            left: 207, right: 207, bottom: 210, top: 233,
-        })
-        .extend('numberOfColumns', 1)
-        .extend('numberOfRows', 1),
+        .titleX(40)
+        .titleY(80)
     // .title("Put headline here")
 };
 
@@ -233,6 +175,8 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         
         chart
           .call(myYAxis);
+
+          
         
         // return the value in the variable newMargin
         if (yAxisAlign === 'right') {
@@ -284,7 +228,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .append('g')
           .attr('class', 'columnHolder')
           .call(myChart);
-
+       
         carto
           .mapDim(mapDim)
           .shapeData(shapeData)
@@ -302,6 +246,19 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .attr("preserveAspectRatio", "xMinYMin")
           .call(carto);
         
+        map
+        .append('g')
+        .append('text')
+        .attr('class', 'london-label')
+        .text('London')
+        .attr ('transform', 'translate(270,166)')
+        
+        map
+        .append('g')
+        .append('text')
+        .attr('class', 'london-label')
+        .text('Orkney & Shetland')
+        .attr ('transform', 'translate(216,20)')
         chart
           .attr('transform', (d, i) => {
             const yPos = currentFrame.rem() * -1;
@@ -313,9 +270,14 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .attr('transform', (d, i) => {
             const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()));
               const xPos = i % currentFrame.numberOfColumns();
-              return `translate(${(((mapDim[0] + (currentFrame.rem() * 1.5)) * xPos))}, ${yPos})`;
+              return `translate(${(((mapDim[0] + (currentFrame.rem() * 5)) * xPos)+25)}, ${yPos})`;
           });
         
+        // remove ticks if numbers are added to vars
+        if (showNumberLabels) {
+          const clear = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
+          clear.remove();
+      }
         
         // myLegend
         //   .seriesNames(legColours)

@@ -25,21 +25,22 @@ export function load([url, url2, ], options) { // eslint-disable-line
         //const seriesNames = getSeriesNames(data1.columns);
         const seriesNames = columnNames
         const partyNames = data1.map(d => d[seriesNames[0]])
-            .filter((item, pos, groupNames) => groupNames.indexOf(item) === pos && item !== '');
-
+        .filter((item, pos, groupNames) => groupNames.indexOf(item) === pos && item !== '');
+        
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map(d => ({
             mapName: d,
             mapData: getMapData(d),
         }));
-
+        
         const allWiners = data1.map(d => d[seriesNames[0]]).filter(d => d)
         const allBars = partyNames.map(d => ({
             partyName: d,
             numSeats: getNumberOfSeats(d),
         }))
-
+        console.log(allBars)
+        
         allBars.sort((a, b) =>
             b.numSeats - a.numSeats);
         

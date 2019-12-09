@@ -11,32 +11,25 @@
     opacity: 0.7
 }
 
-.ft-webgraphic-s .chart-label {
-    font-size: 12px;
-}
-
-.ft-webgraphic-m .chart-label {
-    font-size: 14px;
-}
-
-
-.ft-webgraphic-m-default .chart-label {
-    font-size: 18px;
-}
-
-.ft-webgraphic-l .chart-label {
-    font-size: 16px;
-}
-
-.ft-printgraphic .chart-label {
-    font-size: 8px;
-    fill: #000000;
-}
 
 .ft-socialgraphic .chart-label {
     font-size: 18px;
 }
 
-.ft-videographic .chart-label {
-    font-size: 36px;
+.london-label {
+    fill: #8E9095;
+    font-size: 20px;
+}
+
+.yAxis .tick text{
+    visibility: hidden;
+}
+
+.ft-socialgraphic .highlights {
+    opacity: 0.7!important
+}
+
+.majority-label {
+    font-size: 18px;
+    fill: #ffffff;
 }

@@ -20,6 +20,24 @@ export function draw() {
     function chart(parent) {
 
         const min = yScale.domain()[0];
+        var majority = 326;
+
+        d3.select('.highlights')
+            .append("line")
+            .attr("x1", 0)
+            .attr("y1", yScale(majority))
+            .attr("x2", 500)
+            .attr("y2", yScale(majority))
+            .attr("stroke-width", 1)
+            .attr("stroke", "white");
+        
+            d3.select('.highlights')   
+            .append('g')
+            .append('text')
+            .attr('class','majority-label')
+            .text('326 majority')
+            .style('text-anchor', 'end')
+            .attr ('transform', `translate(500, ${yScale(majority) - 8})`);
 
         parent
             .append('rect')
@@ -40,7 +58,17 @@ export function draw() {
             })
             .attr('fill', d => colourScale(d.partyName));
 
-        if (showNumberLabels) {
+        parent
+            .append('rect')
+            .attr('class', 'partyBground')
+            .attr('x', d => xScale0(d.partyName) + (rem/8))
+            .attr('width', () => Math.max(1, xScale0.bandwidth()))
+            .attr('y', yScale(0))
+            .attr('height', '24px')
+
+        
+        
+              if (showNumberLabels) {
             parent.append('text')
                 .classed('legend', true)
                 .html(d => d.numSeats)
@@ -52,7 +80,7 @@ export function draw() {
                 .style('text-anchor', 'middle');
         }
     }
-
+    
     chart.yScale = (d) => {
         if (!d) return yScale;
         yScale = d;
@@ -173,3 +201,6 @@ export function draw() {
 
     return chart;
 }
+d3.selectAll('rect', function() {
+    this.parentElement.appendChild(this);
+});
