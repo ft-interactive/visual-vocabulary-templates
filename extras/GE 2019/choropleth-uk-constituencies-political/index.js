@@ -40,7 +40,7 @@ const classes = [
   '.highlights rects',
 ];
 
-var myVar = setInterval(myTimer, 60000);
+//var myVar = setInterval(myTimer, 60000);
 
 function myTimer() {
   console.log('reloading page')
@@ -115,7 +115,7 @@ const ftColorScale = 'sequentialSingle'
 //   .range(Object.values(gChartcolour.ukPoliticalParties));
 
 const colorScale = d3.scaleOrdinal()
-  .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
+  .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'Plaid Cymru', 'Lib Dems', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
   .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BF77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4B28B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D', '#ffffff']);
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
