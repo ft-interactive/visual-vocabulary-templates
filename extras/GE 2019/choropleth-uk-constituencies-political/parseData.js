@@ -26,7 +26,7 @@ export function load([url, url2, ], options) { // eslint-disable-line
         const seriesNames = columnNames
         const partyNames = data1.map(d => d[seriesNames[0]])
             .filter((item, pos, groupNames) => groupNames.indexOf(item) === pos && item !== '');
-
+        let totalCount = 0
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map(d => ({
@@ -56,6 +56,7 @@ export function load([url, url2, ], options) { // eslint-disable-line
    
         function getNumberOfSeats(party) {
             let count = allWiners.filter((v) => (v === party)).length;
+            totalCount = totalCount + count
             return count
         }
 
@@ -84,13 +85,13 @@ export function load([url, url2, ], options) { // eslint-disable-line
 
         //console.log('plotDatap',plotData);
         //console.log('valueExtent',valueExtent)
-
         return {
             barsSeriesName,
             valueExtent,
             plotData,
             shapeData,
             barsData,
+            totalCount,
         };
     });
 }

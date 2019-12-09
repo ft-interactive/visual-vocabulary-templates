@@ -203,10 +203,11 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
-  .then(({ barsSeriesName, valueExtent, plotData, shapeData, barsData,}) => {
+  .then(({ barsSeriesName, valueExtent, plotData, shapeData, barsData, totalCount}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
+        console.log('totalCount', totalCount)
         const plotDim = [currentFrame.dimension().width,currentFrame.dimension().height]
         const mapWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
         const mapDim = [mapWidth, (mapWidth * 1.07) + currentFrame.rem() * 2];
