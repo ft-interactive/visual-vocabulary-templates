@@ -40,7 +40,7 @@ const classes = [
   '.highlights rects',
 ];
 
-var myVar = setInterval(myTimer, 10000);
+var myVar = setInterval(myTimer, 60000);
 
 function myTimer() {
   console.log('reloading page')
@@ -49,32 +49,6 @@ function myTimer() {
   location.reload();
 }
 
-
-function savePNG(svg, scaleFactor) {
-  let frame = d3.select(svg)
-  console.log(svg)
-  frame.selectAll(classes.join(', ')).each(function inlineProps() {
-    const element = this;
-    const computedStyle = getComputedStyle(element, null);
-
-    // loop through and compute inline svg styles
-    for (let i = 0; i < computedStyle.length; i += 1) {
-      const property = computedStyle.item(i);
-      const value = computedStyle.getPropertyValue(property);
-      element.style[property] = value;
-    }
-  });
-
-  saveSvgAsPng(
-    svg.node(),
-    `${svg
-      .select('title')
-      .text()
-      .replace(/\s/g, '-')
-      .toLowerCase()}.png`,
-    { scale: scaleFactor },
-  );
-}
 
 const yMin = 0
 const yMax = 350
@@ -92,7 +66,7 @@ const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const logScale = false
 const showNumberLabels = true;// show numbers on end of bars
-const dateFormat = '%d/%m/%Y';
+const dateFormat = '%m/%d %H:%M';
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -105,6 +79,27 @@ const dateFormat = '%d/%m/%Y';
   '%H:%M %p'        11:39 AM
   '%d/%m/%Y %H:%M'  28/01/2016 11:39
 */
+
+function savePNG(svg, scaleFactor) {
+  let frame = d3.select(svg)
+  console.log(svg)
+  frame.selectAll(classes.join(', ')).each(function inlineProps() {
+    const element = this;
+    const computedStyle = getComputedStyle(element, null);
+
+    // loop through and compute inline svg styles
+    for (let i = 0; i < computedStyle.length; i += 1) {
+      const property = computedStyle.item(i);
+      const value = computedStyle.getPropertyValue(property);
+      element.style[property] = value;
+    }
+  });
+  let formatDate = d3.timeFormat("%m%d-%H:%M:%S");
+  let date = formatDate(new Date())
+  console.log(date)
+
+  saveSvgAsPng(frame.node(), date);
+}
 
 const sharedConfig = {
     title: 'Results summary',
