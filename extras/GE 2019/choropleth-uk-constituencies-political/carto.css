@@ -51,8 +51,29 @@
     opacity: 0.1;  
 }
 
-.date {
+.ft-socialgraphic .date {
     font-size: 18px;
     fill: #8E9095;
     text-transform: lowercase;
+}
+.ft-webgraphic-s .date {
+    font-size: 12px;
+    fill: #66605c;
+    text-transform: lowercase;
+}
+.ft-webgraphic-m .date {
+    font-size: 14px;
+    fill: #66605c;
+    text-transform: lowercase;
+}
+
+.ft-webgraphic-s .statePolygons,
+.ft-webgraphic-m .statePolygons {
+    stroke: #fff1e5;
+    stroke-width: 0.3px;
+}
+
+.ft-socialgraphic .statePolygons {
+    stroke: #262a33;
+    stroke-width: 0.6px;
 }

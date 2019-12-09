@@ -201,7 +201,6 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
-        console.log('totalCount', totalCount)
         const plotDim = [currentFrame.dimension().width,currentFrame.dimension().height]
         const mapWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
         const mapDim = [mapWidth, (mapWidth * 0.95) + currentFrame.rem() * 2];
@@ -288,7 +287,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .append('text')
           .attr('class', 'date')
           .style('text-anchor', 'end')
-          .text('of 650 seats declared, ' + date + ", local time")
+          .text(totalCount + ' of 650 seats declared, ' + date + ", local time")
           .attr('transform', (d, i) => {
             const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()*3.4));
               const xPos = myYAxis.tickSize();

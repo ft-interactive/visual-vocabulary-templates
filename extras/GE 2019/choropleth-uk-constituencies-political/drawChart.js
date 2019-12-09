@@ -44,8 +44,8 @@ export function draw() {
                 .attr('d', path)
                 .attr('fill', '#333333')
                 .attr('fill', d => lookup(cells.mapData, d.properties.CODE))
-                .attr('stroke', '#262a33')
-                .attr('stroke-width', 0.6);
+                // .attr('stroke', '#262a33')
+                // .attr('stroke-width', 0.6);
 
             function lookup(row, idName) {
                 const uniqueCell = row.find((d) => {return d.cellId === idName});
