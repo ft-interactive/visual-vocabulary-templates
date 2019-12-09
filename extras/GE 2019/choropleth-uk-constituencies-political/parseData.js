@@ -76,7 +76,16 @@ export function load([url, url2, ], options) { // eslint-disable-line
 
         function nameTest (name) {
             if (name ==='Liberal Democrats') {
-                return 'Lib Dems'
+                return 'Lib Dem'
+            }
+            if (name ==='Conservative') {
+                return 'Con'
+            }
+            if (name ==='Labour') {
+                return 'Lab'
+            }
+            if (name ==='Plaid Cymru') {
+                return 'PC'
             }
             return name
         }

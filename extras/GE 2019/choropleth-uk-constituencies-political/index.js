@@ -115,7 +115,7 @@ const ftColorScale = 'sequentialSingle'
 //   .range(Object.values(gChartcolour.ukPoliticalParties));
 
 const colorScale = d3.scaleOrdinal()
-  .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'Plaid Cymru', 'Lib Dems', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
+  .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'PC', 'Lib Dem', 'Lab', 'Independent/Other', 'Green', 'DUP', 'Con', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
   .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BF77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4B28B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D', '#ffffff']);
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
@@ -154,7 +154,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         const mapDim = [mapWidth, (mapWidth * 1.07) + currentFrame.rem() * 2];
         const carto = cartogram.draw();
         const myLegend = gLegend.legend();
-        const barsDim = [plotDim[0], (plotDim[1]/4)]
+        const barsDim = [plotDim[0], (plotDim[1]/4.5)]
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
 
         const myXAxis = gAxis.xOrdinal();// sets up yAxis
@@ -195,7 +195,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .call(currentFrame);
         
         myXAxis
-          .tickSize(0)
+          .tickSize(2)
           .align(xAxisAlign)
           .domain(barsSeriesName)
           .rangeRound([0, currentFrame.dimension().width], 10)
@@ -268,15 +268,17 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         
         map
           .attr('transform', (d, i) => {
-            const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()));
+            const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()*1.89));
               const xPos = i % currentFrame.numberOfColumns();
               return `translate(${(((mapDim[0] + (currentFrame.rem() * 5)) * xPos)+25)}, ${yPos})`;
           });
         
         // remove ticks if numbers are added to vars
         if (showNumberLabels) {
-          const clear = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
-          clear.remove();
+          const clearY = myYAxis.yLabel().selectAll('.tick').filter(d => d !== 0);
+          const clearX = myXAxis.xLabel().selectAll('.tick line')
+          clearY.remove();
+          clearX.remove();
       }
         
         // myLegend

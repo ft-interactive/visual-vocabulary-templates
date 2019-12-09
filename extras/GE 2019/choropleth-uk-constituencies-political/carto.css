@@ -33,3 +33,9 @@
     font-size: 18px;
     fill: #ffffff;
 }
+
+.partyBground {
+    fill: #ffffff;
+    opacity: 0.2;
+    
+}

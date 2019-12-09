@@ -42,7 +42,7 @@ export function draw() {
         parent
             .append('rect')
             .attr('class', 'columns')
-            .attr('x', d => xScale0(d.partyName) + (rem/8))
+            .attr('x', d => xScale0(d.partyName))
             .attr('width', () => Math.max(1, xScale0.bandwidth()))
             .attr('y', (d) => {
                 if (logScale) {
@@ -58,13 +58,13 @@ export function draw() {
             })
             .attr('fill', d => colourScale(d.partyName));
 
-        parent
+        d3.select('.highlights')
             .append('rect')
             .attr('class', 'partyBground')
-            .attr('x', d => xScale0(d.partyName) + (rem/8))
-            .attr('width', () => Math.max(1, xScale0.bandwidth()))
+            .attr('x', d => xScale0(0))
+            .attr('width', 501)
             .attr('y', yScale(0))
-            .attr('height', '24px')
+            .attr('height', '26px')
 
         
         
@@ -73,7 +73,7 @@ export function draw() {
                 .classed('legend', true)
                 .html(d => d.numSeats)
                 .attr('x', d => xScale0(d.partyName) + (xScale0.bandwidth() / 2))
-                .attr('y', () => yScale(0) + rem *1.8)
+                .attr('y', () => yScale(0) + rem *2.5)
                 .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
                 .attr('font-size', rem * .8)
                 .attr('fill', '#ffffff')
