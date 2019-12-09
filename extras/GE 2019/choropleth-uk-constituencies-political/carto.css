@@ -29,6 +29,14 @@
     opacity: 0.7!important
 }
 
+.ft-socialgraphic .xAxis text {
+    fill: #ffffff !important;
+}
+
+.legend {
+    font-size:28px;
+    font-weight: 600;
+}
 .majority-label {
     font-size: 18px;
     fill: #ffffff;
@@ -36,6 +44,15 @@
 
 .partyBground {
     fill: #ffffff;
-    opacity: 0.2;
-    
+    opacity: 0.2;  
+}
+.totalBground {
+    fill: #ffffff;
+    opacity: 0.1;  
+}
+
+.date {
+    font-size: 18px;
+    fill: #8E9095;
+    text-transform: lowercase;
 }

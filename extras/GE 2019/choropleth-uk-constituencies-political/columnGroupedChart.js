@@ -64,7 +64,15 @@ export function draw() {
             .attr('x', d => xScale0(0))
             .attr('width', 501)
             .attr('y', yScale(0))
-            .attr('height', '26px')
+            .attr('height', '30px')
+        
+            d3.select('.highlights')
+            .append('rect')
+            .attr('class', 'totalBground')
+            .attr('x', d => xScale0(0))
+            .attr('width', 501)
+            .attr('y', (yScale(-68)))
+            .attr('height', '36px')
 
         
         
@@ -73,7 +81,7 @@ export function draw() {
                 .classed('legend', true)
                 .html(d => d.numSeats)
                 .attr('x', d => xScale0(d.partyName) + (xScale0.bandwidth() / 2))
-                .attr('y', () => yScale(0) + rem *2.5)
+                .attr('y', () => yScale(0) + rem *2.6)
                 .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
                 .attr('font-size', rem * .8)
                 .attr('fill', '#ffffff')

@@ -67,6 +67,8 @@ const xAxisAlign = 'bottom';// alignment of the axis
 const logScale = false
 const showNumberLabels = true;// show numbers on end of bars
 const dateFormat = '%m/%d %H:%M';
+let formatDate = d3.timeFormat("%-I:%M%p");
+  let date = formatDate(new Date())
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
@@ -120,6 +122,56 @@ const colorScale = d3.scaleOrdinal()
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
+  /*webS: gChartframe.webFrameS(sharedConfig)
+    .margin({ top: 100, left: 15, bottom: 25, right: 15 })
+    // .title('Put headline here') // use this if you need to override the defaults
+    // .subtitle("Put headline |here") //use this if you need to override the defaults
+    .height(500)
+    .extend('numberOfColumns', 1)
+    .extend('numberOfRows', 1),
+
+  webM: gChartframe.webFrameM(sharedConfig)
+    .margin({
+        top: 100, left: 40, bottom: 86, right: 15,
+    })
+  // .title("Put headline here")
+    .height(1050)
+    .extend('numberOfColumns', 1)
+    .extend('numberOfRows', 1),
+
+  webL: gChartframe.webFrameL(sharedConfig)
+    .margin({
+        top: 100, left: 20, bottom: 104, right: 15,
+    })
+  // .title("Put headline here")
+    .height(1800)
+    .fullYear(true)
+    .extend('numberOfColumns', 1)
+    .extend('numberOfRows', 1),
+
+  webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+    .margin({
+        top: 100, left: 20, bottom: 86, right: 15,
+    })
+  // .title("Put headline here")
+    .height(1080)
+    .extend('numberOfColumns', 1)
+    .extend('numberOfRows', 1),
+
+  print: gChartframe.printFrame(sharedConfig)
+    .margin({ top: 30, left: 7, bottom: 35, right: 7 })
+    // .title("Put headline here")
+    //.width(53.71)// 1 col
+    .width(112.25)// 2 col
+    //.width(170.8)// 3 col
+    // .width(229.34)// 4 col
+    // .width(287.88)// 5 col
+    // .width(346.43)// 6 col
+    // .width(74)// markets std print
+    .height(170)
+    .extend('numberOfColumns', 1)
+    .extend('numberOfRows', 1), // std print (Use 58.21mm for markets charts that matter)
+*/
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
             top: 140, left: 40, bottom: 138, right: 40,
@@ -151,7 +203,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
 
         const plotDim = [currentFrame.dimension().width,currentFrame.dimension().height]
         const mapWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
-        const mapDim = [mapWidth, (mapWidth * 1.07) + currentFrame.rem() * 2];
+        const mapDim = [mapWidth, (mapWidth * 0.95) + currentFrame.rem() * 2];
         const carto = cartogram.draw();
         const myLegend = gLegend.legend();
         const barsDim = [plotDim[0], (plotDim[1]/4.5)]
@@ -162,6 +214,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         const myYAxis = gAxis.yLinear();
         const myChart = columnGroupedChart.draw(); // eslint-disable-line no-unused-vars
         const chart = currentFrame.plot().append('g')
+
         myYAxis
           .range([barsDim[1], 0])
           .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
@@ -195,7 +248,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .call(currentFrame);
         
         myXAxis
-          .tickSize(2)
+          .tickSize(4)
           .align(xAxisAlign)
           .domain(barsSeriesName)
           .rangeRound([0, currentFrame.dimension().width], 10)
@@ -228,6 +281,19 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .append('g')
           .attr('class', 'columnHolder')
           .call(myChart);
+
+        chart
+          .append('g')
+          .append('text')
+          .attr('class', 'date')
+          .style('text-anchor', 'end')
+          .text('of 650 seats declared, ' + date + ", local time")
+          .attr('transform', (d, i) => {
+            const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()*3.4));
+              const xPos = myYAxis.tickSize();
+              return `translate(${(mapDim[0]) + 4}, ${yPos})`;
+          });
+
        
         carto
           .mapDim(mapDim)
@@ -251,14 +317,16 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         .append('text')
         .attr('class', 'london-label')
         .text('London')
-        .attr ('transform', 'translate(270,166)')
+        .attr ('transform', 'translate(270,136)')
         
         map
         .append('g')
         .append('text')
         .attr('class', 'london-label')
         .text('Orkney & Shetland')
-        .attr ('transform', 'translate(216,20)')
+        .attr ('transform', 'translate(294, 60)')
+
+
         chart
           .attr('transform', (d, i) => {
             const yPos = currentFrame.rem() * -1;
@@ -270,7 +338,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
           .attr('transform', (d, i) => {
             const yPos = Number((Math.floor(i / currentFrame.numberOfColumns()) * mapDim[1] + barsDim[1] + currentFrame.rem()*1.89));
               const xPos = i % currentFrame.numberOfColumns();
-              return `translate(${(((mapDim[0] + (currentFrame.rem() * 5)) * xPos)+25)}, ${yPos})`;
+              return `translate(${(((mapDim[0] + (currentFrame.rem() * 5)) * xPos)+25)}, ${yPos + 36})`;
           });
         
         // remove ticks if numbers are added to vars
