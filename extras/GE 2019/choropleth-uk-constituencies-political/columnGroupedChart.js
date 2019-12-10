@@ -26,7 +26,7 @@ export function draw() {
             .append("line")
             .attr("x1", 0)
             .attr("y1", yScale(majority))
-            .attr("x2", 500)
+            .attr("x2", 531)
             .attr("y2", yScale(majority))
             .attr("stroke-width", 1)
             .attr("stroke", "white");
@@ -37,7 +37,7 @@ export function draw() {
             .attr('class','majority-label')
             .text('326 majority')
             .style('text-anchor', 'end')
-            .attr ('transform', `translate(500, ${yScale(majority) - 8})`);
+            .attr ('transform', `translate(531, ${yScale(majority) - 8})`);
 
         parent
             .append('rect')
