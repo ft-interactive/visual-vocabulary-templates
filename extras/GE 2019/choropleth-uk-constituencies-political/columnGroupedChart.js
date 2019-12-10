@@ -62,7 +62,7 @@ export function draw() {
             .append('rect')
             .attr('class', 'partyBground')
             .attr('x', d => xScale0(0))
-            .attr('width', 501)
+            .attr('width', 531)
             .attr('y', yScale(0))
             .attr('height', '30px')
         
@@ -70,7 +70,7 @@ export function draw() {
             .append('rect')
             .attr('class', 'totalBground')
             .attr('x', d => xScale0(0))
-            .attr('width', 501)
+            .attr('width', 531)
             .attr('y', (yScale(-68)))
             .attr('height', '36px')
 
