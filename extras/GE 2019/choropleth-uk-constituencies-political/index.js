@@ -317,14 +317,14 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
         .append('text')
         .attr('class', 'london-label')
         .text('London')
-        .attr ('transform', 'translate(270,136)')
+        .attr ('transform', 'translate(282,146)')
         
         map
         .append('g')
         .append('text')
         .attr('class', 'london-label')
         .text('Orkney & Shetland')
-        .attr ('transform', 'translate(294, 60)')
+        .attr ('transform', 'translate(306, 66)')
 
 
         chart
