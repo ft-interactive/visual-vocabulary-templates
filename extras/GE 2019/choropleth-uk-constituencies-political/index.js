@@ -148,7 +148,7 @@ const frame = {
       .extend('numberOfColumns', 1)
       .extend('numberOfRows', 1),
 
-    webMDefault: gChartframe.webFrameMDefault(sharedConfig)
+    /*webMDefault: gChartframe.webFrameMDefault(sharedConfig)
       .margin({
           top: 100, left: 20, bottom: 86, right: 15,
       })
@@ -156,7 +156,7 @@ const frame = {
       .height(1080)
       .extend('numberOfColumns', 1)
       .extend('numberOfRows', 1),
-
+*/
     print: gChartframe.printFrame(sharedConfig)
      .margin({ top: 30, left: 7, bottom: 35, right: 7 })
       // .title("Put headline here")
