@@ -40,12 +40,12 @@ const classes = [
   '.highlights rects',
 ];
 
-//var myVar = setInterval(myTimer, 60000);
+// var myVar = setInterval(myTimer, 60000);
 
 function myTimer() {
-  console.log('reloading page')
+  // console.log('reloading page')
   const exportFrame = document.getElementsByClassName("ft-socialgraphic")[0];
-  exportFrame.addEventListener("load", savePNG(exportFrame,2));
+  // exportFrame.addEventListener("load", savePNG(exportFrame,2));
   location.reload();
 }
 

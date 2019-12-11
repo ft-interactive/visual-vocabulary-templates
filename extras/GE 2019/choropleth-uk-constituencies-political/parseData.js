@@ -15,7 +15,7 @@ export function load([url, url2, ], options) { // eslint-disable-line
         
         const data1 = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
-
+        console.log(data1)
         const { dateFormat, columnNames, numOfBars} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
 
@@ -60,7 +60,11 @@ export function load([url, url2, ], options) { // eslint-disable-line
         function getNumberOfSeats(party) {
             let count = allWiners.filter((v) => (v === party)).length;
             totalCount = totalCount + count
-            return count
+            if (totalCount === 0) {
+                return '–'
+            } else {
+                return count
+            }
         }
 
         function getMapData(group) {
