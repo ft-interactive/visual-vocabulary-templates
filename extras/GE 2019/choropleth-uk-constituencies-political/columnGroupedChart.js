@@ -14,6 +14,7 @@ export function draw() {
     let includeMarker = undefined; // eslint-disable-line
     let interpolation = d3.curveLinear;
     let showNumberLabels = false; // show numbers on end of bars
+    let chartWidth = 531;
     let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
@@ -37,7 +38,7 @@ export function draw() {
             .attr('class','majority-label')
             .text('326 majority')
             .style('text-anchor', 'end')
-            .attr ('transform', `translate(531, ${yScale(majority) - 8})`);
+            .attr ('transform', `translate(${chartWidth}, ${yScale(majority) - 8})`);
 
         parent
             .append('rect')
@@ -62,7 +63,7 @@ export function draw() {
             .append('rect')
             .attr('class', 'partyBground')
             .attr('x', d => xScale0(0))
-            .attr('width', 531)
+            .attr('width', chartWidth)
             .attr('y', yScale(0))
             .attr('height', '30px')
         
@@ -70,7 +71,7 @@ export function draw() {
             .append('rect')
             .attr('class', 'totalBground')
             .attr('x', d => xScale0(0))
-            .attr('width', 531)
+            .attr('width', chartWidth)
             .attr('y', (yScale(-68)))
             .attr('height', '36px')
 

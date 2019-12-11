@@ -52,7 +52,8 @@ function myTimer() {
 
 const yMin = 0
 const yMax = 350
-const dataFile = 'https://ft-ig-content-prod.s3-eu-west-1.amazonaws.com/v2/Financial-Times/ig-pa-election-backend/test-2019-12-05-general-full/latest/general-constituencies.csv';
+const dataFile = 'empty.csv';
+// const dataFile = 'https://ft-ig-content-prod.s3-eu-west-1.amazonaws.com/v2/Financial-Times/ig-pa-election-backend/test-2019-12-05-general-full/latest/general-constituencies.csv';
 const shapefile = 'choropleth.json';
 const scaleType = 'political' //linear, jenks or manual sets the type of colour scale
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
@@ -217,7 +218,7 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
 
         myYAxis
           .range([barsDim[1], 0])
-          .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
+          .domain([yMin, yMax])
           .numTicks(numTicksy)
           .tickSize(tickSize)
           .yAxisHighlight(yAxisHighlight)
