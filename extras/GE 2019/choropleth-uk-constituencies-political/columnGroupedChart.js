@@ -14,20 +14,21 @@ export function draw() {
     let includeMarker = undefined; // eslint-disable-line
     let interpolation = d3.curveLinear;
     let showNumberLabels = false; // show numbers on end of bars
-    let chartWidth = 531;
+    let chartWidth = 531
+    let majorityWidth = 470;
     let colourScale = d3.scaleOrdinal()
         .domain(seriesNames);
 
     function chart(parent) {
 
         const min = yScale.domain()[0];
-        var majority = 326;
+        var majority = 324;
 
         d3.select('.highlights')
             .append("line")
             .attr("x1", 0)
             .attr("y1", yScale(majority))
-            .attr("x2", 531)
+            .attr("x2", majorityWidth)
             .attr("y2", yScale(majority))
             .attr("stroke-width", 1)
             .attr("stroke", "white");
@@ -36,9 +37,9 @@ export function draw() {
             .append('g')
             .append('text')
             .attr('class','majority-label')
-            .text('326 majority')
+            .text('Majority')
             .style('text-anchor', 'end')
-            .attr ('transform', `translate(${chartWidth}, ${yScale(majority) - 8})`);
+            .attr ('transform', `translate(531, ${yScale(majority) + 6})`);
 
         parent
             .append('rect')

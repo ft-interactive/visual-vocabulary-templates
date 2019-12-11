@@ -48,8 +48,8 @@ export function load([url, url2, ], options) { // eslint-disable-line
         let barsLength = barsData.length
         if (barsLength < 5) {
             let noVotes = [
-                { partyName: "Con", numSeats: 1 },
-                { partyName: "Lab", numSeats: 1 },
+                { partyName: "Con", numSeats: 0 },
+                { partyName: "Lab", numSeats: 0 },
                 { partyName: "Lib Dems", numSeats: 0 },
                 { partyName: "SNP", numSeats: 0 },
                 { partyName: "DUP", numSeats: 0 },
