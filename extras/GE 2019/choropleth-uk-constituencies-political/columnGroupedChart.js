@@ -46,8 +46,7 @@ export function draw() {
                 .html(d => d.numSeats)
                 .attr('x', d => xScale0(d.partyName) + (xScale0.bandwidth() / 2))
                 .attr('y', () => yScale(0) + rem *1.8)
-                .attr('dy', (d) => { if (d.value < 0) { return rem; } return -(rem / 4); })
-                .attr('font-size', rem * .8)
+                .attr('dy', (d) => rem/4)
                 .attr('fill', '#ffffff')
                 .style('text-anchor', 'middle');
         }

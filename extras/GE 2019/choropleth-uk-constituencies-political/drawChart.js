@@ -43,13 +43,13 @@ export function draw() {
                     return d.properties.id + ' ' +d.properties.name})
                 .attr('d', path)
                 .attr('fill', d => lookup(cells.mapData, d.properties.CODE))
-                .attr('stroke', '#ffffff')
+                .attr('stroke', '#e6d9ce')
                 .attr('stroke-width', 0.4);
 
             function lookup(row, idName) {
                 const uniqueCell = row.find((d) => {return d.cellId === idName});
                 if(!uniqueCell || uniqueCell.value === '') {
-                    return 'none'
+                    return '#f6e9d8'
                 }
                 
                 return colourScale.domain().includes(uniqueCell.value) ? colourScale(uniqueCell.value) : '#00ff00'

@@ -19,7 +19,6 @@
     font-size: 14px;
 }
 
-
 .ft-webgraphic-m-default .chart-label {
     font-size: 18px;
 }
@@ -39,4 +38,45 @@
 
 .ft-videographic .chart-label {
     font-size: 36px;
+}
+
+.ft-socialgraphic .statePolygons {
+    stroke: #262a33;
+}
+
+.ft-printgraphic .statePolygons {
+    stroke: #cccccc;
+}
+
+.ft-webgraphic-s .legend {
+    font-size: 16px !important;
+}
+
+.ft-webgraphic-m .legend {
+    font-size: 18px !important;
+}
+
+.ft-webgraphic-m-default .legend {
+    font-size: 22px !important;
+}
+
+.ft-webgraphic-l .legend {
+    font-size: 20px !important;
+}
+
+.ft-printgraphic .legend {
+    font-size: 12px !important;
+    fill: #000000;
+}
+
+.ft-socialgraphic .legend {
+    font-size: 28px !important;
+}
+
+.ft-webgraphic-s .legend,
+.ft-webgraphic-m .legend,
+.ft-webgraphic-l .legend,
+.ft-printgraphic .legend,
+.ft-socialgraphic .legend {
+    font-weight: 600;
 }
