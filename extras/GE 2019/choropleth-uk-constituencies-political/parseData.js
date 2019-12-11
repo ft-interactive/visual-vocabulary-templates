@@ -15,7 +15,6 @@ export function load([url, url2, ], options) { // eslint-disable-line
         
         const data1 = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
-        console.log(data1)
         const { dateFormat, columnNames, numOfBars} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
 
@@ -40,13 +39,37 @@ export function load([url, url2, ], options) { // eslint-disable-line
             partyName: nameTest(d),
             numSeats: getNumberOfSeats(d),
         }))
-        console.log(allBars)
         
         allBars.sort((a, b) =>
             b.numSeats - a.numSeats);
         
-        const barsData = allBars.slice(0, numOfBars);
-        console.log(barsData)
+        let barsData = allBars.slice(0, numOfBars);
+
+        let barsLength = barsData.length
+        if (barsLength < 5) {
+            let noVotes = [
+                { partyName: "Con", numSeats: 1 },
+                { partyName: "Lab", numSeats: 1 },
+                { partyName: "Lib Dems", numSeats: 0 },
+                { partyName: "SNP", numSeats: 0 },
+                { partyName: "DUP", numSeats: 0 },
+                { partyName: "Sinn Féin", numSeats: 0 },
+                { partyName: "PC", numSeats: 0 },
+                { partyName: "SDLP", numSeats: 0 },
+                { partyName: "Green", numSeats: 0 },
+                { partyName: "Independent/Other", numSeats: 0 },
+                { partyName: "Alliance", numSeats: 0 },
+                { partyName: "UUP", numSeats: 0 },
+                { partyName: "UKIP", numSeats: 0 },
+                { partyName: "SDLP", numSeats: 0 },
+                { partyName: "Brexit", numSeats: 0 },
+                { partyName: "The Speaker", numSeats: 0 },
+            ]
+            const cutoff = numOfBars - barsLength
+            let lookup = noVotes.filter(f => !barsData.some(g => f.partyName === g.partyName));
+            let likely = lookup.slice(0, cutoff);
+            barsData = barsData.concat(likely);
+        }
 
         const barsSeriesName = barsData.map((d) =>{
             return nameTest(d.partyName)

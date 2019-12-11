@@ -47,9 +47,9 @@ export function draw() {
             .attr('width', () => Math.max(1, xScale0.bandwidth()))
             .attr('y', (d) => {
                 if (logScale) {
-                    return yScale(Math.max(min, d.numSeats))
+                    return yScale(Math.max(min, Number(d.numSeats)))
                 }
-                return yScale(Math.max(0, d.numSeats))
+                return yScale(Math.max(0, Number(d.numSeats)))
             })
             .attr('height', (d) => {
                 if (logScale) {
