@@ -12,7 +12,7 @@ import * as gLegend from 'g-legend';
 
 
 
-const dataFile = 'https://ft-ig-content-prod.s3-eu-west-1.amazonaws.com/v2/Financial-Times/ig-pa-election-backend/test-2019-12-05-general-full/latest/general-constituencies.csv';
+const dataFile = 'https://ft-ig-content-prod.s3-eu-west-1.amazonaws.com/v2/Financial-Times/ig-pa-election-backend/2019-general/latest/general-constituencies.csv';
 const shapefile = 'uk-constituencies.json';
 const regionsfile = 'uk-regions.json';
 const legendAlign = 'vert'; // hori or vert, alignment of the legend

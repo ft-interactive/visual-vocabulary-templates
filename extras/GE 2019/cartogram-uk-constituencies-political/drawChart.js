@@ -60,7 +60,7 @@ export function draw() {
 
             function lookup(row, idName) {
                 const uniqueCell = row.find((d) => {return d.cellId === idName});
-                if(!uniqueCell || uniqueCell.value === 0) {
+                if(!uniqueCell || uniqueCell.value === '') {
                     return 'none'
                 }
                 return colourScale(uniqueCell.value)
