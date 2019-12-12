@@ -51,10 +51,11 @@ function myTimer() {
 
 
 const yMin = 0
-const yMax = 350
+const yMax = 400
 const dataFile = 'https://ft-ig-content-prod.s3-eu-west-1.amazonaws.com/v2/Financial-Times/ig-pa-election-backend/2019-general/latest/general-constituencies.csv';
 const shapefile = 'choropleth.json';
 const scaleType = 'political' //linear, jenks or manual sets the type of colour scale
+const showLegend = true;
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const columnNames = ['constituencyPartyWinning']
@@ -317,26 +318,27 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames, numOfBars})
               return `translate(${(((mapDim[0] + (currentFrame.rem() * 1.5)) * xPos))}, ${yPos})`;
           });
         
-        
-        // myLegend
-        //   .seriesNames(legColours)
-        //   .geometry(legendType)
-        //   .frameName(frameName)
-        //   .rem(currentFrame.rem())
-        //   .alignment(legendAlign)
-        //   .colourPalette(colorScale);
+        if (showLegend) {
+          myLegend
+            .seriesNames(legColours)
+            .geometry(legendType)
+            .frameName(frameName)
+            .rem(currentFrame.rem())
+            .alignment(legendAlign)
+            .colourPalette(colorScale);
 
-        // // Draw the Legend
-        // currentFrame.plot()
-        //   .append('g')
-        //   .attr('id', 'legend')
-        //   .selectAll('.legend')
-        //   .data(legColours)
-        //   .enter()
-        //   .append('g')
-        //   .classed('legend', true)
-        //   .call(myLegend);
-        
+          // Draw the Legend
+          currentFrame.plot()
+            .append('g')
+            .attr('id', 'legend')
+            .selectAll('.legend')
+            .data(legColours)
+            .enter()
+            .append('g')
+            .classed('legend', true)
+            .call(myLegend);
 
+        }
+        
       });
   });
