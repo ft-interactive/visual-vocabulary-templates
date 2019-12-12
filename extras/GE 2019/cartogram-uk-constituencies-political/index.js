@@ -17,7 +17,7 @@ const shapefile = 'uk-constituencies.json';
 const regionsfile = 'uk-regions.json';
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
-const columnNames = ['constituencyPartyWinning','constituencyPartySittingLastElection']
+const columnNames = ['constituencyPartySittingLastElection','constituencyPartyWinning']
 const dateFormat = '%d/%m/%Y';
 const colours = 'web'
 /*
@@ -44,6 +44,12 @@ if (colours === 'web') {
    colorScale = d3.scaleOrdinal()
     .domain(['UUP', 'UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit', 'Independent Group for Change', 'Alliance', 'The Speaker'])
     .range(['#3f67cc', '#7200ab', '#FFF8AB', '#006643', '#5ba373', '#990000', '#f09000', '#cf4d3c', '#d9cace', '#8deb9d', '#210066', '#149adb', '#80cfd6', '#fc8b9d', '#ffbe18', '#ffffff']);
+}
+if (colours === 'print') {
+  colorScale = d3.scaleOrdinal()
+    .domain(['UUP', 'UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'Plaid Cymru', 'Liberal Democrats', 'Labour', 'Independent/Other', 'Green', 'DUP', 'Conservative', 'Brexit', 'Independent Group for Change', 'Alliance', 'The Speaker'])
+    .range(['#95BFC5', '#7F00D9', '#FFDE40', '#8CB861', '#C8DD69', '#79CDCD', '#FAA634', '#F37B70', '#DCDDDE', '#4E9587', '#BBB8DC', '#7BAFDE', '#00B8DE', '#FCBDC7', '#FCBB76', '#ffffff']);
+
 }
 else {
   colorScale = d3.scaleOrdinal()
