@@ -74,9 +74,18 @@ export function load([url, url2, ], options) { // eslint-disable-line
             return mapData
         }
 
-        function nameTest (name) {
-            if (name ==='Liberal Democrats') {
+        function nameTest(name) {
+            if (name === 'Liberal Democrats') {
                 return 'Lib Dems'
+            }
+            if (name === 'Conservative') {
+                return 'Con'
+            }
+            if (name === 'Labour') {
+                return 'Lab'
+            }
+            if (name === 'Plaid Cymru') {
+                return 'PC'
             }
             return name
         }
