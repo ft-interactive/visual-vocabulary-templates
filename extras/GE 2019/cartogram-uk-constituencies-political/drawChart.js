@@ -41,7 +41,7 @@ export function draw() {
                 .append('path')
                 .attr('class','statePolygons')
                 .attr('id', (d) => {
-                    return d.properties.id + ' ' +d.properties.name})
+                    return (d.properties.name + d.properties.id +'-').replace(/\s/g, '-')})
                 .attr('d', path)
                 .attr('fill', d => lookup(cells.mapData, d.properties.id))
                 .attr('stroke', '#ffffff')
