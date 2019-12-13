@@ -116,7 +116,7 @@ const ftColorScale = 'sequentialSingle'
 //   .range(Object.values(gChartcolour.ukPoliticalParties));
 
 const colorScale = d3.scaleOrdinal()
-  .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'PC Cymru', 'Lib Dems', 'Lab', 'Independent/Other', 'Green', 'DUP', 'Con', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
+  .domain(['UUP','UKIP', 'SNP', 'Sinn Féin', 'SDLP', 'PC', 'Lib Dems', 'Lab', 'Independent/Other', 'Green', 'DUP', 'Con', 'Brexit','Independent Group for Change', 'Alliance', 'The Speaker'])
   .range(['#195EF7', '#7F00D9', '#FFF8AB', '#50BF77', '#007D51', '#B30000', '#FFAD36', '#FF634D', '#E0D9D5', '#80FF96', '#4B28B0', '#0095E8', '#00BFBC', '#FCBDC7', '#FACD5D', '#ffffff']);
 
 
