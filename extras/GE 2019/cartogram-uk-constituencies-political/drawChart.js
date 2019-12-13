@@ -43,7 +43,7 @@ export function draw() {
                 .attr('id', (d) => {
                     return (d.properties.name + d.properties.id +'-').replace(/\s/g, '-')})
                 .attr('d', path)
-                .attr('fill', d => lookup(cells.mapData, d.properties.id))
+                .attr('fill', d => lookup(cells.mapData, d.properties.CODE))
                 .attr('stroke', '#ffffff')
                 .attr('stroke-width', 0.4);
             

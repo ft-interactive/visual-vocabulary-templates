@@ -13,13 +13,13 @@ import * as gLegend from 'g-legend';
 
 
 const dataFile = 'https://ft-ig-content-prod.s3-eu-west-1.amazonaws.com/v2/Financial-Times/ig-pa-election-backend/2019-general/latest/general-constituencies.csv';
-const shapefile = 'uk-constituencies.json';
+const shapefile = '2019-uk-constituencies.json';
 const regionsfile = 'uk-regions.json';
 const legendAlign = 'vert'; // hori or vert, alignment of the legend
 const legendType = 'rect'; // rect, line or circ, geometry of legend marker
 const columnNames = ['constituencyPartySittingLastElection','constituencyPartyWinning']
 const dateFormat = '%d/%m/%Y';
-const colours = 'web'
+const colours = 'PRINT'
 /*
   some common formatting parsers....
   '%m/%d/%Y'        01/28/1986
