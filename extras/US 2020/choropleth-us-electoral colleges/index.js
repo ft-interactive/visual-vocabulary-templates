@@ -122,23 +122,35 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             }
         });
         collegeData = collegeData.map((el) => {
+            console.log('el',el)
             return {
                 id: el.id,
                 name: el.name,
-                votes: el.votes,
+                value: el.value,
+                votes: getVotes(el.id, el.value),
                 party: el.party,
-                x: getCoordinates(el.id)[0],
-                y: getCoordinates(el.id)[1],
             }
         })
-
+        function getVotes(luckup, qty) {
+            let votes = []
+            for (let i = 0; i < qty; i++) {
+               let college = {
+                   name: luckup,
+                   index: i,
+                   x: getCoordinates(luckup)[0],
+                   y: getCoordinates(luckup)[1],
+               }
+                votes.push(college)
+            }
+            return votes
+        }
 
         function getCoordinates(luckup) {
             const coords = centroids.find(item => luckup === item.id)
             return coords.centroid
         }
         //console.log('centroids', centroids)
-        //console.log('collegeData', collegeData)
+        console.log('collegeDots', collegeData)
 
         myChart
             .level(level)
@@ -154,6 +166,7 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .call(myChart);
         
         myColleges
+            .rem(currentFrame.rem())
             .colourPalette(colorScale)
         
         currentFrame.plot()
@@ -163,6 +176,7 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .append('g')
             .attr('class', 'scatterplot')
             .call(myColleges);
+
 
         // myLegend
         //     .colourScale(colorScale)

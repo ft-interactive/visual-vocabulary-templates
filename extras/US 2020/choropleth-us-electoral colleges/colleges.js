@@ -9,15 +9,27 @@ export function drawColleges() {
 
     function chart(parent) {
 
-        parent.append('g')
+        parent.selectAll('circle')
+        .data(d => d.votes)
+        .enter()
+        .call(sim)
         .append('circle')
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
-        .attr('r', 4)
-        .attr('fill', '#000000')
+        .attr('r', rem * 0.2)
+        .attr('fill', '#ffffff')
 
     } // eslint-disable-line
 
+    function sim(dots) {
+            const data = dots.data()
+            console.log('data', data)
+            const simulation = d3.forceSimulation(data)
+                .force("x", d3.forceX(function (d) { return d.x }))
+                .force("y", d3.forceY(function (d) { return d.y }))
+                .force("collide", d3.forceCollide(d => (rem * .3)))
+            for (var i = 0; i < 550; ++i) simulation.tick()
+        }
 
     chart.rem = (d) => {
         if (!d) return rem;

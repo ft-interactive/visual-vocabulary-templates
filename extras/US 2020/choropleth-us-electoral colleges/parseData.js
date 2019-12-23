@@ -40,10 +40,8 @@ export function load(urls, options) { // eslint-disable-line
                     return {
                         id: d.FIPS,
                         name: d.stateName,
-                        votes: d.value,
-                        party: d.winningParty,
-                        x: '',
-                        y: '',
+                        value: d.value,
+                        votesData: ''
                     }
                 })
 
