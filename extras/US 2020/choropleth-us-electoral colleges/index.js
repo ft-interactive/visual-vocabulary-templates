@@ -4,6 +4,7 @@ import gChartframe from 'g-chartframe';
 import germanyTopojson from 'germany-wahlkreise'; // Custom added to d3-bootloader; see index.html.
 import gChartcolour from 'g-chartcolour';
 import * as choropleth from './choropleth.js';
+import * as colleges from './colleges.js';
 import * as parseData from './parseData.js';
 import * as ss from 'simple-statistics';
 import * as gLegend from './legend-threshold.js';
@@ -87,6 +88,7 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
     Object.keys(frame).forEach((frameName) => {
 
         const myChart = choropleth.draw();
+        const myColleges = colleges.drawColleges();
         const currentFrame = frame[frameName];
         const projection = d3.geoIdentity()
                 .scale(currentFrame.scale())
@@ -112,17 +114,31 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
         //console.log('geoData', geoData)
         var path = d3.geoPath()
             .projection(projection)
-        var features = topojson.feature(geoData, geoData.objects.states).features;
-        var centroids = features.map(function (feature) {
+        let features = topojson.feature(geoData, geoData.objects.states).features;
+        let centroids = features.map(function (feature) {
             return {
                 id: feature.id,
                 centroid: path.centroid(feature)
             }
         });
+        collegeData = collegeData.map((el) => {
+            return {
+                id: el.id,
+                name: el.name,
+                votes: el.votes,
+                party: el.party,
+                x: getCoordinates(el.id)[0],
+                y: getCoordinates(el.id)[1],
+            }
+        })
+
+
+        function getCoordinates(luckup) {
+            const coords = centroids.find(item => luckup === item.id)
+            return coords.centroid
+        }
         //console.log('centroids', centroids)
-        console.log('collegeData', collegeData)
-
-
+        //console.log('collegeData', collegeData)
 
         myChart
             .level(level)
@@ -136,6 +152,17 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .append('g')
             .attr('class', 'choropleth')
             .call(myChart);
+        
+        myColleges
+            .colourPalette(colorScale)
+        
+        currentFrame.plot()
+            .selectAll('.scatterplot')
+            .data(collegeData)
+            .enter()
+            .append('g')
+            .attr('class', 'scatterplot')
+            .call(myColleges);
 
         // myLegend
         //     .colourScale(colorScale)
