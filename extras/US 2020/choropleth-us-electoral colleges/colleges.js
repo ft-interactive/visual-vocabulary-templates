@@ -16,7 +16,7 @@ export function drawColleges() {
         .append('circle')
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
-        .attr('r', rem * 0.2)
+        .attr('r', rem * 0.15)
         .attr('fill', '#ffffff')
 
     } // eslint-disable-line
@@ -27,8 +27,8 @@ export function drawColleges() {
             const simulation = d3.forceSimulation(data)
                 .force("x", d3.forceX(function (d) { return d.x }))
                 .force("y", d3.forceY(function (d) { return d.y }))
-                .force("collide", d3.forceCollide(d => (rem * .3)))
-            for (var i = 0; i < 550; ++i) simulation.tick()
+                .force("collide", d3.forceCollide(d => (rem * .2)))
+            for (var i = 0; i < 250; ++i) simulation.tick()
         }
 
     chart.rem = (d) => {

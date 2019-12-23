@@ -122,7 +122,6 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             }
         });
         collegeData = collegeData.map((el) => {
-            console.log('el',el)
             return {
                 id: el.id,
                 name: el.name,
@@ -150,7 +149,7 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             return coords.centroid
         }
         //console.log('centroids', centroids)
-        console.log('collegeDots', collegeData)
+        // console.log('collegeDots', collegeData)
 
         myChart
             .level(level)
