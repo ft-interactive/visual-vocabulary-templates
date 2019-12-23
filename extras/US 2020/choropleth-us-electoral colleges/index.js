@@ -9,22 +9,21 @@ import * as ss from 'simple-statistics';
 import * as gLegend from './legend-threshold.js';
 
 
-const dataFile = 'dataCounty.csv';
+const dataFile = 'dataState.csv';
 const geometryFile = 'https://unpkg.com/@financial-times/annotated-atlas@1.1.3/us/10m.json'
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Electoral college votes by state',
+    subtitle: 'Each candidate needs 270 electoral college votes to win the presidency',
     source: 'Source not yet added',
 };
 
-const level = 'counties'; //states or counties,
+const level = 'states'; //states or counties,
 const scaleType = 'manual' //linear, jenks or manual sets the type of colour scale
 const ftColorScale = 'sequentialSingle'
 let colorScale = d3.scaleThreshold()
                 .domain([3.6, 4.9, 6.6, 9.8, 14.8])
                 .range(Object.values(gChartcolour[ftColorScale]));
-
 
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
@@ -104,16 +103,25 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .interpolate(d3.interpolateHcl);
         }
 
-
-
         if(scaleType === 'ploitical') {
             colorScale = d3.scaleOrdinal()
                 .domain(Object.keys(gChartcolour.usPoliticalPartiesSmallArea))
                 .range(Object.values(gChartcolour.usPoliticalPartiesSmallArea));
         }
+        //create an array of centroids to look up x and y coordinates for lines
+        //console.log('geoData', geoData)
+        var path = d3.geoPath()
+            .projection(projection)
+        var features = topojson.feature(geoData, geoData.objects.states).features;
+        var centroids = features.map(function (feature) {
+            return {
+                id: feature.id,
+                centroid: path.centroid(feature)
+            }
+        });
+        console.log('centroids', centroids)
 
-        // console.log('domain', colorScale.domain())
-        // console.log('range', colorScale.range())
+
 
         myChart
             .level(level)
