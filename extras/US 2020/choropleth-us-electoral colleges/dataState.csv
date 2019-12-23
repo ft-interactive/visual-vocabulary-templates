@@ -1,1 +1,52 @@
-﻿FIPS,name,value01,Alabama,25.1002,Alaska,10.8004,Arizona,35.9005,Arkansas,19.1006,California,233.5008,Colorado,31.3009,Connecticut,29.2010,Delaware,8.7011,District of Columbia,0.0012,Florida,71.7013,Georgia,36.9015,Hawaii,13.2016,Idaho,7.4017,Illinois,59.6018,Indiana,33.8019,Iowa,19.1020,Kansas,15.4021,Kentucky,33.7022,Louisiana,27.8023,Maine,8.6024,Maryland,36.5025,Massachusetts,60.7026,Michigan,54.8027,Minnesota,39.7028,Mississippi,19.4029,Missouri,28.0030,Montana,6.6031,Nebraska,9.6032,Nevada,12.1033,New Hampshire,8.1034,New Jersey,65.5035,New Mexico,15.6036,New York,148.1037,North Carolina,43.5038,North Dakota,6.4039,Ohio,76.6040,Oklahoma,22.0041,Oregon,30.9042,Pennsylvania,90.3044,Rhode Island,7.6045,South Carolina,27.2046,South Dakota,4.9047,Tennessee,27.1048,Texas,127.2049,Utah,18.4050,Vermont,5.4051,Virginia,45.7053,Washington,46.8054,West Virginia,13.5055,Wisconsin,31.5056,Wyoming,4.90
+﻿FIPS,name,value,winningParty,highlight
+01,Alabama,9,Republicans,
+02,Alaska,3,Republicans,
+04,Arizona,11,Republicans,
+05,Arkansas,6,Republicans,
+06,California,55,Democrats,
+08,Colorado,9,Democrats,
+09,Connecticut,7,Democrats,
+10,Delaware,3,Democrats,
+11,District of Columbia,29,Republicans,
+12,Florida,16,Republicans,
+13,Georgia,4,Democrats,
+15,Hawaii,4,Republicans,
+16,Idaho,20,Democrats,
+17,Illinois,11,Republicans,
+18,Indiana,6,Republicans,
+19,Iowa,6,Republicans,
+20,Kansas,8,Republicans,
+21,Kentucky,8,Republicans,
+22,Louisiana,3,Democrats,
+23,Maine,1,Republicans,
+24,Maryland,10,Democrats,
+25,Massachusetts,11,Democrats,
+26,Michigan,16,Republicans,
+27,Minnesota,6,Republicans,
+28,Mississippi,10,Democrats,
+29,Missouri,10,Republicans,
+30,Montana,3,Republicans,
+31,Nebraska,5,Republicans,
+32,Nevada,6,Democrats,
+33,New Hampshire,4,Democrats,
+34,New Jersey,14,Democrats,
+35,New Mexico,5,Democrats,
+36,New York,29,Democrats,
+37,North Carolina,15,Republicans,
+38,North Dakota,3,Republicans,
+39,Ohio,18,Republicans,
+40,Oklahoma,7,Republicans,
+41,Oregon,7,Democrats,
+42,Pennsylvania,20,Republicans,
+44,Rhode Island,4,Democrats,
+45,South Carolina,9,Republicans,
+46,South Dakota,3,Republicans,
+47,Tennessee,11,Republicans,
+48,Texas,38,Republicans,
+49,Utah,6,Republicans,
+50,Vermont,3,Democrats,
+51,Virginia,13,Democrats,
+53,Washington,12,Democrats,
+54,West Virginia,3,Democrats,
+55,Wisconsin,5,Republicans,
+56,Wyoming,10,Republicans,

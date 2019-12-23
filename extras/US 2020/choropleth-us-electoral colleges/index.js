@@ -9,7 +9,7 @@ import * as ss from 'simple-statistics';
 import * as gLegend from './legend-threshold.js';
 
 
-const dataFile = 'dataState.csv';
+const dataFile = 'college.csv';
 const geometryFile = 'https://unpkg.com/@financial-times/annotated-atlas@1.1.3/us/10m.json'
 
 const sharedConfig = {
@@ -81,7 +81,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 //parseData.load(geometryFile,{}).then((data) => {
-parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExtent, plotData]) => {
+parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExtent, plotData, collegeData]) => {
     // define chart
 
     Object.keys(frame).forEach((frameName) => {
@@ -119,7 +119,8 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
                 centroid: path.centroid(feature)
             }
         });
-        console.log('centroids', centroids)
+        //console.log('centroids', centroids)
+        console.log('collegeData', collegeData)
 
 
 
@@ -136,15 +137,15 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .attr('class', 'choropleth')
             .call(myChart);
 
-        myLegend
-            .colourScale(colorScale)
-            .valueExtent(valueExtent)
-            .linearRange([0,currentFrame.dimension().width/2.6])
+        // myLegend
+        //     .colourScale(colorScale)
+        //     .valueExtent(valueExtent)
+        //     .linearRange([0,currentFrame.dimension().width/2.6])
 
-         currentFrame.plot()
-          .append('g')
-          .attr('id', 'legend')
-          .call(myLegend)
+        //  currentFrame.plot()
+        //   .append('g')
+        //   .attr('id', 'legend')
+        //   .call(myLegend)
 
     });
     // addSVGSavers('figure.saveable');

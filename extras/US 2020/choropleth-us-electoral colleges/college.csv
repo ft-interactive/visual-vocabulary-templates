@@ -1,0 +1,53 @@
+FIPS,ststeName,value,winningParty
+01,Alabama,9,Republicans
+02,Alaska,3,Republicans
+03,Arizona,11,Republicans
+04,Arkansas,6,Republicans
+05,California,55,Democrats
+06,Colorado,9,Democrats
+07,Connecticut,7,Democrats
+08,Delaware,3,Democrats
+09,Florida,29,Republicans
+10,Georgia,16,Republicans
+11,Hawaii,4,Democrats
+12,Idaho,4,Republicans
+13,Illinois,20,Democrats
+14,Indiana,11,Republicans
+15,Iowa,6,Republicans
+16,Kansas,6,Republicans
+17,Kentucky,8,Republicans
+18,Lousiana,8,Republicans
+19,Maine,3,Democrats
+20,Maine,1,Republicans
+21,Maryland,10,Democrats
+22,Massachusetts,11,Democrats
+23,Michigan,16,Republicans
+24,Mississippi,6,Republicans
+25,Minnesota,10,Democrats
+26,Missouri,10,Republicans
+27,Montana,3,Republicans
+28,Nebraska,5,Republicans
+29,Nevada,6,Democrats
+30,New Hampshire,4,Democrats
+31,New Jersey,14,Democrats
+32,New Mexico,5,Democrats
+33,New York,29,Democrats
+34,North Carolina,15,Republicans
+35,North Dakota,3,Republicans
+36,Ohio,18,Republicans
+37,Oklahoma,7,Republicans
+38,Oregon,7,Democrats
+39,Pennsylvania,20,Republicans
+40,Rhode Island,4,Democrats
+41,South Carolina,9,Republicans
+42,South Dakota,3,Republicans
+43,Tennessee,11,Republicans
+44,Texas,38,Republicans
+45,Utah,6,Republicans
+46,Vermont,3,Democrats
+47,Virginia,13,Democrats
+48,Washington,12,Democrats
+49,District of Columbia,3,Democrats
+50,West Virginia,5,Republicans
+51,Wisconsin,10,Republicans
+52,Wyoming,3,Republicans

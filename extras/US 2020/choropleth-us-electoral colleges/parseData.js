@@ -36,6 +36,17 @@ export function load(urls, options) { // eslint-disable-line
                 const plotData = geoData
                 //console.log('plotData', plotData);
 
+                const collegeData = data.map((d) => {
+                    return {
+                        id: d.FIPS,
+                        name: d.stateName,
+                        votes: d.value,
+                        party: d.winningParty,
+                        x: '',
+                        y: '',
+                    }
+                })
+
                 function getProperties(id, properties) {
                     let newProperties;
                     if (level === 'counties') {
@@ -67,8 +78,8 @@ export function load(urls, options) { // eslint-disable-line
                     
                     function getValue(id){
                         try {
-                        const test = data.find(item => id === item.FIPS)
-                        return Number(test.value)
+                        const lookUp = data.find(item => id === item.FIPS)
+                            return Number(lookUp.value)
                         }
                         catch (err) {
                             return 'none'
@@ -78,7 +89,7 @@ export function load(urls, options) { // eslint-disable-line
                     return newProperties
                 }
 
-                return [data, geoData,valueExtent, plotData];
+            return [data, geoData, valueExtent, plotData, collegeData];
         });
 }
 
