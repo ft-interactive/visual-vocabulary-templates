@@ -21,12 +21,13 @@ export function draw() {
             .data(d => topojson.feature(d, d.objects.counties).features)
             .enter()
             .append('path')
-            .attr('fill', function(d) {
-                if(d.properties[0].value === 'none') {
-                    return 'none'
-                }
-                else { return colourScale(d.properties[0].value)}
-            })
+            .attr('fill', 'none')
+            // .attr('fill', function(d) {
+            //     if(d.properties[0].value === 'none') {
+            //         return 'none'
+            //     }
+            //     else { return colourScale(d.properties[0].value)}
+            // })
             .attr('stroke', 'none')
             .attr('id', d => d.id + " " + d.properties[0].value)
             .attr("d", path)
@@ -46,12 +47,13 @@ export function draw() {
             .data(d => topojson.feature(d, d.objects.states).features)
             .enter()
             .append('path')
-            .attr('fill', function(d) {
-                if(d.properties[0].value === 'none') {
-                    return 'none'
-                }
-                else { return colourScale(d.properties[0].value)}
-            })
+            .attr('fill', 'none')
+            // .attr('fill', function(d) {
+            //     if(d.properties[0].value === 'none') {
+            //         return 'none'
+            //     }
+            //     else { return colourScale(d.properties[0].value)}
+            // })
             .attr('id', d => d.id + " " + d.properties[0].value)
             .attr('stroke', '#777')
             .attr('stroke-width', 0.77)

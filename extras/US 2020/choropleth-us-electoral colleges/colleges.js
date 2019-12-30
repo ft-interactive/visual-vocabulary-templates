@@ -17,7 +17,7 @@ export function drawColleges() {
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
         .attr('r', rem * 0.15)
-        .attr('fill', '#ffffff')
+        .attr('fill', '#C2B7AF')
 
     } // eslint-disable-line
 
