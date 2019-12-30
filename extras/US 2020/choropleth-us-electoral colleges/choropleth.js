@@ -29,7 +29,7 @@ export function draw() {
             //     else { return colourScale(d.properties[0].value)}
             // })
             .attr('stroke', 'none')
-            .attr('id', d => d.id + " " + d.properties[0].value)
+            .attr('id', d => d.id)
             .attr("d", path)
 
              states.selectAll('path')
@@ -54,7 +54,7 @@ export function draw() {
             //     }
             //     else { return colourScale(d.properties[0].value)}
             // })
-            .attr('id', d => d.id + " " + d.properties[0].value)
+            .attr('id', d => d.id)
             .attr('stroke', '#777')
             .attr('stroke-width', 0.77)
             .attr('d', path)

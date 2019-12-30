@@ -12,10 +12,13 @@ export function drawColleges() {
 
         parent.selectAll('text')
         .data((d) => {
+            //console.log(d)
             return d})
         .enter()
         .append('text')
-        .attr('class', 'annotation')
+        //.attr('class', 'annotation')
+        .attr('x', d => d.x)
+        .attr('y', d => d.y)
         .text(d => d.name)
 
         parent.selectAll('circle')
@@ -34,11 +37,16 @@ export function drawColleges() {
     function sim(dots) {
             const data = dots.data()
             const simulation = d3.forceSimulation(data)
-                .force("x", d3.forceX(function (d) { return d.x }))
+                .force("x", d3.forceX(function (d) { 
+                    //let state = d3.select('#' + d.id)
+                    //console.log(state)
+                    return d.x }))
                 .force("y", d3.forceY(function (d) { return d.y }))
                 .force("collide", d3.forceCollide(d => (circleSize * 1.3)))
-            for (var i = 0; i < 600; ++i) simulation.tick()
+            for (var i = 0; i < 200; ++i) simulation.tick()
         }
+    
+    //d3.polygonContains(polygon, point)
 
     chart.rem = (d) => {
         if (!d) return rem;

@@ -118,6 +118,8 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
                 value: el.value,
                 votes: getVotes(el.id, el.name, el.value, el.party),
                 party: el.party,
+                x: getCoordinates(el.id)[0],
+                y: getCoordinates(el.id)[1],
             }
         })
         function getVotes(id, name, qty, party) {
@@ -149,12 +151,12 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
                 newX = coords.centroid[1] + rem
             }
             if (luckup === '10') {
-                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2)
-                newX = coords.centroid[1]
+                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2) - rem
+                newX = coords.centroid[1] + (rem * 0.7)
             }
             if (luckup === '11') {
-                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2)
-                newX = coords.centroid[1] + rem * 2
+                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2) - rem
+                newX = coords.centroid[1] + rem * 2.5
             }
             if (luckup === '26') {
                 newY = coords.centroid[0] + (rem * 0.5)
@@ -182,9 +184,7 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .rem(currentFrame.rem())
             .colourPalette(colorScale)
             .circleSize(currentFrame.cc())
-        
-            console.log(collegeData)
-        
+                
         currentFrame.plot()
             .selectAll('.scatterplot')
             .data(collegeData)
