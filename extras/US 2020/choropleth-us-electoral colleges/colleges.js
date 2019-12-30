@@ -6,6 +6,7 @@ export function drawColleges() {
     // let interpolation =d3.curveLinear
     let colourScale = d3.scaleThreshold();
     let rem = 16;
+    let circleSize = 5;
 
     function chart(parent) {
 
@@ -14,26 +15,32 @@ export function drawColleges() {
         .enter()
         .call(sim)
         .append('circle')
+        .attr('id', d => d.id + d.name)
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
-        .attr('r', rem * 0.15)
-        .attr('fill', '#C2B7AF')
+        .attr('r', circleSize)
+        .attr('fill', d => colourScale(d.party))
 
     } // eslint-disable-line
 
     function sim(dots) {
             const data = dots.data()
-            console.log('data', data)
             const simulation = d3.forceSimulation(data)
                 .force("x", d3.forceX(function (d) { return d.x }))
                 .force("y", d3.forceY(function (d) { return d.y }))
-                .force("collide", d3.forceCollide(d => (rem * .2)))
-            for (var i = 0; i < 250; ++i) simulation.tick()
+                .force("collide", d3.forceCollide(d => (circleSize * 1.3)))
+            for (var i = 0; i < 600; ++i) simulation.tick()
         }
 
     chart.rem = (d) => {
         if (!d) return rem;
         rem = d;
+        return chart;
+    };
+
+    chart.circleSize = (d) => {
+        if (!d) return circleSize;
+        circleSize = d;
         return chart;
     };
 

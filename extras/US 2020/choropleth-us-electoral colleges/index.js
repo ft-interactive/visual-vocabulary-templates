@@ -10,7 +10,7 @@ import * as ss from 'simple-statistics';
 import * as gLegend from './legend-threshold.js';
 
 
-const dataFile = 'college.csv';
+const dataFile = 'electoralColleage2020.csv';
 const geometryFile = 'https://unpkg.com/@financial-times/annotated-atlas@1.1.3/us/10m.json'
 
 const sharedConfig = {
@@ -21,11 +21,9 @@ const sharedConfig = {
 
 const level = 'states'; //states or counties,
 const scaleType = 'manual' //linear, jenks or manual sets the type of colour scale
-const ftColorScale = 'sequentialSingle'
-let colorScale = d3.scaleThreshold()
-                .domain([3.6, 4.9, 6.6, 9.8, 14.8])
-                .range(Object.values(gChartcolour[ftColorScale]));
-
+let colorScale = d3.scaleOrdinal()
+    .domain(Object.keys(gChartcolour.usPoliticalPartiesSmallArea))
+    .range(Object.values(gChartcolour.usPoliticalPartiesSmallArea));
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -33,44 +31,52 @@ const frame = {
         .margin({ top: 100, left: 20, bottom: 86, right: 5 })
         // .title("Put headline here")
         .height(580)
-        .extend('scale', 0.67),
+        .extend('scale', 0.67)
+        .extend('cc', 2.8),
 
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({ top: 100, left: 15, bottom: 82, right: 5 })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
-        .height(350)
-        .extend('scale', 0.28),
+        .height(340)
+        .extend('scale', 0.26)
+        .extend('cc', 1.5),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 86, right: 5 })
     // .title("Put headline here")
         .height(580)
-        .extend('scale', 0.67),
+        .extend('scale', 0.67)
+        .extend('cc', 2.8),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 104, right: 5 })
     // .title("Put headline here")
         .height(950)
         .fullYear(true)
-        .extend('scale', 1.2),
+        .extend('scale', 1.2)
+        .extend('cc', 3),
 
     print: gChartframe.printFrame(sharedConfig)
         .margin({ top: 40, left: 7, bottom: 35, right: 7 })
     // .title("Put headline here")
         .height(90) //(Use 58.21mm for markets charts that matter)
-        .width(112.25) 
-        .extend('scale', .32),
+        .width(170.8) 
+        .height(130)
+        .extend('scale', .48)
+        .extend('cc', 1.6),
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({ top: 140, left: 50, bottom: 138, right: 40 })
     // .title("Put headline here")
         .height(750) // 700 is ideal height for Instagram
-        .extend('scale', .55),
+        .extend('scale', .55)
+        .extend('cc', 2.4),
 
     video: gChartframe.videoFrame(sharedConfig)
         .margin({ left: 207, right: 207, bottom: 210, top: 233 })
-        .extend('scale', 1.0),
+        .extend('scale', 1.0)
+        .extend('cc', 3),
     // .title("Put headline here")
 };
 
@@ -92,24 +98,8 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
         const currentFrame = frame[frameName];
         const projection = d3.geoIdentity()
                 .scale(currentFrame.scale())
-        const numberofBreaks = Object.values(gChartcolour[ftColorScale]).length
-        const myLegend = gLegend.drawLegend();
-        // console.log('numberofBreaks',numberofBreaks)
-        // console.log('valueExtent', valueExtent)
-        let test = data.map(function (d) { return +d.value; })
+        const rem  = currentFrame.rem()
 
-        if(scaleType === 'linear') {
-            colorScale = d3.scaleLinear()
-            .domain(valueExtent)
-            .range(Object.values(gChartcolour.basicLinePrint))
-            .interpolate(d3.interpolateHcl);
-        }
-
-        if(scaleType === 'ploitical') {
-            colorScale = d3.scaleOrdinal()
-                .domain(Object.keys(gChartcolour.usPoliticalPartiesSmallArea))
-                .range(Object.values(gChartcolour.usPoliticalPartiesSmallArea));
-        }
         //create an array of centroids to look up x and y coordinates for lines
         //console.log('geoData', geoData)
         var path = d3.geoPath()
@@ -126,18 +116,20 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
                 id: el.id,
                 name: el.name,
                 value: el.value,
-                votes: getVotes(el.id, el.value),
+                votes: getVotes(el.id, el.name, el.value, el.party),
                 party: el.party,
             }
         })
-        function getVotes(luckup, qty) {
+        function getVotes(id, name, qty, party) {
             let votes = []
             for (let i = 0; i < qty; i++) {
                let college = {
-                   name: luckup,
+                   id: id,
+                   name: name,
                    index: i,
-                   x: getCoordinates(luckup)[0],
-                   y: getCoordinates(luckup)[1],
+                   party: party,
+                   x: getCoordinates(id)[0],
+                   y: getCoordinates(id)[1],
                }
                 votes.push(college)
             }
@@ -146,7 +138,29 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
 
         function getCoordinates(luckup) {
             const coords = centroids.find(item => luckup === item.id)
-            return coords.centroid
+            let newY = coords.centroid[0]
+            let newX = coords.centroid[1]
+            if (luckup === '09') {
+                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2)
+                newX = coords.centroid[1] - rem * 1.5
+            }
+            if (luckup === '44') {
+                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2)
+                newX = coords.centroid[1] + rem
+            }
+            if (luckup === '10') {
+                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2)
+                newX = coords.centroid[1]
+            }
+            if (luckup === '11') {
+                newY = currentFrame.dimension().width - (currentFrame.margin().left * 2)
+                newX = coords.centroid[1] + rem * 2
+            }
+            if (luckup === '26') {
+                newY = coords.centroid[0] + (rem * 0.5)
+                newX = coords.centroid[1] + (rem * 0.5)
+            }
+            return [newY, newX]
         }
         //console.log('centroids', centroids)
         // console.log('collegeDots', collegeData)
@@ -167,6 +181,7 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
         myColleges
             .rem(currentFrame.rem())
             .colourPalette(colorScale)
+            .circleSize(currentFrame.cc())
         
         currentFrame.plot()
             .selectAll('.scatterplot')

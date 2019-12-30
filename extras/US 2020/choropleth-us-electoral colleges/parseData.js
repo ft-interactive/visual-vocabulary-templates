@@ -38,10 +38,10 @@ export function load(urls, options) { // eslint-disable-line
 
                 const collegeData = data.map((d) => {
                     return {
-                        id: d.FIPS,
-                        name: d.stateName,
-                        value: d.value,
-                        votesData: ''
+                        id: d.fips,
+                        name: d.stateNameShort,
+                        value: d.electoralColleage,
+                        party: d.winningParty2016
                     }
                 })
 
