@@ -10,6 +10,14 @@ export function drawColleges() {
 
     function chart(parent) {
 
+        parent.selectAll('text')
+        .data((d) => {
+            return d})
+        .enter()
+        .append('text')
+        .attr('class', 'annotation')
+        .text(d => d.name)
+
         parent.selectAll('circle')
         .data(d => d.votes)
         .enter()

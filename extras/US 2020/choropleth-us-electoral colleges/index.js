@@ -40,7 +40,7 @@ const frame = {
     // .subtitle("Put headline |here") //use this if you need to override the defaults
         .height(340)
         .extend('scale', 0.26)
-        .extend('cc', 1.5),
+        .extend('cc', 1.3),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({ top: 100, left: 20, bottom: 86, right: 5 })
@@ -182,6 +182,8 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .rem(currentFrame.rem())
             .colourPalette(colorScale)
             .circleSize(currentFrame.cc())
+        
+            console.log(collegeData)
         
         currentFrame.plot()
             .selectAll('.scatterplot')
