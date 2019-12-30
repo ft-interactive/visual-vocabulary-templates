@@ -46,6 +46,10 @@ export function drawColleges() {
             for (var i = 0; i < 200; ++i) simulation.tick()
         }
     
+        function checkBoundary() {
+            
+        }
+    
     //d3.polygonContains(polygon, point)
 
     chart.rem = (d) => {
