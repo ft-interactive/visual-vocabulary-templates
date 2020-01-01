@@ -36,8 +36,8 @@ export function drawColleges() {
             const data = dots.data()
             const simulation = d3.forceSimulation(data)
                 .force("x", d3.forceX(function (d) {
-                    //let state = d3.select("#" + d.id);
-                    //console.log(state)
+                    let state = parent.select('#states')
+                    console.log(state)
                     return d.x
                 }))
                 .force("y", d3.forceY(function (d) { return d.y }))
@@ -45,13 +45,13 @@ export function drawColleges() {
             for (var i = 0; i < 200; ++i) simulation.tick()
         }
 
-    } // eslint-disable-line
-    
         function checkBoundary(state) {
-            
+            //d3.polygonContains(polygon, point)
+
         }
-    
-    //d3.polygonContains(polygon, point)
+
+    } // eslint-disable-line
+
 
     chart.rem = (d) => {
         if (!d) return rem;

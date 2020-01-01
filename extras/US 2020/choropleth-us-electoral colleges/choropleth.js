@@ -13,6 +13,7 @@ export function draw() {
     function chart(parent) {
 
         const states = parent.append('g')
+            .attr('id', 'states')
         const path = d3.geoPath().projection(projection)
 
         
