@@ -5,42 +5,16 @@ import topojson from 'topojson-client';
 export function draw() {
     // let interpolation =d3.curveLinear
     let colourScale = d3.scaleThreshold();
-    let level = 'counties';
+    let level = 'states';
     let rem = 16;
     var projection = d3.geoIdentity()
                 .scale(0.67)
 
     function chart(parent) {
 
-        const counties = parent.append('g')
         const states = parent.append('g')
         const path = d3.geoPath().projection(projection)
 
-        if (level === 'counties') {
-            counties.selectAll('path')
-            .data(d => topojson.feature(d, d.objects.counties).features)
-            .enter()
-            .append('path')
-            .attr('fill', 'none')
-            // .attr('fill', function(d) {
-            //     if(d.properties[0].value === 'none') {
-            //         return 'none'
-            //     }
-            //     else { return colourScale(d.properties[0].value)}
-            // })
-            .attr('stroke', 'none')
-            .attr('id', d => d.id)
-            .attr("d", path)
-
-             states.selectAll('path')
-                .data(d => topojson.feature(d, d.objects.states).features)
-                .enter()
-                .append('path')
-                .attr('fill', 'none')
-                .attr('stroke', '#777')
-                .attr('stroke-width', 0.77)
-                .attr('d', path)
-        }
         
         if (level == 'states') {
             states.selectAll('path')
@@ -48,12 +22,6 @@ export function draw() {
             .enter()
             .append('path')
             .attr('fill', 'none')
-            // .attr('fill', function(d) {
-            //     if(d.properties[0].value === 'none') {
-            //         return 'none'
-            //     }
-            //     else { return colourScale(d.properties[0].value)}
-            // })
             .attr('id', d => d.id)
             .attr('stroke', '#777')
             .attr('stroke-width', 0.77)
