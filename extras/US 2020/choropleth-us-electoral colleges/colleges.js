@@ -32,19 +32,20 @@ export function drawColleges() {
         .attr('r', circleSize)
         .attr('fill', d => colourScale(d.party))
 
-    } // eslint-disable-line
-
-    function sim(dots) {
+        function sim(dots) {
             const data = dots.data()
             const simulation = d3.forceSimulation(data)
-                .force("x", d3.forceX(function (d) { 
+                .force("x", d3.forceX(function (d) {
                     //let state = d3.select("#" + d.id);
                     //console.log(state)
-                    return d.x }))
+                    return d.x
+                }))
                 .force("y", d3.forceY(function (d) { return d.y }))
                 .force("collide", d3.forceCollide(d => (circleSize * 1.3)))
             for (var i = 0; i < 200; ++i) simulation.tick()
         }
+
+    } // eslint-disable-line
     
         function checkBoundary(state) {
             
