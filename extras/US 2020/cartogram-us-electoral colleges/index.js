@@ -12,7 +12,6 @@ import * as gLegend from './legend-threshold.js';
 
 const dataFile = 'electoralColleage2020.csv';
 const shapefile = 'USCarto.json';
-const regionsfile = 'uk-regions.json';
 
 const columnNames = ['2016']
 
@@ -31,8 +30,8 @@ const dateFormat = '%d/%m/%Y';
 */
 
 const sharedConfig = {
-    title: '2017 Vote share',
-    subtitle: 'By constituency, selected parties',
+  title: 'Electoral college votes by state',
+  subtitle: 'Subtitle not yet added',
     source: 'Source: Not yet added',
 };
 //Put the user defined variablesin delete where not applicable
@@ -126,8 +125,8 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load([dataFile, shapefile, regionsfile], { dateFormat, columnNames})
-  .then(({ plotData, shapeData, regionData, valueExtent, jenksValues}) => {
+parseData.load([dataFile, shapefile,], { dateFormat, columnNames})
+  .then(({ plotData, shapeData, valueExtent, jenksValues}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
@@ -141,7 +140,6 @@ parseData.load([dataFile, shapefile, regionsfile], { dateFormat, columnNames})
         carto
           .mapDim(mapDim)
           .shapeData(shapeData)
-          .regionData(regionData)
           .valueExtent(valueExtent)
           .colourPalette(colorScale);
 

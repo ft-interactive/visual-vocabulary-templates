@@ -46,17 +46,7 @@ export function draw() {
                 .attr('fill', d => lookup(cells.mapData, d.properties.id))
                 .attr('stroke', '#000000')
                 .attr('stroke-width', 0.4);
-            
-            const borders = mapHolder
-                .selectAll('.borders')
-                .data(regionData.features)
-                .enter()
-                .append('path')
-                .attr('class', 'borders')
-                .attr('d', path)
-                .attr('fill','none')
-                .attr('stroke', '#fff1e5')
-                .attr('stroke-width', 2);
+        
 
             function lookup(row, idName) {
                 const uniqueCell = row.find((d) => {return d.cellId === idName});

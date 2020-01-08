@@ -10,12 +10,12 @@ import loadData from '@financial-times/load-data';
  * @param  {String} url Path to CSV/TSV/JSON file
  * @return {Object}     Object containing series names, value extent and raw data object
  */
-export function load([url, url2, url3], options) { // eslint-disable-line
-    return loadData([url, url2, url3]).then(([result1, result2, result3]) => {
+export function load([url, url2], options) { // eslint-disable-line
+    return loadData([url, url2]).then(([result1, result2]) => {
         
         const data1 = result1.data ? result1.data : result1;
         const data2 = result2.data ? result2.data : result2;
-        const data3 = result3.data ? result3.data : result3;
+
 
         const { dateFormat, columnNames} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
@@ -55,7 +55,6 @@ export function load([url, url2, url3], options) { // eslint-disable-line
         }
         
         const shapeData = data2
-        const regionData = data3
 
         //console.log('plotDatap',plotData);
         //console.log('valueExtent',valueExtent)
@@ -63,7 +62,6 @@ export function load([url, url2, url3], options) { // eslint-disable-line
         return {
             plotData,
             shapeData,
-            regionData,
             valueExtent,
             jenksValues,
         };
