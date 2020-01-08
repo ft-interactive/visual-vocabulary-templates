@@ -1,11 +1,11 @@
 fips,postalAbbreviation,code..str,stateNameShort,stateNameLong,electoralColleage,2016
-01,AL,al,Alabama,Alabama,9,republican
-02,AK,ak,Alaska,Alaska,3,republican
-04,AZ,az,Ariz,Arizona,11,republican
-05,AR,ar,Ark,Arkansas,6,republican
-06,CA,ca,Calif,California,55,democrat
-08,CO,co,colorado,Colorado,9,democrat
-09,CT,ct,Conn,Connecticut,7,democrat
+1,AL,al,Alabama,Alabama,9,republican
+2,AK,ak,Alaska,Alaska,3,republican
+4,AZ,az,Ariz,Arizona,11,republican
+5,AR,ar,Ark,Arkansas,6,republican
+6,CA,ca,Calif,California,55,democrat
+8,CO,co,colorado,Colorado,9,democrat
+9,CT,ct,Conn,Connecticut,7,democrat
 10,DE,de,delaware,Delaware,3,democrat
 11,DC,dc,DC,District of Columbia,3,democrat
 12,FL,fl,Fla,Florida,29,republican

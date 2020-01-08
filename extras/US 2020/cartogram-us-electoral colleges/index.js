@@ -126,7 +126,7 @@ d3.selectAll('.framed')
           .call(frame[figure.node().dataset.frame]);
   });
 parseData.load([dataFile, shapefile,], { dateFormat, columnNames})
-  .then(({ plotData, shapeData, valueExtent, jenksValues}) => {
+  .then(({ plotData, shapeData, valueExtent}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 

@@ -27,7 +27,6 @@ export function load([url, url2], options) { // eslint-disable-line
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data1, seriesNames);
-        let jenksValues = []
         // Format the dataset that is used to draw the lines
         const plotData = seriesNames.map(d => ({
             mapName: d,
@@ -40,21 +39,21 @@ export function load([url, url2], options) { // eslint-disable-line
         }
 
         function getMapData(group) {
-            let mapData = data1.map((d) =>{
-                
-                jenksValues.push({value: Number(d[group])})
+            let mapData = data1.map((d) =>{            
                 return {
                     mapName: group,
-                    cellId: d.id,
-                    cellName: d.constituency,
+                    cellId: d.fips,
+                    cellName: d.stateNameShort,
                     ft_name: d.ft_name,
                     value: Number(d[group])
                 }
             })
             return mapData
         }
+        //console.log(plotData)
         
         const shapeData = data2
+        console.log('shapeData', shapeData)
 
         //console.log('plotDatap',plotData);
         //console.log('valueExtent',valueExtent)
@@ -63,7 +62,6 @@ export function load([url, url2], options) { // eslint-disable-line
             plotData,
             shapeData,
             valueExtent,
-            jenksValues,
         };
     });
 }
