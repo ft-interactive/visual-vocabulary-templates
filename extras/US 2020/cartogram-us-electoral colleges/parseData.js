@@ -17,13 +17,13 @@ export function load([url, url2, url3], options) { // eslint-disable-line
         const data2 = result2.data ? result2.data : result2;
         const data3 = result3.data ? result3.data : result3;
 
-        const {dateFormat} = options; // eslint-disable-line no-unused-vars
+        const { dateFormat, columnNames} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
 
         const parseDate = d3.timeParse(dateFormat);
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        const seriesNames = getSeriesNames(data1.columns);
+        const seriesNames = columnNames; 
 
         // Use the seriesNames array to calculate the minimum and max values in the dataset
         const valueExtent = extentMulti(data1, seriesNames);

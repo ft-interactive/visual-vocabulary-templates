@@ -10,9 +10,11 @@ import * as cartogram from './drawChart.js';
 import * as ss from 'simple-statistics';
 import * as gLegend from './legend-threshold.js';
 
-const dataFile = 'vote-share-6.csv';
+const dataFile = 'electoralColleage2020.csv';
 const shapefile = 'USCarto.json';
 const regionsfile = 'uk-regions.json';
+
+const columnNames = ['2016']
 
 const dateFormat = '%d/%m/%Y';
 /*
@@ -124,7 +126,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load([dataFile, shapefile, regionsfile], { dateFormat})
+parseData.load([dataFile, shapefile, regionsfile], { dateFormat, columnNames})
   .then(({ plotData, shapeData, regionData, valueExtent, jenksValues}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
