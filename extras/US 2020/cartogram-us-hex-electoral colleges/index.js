@@ -20,11 +20,10 @@ const sharedConfig = {
 };
 
 //Imput values into the domain of this scale to create manual scale breaks
-let colorScale = d3.scaleThreshold()
-  .domain([0.1, 0.2, 0.4, 0.5, 0.6,])
-  .range(['#F3DEC8', '#CEBFAB', '#A9A18F', '#848273', '#5F6456', '#3A453A', '#3A453A']);
-
-
+let colorScale = d3.scaleOrdinal()
+  .domain(Object.keys(gChartcolour.usPoliticalPartiesSmallArea))
+  .range(Object.values(gChartcolour.usPoliticalPartiesSmallArea));
+  
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
@@ -95,7 +94,6 @@ const frame = {
         .extend('numberOfRows', 1),
     // .title("Put headline here")
 };
-
 
 // add the frames to the page...
 d3.selectAll('.framed')
