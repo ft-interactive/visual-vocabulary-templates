@@ -43,7 +43,7 @@ export function draw() {
                     return d.properties.id + ' ' +d.properties.name})
                 .attr('d', path)
                 //.attr('fill', d => lookup(cells.mapData, d.properties.id))
-                .attr('stroke', '#000000')
+                .attr('stroke', '#777')
                 .attr('stroke-width', 0.4);   
 
             function lookup(row, idName) {
