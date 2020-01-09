@@ -11,7 +11,7 @@ import * as cartogram from './drawChart.js';
 const dataFile = 'electoralColleage2020.csv';
 const shapefile = 'states.json';
 
-const columnNames = ['2016']
+const columnNames = ['2016','2020']
 
 const sharedConfig = {
   title: 'Electoral college votes by state',
@@ -23,7 +23,7 @@ const sharedConfig = {
 let colorScale = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.usPoliticalPartiesSmallArea))
   .range(Object.values(gChartcolour.usPoliticalPartiesSmallArea));
-  
+
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
@@ -78,19 +78,19 @@ const frame = {
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
-            top: 140, left: 50, bottom: 138, right: 40,
+            top: 140, left: 50, bottom: 138, right: 30,
         })
     // .title("Put headline here")
         .width(612)
         .height(612)
-        .extend('numberOfColumns', 3)
+        .extend('numberOfColumns', 2)
         .extend('numberOfRows', 1), // 700 is ideal height for Instagram
 
     video: gChartframe.videoFrame(sharedConfig)
         .margin({
             left: 207, right: 207, bottom: 210, top: 233,
         })
-        .extend('numberOfColumns', 3)
+        .extend('numberOfColumns', 2)
         .extend('numberOfRows', 1),
     // .title("Put headline here")
 };
@@ -111,7 +111,7 @@ parseData.load([dataFile, shapefile,], {columnNames})
 
         const plotDim = [currentFrame.dimension().width,currentFrame.dimension().height]
         const mapWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
-        const mapDim = [mapWidth, (mapWidth * .72) + currentFrame.rem() * 2];
+        const mapDim = [mapWidth, (mapWidth * .70) + currentFrame.rem() * 2];
         const carto = cartogram.draw();
         carto
           .mapDim(mapDim)

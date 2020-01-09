@@ -17,10 +17,9 @@ export function load([url, url2], options) { // eslint-disable-line
         const data2 = result2.data ? result2.data : result2;
 
 
-        const { dateFormat, columnNames} = options; // eslint-disable-line no-unused-vars
+        const {columnNames} = options; // eslint-disable-line no-unused-vars
         // make sure all the dates in the date column are a date object
 
-        const parseDate = d3.timeParse(dateFormat);
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = columnNames; 
@@ -45,7 +44,7 @@ export function load([url, url2], options) { // eslint-disable-line
                     cellId: d.fips,
                     cellName: d.stateNameShort,
                     ft_name: d.ft_name,
-                    value: Number(d[group])
+                    value: d.Attribute1
                 }
             })
             return mapData
