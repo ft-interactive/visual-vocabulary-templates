@@ -11,7 +11,7 @@ import * as ss from 'simple-statistics';
 import * as gLegend from './legend-threshold.js';
 
 const dataFile = 'electoralColleage2020.csv';
-const shapefile = 'USCarto.json';
+const shapefile = 'states.json';
 
 const columnNames = ['2016']
 
