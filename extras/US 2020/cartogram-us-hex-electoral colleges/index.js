@@ -7,36 +7,17 @@ import gChartframe from 'g-chartframe';
 import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as cartogram from './drawChart.js';
-import * as ss from 'simple-statistics';
-import * as gLegend from './legend-threshold.js';
 
 const dataFile = 'electoralColleage2020.csv';
 const shapefile = 'states.json';
 
 const columnNames = ['2016']
 
-const dateFormat = '%d/%m/%Y';
-/*
-  some common formatting parsers....
-  '%m/%d/%Y'        01/28/1986
-  '%d-%b-%y'        28-Jan-86
-  '%Y %b'           1986 Jan
-  '%Y-%m-%d'        1986-01-28
-  '%B %d'           January 28
-  '%d %b'           28 Jan
-  '%H:%M'           11:39
-  '%H:%M %p'        11:39 AM
-  '%d/%m/%Y %H:%M'  28/01/2016 11:39
-*/
-
 const sharedConfig = {
   title: 'Electoral college votes by state',
   subtitle: 'Subtitle not yet added',
-    source: 'Source: Not yet added',
+  source: 'Source: Not yet added',
 };
-//Put the user defined variablesin delete where not applicable
-const ftColorScale = 'sequentialSingle'
-
 
 //Imput values into the domain of this scale to create manual scale breaks
 let colorScale = d3.scaleThreshold()
@@ -125,7 +106,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
-parseData.load([dataFile, shapefile,], { dateFormat, columnNames})
+parseData.load([dataFile, shapefile,], {columnNames})
   .then(({ plotData, shapeData, valueExtent}) => {
       Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -134,9 +115,6 @@ parseData.load([dataFile, shapefile,], { dateFormat, columnNames})
         const mapWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
         const mapDim = [mapWidth, (mapWidth * .72) + currentFrame.rem() * 2];
         const carto = cartogram.draw();
-        const numberofBreaks = Object.values(gChartcolour[ftColorScale]).length;
-        const myLegend = gLegend.drawLegend();
-
         carto
           .mapDim(mapDim)
           .shapeData(shapeData)

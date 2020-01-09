@@ -29,8 +29,7 @@ export function draw() {
             .attr('d', path)
         }
 
-
-    } // eslint-disable-line
+    }
 
     chart.level = (d) => {
         if (!d) return level;

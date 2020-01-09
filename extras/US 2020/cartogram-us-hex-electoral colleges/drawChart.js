@@ -7,7 +7,6 @@ export function draw() {
     let mapDim = [210,297];
     let colourScale = d3.scaleLinear();
     let shapeData;
-    let regionData;
     let valueExtent;
 
     function chart(parent) {
@@ -35,18 +34,17 @@ export function draw() {
 
             //draw svg lines of the boundries
             const cellsPaths = mapHolder
-                .selectAll('.statePolygons')
+                .selectAll('.colleges')
                 .data(shapeData.features)
                 .enter()
                 .append('path')
-                .attr('class','statePolygons')
+                .attr('class','colleges')
                 .attr('id', (d) => {
                     return d.properties.id + ' ' +d.properties.name})
                 .attr('d', path)
                 //.attr('fill', d => lookup(cells.mapData, d.properties.id))
                 .attr('stroke', '#000000')
-                .attr('stroke-width', 0.4);
-        
+                .attr('stroke-width', 0.4);   
 
             function lookup(row, idName) {
                 const uniqueCell = row.find((d) => {return d.cellId === idName});
@@ -75,11 +73,6 @@ export function draw() {
 
     chart.shapeData = (d) => {
         shapeData = d;
-        return chart;
-    };
-
-    chart.regionData = (d) => {
-        regionData = d;
         return chart;
     };
 
