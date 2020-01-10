@@ -41,9 +41,8 @@ export function load([url, url2], options) { // eslint-disable-line
             let mapData = data1.map((d) =>{            
                 return {
                     mapName: group,
-                    cellId: Number(d.fips),
+                    cellId: d.fips,
                     cellName: d.stateNameShort,
-                    ft_name: d.ft_name,
                     value: d[group]
                 }
             })

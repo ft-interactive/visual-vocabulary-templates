@@ -42,8 +42,7 @@ export function draw() {
                 .attr('id', (d) => {
                     return d.properties.fips + ' ' + d.properties.stateNameS})
                 .attr('d', path)
-                .attr('fill', d => lookup(cells.mapData, d.properties.ID))
-
+                .attr('fill', d => lookup(cells.mapData, d.properties.fips))
                 .attr('stroke-width', 0.4);
             
             const states = mapHolder
@@ -58,8 +57,8 @@ export function draw() {
                 .attr('d', path)  
 
             function lookup(row, idName) {
-                console.log()
-                const uniqueCell = row.find((d) => {return d.cellId === idName});
+                console.log(row, idName)
+                const uniqueCell = row.find((d) => { return d.cellId === idName});
                 if(!uniqueCell || uniqueCell.value === '') {
                     return 'none'
                 }

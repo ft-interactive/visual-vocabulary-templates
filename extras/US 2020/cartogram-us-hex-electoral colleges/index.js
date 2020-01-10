@@ -104,6 +104,7 @@ d3.selectAll('.framed')
       figure.select('svg')
           .call(frame[figure.node().dataset.frame]);
   });
+
 parseData.load([dataFile, shapefile,], {columnNames})
   .then(({ plotData, shapeData, valueExtent}) => {
       Object.keys(frame).forEach((frameName) => {
@@ -118,6 +119,16 @@ parseData.load([dataFile, shapefile,], {columnNames})
           .shapeData(shapeData)
           .valueExtent(valueExtent)
           .colourPalette(colorScale);
+        
+        let features = shapeData.objects.states
+
+        console.log(features)
+
+        
+        // let test = features.map((d) => {
+        //   console.log(d)
+        // })
+
 
         const map = currentFrame.plot()
           .selectAll('.cartoHolder')
