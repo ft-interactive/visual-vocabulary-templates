@@ -40,3 +40,27 @@
 .ft-videographic .chart-label {
     font-size: 36px;
 }
+
+.ft-webgraphic-s .colleges,
+.ft-webgraphic-m .colleges,
+.ft-webgraphic-m-default .colleges,
+.ft-webgraphic-l .colleges {
+  stroke: #fff1c5;
+}
+
+.ft-socialgraphic .colleges,
+.ft-videographic .colleges {
+    stroke: #ffffff;
+}
+
+.ft-webgraphic-s .states,
+.ft-webgraphic-m .states,
+.ft-webgraphic-m-default .states,
+.ft-webgraphic-l .states {
+  stroke: #fff1c5;
+}
+
+.ft-socialgraphic .states,
+.ft-videographic .states {
+    stroke: #ffffff;
+}

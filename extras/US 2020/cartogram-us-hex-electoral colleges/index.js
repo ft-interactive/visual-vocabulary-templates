@@ -9,7 +9,7 @@ import * as parseData from './parseData.js';
 import * as cartogram from './drawChart.js';
 
 const dataFile = 'electoralColleage2020.csv';
-const shapefile = 'states.json';
+const shapefile = 'hexColleges.json';
 
 const columnNames = ['2016','2020']
 

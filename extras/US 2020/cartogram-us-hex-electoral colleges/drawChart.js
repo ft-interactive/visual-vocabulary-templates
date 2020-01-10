@@ -33,37 +33,40 @@ export function draw() {
             const path = d3.geoPath(projection);
 
             //draw svg lines of the boundries
-            const cellsPaths = mapHolder
+            const colleges = mapHolder
                 .selectAll('.colleges')
-                .data(shapeData.features)
+                .data(shapeData.objects.colleges.features)
                 .enter()
                 .append('path')
                 .attr('class','colleges')
                 .attr('id', (d) => {
                     return d.properties.id + ' ' +d.properties.name})
                 .attr('d', path)
-                .attr('fill', (d) => {
-                    console.log(d.properties)
-                    return colourScale(d.properties.Attribute1)
-                })
-                .attr('stroke', '#777')
-                .attr('stroke-width', 0.4);   
+                // .attr('fill', (d) => {
+                //     return colourScale(d.properties.Attribute1)
+                // })
+                .attr('fill', d => lookup(cells.mapData, d.properties.ID))
+
+                .attr('stroke-width', 0.4);
+            
+            const states = mapHolder
+                .selectAll('.states')
+                .data(shapeData.objects.states.features)
+                .enter()
+                .append('path')
+                .attr('class', 'states')
+                .attr('d', path)
+                .attr('stroke-width', 1.5);   
 
             function lookup(row, idName) {
+                console.log()
                 const uniqueCell = row.find((d) => {return d.cellId === idName});
-                if(!uniqueCell || uniqueCell.value === 0) {
+                if(!uniqueCell || uniqueCell.value === '') {
                     return 'none'
                 }
                 return colourScale(uniqueCell.value)
             }
 
-            function getSroke(row, idName) {
-                const uniqueCell = row.find((d) => {return d.cellId === idName});
-                if(!uniqueCell || uniqueCell.value === 0) {
-                    return colourScale.range()[0]
-                }
-                return 'none'
-            }
         }
 
     }
