@@ -45,22 +45,30 @@
 .ft-webgraphic-m .colleges,
 .ft-webgraphic-m-default .colleges,
 .ft-webgraphic-l .colleges {
-  stroke: #fff1c5;
+  stroke: #CCC1B7;
+  stroke-width: .4;
 }
 
 .ft-socialgraphic .colleges,
 .ft-videographic .colleges {
     stroke: #ffffff;
+    stroke-width: .4; 
 }
 
 .ft-webgraphic-s .states,
 .ft-webgraphic-m .states,
 .ft-webgraphic-m-default .states,
 .ft-webgraphic-l .states {
-  stroke: #fff1c5;
+  stroke: #CCC1B7;
+  stroke-width: 2;
 }
 
-.ft-socialgraphic .states,
+.ft-socialgraphic .states{
+    stroke: #ffffff;
+    stroke-width: 0.8;
+}
+
 .ft-videographic .states {
     stroke: #ffffff;
+    stroke-width: 1.5;
 }

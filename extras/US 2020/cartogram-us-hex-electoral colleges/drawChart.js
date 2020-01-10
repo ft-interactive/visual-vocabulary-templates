@@ -40,11 +40,8 @@ export function draw() {
                 .append('path')
                 .attr('class','colleges')
                 .attr('id', (d) => {
-                    return d.properties.id + ' ' +d.properties.name})
+                    return d.properties.fips + ' ' + d.properties.stateNameS})
                 .attr('d', path)
-                // .attr('fill', (d) => {
-                //     return colourScale(d.properties.Attribute1)
-                // })
                 .attr('fill', d => lookup(cells.mapData, d.properties.ID))
 
                 .attr('stroke-width', 0.4);
@@ -54,9 +51,11 @@ export function draw() {
                 .data(shapeData.objects.states.features)
                 .enter()
                 .append('path')
+                .attr('id', (d) => {
+                    return d.properties.fips + ' ' + d.properties.stateNameL
+                })
                 .attr('class', 'states')
-                .attr('d', path)
-                .attr('stroke-width', 1.5);   
+                .attr('d', path)  
 
             function lookup(row, idName) {
                 console.log()
