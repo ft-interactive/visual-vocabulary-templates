@@ -125,7 +125,7 @@ parseData.load([dataFile, shapefile,], {columnNames})
         console.log('features', features)
 
         let test = features.map((d) => {
-          console.log(d)
+          console.log(d.features)
         })
 
 
