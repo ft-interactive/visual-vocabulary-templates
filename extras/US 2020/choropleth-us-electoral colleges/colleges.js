@@ -26,9 +26,10 @@ export function drawColleges() {
             .append('text')
             .attr('x', d => d.x)
             .attr('y', d => d.y)
-            .text(d => d.postal)
+            .text((d) => {
+                return d.postal
+            })
             .attr('text-anchor', 'middle')
-            .attr('fill', 'black');
 
         function sim(dots) {
             const data = dots.data()

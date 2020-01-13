@@ -115,6 +115,7 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             return {
                 id: el.id,
                 name: el.name,
+                postal: el.postal,
                 value: el.value,
                 votes: getVotes(el.id, el.name, el.value, el.party),
                 party: el.party,
