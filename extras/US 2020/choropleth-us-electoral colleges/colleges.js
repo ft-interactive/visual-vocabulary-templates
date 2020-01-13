@@ -10,20 +10,6 @@ export function drawColleges() {
 
     function chart(parent) {
 
-
-        parent.append('g')
-            .attr('class', 'annotations-holder')
-            .selectAll('text')
-            .data(d => d)
-            .enter()
-            .append('text')
-            //.attr('class', 'annotation')
-            .attr('x', d => d.x)
-            .attr('y', d => d.y)
-            .text(d => d.name)
-            .attr('text-anchor', 'middle')
-            .attr('fill', 'black');
-
         parent.selectAll('circle')
         .data(d => d.votes)
         .enter()
@@ -34,6 +20,15 @@ export function drawColleges() {
         .attr('cy', d => d.y)
         .attr('r', circleSize)
         .attr('fill', d => colourScale(d.party))
+
+        parent.append('g')
+            .attr('class', 'annotations-holder')
+            .append('text')
+            .attr('x', d => d.x)
+            .attr('y', d => d.y)
+            .text(d => d.postal)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'black');
 
         function sim(dots) {
             const data = dots.data()

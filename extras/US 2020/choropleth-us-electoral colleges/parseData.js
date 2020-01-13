@@ -40,6 +40,7 @@ export function load(urls, options) { // eslint-disable-line
                     return {
                         id: d.fips,
                         name: d.stateNameShort,
+                        postal: d.postalAbbreviation,
                         value: d.electoralColleage,
                         party: d.winningParty2016
                     }
