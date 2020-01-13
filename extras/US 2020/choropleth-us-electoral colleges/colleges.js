@@ -10,16 +10,19 @@ export function drawColleges() {
 
     function chart(parent) {
 
-        parent.selectAll('text')
-        .data((d) => {
-            //console.log(d)
-            return d})
-        .enter()
-        .append('text')
-        //.attr('class', 'annotation')
-        .attr('x', d => d.x)
-        .attr('y', d => d.y)
-        .text(d => d.name)
+
+        parent.append('g')
+            .attr('class', 'annotations-holder')
+            .selectAll('text')
+            .data(d => d)
+            .enter()
+            .append('text')
+            //.attr('class', 'annotation')
+            .attr('x', d => d.x)
+            .attr('y', d => d.y)
+            .text(d => d.name)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'black');
 
         parent.selectAll('circle')
         .data(d => d.votes)
@@ -37,7 +40,7 @@ export function drawColleges() {
             const simulation = d3.forceSimulation(data)
                 .force("x", d3.forceX(function (d) {
                     let state = parent.select('#states')
-                    console.log(state)
+                    //console.log(state)
                     return d.x
                 }))
                 .force("y", d3.forceY(function (d) { return d.y }))
