@@ -120,14 +120,13 @@ parseData.load([dataFile, shapefile,], {columnNames})
           .valueExtent(valueExtent)
           .colourPalette(colorScale);
         
-        let features = shapeData.objects.states
+        let features = [shapeData.objects.states]
 
-        //console.log(features)
+        console.log('features', features)
 
-        
-        // let test = features.map((d) => {
-        //   console.log(d)
-        // })
+        let test = features.map((d) => {
+          console.log(d)
+        })
 
 
         const map = currentFrame.plot()
