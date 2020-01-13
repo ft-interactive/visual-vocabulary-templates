@@ -57,7 +57,6 @@ export function draw() {
                 .attr('d', path)  
 
             function lookup(row, idName) {
-                console.log(row, idName)
                 const uniqueCell = row.find((d) => { return d.cellId === idName});
                 if(!uniqueCell || uniqueCell.value === '') {
                     return 'none'

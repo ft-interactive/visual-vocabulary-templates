@@ -122,7 +122,7 @@ parseData.load([dataFile, shapefile,], {columnNames})
         
         let features = shapeData.objects.states
 
-        console.log(features)
+        //console.log(features)
 
         
         // let test = features.map((d) => {
