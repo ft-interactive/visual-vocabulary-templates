@@ -41,6 +41,7 @@ export function drawColleges() {
                 }))
                 .force("y", d3.forceY(function (d) { return d.y }))
                 .force("collide", d3.forceCollide(d => (circleSize * 1.3)))
+                .force("charge", d3.forceManyBody().strength(.1));
             for (var i = 0; i < 200; ++i) simulation.tick()
         }
 
