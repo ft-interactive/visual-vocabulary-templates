@@ -89,7 +89,7 @@ const frame = {
         .height(500),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 35 })
+ .margin({ top: 40, left: 7, bottom: 35, right: 55 })
   // .title("Put headline here")
   //.width(53.71)// 1 col
   .width(112.25)// 2 col
@@ -215,8 +215,6 @@ parseData.load(dataFile, { dateFormat, maxAverage, decayDays })
           }
         })
 
-        console.log('labels', labels)
-
         polls
           .yScale(yAxis.scale())
           .xScale(xAxis.scale())
@@ -246,8 +244,6 @@ parseData.load(dataFile, { dateFormat, maxAverage, decayDays })
           .append('g')
           .attr('id', d => d.party)
           .call(polls)
-
-        console.log(plotData)
 
         currentFrame.plot()
           .selectAll('dots')
