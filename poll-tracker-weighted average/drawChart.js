@@ -124,6 +124,7 @@ export function drawLines() {
         parent.append('path')
             .attr('stroke', (d) => {return colourScale(d.party);
             })
+            .attr('id', d => d.party)
             .attr('opacity', 1)
             .attr('d', d => lineData(d.lines)); 
     }
@@ -191,13 +192,14 @@ export function drawLabels() {
     let rem = 10;
 
     function label(parent) {
+        let format = d3.format(",.1f")	
 
         parent.append('text')
             .attr('class','annotations')
             .attr('x', d => d.x)
             .attr('y', d => yScale(d.y))
             .style('fill', d =>  colourScale(d.name))
-            .text(d => d.name)
+            .text(d => format(d.y) + '% ' + d.name)
             
     }
 

@@ -61,21 +61,21 @@ const partyColours = d3.scaleOrdinal()
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 65 })
+ .margin({ top: 100, left: 15, bottom: 82, right: 95 })
  // .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 85,
+            top: 100, left: 20, bottom: 86, right: 105,
         })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 90,
+            top: 100, left: 20, bottom: 104, right: 120,
         })
     // .title("Put headline here")
         .height(700)
@@ -83,13 +83,13 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 100,
+            top: 100, left: 20, bottom: 86, right: 130,
         })
     // .title("Put headline here")
         .height(500),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 55 })
+ .margin({ top: 40, left: 7, bottom: 35, right: 65 })
   // .title("Put headline here")
   //.width(53.71)// 1 col
   .width(112.25)// 2 col
