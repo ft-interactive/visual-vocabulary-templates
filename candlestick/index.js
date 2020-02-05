@@ -148,7 +148,6 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
         const axisHighlight = currentFrame.plot().append('g');
 
         // create a 'g' element behind the chart and in front of the highlights
-        console.log(valueExtent)
         myYAxis
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
             .range([currentFrame.dimension().height, 0])
