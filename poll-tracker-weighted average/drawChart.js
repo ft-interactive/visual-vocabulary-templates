@@ -124,8 +124,9 @@ export function drawLines() {
         parent.append('path')
             .attr('stroke', (d) => {return colourScale(d.party);
             })
+            .attr('id', d => d.party)
             .attr('opacity', 1)
-            .attr('d', d => lineData(d.lines));
+            .attr('d', d => lineData(d.lines)); 
     }
 
     lines.yScale = (d) => {
@@ -179,6 +180,76 @@ export function drawLines() {
     };
 
     return lines;
+}
+
+export function drawLabels() {
+    let yScale = d3.scaleLinear();
+    let xScale = d3.scaleTime();
+    let yAxisAlign = 'right';
+    let interpolation = d3.curveLinear;
+    let colourScale = d3.scaleOrdinal()
+    // .range(gChartcolour.lineWeb)
+    let rem = 10;
+
+    function label(parent) {
+        let format = d3.format(",.1f")	
+
+        parent.append('text')
+            .attr('class','annotations')
+            .attr('x', d => d.x)
+            .attr('y', d => yScale(d.y))
+            .style('fill', d =>  colourScale(d.name))
+            .text(d => format(d.y) + '% ' + d.name)
+            
+    }
+
+    label.yScale = (d) => {
+        if (!d) return yScale;
+        yScale = d;
+        return label;
+    };
+
+    label.yAxisAlign = (d) => {
+        if (!d) return yAxisAlign;
+        yAxisAlign = d;
+        return label;
+    };
+
+    label.xScale = (d) => {
+        if (!d) return xScale;
+        xScale = d;
+        return label;
+    };
+
+    label.plotDim = (d) => {
+        if (!d) return window.plotDim;
+        window.plotDim = d;
+        return label;
+    };
+
+    label.rem = (d) => {
+        if (!d) return rem;
+        rem = d;
+        return label;
+    };
+
+
+
+    label.colourPalette = (d) => {
+        if (!d) return colourScale;
+        if (d === 'social' || d === 'video') {
+            colourScale.range(gChartcolour.lineSocial);
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+            colourScale.range(gChartcolour.categorical_bar);
+        } else if (d === 'print') {
+            colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
+        }
+        return label;
+    };
+
+    return label;
 }
 
 export function drawHighlights() {

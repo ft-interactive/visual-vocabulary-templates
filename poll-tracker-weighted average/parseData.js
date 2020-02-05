@@ -37,7 +37,7 @@ export function load(url, options) { // eslint-disable-line
             return {
                 party: d,
                 dots: getDots(data, d),
-                lines: getLines(dateExtent, maxAverage, getDots(data, d), decayDays),
+                lines: getLines(dateExtent, maxAverage, getDots(data, d), decayDays, d),
             };
         });
 
@@ -118,11 +118,12 @@ function extentMulti(data, columns) {
 }
 
 
-export function getLines(dateExtent, maxAverage, allData, decayDays) {
+export function getLines(dateExtent, maxAverage, allData, decayDays, party) {
     // const lineData = d3.timeDays(Math.max(dateExtent[0], allData[0].date), dateExtent[1])
     const lineData = allData.map(d => d.date)
         .map((d) => {
             return {
+                party: party,
                 date: d,
                 average: getAverage(d, maxAverage, decayDays),
             };

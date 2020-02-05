@@ -37,7 +37,7 @@ const yMax = 50;// sets the maximum value on the xAxis
 const divisor = 1
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
-const yAxisAlign = 'right';// alignment of the axis
+const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
 const annotate = true; // show annotations, defined in the 'annotate' column
@@ -58,24 +58,25 @@ const partyColours = d3.scaleOrdinal()
   .domain(Object.keys(gChartcolour.germanPoliticalParties_bar))
   .range(Object.values(gChartcolour.germanPoliticalParties_bar));
 
+  
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
- .margin({ top: 100, left: 15, bottom: 82, right: 5 })
+ .margin({ top: 100, left: 15, bottom: 82, right: 100 })
  // .title('Put headline here') // use this if you need to override the defaults
  // .subtitle("Put headline |here") //use this if you need to override the defaults
  .height(400),
 
     webM: gChartframe.webFrameM(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 10,
+            top: 100, left: 20, bottom: 86, right: 120,
         })
     // .title("Put headline here")
         .height(500),
 
     webL: gChartframe.webFrameL(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 104, right: 10,
+            top: 100, left: 20, bottom: 104, right: 120,
         })
     // .title("Put headline here")
         .height(700)
@@ -83,13 +84,13 @@ const frame = {
 
     webMDefault: gChartframe.webFrameMDefault(sharedConfig)
         .margin({
-            top: 100, left: 20, bottom: 86, right: 10,
+            top: 100, left: 20, bottom: 86, right: 130,
         })
     // .title("Put headline here")
         .height(500),
 
     print: gChartframe.printFrame(sharedConfig)
- .margin({ top: 40, left: 7, bottom: 35, right: 7 })
+ .margin({ top: 40, left: 7, bottom: 35, right: 75 })
   // .title("Put headline here")
   //.width(53.71)// 1 col
   .width(112.25)// 2 col
@@ -102,7 +103,7 @@ const frame = {
 
     social: gChartframe.socialFrame(sharedConfig)
         .margin({
-            top: 140, left: 50, bottom: 138, right: 40,
+            top: 140, left: 50, bottom: 138, right: 120,
         })
     // .title("Put headline here")
         .width(612)
@@ -110,7 +111,7 @@ const frame = {
 
     video: gChartframe.videoFrame(sharedConfig)
         .margin({
-            left: 207, right: 207, bottom: 210, top: 233,
+            left: 207, right: 215, bottom: 210, top: 233,
         }),
     // .title("Put headline here")
 };
@@ -134,6 +135,7 @@ parseData.load(dataFile, { dateFormat, maxAverage, decayDays })
         const xAxis = gAxis.xDate();// sets up xAxis
         const polls = drawchart.drawDots(); // eslint-disable-line
         const trends = drawchart.drawLines(); // eslint-disable-line
+        const lineLabels = drawchart.drawLabels(); // eslint-disable-line
         const annotations = drawchart.drawAnnotations();// sets up annotations
 
 
@@ -204,6 +206,15 @@ parseData.load(dataFile, { dateFormat, maxAverage, decayDays })
         }
 
         const plotAnnotation = currentFrame.plot().append('g').attr('class', 'annotations-holder');
+        var labels = plotData.map((d) => {
+          const lookup = d.lines.length - 1
+          const average = d.lines[lookup].average
+          return {
+            name: d.party,
+            x: currentFrame.dimension().width,
+            y: average,
+          }
+        })
 
         polls
           .yScale(yAxis.scale())
@@ -214,6 +225,13 @@ parseData.load(dataFile, { dateFormat, maxAverage, decayDays })
           .dotOpacity(dotOpacity);
         
         trends
+          .yScale(yAxis.scale())
+          .xScale(xAxis.scale())
+          .plotDim(currentFrame.dimension())
+          .rem(currentFrame.rem())
+          .colourPalette(partyColours)
+        
+        lineLabels
           .yScale(yAxis.scale())
           .xScale(xAxis.scale())
           .plotDim(currentFrame.dimension())
@@ -235,6 +253,14 @@ parseData.load(dataFile, { dateFormat, maxAverage, decayDays })
           .append('g')
           .attr('class', 'lines')
           .call(trends)
+        
+          currentFrame.plot()
+          .selectAll('.annotation')
+          .data(labels)
+          .enter()
+          .append('g')
+          .attr('class', 'annotations-holder')
+          .call(lineLabels)
 
         myHighlights
           .yScale(yAxis.scale())
