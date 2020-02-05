@@ -34,7 +34,7 @@ const sharedConfig = {
 };
 
 const yMin = 560;// sets the minimum value on the yAxis
-const yMax = 680;// sets the maximum value on the xAxis
+const yMax = 700;// sets the maximum value on the xAxis
 const divisor = 1// formatting for '000 and millions
 const yAxisHighlight = 560; // sets which tick to highlight on the yAxis
 const numTicksy = 5;// Number of tick on the uAxis
@@ -148,7 +148,7 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
         const axisHighlight = currentFrame.plot().append('g');
 
         // create a 'g' element behind the chart and in front of the highlights
-
+        console.log(valueExtent)
         myYAxis
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
             .range([currentFrame.dimension().height, 0])

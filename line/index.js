@@ -128,6 +128,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
             valueExtent,
             highlights,
             annotations,
+            lineLabels,
         }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -136,6 +137,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
+      const labels = lineChart.drawLabels(); // eslint-disable-line
         const myAnnotations = annotation.annotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
@@ -258,6 +260,13 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
+        
+      labels
+        .yScale(myYAxis.scale())
+        .xScale(myXAxis.scale())
+        .plotDim(currentFrame.dimension())
+        .rem(currentFrame.rem())
+        .colourPalette((frameName))
 
         myHighLines
           .yScale(myYAxis.scale())
@@ -315,6 +324,14 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
             .enter()
             .append('g')
             .call(myAnnotations)
+        
+      currentFrame.plot()
+        .selectAll('.annotations')
+        .data(lineLabels)
+        .enter()
+        .append('g')
+        .attr('class', 'annotations-holder')
+        .call(labels)
 
 
         // Set up legend for this frame

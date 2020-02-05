@@ -69,6 +69,16 @@ export function load(url, options) { // eslint-disable-line
             }
         });
 
+        const lineLabels = plotData.map((d) => {
+            console.group(d.name)
+            return {
+                name: d.name,
+                x: d.lineData[d.lineData.length - 1].date,
+                y: d.lineData[d.lineData.length - 1].value,
+            }
+        })
+        console.log('labels', lineLabels)
+
         return {
             seriesNames,
             data,
@@ -77,6 +87,7 @@ export function load(url, options) { // eslint-disable-line
             valueExtent,
             highlights,
             annotations,
+            lineLabels,
         };
     });
 }

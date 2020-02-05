@@ -61,6 +61,7 @@ export function draw() {
         }
     }
 
+
     chart.yScale = (d) => {
         if (!d) return yScale;
         yScale = d;
@@ -270,4 +271,69 @@ export function drawAnnotations() {
     };
 
     return annotations;
+}
+
+export function drawLabels() {
+    let yScale = d3.scaleLinear();
+    let xScale = d3.scaleTime();
+    let yAxisAlign = 'right';
+    let interpolation = d3.curveLinear;
+    let colourScale = d3.scaleOrdinal()
+    // .range(gChartcolour.lineWeb)
+    let rem = 10;
+
+    function label(parent) {
+
+        parent.append('text')
+            .attr('class', 'annotations')
+            .attr('x', d => xScale(d.x))
+            .attr('y', d => yScale(d.y))
+            .attr('text-anchor', 'end')
+            .style('fill', d => colourScale(d.name))
+            .text(d => d.name)
+    }
+
+    label.yScale = (d) => {
+        if (!d) return yScale;
+        yScale = d;
+        return label;
+    };
+
+    label.yAxisAlign = (d) => {
+        if (!d) return yAxisAlign;
+        yAxisAlign = d;
+        return label;
+    };
+
+    label.xScale = (d) => {
+        if (!d) return xScale;
+        xScale = d;
+        return label;
+    };
+
+    label.plotDim = (d) => {
+        if (!d) return window.plotDim;
+        window.plotDim = d;
+        return label;
+    };
+
+    label.rem = (d) => {
+        if (!d) return rem;
+        rem = d;
+        return label;
+    };
+
+    label.colourPalette = (d) => {
+        if (!d) return colourScale;
+        if (d === 'social' || d === 'video') {
+            colourScale.range(gChartcolour.lineSocial);
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+            colourScale.range(gChartcolour.lineWeb);
+        } else if (d === 'print') {
+            colourScale.range(gChartcolour.linePrint);
+        }
+        return label;
+    };
+
+    return label;
 }
