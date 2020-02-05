@@ -1,0 +1,26 @@
+
+.ft-webgraphic-s .whisker,
+.ft-webgraphic-m .whisker,
+.ft-webgraphic-m-default .whisker,
+.ft-webgraphic-l .whisker {
+	stroke-width: 1;
+	stroke: #000000;
+}
+
+.ft-printgraphic .whisker {
+ 	stroke-width: 0.6;
+	stroke: #000000;
+}
+
+.ft-socialgraphic .whisker{
+ 	stroke-width: 2;
+	stroke: #FFFFFF;
+	stroke-opacity: 0.5;
+}
+
+.ft-videographic .whisker {
+ 	stroke-width: 4;
+	stroke: #FFFFFF;
+	stroke-opacity: 0.5
+}
+
