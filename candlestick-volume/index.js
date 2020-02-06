@@ -33,11 +33,14 @@ const sharedConfig = {
     source: 'Source not yet added',
 };
 
-const yMin = 560;// sets the minimum value on the yAxis
+const yMin = 550;// sets the minimum value on the yAxis
 const yMax = 700;// sets the maximum value on the xAxis
+const volumeMax = 300000
 const divisor = 1// formatting for '000 and millions
-const yAxisHighlight = 560; // sets which tick to highlight on the yAxis
-const numTicksy = 5;// Number of tick on the uAxis
+const volumeDivisor = 1
+const yAxisHighlight = 500; // sets which tick to highlight on the yAxis
+const numTicksy = 4;// Number of tick on the uAxis
+const numVolumeTicks = 4
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'days';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years","months","days"
@@ -126,18 +129,20 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
-    plotData, valueExtent, highlights, annos,
+    plotData, valueExtent, highlights, annos, volumeExtent, 
 }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
 
         // define other functions to be called
         const myYAxis = gAxis.yLinear();// sets up yAxis
+        const myYAxis2 = gAxis.yLinear()
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myAnnotations = annotation.annotations();// sets up annotations
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
         const tickSize = currentFrame.dimension().width;// Used when drawing the yAxis ticks
         const myChart = candlestick.draw();
+        const myVolumes = candlestick.drawVolumes();
         const myHighlights = candlestick.drawHighlights();// sets up highlight tonal bands
 
         // .seriesNames(seriesNames)
@@ -150,7 +155,7 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
         // create a 'g' element behind the chart and in front of the highlights
         myYAxis
             .domain([Math.min(yMin, valueExtent[0]), Math.max(yMax, valueExtent[1])])
-            .range([currentFrame.dimension().height, 0])
+            .range([(currentFrame.dimension().height * 0.6), 0])
             .numTicks(numTicksy)
             .tickSize(tickSize)
             .yAxisHighlight(yAxisHighlight)
@@ -158,6 +163,17 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             .frameName(frameName)
             .invert(invertScale)
             .divisor(divisor);
+        
+        myYAxis2
+            .domain([Math.min(0), Math.max(volumeMax, volumeExtent[1])])
+            .range([(currentFrame.dimension().height), (currentFrame.dimension().height * 0.7)])
+            .numTicks(numVolumeTicks)
+            .tickSize(tickSize)
+            .yAxisHighlight(yAxisHighlight)
+            .align(yAxisAlign)
+            .frameName(frameName)
+            .invert(invertScale)
+            .divisor(volumeDivisor);
 
         // Draw the yAxis first, this will position the yAxis correctly and
         // measure the width of the label text
@@ -177,6 +193,24 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             currentFrame.margin({ left: newMargin });
             myYAxis.yLabel().attr('transform', `translate(${(myYAxis.tickSize() - myYAxis.labelWidth())},0)`);
         }
+
+        currentFrame.plot()
+            .call(myYAxis2);
+        
+        // return the value in the variable newMargin
+        if (yAxisAlign === 'right') {
+            const newMargin = myYAxis2.labelWidth() + currentFrame.margin().right;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ right: newMargin });
+            // yAxis.yLabel().attr('transform', `translate(${currentFrame.dimension().width},0)`);
+        }
+        if (yAxisAlign === 'left') {
+            const newMargin = myYAxis2.labelWidth() + currentFrame.margin().left;
+            // Use newMargin redefine the new margin and range of xAxis
+            currentFrame.margin({ left: newMargin });
+            myYAxis.yLabel().attr('transform', `translate(${(myYAxis2.tickSize() - myYAxis.labelWidth())},0)`);
+        }
+
         d3.select(currentFrame.plot().node().parentNode)
             .call(currentFrame);
 
@@ -227,6 +261,15 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             .colourPalette(chartColour)
             .intraday(intraday)
             .boxWidth(boxWidth);
+        
+        myVolumes
+            .yScale(myYAxis2.scale())
+            .xScale(myXAxis.scale())
+            .plotDim(currentFrame.dimension())
+            .rem(currentFrame.rem())
+            .colourPalette(chartColour)
+            .intraday(intraday)
+            .boxWidth(boxWidth);
 
         currentFrame.plot()
             .selectAll('.candlesticks')
@@ -236,6 +279,14 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             .attr('class', 'candlesticks')
             .attr('id', d => d.name)
             .call(myChart);
+        
+        currentFrame.plot()
+            .selectAll('.columnHolder')
+            .data(plotData)
+            .enter()
+            .append('g')
+            .attr('class', 'columnHolder')
+            .call(myVolumes);
 
         // Set up highlights for this frame
         myHighlights
@@ -258,7 +309,7 @@ parseData.load(dataFile, { dateFormat, yMin, highlightNames }).then(({
             .yScale(myYAxis.scale())
             .frameName(frameName)
             .lineWidth(currentFrame.rem() * turnWidth)
-            .plotDim([currentFrame.dimension().width,currentFrame.dimension().height])
+            .plotDim([currentFrame.dimension().width, currentFrame.dimension().height * 0.6])
 
         // Draw the annotations before the lines
         plotAnnotation

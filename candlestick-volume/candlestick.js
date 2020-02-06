@@ -28,7 +28,11 @@ export function draw() {
                 return +yScale(d.close);
             })
             .attr('x2', d => xScale(d.date))
-            .attr('class', 'whisker');
+            .attr('class', 'whisker')
+            .style('stroke', (d) => {
+                if (d.close > d.open) { return colourScale(3); }
+                return colourScale(7);
+            });
 
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
@@ -37,28 +41,42 @@ export function draw() {
                 if (d.open < d.close) { return +yScale(d.open); } return +yScale(d.close);
             })
             .attr('x2', d => xScale(d.date))
-            .attr('class', 'whisker');
+            .attr('class', 'whisker')
+            .style('stroke', (d) => {
+                if (d.close > d.open) { return colourScale(3); }
+                return colourScale(7);
+            });
 
         parent.append('line')
             .attr('y1', d => yScale(+d.high))
             .attr('x1', d => xScale(d.date) - (boxWidth / 4))
             .attr('y2', d => yScale(+d.high))
             .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('class', 'whisker');
+            .attr('class', 'whisker')
+            .style('stroke', (d) => {
+                if (d.close > d.open) { return colourScale(3); }
+                return colourScale(7);
+            });
 
         parent.append('line')
             .attr('y1', d => yScale(+d.low))
             .attr('x1', d => xScale(d.date) - (boxWidth / 4))
             .attr('y2', d => yScale(+d.low))
             .attr('x2', d => xScale(d.date) + (boxWidth / 4))
-            .attr('class', 'whisker');
+            .attr('class', 'whisker')
+            .style('stroke', (d) => {
+                if (d.close > d.open) { return colourScale(3); }
+                return colourScale(7);
+            });
 
         parent.append('rect')
             .attr('x', d => xScale(d.date) - (boxWidth / 2))
             .attr('width', boxWidth)
             .attr('y', d => yScale(d.y))
+            .attr('fill','none')
             .attr('height', d => Math.abs(yScale(d.height) - yScale(0)))
-            .attr('fill', (d) => {
+            .attr('class', 'whisker')
+            .style('stroke', (d) => {
                 if (d.close > d.open) { return colourScale(3); }
                 return colourScale(7);
             });
@@ -131,6 +149,101 @@ export function draw() {
     };
 
     return chart;
+}
+
+export function drawVolumes() {
+    let rem = 10;
+    let yScale = d3.scaleLinear();
+    let xScale = d3.scaleTime();
+    let seriesNames = []; // eslint-disable-line no-unused-vars
+    let highlightNames = []; // eslint-disable-line no-unused-vars
+    let intraday;
+    let yAxisAlign = 'right';
+    let markers = false; // eslint-disable-line no-unused-vars
+    const includeAnnotations = d => (d.annotate !== '' && d.annotate !== undefined); // eslint-disable-line
+    let annotate = false; // eslint-disable-line
+    const interpolation = d3.curveLinear; // eslint-disable-line no-unused-vars
+    let colourScale = d3.scaleOrdinal();
+    let boxWidth = 7;
+
+    function volumes(parent) {
+        boxWidth *= 0.5;
+
+        parent.append('rect')
+            .attr('x', d => xScale(d.date) - (boxWidth / 2))
+            .attr('width', boxWidth)
+            .attr('y', d => yScale(d.volume))
+            .attr('height', d => Math.abs(yScale(d.volume) - yScale(0)))
+            .attr('fill', colourScale(4));
+    }
+    volumes.boxWidth = (d) => {
+        if (!d) return boxWidth;
+        boxWidth = d;
+        return volumes;
+    };
+    volumes.yScale = (d) => {
+        if (!d) return yScale;
+        yScale = d;
+        return volumes;
+    };
+    volumes.yAxisAlign = (d) => {
+        if (!d) return yAxisAlign;
+        yAxisAlign = d;
+        return volumes;
+    };
+    volumes.highlightNames = (d) => {
+        highlightNames = d;
+        return volumes;
+    };
+    volumes.intraday = (d) => {
+        if (d === undefined) return intraday;
+        intraday = d;
+        return volumes;
+    };
+    volumes.seriesNames = (d) => {
+        if (typeof d === 'undefined') return seriesNames;
+        seriesNames = d;
+        return volumes;
+    };
+    volumes.xScale = (d) => {
+        if (!d) return xScale;
+        xScale = d;
+        return volumes;
+    };
+    volumes.plotDim = (d) => {
+        if (!d) return window.plotDim;
+        window.plotDim = d;
+        return volumes;
+    };
+    volumes.rem = (d) => {
+        if (!d) return rem;
+        rem = d;
+        return volumes;
+    };
+    volumes.annotate = (d) => {
+        annotate = d;
+        return volumes;
+    };
+    volumes.markers = (d) => {
+        if (typeof d === 'undefined') return markers;
+        markers = d;
+        return volumes;
+    };
+    volumes.colourPalette = (d) => {
+        if (!d) return colourScale;
+        if (d === 'social' || d === 'video') {
+            colourScale.range(gChartcolour.lineSocial);
+        } else if (d === 'webS' || d === 'webM' || d === 'webMDefault' || d === 'webL') {
+            colourScale.range(gChartcolour.categorical_line);
+        } else if (d === 'print') {
+            colourScale.range(gChartcolour.linePrint);
+        } else if (d && d.name && d.name === 'scale') {
+            colourScale = d;
+        }
+        return volumes;
+    };
+
+    return volumes ;
 }
 
 export function drawHighlights() {
