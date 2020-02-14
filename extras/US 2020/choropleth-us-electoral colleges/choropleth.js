@@ -23,7 +23,7 @@ export function draw() {
             .enter()
             .append('path')
             .attr('fill', 'none')
-            .attr('id', d => d.id)
+            .attr('id', d => `state_${d.id}`)
             .attr('stroke', '#777')
             .attr('stroke-width', 0.77)
             .attr('d', path)

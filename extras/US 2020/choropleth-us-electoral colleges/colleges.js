@@ -19,7 +19,11 @@ export function drawColleges() {
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
         .attr('r', circleSize)
-        .attr('fill', d => colourScale(d.party))
+        .attr('fill', (d) => {
+            console.log(d.id)
+            const statePath = parent.select('path#state_' + d.id)
+            console.log(statePath)
+            return colourScale(d.party)})
 
         parent.append('g')
             .attr('class', 'annotations-holder')
