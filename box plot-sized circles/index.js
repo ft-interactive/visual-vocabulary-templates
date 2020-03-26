@@ -131,7 +131,7 @@ parseData.load(dataURL)
             xAxis
                 .logScale(logScale)
                 .align(xAxisAlign)
-                .domain([Math.min(xMin, 2), Math.max(xMax, valueExtent[1])])
+                .domain([Math.min(xMin, valueExtent[0]), Math.max(xMax, valueExtent[1])])
                 .numTicks(numTicks)
                 .xAxisHighlight(xAxisHighlight)
                 .frameName(frameName)
