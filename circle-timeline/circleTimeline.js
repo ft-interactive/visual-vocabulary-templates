@@ -3,6 +3,7 @@ import gChartcolour from 'g-chartcolour';
 
 export function draw() {
     let xScale = d3.scaleTime();
+    let geometry = 'circle';
     let maxCircle;
     let rScale = d3.scalePow().exponent(0.5);
     let dateFormat;
@@ -21,16 +22,32 @@ export function draw() {
 
         const timeLine = parent.select('g');
 
-        timeLine.selectAll('circle')
+        if(geometry ==='circle') {
+            timeLine.selectAll('circle')
+                .data(d => d.values)
+                .enter()
+                .append('circle')
+                .attr('id', d => d.name)
+                .attr('id', d => d.date + d.value)
+                .attr('r', d => rScale(d.value))
+                .attr('cx', d => xScale(d.date))
+                .attr('cy', 0)
+                .style('fill-opacity', 0.5)
+                .style('stroke-width', 1);
+        }
+
+        if (geometry === 'rect') {
+            timeLine.selectAll('line')
             .data(d => d.values)
             .enter()
-            .append('circle')
-            .attr('id', d => d.date + d.value)
-            .attr('r', d => rScale(d.value))
-            .attr('cx', d => xScale(d.date))
-            .attr('cy', 0)
-            .style('fill-opacity', 0.5)
-            .style('stroke-width', 1);
+            .append('line')
+            .attr('id', d => d.name)
+            .attr('stroke-width', 3)
+            .attr('x1', d => xScale(d.date))
+            .attr('x2', d => xScale(d.date))
+            .attr('y1', 0 - rem)
+            .attr('y2', rem)
+        }
 
         // add labels to circles that need it
         const parseDate = d3.timeFormat(dateFormat);
@@ -47,10 +64,11 @@ export function draw() {
             .attr('fill', 'black');
 
         // add connecting lines to labels
-        timeLine.selectAll('line')
+        timeLine.selectAll('#highlightline')
             .data(d => d.values.filter(e => e.label === 'yes'))
             .enter()
             .append('line')
+            .attr('class', 'highlightline')
             .style('stroke', '#000')
             .attr('x1', d => xScale(d.date))
             .attr('x2', d => xScale(d.date))
@@ -74,6 +92,12 @@ export function draw() {
     chart.xScale = (d) => {
         if (!d) return xScale;
         xScale = d;
+        return chart;
+    };
+
+    chart.geometry = (d) => {
+        if (!d) return geometry;
+        geometry = d;
         return chart;
     };
 
