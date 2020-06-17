@@ -20,6 +20,8 @@ export function load(url, options) { // eslint-disable-line
         data.forEach((d) => {
             d.date = parseDate(d.date);
         });
+        data.sort((a, b) =>
+            a.date - b.date);
 
         // Automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = getSeriesNames(data.columns);
@@ -90,7 +92,7 @@ export function load(url, options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date','pollster', 'annotate', 'highlight'];
+    const exclude = ['date','pollster', 'annotate', 'highlight', 'sample'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 
