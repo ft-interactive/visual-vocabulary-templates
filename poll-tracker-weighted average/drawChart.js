@@ -15,7 +15,7 @@ export function drawDots() {
 
     function dots(parent) {
         parent.selectAll('circle')
-            .data((d) => {return d.dots.filter(el => el.highlight ==="")})
+            .data((d) => { return d.dots.filter(el => el.highlight === "" || el.highlight === undefined )})
             .enter()
             .append('circle')
             .attr('cx', d => xScale(d.date))

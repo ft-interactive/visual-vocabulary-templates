@@ -92,7 +92,7 @@ export function load(url, options) { // eslint-disable-line
  * @return {[type]}         [description]
  */
 export function getSeriesNames(columns) {
-    const exclude = ['date','pollster', 'annotate', 'highlight', 'sample'];
+    const exclude = ['date', 'pollster', 'annotate', 'highlight', 'sample'];
     return columns.filter(d => (exclude.indexOf(d) === -1));
 }
 

@@ -10,8 +10,12 @@ import * as parseData from './parseData.js';
 import * as drawchart from './drawChart.js';
 import gChartcolour from 'g-chartcolour';
 
-const dataFile = 'data.csv';
+//setup for direct feed from Workbench dataset
+//const dataFile = 'https://ig-staging.ft.com/workbench/362083.csv';
+//const dateFormat = '%Y-%m-%d';
 
+//local setup
+const dataFile = 'data.csv';
 const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
@@ -27,13 +31,13 @@ const dateFormat = '%d/%m/%Y';
 */
 
 const sharedConfig = {
-    title: 'Title not yet added',
+    title: 'German opinion polls',
     subtitle: 'Subtitle not yet added',
     source: 'Source not yet added',
 };
 //Put the user defined variablesin delete where not applicable
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 50;// sets the maximum value on the xAxis
+const yMax = 40;// sets the maximum value on the xAxis
 const divisor = 1
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
 const numTicks = 5;// Number of tick on the uAxis
@@ -51,7 +55,7 @@ const invertScale = false;
 const logScale = false;
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;// Use to manage 'dead space' such as non trading days are not included in the dataset
-const dotOpacity = 0.2;// Opacity of the poll dots
+const dotOpacity = 0.1;// Opacity of the poll dots
 const maxAverage = 3;// Pevious number of surveys used for each point(day) of the line chart to calculate the rolling average
 const decayDays = 30;// Pevious number of surveys used for each point(day) of the line chart to calculate the rolling average
 const partyColours = d3.scaleOrdinal()
