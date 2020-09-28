@@ -8,10 +8,12 @@ import gChartcolour from 'g-chartcolour';
 import * as parseData from './parseData.js';
 import * as cartogram from './drawChart.js';
 
+//THIS TEMPLATE IS A LIVE FEED AND WILL NOT WORK WORK LOCAL CSV DUE TO COLUMNS NAME CHANGES
 const dataFile = 'https://bertha.ig.ft.com/view/publish/dsv/1IDBJ41ukUbMzeKxkeU9Geu2qMhKlqVyG7YwFx98savw/supplementary.csv';
 const shapefile = 'squareColleges.json';
 const mobileSVG = 'US.svg';//name of file used in mobile
 
+//LOWER CASE ALL COLUMN NAMES EG- raceWinnerParty2012 BECOMES racewinnerparty2012.
 const columnNames = ['racewinnerparty2012','racewinnerparty2016']
 
 const sharedConfig = {

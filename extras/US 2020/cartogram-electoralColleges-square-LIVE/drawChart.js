@@ -38,7 +38,6 @@ export function draw() {
 					let mapValues = allCells.filter((d) => d.mapName === mapName);
 
 					mapValues[0].mapData.forEach((d) => {
-                        console.log(d.value)
 						electoralColleges
 							.select(`#${d.cellId}`)
 							.attr("fill", colourScale(d.value));
