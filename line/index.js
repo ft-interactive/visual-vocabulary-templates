@@ -34,10 +34,10 @@ const sharedConfig = {
 };
 
 const yMin = 0;// sets the minimum value on the yAxis
-const yMax = 1400;// sets the maximum value on the xAxis
+const yMax = 0;// sets the maximum value on the xAxis
 const divisor = 1;// sets the formatting on linear axis for ’000s and millions
 const yAxisHighlight = 0; // sets which tick to highlight on the yAxis
-const numTicksy = 7;// Number of tick on the uAxis
+const numTicksy = 5;// Number of tick on the uAxis
 const yAxisAlign = 'right';// alignment of the axis
 const xAxisAlign = 'bottom';// alignment of the axis
 const interval = 'years';// date interval on xAxis "century", "jubilee", "decade", "lustrum", "years", "months", "days", "hours"
@@ -128,6 +128,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
             valueExtent,
             highlights,
             annotations,
+            lineLabels,
         }) => {
     Object.keys(frame).forEach((frameName) => {
         const currentFrame = frame[frameName];
@@ -136,6 +137,7 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
         const myYAxis = gAxis.yLinear();// sets up yAxis
         const myXAxis = gAxis.xDate();// sets up xAxis
         const myHighlights = lineChart.drawHighlights();// sets up highlight tonal bands
+      const labels = lineChart.drawLabels(); // eslint-disable-line
         const myAnnotations = annotation.annotations();// sets up annotations
         const myLegend = gLegend.legend();// sets up the legend
         // const plotDim=currentFrame.dimension()//useful variable to carry the current frame dimensions
@@ -258,6 +260,13 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
+        
+      labels
+        .yScale(myYAxis.scale())
+        .xScale(myXAxis.scale())
+        .plotDim(currentFrame.dimension())
+        .rem(currentFrame.rem())
+        .colourPalette((frameName))
 
         myHighLines
           .yScale(myYAxis.scale())
@@ -315,6 +324,14 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
             .enter()
             .append('g')
             .call(myAnnotations)
+        
+      currentFrame.plot()
+        .selectAll('.annotations')
+        .data(lineLabels)
+        .enter()
+        .append('g')
+        .attr('class', 'annotations-holder')
+        .call(labels)
 
 
         // Set up legend for this frame

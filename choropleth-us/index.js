@@ -259,7 +259,9 @@ parseData.load([dataFile, geometryFile], {level}).then(([data, geoData, valueExt
             .append('g')
             .attr('class', 'choropleth')
             .call(myChart);
-
+        
+        console.log(colorScale.domain())
+        console.log(colorScale.range())
         myLegend
             .colourScale(colorScale)
             .valueExtent(valueExtent)

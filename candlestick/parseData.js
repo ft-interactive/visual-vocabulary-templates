@@ -128,7 +128,7 @@ export function getSeriesNames(columns) {
  */
 export function extentMulti(d, columns, yMin) {
     const ext = d.reduce((acc, row) => {
-        const values = columns.map(key => +row[key])
+        const values = columns.map(key => row[key])
             .map((item) => {
                 if (item !== 0 && (!item || item === '*')) {
                     return yMin;
