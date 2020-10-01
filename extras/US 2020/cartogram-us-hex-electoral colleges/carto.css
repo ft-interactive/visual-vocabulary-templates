@@ -1,0 +1,74 @@
+.ft-webgraphic-s .chart-label,
+.ft-webgraphic-m .chart-label,
+.ft-webgraphic-m-default .chart-label,
+.ft-webgraphic-l .chart-label {
+  fill: #66605c;
+}
+
+.ft-socialgraphic .chart-label,
+.ft-videographic .chart-label {
+    fill: #ffffff;
+    opacity: 0.7
+}
+
+.ft-webgraphic-s .chart-label {
+    font-size: 12px;
+}
+
+.ft-webgraphic-m .chart-label {
+    font-size: 14px;
+}
+
+
+.ft-webgraphic-m-default .chart-label {
+    font-size: 18px;
+}
+
+.ft-webgraphic-l .chart-label {
+    font-size: 16px;
+}
+
+.ft-printgraphic .chart-label {
+    font-size: 8px;
+    fill: #000000;
+}
+
+.ft-socialgraphic .chart-label {
+    font-size: 18px;
+}
+
+.ft-videographic .chart-label {
+    font-size: 36px;
+}
+
+.ft-webgraphic-s .colleges,
+.ft-webgraphic-m .colleges,
+.ft-webgraphic-m-default .colleges,
+.ft-webgraphic-l .colleges {
+  stroke: #CCC1B7;
+  stroke-width: .4;
+}
+
+.ft-socialgraphic .colleges,
+.ft-videographic .colleges {
+    stroke: #ffffff;
+    stroke-width: .4; 
+}
+
+.ft-webgraphic-s .states,
+.ft-webgraphic-m .states,
+.ft-webgraphic-m-default .states,
+.ft-webgraphic-l .states {
+  stroke: #CCC1B7;
+  stroke-width: 2;
+}
+
+.ft-socialgraphic .states{
+    stroke: #ffffff;
+    stroke-width: 0.8;
+}
+
+.ft-videographic .states {
+    stroke: #ffffff;
+    stroke-width: 1.5;
+}

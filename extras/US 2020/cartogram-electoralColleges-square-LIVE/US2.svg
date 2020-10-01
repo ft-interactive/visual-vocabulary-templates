@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" >
+  <title>US2</title>
+  <g id="abbreviation">
+    <text transform="translate(135.4 108.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">IA</text>
+    <text transform="translate(12.8 83.6)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">OR</text>
+    <text transform="translate(37.3 108.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">NV</text>
+    <text transform="translate(61.6 126.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">UT</text>
+    <text transform="translate(55.7 83.6)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">ID</text>
+    <text transform="translate(80.2 95.9)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">WY</text>
+    <text transform="translate(74.1 65.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">MT</text>
+    <text transform="translate(49.5 230)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">HI</text>
+    <text transform="translate(18.9 58.6)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">WA</text>
+    <text transform="translate(110.9 132.7)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">KS</text>
+    <text transform="translate(86.1 126.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">CO</text>
+    <text transform="translate(110.9 108.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">NE</text>
+    <text transform="translate(73.5 175.4)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">NM</text>
+    <text transform="translate(110.9 83.6)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">SD</text>
+    <text transform="translate(110.9 65.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">ND</text>
+    <text transform="translate(6.6 174.1)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">CA</text>
+    <text transform="translate(110.9 241.6)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">TX</text>
+    <text transform="translate(159.9 108.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">IL</text>
+    <text transform="translate(172.3 223.1)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">MS</text>
+    <text transform="translate(272.1 208)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">SC</text>
+    <text transform="translate(190.6 194.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">AL</text>
+    <text transform="translate(170.9 167.9)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">KT</text>
+    <text transform="translate(166.1 191.8)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">TN</text>
+    <text transform="translate(190.6 108.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">IN</text>
+    <text transform="translate(212.9 103.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">OH</text>
+    <text transform="translate(254.9 263.1)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">FL</text>
+    <text transform="translate(215.2 187.9)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">GA</text>
+    <text transform="translate(270.6 16.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">VT</text>
+    <text transform="translate(320.6 54.7)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">MA</text>
+    <text transform="translate(239.8 89.5)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">PA</text>
+    <text transform="translate(296.1 177.9)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">NC</text>
+    <text transform="translate(227.5 173.7)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">VA</text>
+    <text transform="translate(221 155.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">WV</text>
+    <text transform="translate(246.1 120.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">MD</text>
+    <text transform="translate(308.6 98.5)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">NJ</text>
+    <text transform="translate(289.8 140.4)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">DE</text>
+    <text transform="translate(275.5 161.4)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">DC</text>
+    <text transform="translate(302.3 36.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">NH</text>
+    <text transform="translate(300.9 9.7)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">ME</text>
+    <text transform="translate(306.1 82.1)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">RI</text>
+    <text transform="translate(276.5 59.2)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">CT</text>
+    <text transform="translate(239.7 48.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">NY</text>
+    <text transform="translate(135.4 132.6)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">MO</text>
+    <text transform="translate(49.6 163.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">AZ</text>
+    <text transform="translate(12.7 212.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">AK</text>
+    <text transform="translate(104.7 157.1)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">OK</text>
+    <text transform="translate(135.5 163.3)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">AR</text>
+    <text transform="translate(141.5 193.9)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">LA</text>
+    <text transform="translate(135 64.8)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">MN</text>
+    <text transform="translate(159.9 71.4)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">WI</text>
+    <text transform="translate(192.8 64.8)" font-size="12" fill="#231f20" font-family="Metric-Regular, Metric">MI</text>
+  </g>
+  <g id="colleges">
+    <g>
+      <rect id="NE3" data-name="33_3" x="110.9" y="109.6" width="6.1" height="6.13" fill="#fff"/>
+      <rect id="NE2" data-name="33_2" x="117" y="115.8" width="6.1" height="6.13" fill="#fff"/>
+      <rect id="NE1" data-name="33_1" x="117" y="109.6" width="6.1" height="6.13" fill="#fff"/>
+      <rect id="ME2" data-name="23_2" x="307.2" y="17.7" width="6.1" height="6.13" fill="#fff"/>
+      <rect id="ME1" data-name="23_1" x="307.2" y="11.5" width="6.1" height="6.13" fill="#fff"/>
+      <path id="WY" data-name="56" d="M86.8,108.1H80.7V102h6.1ZM99.1,102H93v6.1h6.1ZM93,102H86.8v6.1H93Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="WI" data-name="55" d="M178.8,89.7h-6.2V83.5h6.2Zm-6.2-6.2h-6.1v6.2h6.1Zm0-6.1h-6.1v6.1h6.1Zm-6.1,6.1h-6.1v6.2h6.1Zm12.3,6.2h-6.2v6.1h6.2Zm0,6.1h-6.2V102h6.2Zm-6.2-6.1h-6.1v6.1h6.1Zm-6.1,0h-6.1v6.1h6.1Zm0-12.3h-6.1v6.1h6.1Zm12.3,0h-6.2v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="WV" data-name="54" d="M234,151h-6.1v-6.2H234Zm-6.2-6h-6.1v6.1h6.1Zm12.3-6.3H234v6.1h6.1Zm0,6.1H234V151h6.1Zm6.1.1h-6.1V151h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="WA" data-name="53" d="M25.5,77.4H19.3V71.3h6.2Zm6.1-6.1H25.5v6.1h6.1Zm0-6.2H25.5v6.2h6.1Zm6.1,0H31.6v6.2h6.1Zm0,6.2H31.6v6.1h6.1Zm6.2,0H37.7v6.1h6.2Zm6.1,0H43.9v6.1H50ZM25.5,65.1H19.3v6.2h6.2Zm18.4,0H37.7v6.2h6.2Zm12.2,0H50v6.2h6.1Zm-6.1,0H43.9v6.2H50Zm6.1,6.2H50v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="VA" data-name="51" d="M258.6,163.2h-6.2v-6.1h6.2Zm6.1-6.1h-6.1v6.1h6.1Zm-18.6,0h-6.2v6.1h6.2Zm.2,6.1h-6.1v6.2h6.1Zm5.9-6.1h-6.1v6.1h6.1Zm.2,6.1h-6.1v6.2h6.1Zm-12.2,0H234v6.2h6.2Zm18.4,0h-6.2v6.2h6.2Zm0-12.2h-6.2v6.1h6.2Zm6.1,12.2h-6.1v6.2h6.1Zm0-12.2h-6.1v6.1h6.1Zm6.1,12.2h-6.1v6.2h6.1Zm-37.1.1h-6.1v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="VT" data-name="50" d="M283.1,34.5H277V28.4h6.1Zm0-12.2H277v6.1h6.1Zm0,12.2H277v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="UT" data-name="49" d="M68.4,138.8H62.3v-6.2h6.1Zm0,6.1H62.3V151h6.1Zm6.1-6.1H68.4v6.1h6.1Zm6.2,6.1H74.5V151h6.2Zm-6.2,0H68.4V151h6.1Zm-6.1-6.1H62.3v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="TX" data-name="48" d="M123.6,194h-6.1v-6.2h6.1Zm-12.2-6.2h-6.2V194h6.2Zm6.1,0h-6.1V194h6.1ZM99.1,194H93v6.1h6.1Zm12.3,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm-18.4-12.3H99.1v6.1h6.1ZM129.8,194h-6.2v6.1h6.2Zm-18.4-12.3h-6.2v6.1h6.2ZM135.9,194h-6.1v6.1h6.1Zm-18.4,24.5h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2ZM99.1,200.1H93v6.1h6.1Zm24.5,24.5h-6.1v6.2h6.1Zm-6.1,0h-6.1v6.2h6.1Zm6.1,6.1h-6.1v6.2h6.1ZM93,200.1H86.8v6.1H93Zm12.2-12.3H99.1V194h6.1Zm6.2,12.3h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-24.5,12.3h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-24.5-6.2h-6.2v6.2h6.2ZM105.2,194H99.1v6.1h6.1Zm0,6.1H99.1v6.1h6.1Zm0,6.1H99.1v6.2h6.1Zm12.3,0h-6.1v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Zm6.2,0h-6.2v6.2h6.2Zm6.1,0h-6.1v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="TN" data-name="47" d="M209.5,181.6h-6.1v-6.1h6.1Zm-12.3-6.1h-6.1v6.1h6.1Zm6,6.2h-6.1v6.1h6.1Zm-30.6,0h-6.1v6.1h6.1Zm43-6.2h-6.1v6.1h6.1Zm-12.2,0h-6.2v6.1h6.2Zm-24.6,6.1h-6.1v6.2h6.1Zm6.2,0h-6.2v6.2H185Zm6.1-6.1H185v6.1h6.1Zm0,6.1H185v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="SD" data-name="46" d="M117.5,95.8h-6.1V89.7h6.1Zm6.1-6.1h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="SC" data-name="45" d="M270.7,206.1h-6.1V200h6.1Zm-18.4-18.3h-6.1v6.1h6.1Zm12.3,18.4h-6.1v6.1h6.1Zm-6.1-12.3h-6.2V200h6.2Zm6.1,0h-6.1V200h6.1Zm-6.1,6.1h-6.1v6.1h6.1Zm-6.2-6.1h-6.1v6.2h6.1Zm12.3,6.1h-6.1v6.2h6.1Zm-6.2,6.2h-6.2v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="RI" data-name="44" d="M313.8,71.4h-6.2V65.3h6.2Zm6.1,0h-6.1v6.2h6.1Zm-6.1,0h-6.2v6.1h6.2Zm6.1-6.1h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="PA" data-name="42" d="M246.3,108.1h-6.2v-6.2h6.2Zm18.4-12.3h-6.1V102h6.1Zm-18.4,12.3h-6.2v6.1h6.2Zm0-12.3h-6.1V102h6.1Zm6.1,6.2h-6.1v6.1h6.1Zm0,6.1h-6.1v6.2h6.1Zm0-12.3h-6.1V102h6.1Zm6.1,6.2h-6.1v6.1h6.1Zm0,6.1h-6.1v6.2h6.1Zm12.3-6.1h-6.1v6.1h6.1Zm-6.1,0h-6.2v6.1h6.2Zm0,6.1h-6.2v6.2h6.2ZM277,95.8h-6.1V102H277Zm-6.2,12.3h-6.1v6.2h6.1Zm12.5-6.2h-6.2V108h6.2Zm-12.4-6.1h-6.2V102h6.2Zm12.4,12.3h-6.2v6.1h6.2Zm-6.3,0h-6.1v6.1H277Zm0-6.1h-6.1v6.1H277Zm-18.4-6.2h-6.2V102h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="OR" data-name="41" d="M19.3,95.8H13.2V89.7h6.1Zm6.2-6.1H19.3v6.1h6.2Zm6.1,0H25.5v6.1h6.1ZM19.3,95.8H13.2V102h6.1Zm6.2,0H19.3V102h6.2Zm6.1,0H25.5V102h6.1Zm6.1-6.1H31.6v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="OK" data-name="40" d="M117.4,169.4h-6.1v-6.1h6.1Zm6.2-6.1h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-12.3,6.1h-6.1v6.2h6.1Zm6.2,0h-6.2v6.2h6.2Zm6.1,0h-6.1v6.2h6.1Zm-18.4-6.1h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="OH" data-name="39" d="M215.6,120.4h-6.1v-6.2h6.1Zm0,0h-6.1v6.1h6.1Zm0,6.1h-6.1v6.1h6.1Zm6.1-12.3h-6.1v6.2h6.1Zm0,6.2h-6.1v6.1h6.1Zm0,6.1h-6.1v6.1h6.1Zm6.2-12.3h-6.2v6.2h6.2Zm0,6.2h-6.2v6.1h6.2Zm0,6.1h-6.2v6.1h6.2Zm-12.3,6.1h-6.1v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Zm-6.1,6.2h-6.1v6.1h6.1Zm-.1-31h-6.1V114h6.1Zm12.4,24.8h-6.2v6.2h6.2Zm6.1-18.4h-6.1v6.2H234Zm0-6.1h-6.1v6.1H234Zm0,12.3h-6.1v6.1H234Zm0,6.1h-6.1v6.1H234Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="ND" data-name="38" d="M117.5,77.4h-6.1V71.3h6.1Zm6.1-6.1h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="NC" data-name="37" d="M276.8,181.6h-6.1v-6.1h6.1Zm-6.1-6.1h-6.1v6.1h6.1Zm-12,.1h-6.2v6.1h6.2Zm24.3-.1h-6.2v6.1H283Zm-6.1,6.1h-6.2v6.2h6.2Zm18.6,0h-6.1v6.1h6.1Zm-6.4-6.1H283v6.1h6.1Zm-6.1,6.1h-6.1v6.2H283Zm-6.1,6.2h-6.1v6.1h6.1Zm18.3-12.3h-6.1v6.1h6.1Zm-6.1,6.1H283v6.2h6.1Zm-36.6-6.1h-6.1v6.1h6.1Zm12.2.1h-6.2v6.1h6.2Zm6.2,6h-6.2v6.2h6.2Zm-6.2.1h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="NY" data-name="36" d="M276.8,89.6h-6.1V83.4h6.1ZM246.3,65.2h-6.1v6.1h6.1Zm6.1-6.2h-6.1v6.2h6.1Zm0,6.2h-6.1v6.1h6.1Zm6.2-12.3h-6.2V59h6.2Zm0,6.1h-6.2v6.2h6.2Zm0,6.2h-6.2v6.1h6.2Zm6.1-12.3h-6.1V59h6.1Zm0,6.1h-6.1v6.2h6.1Zm0,6.2h-6.1v6.1h6.1Zm-12.3,12h-6.2v6.2h6.2Zm12.3-30.4h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm0,0h-6.1v6.1h6.1Zm0,6.1h-6.1V59h6.1Zm0-12.3h-6.1v6.2h6.1Zm0,18.4h-6.1v6.2h6.1Zm0,6.2h-6.1v6.1h6.1Zm-24.5,6.1h-6.1v6.1h6.1Zm36.6,12.2h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1H289ZM252.4,71.3h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm-12.2,6.1h-6.2v6.2h6.2Zm6.1,0h-6.1v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Zm0-42.9h-6.1v6.1h6.1Zm0,49.1h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="NM" data-name="35" d="M80.7,187.8H74.5v-6.1h6.2Zm6.1-6.1H80.7v6.1h6.1Zm6.2,0H86.8v6.1H93Zm-12.3,6.1H74.5V194h6.2Zm6.1,0H80.7V194h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="NJ" data-name="34" d="M295.5,102h-6.2V95.9h6.2Zm0,0h-6.2v6.2h6.2Zm12.2-6.1h-6.1V102h6.1Zm-6.1,0h-6.1V102h6.1Zm0,6.1h-6.1v6.2h6.1Zm0,6.2h-6.1v6.1h6.1Zm-6.1,0h-6.2v6.1h6.2Zm6.1,6.1h-6.1v6.1h6.1Zm0,12.3h-6.1v6.1h6.1Zm6.1-24.6h-6.1v6.2h6.1Zm0,6.2h-6.1v6.1h6.1Zm0,6.1h-6.1v6.1h6.1Zm-6.1,6.1h-6.1v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="NH" data-name="33" d="M295.4,40.6h-6.2V34.5h6.2Zm0-12.2h-6.2v6.1h6.2Zm0-6.2h-6.2v6.2h6.2Zm6.1,12.3h-6.2v6.2h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="NV" data-name="32" d="M43.9,120.4H37.7v-6.2h6.2Zm6.1-6.2H43.9v6.2H50Zm0,12.3H43.9v6.1H50Zm6.1,0H50v6.1h6.1ZM50,120.4H43.9v6.1H50Zm6.1,0H50v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="NE" data-name="31" d="M129.7,120.4h-6.1v-6.2h6.1Zm0,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="MT" data-name="30" d="M80.7,77.4H74.6V71.3h6.1ZM93,71.3H86.8v6.1H93Zm-6.2,0H80.7v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="MO" data-name="29" d="M142,144.9h-6.2v-6.1H142Zm6.1-6.1H142v6.1h6.1Zm6.1,0h-6.1v6.1h6.1ZM142,144.9h-6.2V151H142Zm6.1,0H142V151h6.1Zm6.1,0h-6.1V151h6.1ZM142,151h-6.2v6.2H142Zm6.1,0H142v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Zm6.2,0h-6.2v6.2h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="MS" data-name="28" d="M172.7,212.3h-6.1v-6.2h6.1Zm12.2-12.2h-6.1v6.1h6.1Zm-6.1,6.1h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-6.1,6.1h-6.2v6.2h6.2Zm6.1,0h-6.1v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="MN" data-name="27" d="M142,102h-6.2V95.8H142Zm6.1-6.2H142V102h6.1ZM142,89.7h-6.2v6.1H142Zm6.1,0H142v6.1h6.1ZM142,83.5h-6.2v6.2H142Zm6.1,0H142v6.2h6.1ZM142,77.4h-6.2v6.1H142Zm6.1,0H142v6.1h6.1ZM142,71.3h-6.2v6.1H142Zm6.1,0H142v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="MI" data-name="26" d="M197.2,89.7h-6.1V83.5h6.1Zm0,0h-6.1v6.1h6.1Zm0,6.1h-6.1V102h6.1Zm0-18.4h-6.1v6.1h6.1Zm6.1,6.1h-6.1v6.2h6.1Zm0,6.2h-6.1v6.1h6.1Zm0,6.1h-6.1V102h6.1Zm0-18.4h-6.1v6.1h6.1Zm-6.1-6.1h-6.1v6.1h6.1Zm-6.1-6.2h-6.2v6.2h6.2Zm-6.2,0h-6.1v6.2h6.1Zm18.4,6.2h-6.1v6.1h6.1Zm6.2,12.2h-6.2v6.2h6.2Zm0,6.2h-6.2v6.1h6.2Zm0,6.1h-6.2V102h6.2Zm0-18.4h-6.2v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="MA" data-name="25" d="M289.2,53h-6.1V46.8h6.1Zm6.1-6.2h-6.1V53h6.1Zm6.2,0h-6.2V53h6.2Zm6.1,0h-6.1V53h6.1Zm6.1,0h-6.1V53h6.1Zm6.1,0h-6.1V53h6.1ZM307.6,53h-6.1v6.1h6.1Zm-6.1,0h-6.1v6.1h6.1Zm12.2,0h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm-36.6-6.1h-6.1V53h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="MD" data-name="24" d="M252.4,132.6h-6.1v-6.2h6.1Zm6.2-6.2h-6.2v6.2h6.2Zm6.1,0h-6.1v6.2h6.1Zm-.1,12.3h-6.1v6.1h6.1Zm-12.2-6.1h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-6.1,6.1h-6.2v6.1h6.2Zm12.2-6.1h-6.1v6.1h6.1Zm0-6.1h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="ME" data-name="23" d="M307.6,28.4h-6.1V22.2h6.1Zm0-12.3h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="LA" data-name="22" d="M148.1,206.2H142v-6.1h6.1Zm6.1-6.1h-6.1v6.1h6.1Zm-6.1,6.1H142v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Zm-6.1,6.2H142v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm6.2-6.2h-6.2v6.2h6.2Zm0,6.2h-6.2v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="KY" data-name="21" d="M197.1,163.3H191v-6.1h6.1Zm12.4-12.2h-6.1v6.1h6.1Zm-6.2,6.1h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-24.5,0h-6.2v6.1h6.2Zm-6.1,0h-6.2v6.1h6.2Zm12.2,0h-6.1v6.1H191Zm24.5,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="KS" data-name="20" d="M117.4,144.9h-6.1v-6.1h6.1Zm6.2-6.1h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-12.3,6.1h-6.1V151h6.1Zm6.2,0h-6.2V151h6.2Zm6.1,0h-6.1V151h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="IA" data-name="19" d="M142,120.4h-6.2v-6.2H142Zm6.1-6.2H142v6.2h6.1Zm6.1,0h-6.1v6.2h6.1ZM142,120.4h-6.2v6.1H142Zm6.1,0H142v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="IN" data-name="18" d="M197.2,120.4h-6.1v-6.2h6.1Zm6.1-6.2h-6.1v6.2h6.1Zm-6.1,6.2h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm-6.1,12.2h-6.1v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Zm-6.1,6.2h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm-6.1,6.1h-6.1V151h6.1Zm0-18.4h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="IL" data-name="17" d="M172.6,120.4h-6.1v-6.2h6.1Zm6.2-6.2h-6.2v6.2h6.2Zm6.1,0h-6.1v6.2h6.1Zm-12.3,6.2h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-12.3,12.2h-6.1v6.2h6.1Zm6.2,0h-6.2v6.2h6.2Zm6.1,0h-6.1v6.2h6.1Zm-12.3,6.2h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Zm-6.1,6.1h-6.2V151h6.2Zm6.1,0h-6.1V151h6.1Zm-12.3-18.4h-6.1v6.1h6.1Zm-6.1-6.1h-6.1v6.1h6.1Zm0,12.2h-6.1v6.2h6.1Zm0-6.1h-6.1v6.1h6.1Zm12.3,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="ID" data-name="16" d="M62.3,102H56.1V95.8h6.2Zm0,0H56.1v6.1h6.2Zm6.1,0H62.3v6.1h6.1ZM62.3,89.7H56.1v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="HI" data-name="15" d="M74.5,261.4H68.4v-6.1h6.1ZM68.4,243H62.2v6.2h6.2Zm6.1,6.2H68.4v6.1h6.1ZM62.2,236.9H56.1V243h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="GA" data-name="13" d="M221.7,200.2h-6.1V194h6.1Zm0,0h-6.1v6.1h6.1Zm6,12.2h-6.1v6.2h6.1Zm.2-18.4h-6.2v6.2h6.2Zm0,6.2h-6.2v6.1h6.2ZM234,194h-6.1v6.2H234Zm0,6.2h-6.1v6.1H234Zm12.3,12.2h-6.1v6.2h6.1Zm-6.2-12.2H234v6.1h6.1Zm-18.4,6.1h-6.1v6.1h6.1Zm0,6.1h-6.1v6.2h6.1Zm6.2-6.1h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1H234Zm6.1,0H234v6.1h6.1Zm0,6.2h-6.2v6.2h6.2Zm-6.2,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="FL" data-name="12" d="M221.7,230.8h-6.1v-6.1h6.1Zm-6.1-6.1h-6.1v6.1h6.1Zm12.3,0h-6.2v6.1h6.2Zm0,6.1h-6.2V237h6.2Zm0,24.6h-6.2v6.1h6.2Zm-18.3-30.7h-6.1v6.1h6.1Zm24.4,6.1h-6.1V237H234Zm0,6.2h-6.1v6.1H234Zm6.1-6.2H234V237h6.1Zm0,6.2H234v6.1h6.1Zm-18.4-6.2h-6.1V237h6.1Zm24.6,6.2h-6.2v6.1h6.2Zm-18.4,6.1h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1H234Zm6.1,0H234v6.1h6.1Zm6.2,0h-6.2v6.1h6.2ZM234,249.2h-6.1v6.2H234Zm6.1,0H234v6.2h6.1Zm6.2,0h-6.2v6.2h6.2ZM234,255.4h-6.1v6.1H234Zm6.1,0H234v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm-6.2,6.1H234v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1-6.1h-6.1v6.1h6.1Zm-6.1,12.2h-6.2v6.2h6.2ZM234,261.5h-6.1v6.1H234Zm-6.1-12.3h-6.2v6.2h6.2Zm24.5,0h-6.1v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="DC" data-name="11" d="M283.1,157.1H277V151h6.1Zm0-12.3H277V151h6.1Zm6.1,6.2h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="DE" data-name="10" d="M289.2,138.7h-6.1v-6.2h6.1Zm0-12.3h-6.1v6.1h6.1Zm0-6.2H283v6.1h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="CT" data-name="09" d="M283.1,71.4H277V65.2h6.1Zm6.1-6.2h-6.1v6.2h6.1Zm6.2,0h-6.2v6.2h6.2Zm-12.3,6.2H277v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm6.1,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="CO" data-name="08" d="M93,138.8H86.8v-6.2H93Zm6.1-6.2H93v6.2h6.1Zm6.1,0H99.1v6.2h6.1ZM93,138.8H86.8v6.1H93Zm6.1,0H93v6.1h6.1Zm6.1,0H99.1v6.1h6.1ZM93,144.9H86.8V151H93Zm6.1,0H93V151h6.1Zm6.1,0H99.1V151h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="CA" data-name="06" d="M31.6,169.4H25.5v-6.1h6.1Zm6.1-6.1H31.6v6.1h6.1Zm6.2,0H37.7v6.1h6.2ZM31.6,175.6H25.5v6.1h6.1Zm6.1,0H31.6v6.1h6.1Zm6.2,0H37.7v6.1h6.2Zm-12.3-6.2H25.5v6.2h6.1Zm-6.1-6.1H19.3v6.1h6.2Zm6.1-6.1H25.5v6.1h6.1Zm6.1,0H31.6v6.1h6.1Zm6.2,0H37.7v6.1h6.2Zm-18.4,0H19.3v6.1h6.2Zm6.1-6.2H25.5v6.2h6.1Zm6.1,0H31.6v6.2h6.1Zm6.2,0H37.7v6.2h6.2Zm-18.4,0H19.3v6.2h6.2Zm-6.2,6.2H13.2v6.1h6.1Zm0-6.2H13.2v6.2h6.1Zm18.4,18.4H31.6v6.2h6.1Zm6.2,0H37.7v6.2h6.2ZM19.3,132.6H13.2v6.2h6.1Zm6.2,0H19.3v6.2h6.2Zm6.1,0H25.5v6.2h6.1Zm-6.1,12.3H19.3V151h6.2Zm6.1,0H25.5V151h6.1Zm6.1,0H31.6V151h6.1Zm-12.2-6.1H19.3v6.1h6.2Zm-12.3-6.2H7.1v6.2h6.1Zm0-6.1H7.1v6.1h6.1Zm6.1,0H13.2v6.1h6.1Zm6.2,0H19.3v6.1h6.2ZM7.1,138.8H.9v6.1H7.1Zm6.1-18.4H7.1v6.1h6.1Zm6.1,0H13.2v6.1h6.1Zm6.2,0H19.3v6.1h6.2ZM7.1,132.6H.9v6.2H7.1Zm6.1-18.4H7.1v6.2h6.1Zm6.1,0H13.2v6.2h6.1Zm6.2,0H19.3v6.2h6.2ZM7.1,126.5H.9v6.1H7.1Zm6.1-18.4H7.1v6.1h6.1Zm6.1,0H13.2v6.1h6.1Zm6.2,0H19.3v6.1h6.2ZM7.1,120.4H.9v6.1H7.1Zm24.5,0H25.5v6.1h6.1Zm0,6.1H25.5v6.1h6.1Zm6.1,6.1H31.6v6.2h6.1Zm6.2,49.1H37.7v6.1h6.2ZM13.2,138.8H7.1v6.1h6.1Zm0,6.1H7.1V151h6.1ZM7.1,114.2H.9v6.2H7.1Zm12.2,30.7H13.2V151h6.1Zm0-6.1H13.2v6.1h6.1Zm12.3,0H25.5v6.1h6.1Zm6.1,0H31.6v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="AR" data-name="05" d="M148.1,175.6H142v-6.2h6.1Zm-6.2-6.2h-6.1v6.2h6.2Zm6.2,6.2H142v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm-6.1,6.1H142v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="AZ" data-name="04" d="M56.1,175.6H50v-6.2h6.1Zm6.2-6.2H56.1v6.2h6.2Zm6.1,0H62.3v6.2h6.1Zm-12.3,6.2H50v6.1h6.1Zm6.2,0H56.1v6.1h6.2Zm6.1,0H62.3v6.1h6.1Zm-12.3,6.1H50v6.1h6.1Zm6.2,0H56.1v6.1h6.2Zm6.1,0H62.3v6.1h6.1Zm-6.1,6.1H56.1V194h6.2Zm6.1,0H62.3V194h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="AK" data-name="02" d="M19.3,224.6H13.2v-6.1h6.1Zm6.1-6.1H19.3v6.1h6.1Zm0,6.1H19.3v6.2h6.1Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+      <path id="AL" data-name="01" d="M197.2,206.2h-6.1v-6.1h6.1Zm6.1-6.1h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm-12.3,6.1h-6.1v6.1h6.1Zm6.1,0h-6.1v6.1h6.1Zm6.2,0h-6.2v6.1h6.2Zm-12.3,6.1h-6.1v6.2h6.1Zm6.1,0h-6.1v6.2h6.1Zm6.2,0h-6.2v6.2h6.2Z" transform="translate(-0.4 -4.6)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

@@ -19,7 +19,7 @@ export function load(urls, options) { // eslint-disable-line
                 const {level} = options;
                 
                 // console.log('data', data);
-                // console.log('geoData', geoData);
+                console.log('geoData', geoData);
 
                 // Use the 'value' array to calculate the minimum and max values in the dataset
                 const valueExtent = extentMulti(data, ['value']);
