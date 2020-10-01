@@ -1,0 +1,135 @@
+.ft-webgraphic-s .chart-label,
+.ft-webgraphic-m .chart-label,
+.ft-webgraphic-m-default .chart-label,
+.ft-webgraphic-l .chart-label {
+  fill: #66605c;
+}
+
+.ft-socialgraphic .chart-label,
+.ft-videographic .chart-label {
+    fill: #ffffff;
+    opacity: 0.7
+}
+
+.ft-webgraphic-s .chart-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+.ft-webgraphic-m-default .chart-label,
+.ft-webgraphic-m .chart-label {
+    font-size: 16px;
+    font-weight: 600;
+}
+.ft-webgraphic-l .chart-label {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.ft-printgraphic .chart-label {
+    font-size: 8px;
+    font-weight: 600;
+    fill: #000000;
+}
+
+.ft-socialgraphic .chart-label {
+    font-size: 20px;
+    font-weight: 600;
+    fill: #ffffff;
+    opacity: 0.7;
+}
+
+.ft-videographic .chart-label {
+    font-size: 36px;
+    font-weight: 600;
+    fill: #ffffff;
+    opacity: 0.7;
+}
+
+.ft-webgraphic-s .tint,
+.ft-webgraphic-m .tint,
+.ft-webgraphic-m-default .tint,
+.ft-webgraphic-l .tint {
+  fill: #F2E5DA;
+}
+
+.ft-printgraphic .tint {
+    fill: #d9e7ef;
+}
+
+.ft-socialgraphic .tint,
+.ft-videographic .tint {
+    fill: #ffffff;
+    opacity: 0.2;
+}
+
+.ft-webgraphic-s .leftcolumns,
+.ft-webgraphic-s .rightcolumns,
+.ft-webgraphic-m .leftcolumns,
+.ft-webgraphic-m .rightcolumns,
+.ft-webgraphic-m-default .rightcolumns,
+.ft-webgraphic-m-default .leftcolumns,
+.ft-webgraphic-l .leftcolumns,
+.ft-webgraphic-l .rightcolumns {
+    stroke: #fff1e0;
+    stroke-width: 0.6;
+}
+
+.ft-printgraphic .leftcolumns,
+.ft-printgraphic .rightcolumns {
+    stroke: #ffffff;
+    stroke-width: 0.6;
+}
+
+.ft-socialgraphic .leftcolumns,
+.ft-socialgraphic .rightcolumns {
+    stroke: #ffffff;
+    stroke-width: 0.4;
+}
+
+.ft-videographic .leftcolumns,
+.ft-videographic .rightcolumns {
+    stroke: #ffffff;
+    stroke-width: 0.6;
+}
+
+.ft-webgraphic-s .leftcolumns text,
+.ft-webgraphic-s .rightcolumns text {
+    font-size: 12px;
+    stroke-width: 0;
+}
+
+.ft-webgraphic-m .leftcolumns text,
+.ft-webgraphic-m .rightcolumns text,
+.ft-webgraphic-m-default .leftcolumns text,
+.ft-webgraphic-m-default .rightcolumns text {
+    font-size: 14px;
+    stroke-width: 0;
+}
+
+.ft-webgraphic-l .leftcolumns text,
+.ft-webgraphic-l .rightcolumns text {
+    font-size: 16px;
+    stroke-width: 0;
+}
+
+.ft-socialgraphic .leftcolumns text,
+.ft-socialgraphic .rightcolumns text {
+    font-size: 16px;
+    stroke-width: 0;
+    fill: #ffffff;
+    opacity: 0.7
+}
+
+.ft-printgraphic .leftcolumns text,
+.ft-printgraphic .rightcolumns text {
+    font-size: 9.6pt;
+    stroke-width: 0;
+}
+
+.ft-videographic .leftcolumns text,
+.ft-videographic .rightcolumns text {
+    font-size: 38px;
+    fill: #ffffff;
+    stroke-width: 0;
+    opacity: 0.7
+}
