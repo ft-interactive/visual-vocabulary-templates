@@ -10,8 +10,12 @@ import * as parseData from './parseData.js';
 import * as drawchart from './drawChart.js';
 import gChartcolour from 'g-chartcolour';
 
-const dataFile = 'data.csv';
+//setup for direct feed from Workbench dataset
+//const dataFile = 'https://ig-staging.ft.com/workbench/362083.csv';
+//const dateFormat = '%Y-%m-%d';
 
+//local setup
+const dataFile = 'data.csv';
 const dateFormat = '%d/%m/%Y';
 /*
   some common formatting parsers....
