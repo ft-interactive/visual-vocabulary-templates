@@ -39,7 +39,7 @@ export function draw() {
             .attr("text-anchor", "end")
             .attr("fill", (d) => colourScale(d.party))
             .text((d) => {
-                if (d.width < 2) {
+                if (d.y1 > 270) {
                     return d.abbreviation + " " + d.width;
                 } else return "";
             });
@@ -82,7 +82,7 @@ export function draw() {
             )
             .attr("fill", (d) => colourScale(d.party))
             .text((d) => {
-                if (d.width < 2) {
+                if (d.y1 > 270) {
                     return d.abbreviation + " " + d.width;
                 } else return "";
             });
