@@ -1,0 +1,329 @@
+area,code,region,continent,population,date,vaccinations,vaccinated_percent,vaccinations_new,vaccinations_new_7ma,vaccinations_new_7ma_perM,source,source_link,last_updated
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,06/01/2021,52195,0.116147076,5120,9209,204.9235412,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,05/01/2021,NA,NA,6876,10714.14286,238.4167765,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,04/01/2021,NA,NA,7461,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,03/01/2021,NA,NA,8281,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,02/01/2021,NA,NA,9510,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,01/01/2021,16357,0.036398462,11559,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,31/12/2020,32013,0.071237022,15656,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,30/12/2020,NA,NA,15656,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Argentina,ARG,Argentina,Latam and Caribbean,44938712,29/12/2020,700,0.001557677,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Austria,AUT,European Union,Europe,8877067,30/12/2020,6000,0.067589892,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,06/01/2021,68472,4.172140397,1594,1196.142857,728.8345506,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,05/01/2021,63893,3.893132469,1122,1343,818.3176413,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,04/01/2021,61612,3.754146427,943,1589.285714,968.3846143,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,03/01/2021,60689,3.697906131,1011,1913.142857,1165.717461,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,02/01/2021,60097,3.661834348,1220,2291.857143,1396.475898,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,01/01/2021,59351,3.616379027,1258,2717.142857,1655.611269,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,31/12/2020,58643,3.573239124,1225,3364.428571,2050.015825,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,30/12/2020,57317,3.492443205,2622,4776,2910.115454,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,29/12/2020,56041,3.41469389,2846,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,28/12/2020,55014,3.352116658,3210,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,27/12/2020,53614,3.266811766,3662,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,26/12/2020,51556,3.141413575,4197,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,25/12/2020,50543,3.079689393,5789,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,24/12/2020,50071,3.050929458,11106,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bahrain,BHR,Middle East,Middle East,1641172,23/12/2020,38965,2.374217937,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Belgium,BEL,European Union,Europe,11484055,02/01/2021,700,0.006095408,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,06/01/2021,5448,0.078099006,120,734.4285714,105.2829321,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,05/01/2021,NA,NA,512,1130,161.9894948,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,04/01/2021,NA,NA,574,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,03/01/2021,NA,NA,661,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,02/01/2021,3732,0.053499539,790,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,01/01/2021,4739,0.06793524,1007,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,31/12/2020,1719,0.024642473,1477,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,30/12/2020,4608,0.066057309,2889,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Bulgaria,BGR,European Union,Europe,6975761,29/12/2020,1719,0.024642473,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,05/01/2021,163418,0.434746498,13238,9772.714286,259.9868624,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,04/01/2021,143260,0.38111948,11973,8789,233.8167746,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,03/01/2021,122159,0.324983768,9983,7866,209.2618897,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,02/01/2021,116503,0.309936918,9683,7211,191.8367006,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,01/01/2021,108376,0.288316381,8954,6579.285714,175.0309893,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,31/12/2020,98153,0.261119785,7536,6016.142857,160.0495071,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,30/12/2020,84381,0.224481662,7042,5719.142857,152.1483145,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,29/12/2020,70749,0.188215986,6352,5354.142857,142.4380946,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,28/12/2020,59449,0.158154209,5512,4959.428571,131.9373754,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,27/12/2020,52280,0.139082273,5398,4591.714286,122.1549464,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,26/12/2020,48719,0.129608823,5261,4158.571429,110.6318988,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,25/12/2020,45700,0.121577274,5012,3738.285714,99.4508941,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,24/12/2020,45398,0.120773853,5457,3390.857143,90.20813292,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,23/12/2020,35089,0.093348467,4487,2940,78.21382607,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,22/12/2020,26287,0.069932206,3589,2540.857143,67.59529205,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,21/12/2020,20866,0.055510534,2938,2151.857143,57.24659194,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,20/12/2020,14492,0.038553564,2366,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,19/12/2020,11894,0.031642015,2319,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,18/12/2020,10615,0.028239448,2580,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,17/12/2020,7201,0.019157067,2301,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,16/12/2020,3683,0.009798011,1693,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,15/12/2020,1163,0.003093969,866,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Canada,CAN,Rest of N America,N America,37589262,14/12/2020,297,7.90E-04,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,06/01/2021,10436,0.055065318,255,329,17.35961061,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,05/01/2021,10365,0.054690688,245,488.4285714,25.77182314,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,04/01/2021,9056,0.047783779,58,688.5714286,36.33231574,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,03/01/2021,8606,0.045409364,30,974.1428571,51.4004276,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,02/01/2021,8651,0.045646806,45,1361.571429,71.84300858,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,01/01/2021,NA,NA,494,1920.571429,101.3385172,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,31/12/2020,NA,NA,1176,2531.571429,133.577794,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,30/12/2020,NA,NA,1371,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,29/12/2020,NA,NA,1646,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,28/12/2020,5904,0.031152323,2057,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,27/12/2020,8646,0.045620424,2742,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,26/12/2020,8335,0.043979439,3958,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,25/12/2020,5191,0.027390194,4771,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Chile,CHL,Latam and Caribbean,Latam and Caribbean,18952038,24/12/2020,420,0.002216121,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,31/12/2020,4500000,0.321954046,187500,187500,134.1475193,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,30/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,29/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,28/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,27/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,26/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,25/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,24/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,23/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,22/12/2020,NA,NA,187500,187500,134.1475193,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,21/12/2020,NA,NA,187500,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,20/12/2020,NA,NA,187500,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,19/12/2020,NA,NA,187500,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,18/12/2020,NA,NA,187500,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,17/12/2020,NA,NA,187500,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,16/12/2020,NA,NA,187500,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+China,CHN,Rest of Asia,Asia,1397715000,15/12/2020,1500000,0.107318015,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,03/01/2021,2455,0.048637352,240,240,47.54771661,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,02/01/2021,NA,NA,240,240,47.54771661,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,01/01/2021,NA,NA,240,240,47.54771661,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,31/12/2020,NA,NA,240,240,47.54771661,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,30/12/2020,NA,NA,240,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,29/12/2020,NA,NA,240,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,28/12/2020,NA,NA,240,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,27/12/2020,NA,NA,240,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,26/12/2020,NA,NA,240,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,25/12/2020,NA,NA,240,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Costa Rica,CRI,Latam and Caribbean,Latam and Caribbean,5047561,24/12/2020,55,0.001089635,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Croatia,HRV,European Union,Europe,4067500,05/01/2021,13798,0.339225569,989,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Croatia,HRV,European Union,Europe,4067500,04/01/2021,11180,0.274861709,1036,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Croatia,HRV,European Union,Europe,4067500,03/01/2021,12285,0.302028273,1105,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Croatia,HRV,European Union,Europe,4067500,02/01/2021,NA,NA,1105,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Croatia,HRV,European Union,Europe,4067500,01/01/2021,NA,NA,1105,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Croatia,HRV,European Union,Europe,4067500,31/12/2020,NA,NA,1105,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Croatia,HRV,European Union,Europe,4067500,30/12/2020,7864,0.193337431,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Cyprus,CYP,European Union,Europe,875900,06/01/2021,3901,0.445370476,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Czechia,CZE,European Union,Europe,10669709,04/01/2021,13000,0.121840249,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,05/01/2021,63312,1.088105582,6637,6546.857143,1125.169289,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,04/01/2021,52829,0.907940514,6380,6351.285714,1091.557594,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,03/01/2021,50703,0.87140222,6340,5703.714286,980.2633551,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,02/01/2021,44891,0.771514842,6428,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,01/01/2021,36163,0.621511912,5969,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,31/12/2020,33806,0.581003559,6872,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,30/12/2020,27927,0.479964692,7202,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,29/12/2020,16856,0.289694018,5268,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,28/12/2020,8167,0.140361358,1847,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Denmark,DNK,European Union,Europe,5818553,27/12/2020,6320,0.108618071,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,06/01/2021,5009,0.377584634,589,469.2857143,353.7533935,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,05/01/2021,3188,0.240315395,382,433.4285714,326.7238344,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,04/01/2021,2535,0.191091445,333,423,318.8626478,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,03/01/2021,2517,0.189734583,385,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,02/01/2021,1917,0.144505838,459,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,01/01/2021,2487,0.187473145,570,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,31/12/2020,1907,0.143752026,567,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,30/12/2020,884,0.066637017,338,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,29/12/2020,516,0.03889672,309,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Estonia,EST,European Union,Europe,1326590,28/12/2020,207,0.015603917,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Finland,FIN,European Union,Europe,5520314,05/01/2021,5445,0.098635694,736,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Finland,FIN,European Union,Europe,5520314,04/01/2021,3604,0.065286141,459,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Finland,FIN,European Union,Europe,5520314,03/01/2021,NA,NA,459,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Finland,FIN,European Union,Europe,5520314,02/01/2021,NA,NA,459,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Finland,FIN,European Union,Europe,5520314,01/01/2021,NA,NA,459,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Finland,FIN,European Union,Europe,5520314,31/12/2020,1767,0.032009049,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+France,FRA,European Union,Europe,67059887,05/01/2021,5000,0.007456022,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,05/01/2021,367331,0.441860498,40524,38330.14286,461.0712417,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,04/01/2021,322098,0.387449964,40028,36841.71429,443.1670138,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,03/01/2021,275485,0.331379435,36004,33758.57143,406.0800531,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,02/01/2021,251250,0.302227283,37966,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,01/01/2021,207079,0.249094223,36725,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,31/12/2020,176874,0.21276079,38354,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,30/12/2020,139587,0.167908457,38710,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,29/12/2020,83666,0.100641385,30105,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,28/12/2020,41902,0.050403692,18446,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Germany,DEU,European Union,Europe,83132799,27/12/2020,23456,0.028215097,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,05/01/2021,16233,0.151479211,2168,931.8571429,86.9568069,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,04/01/2021,9975,0.093082309,1486,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,03/01/2021,3843,0.035861184,557,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,02/01/2021,3132,0.029226445,519,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,01/01/2021,2591,0.024178072,512,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,31/12/2020,2313,0.021583898,628,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,30/12/2020,1709,0.015947636,653,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Greece,GRC,European Union,Europe,10716322,29/12/2020,1056,0.009854127,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,06/01/2021,21000,0.214944827,2459,1657.857143,169.6894367,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,05/01/2021,15000,0.153532019,1791,1499.142857,153.4442869,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,04/01/2021,12000,0.122825616,1558,1438.571429,147.2445177,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,03/01/2021,NA,NA,1531,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,02/01/2021,NA,NA,1492,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,01/01/2021,3771,0.03859795,1435,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,31/12/2020,5110,0.052303241,1339,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,30/12/2020,3789,0.038782188,1348,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,29/12/2020,2461,0.025189487,1367,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Hungary,HUN,European Union,Europe,9769949,28/12/2020,1094,0.011197602,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Iceland,ISL,Rest of Europe,Europe,361313,30/12/2020,4875,1.349245668,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Ireland,IRL,European Union,Europe,4941444,04/01/2021,4000,0.080947998,550,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Ireland,IRL,European Union,Europe,4941444,03/01/2021,NA,NA,550,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Ireland,IRL,European Union,Europe,4941444,02/01/2021,NA,NA,550,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Ireland,IRL,European Union,Europe,4941444,01/01/2021,NA,NA,550,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Ireland,IRL,European Union,Europe,4941444,31/12/2020,1800,0.036426599,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,05/01/2021,1483600,16.38739465,120000,112853.2857,12465.43092,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,04/01/2021,1370000,15.13260358,125486,107334.8571,11855.88207,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,03/01/2021,1224000,13.51993196,121114,98800.14286,10913.16347,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,02/01/2021,1090000,12.03980869,115814,89018.57143,9832.720823,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,01/01/2021,1000000,11.04569604,107529,78940.42857,8719.519796,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,31/12/2020,949112,10.48360266,105787,70424.85714,7778.91566,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,30/12/2020,794200,8.772491799,94243,62487.42857,6902.171426,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,29/12/2020,643600,7.109009974,81371,55062.28571,6082.012715,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,28/12/2020,491600,5.430064176,65743,48173.57143,5321.106274,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,27/12/2020,376200,4.155390852,52643,42167.42857,4657.68599,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,26/12/2020,279300,3.085062905,45267,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,25/12/2020,247300,2.731600632,47920,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,24/12/2020,208600,2.304132195,50225,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,23/12/2020,134500,1.485646118,42267,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,22/12/2020,74000,0.817381507,33150,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,21/12/2020,31400,0.346834856,23700,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Israel,ISR,Middle East,Middle East,9053300,20/12/2020,7700,0.08505186,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,06/01/2021,307182,0.509444885,41797,21210.42857,351.7635914,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,05/01/2021,262192,0.434831381,36040,15581.57143,258.4120122,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,04/01/2021,186865,0.309905589,25447,10611.57143,175.9872255,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,03/01/2021,120241,0.199413255,16118,7165.142857,118.8300546,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,02/01/2021,86073,0.142747458,13110,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,01/01/2021,48895,0.081089737,8296,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,31/12/2020,38075,0.063145347,7665,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,30/12/2020,14600,0.024213318,2395,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,29/12/2020,9914,0.016441838,1250,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,28/12/2020,8737,0.014489846,1322,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Italy,ITA,European Union,Europe,60297396,27/12/2020,7415,0.01229738,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Kuwait,KWT,Middle East,Middle East,4207083,28/12/2020,2500,0.059423596,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,05/01/2021,3803,0.198819629,333,482.8571429,252.4361772,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,04/01/2021,2958,0.154643298,338,560.7142857,293.1396436,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,03/01/2021,NA,NA,371,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,02/01/2021,NA,NA,417,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,01/01/2021,NA,NA,486,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,31/12/2020,1427,0.074603106,602,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,30/12/2020,2260,0.118152081,833,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,29/12/2020,1472,0.076955691,878,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Latvia,LVA,European Union,Europe,1912789,28/12/2020,594,0.031054131,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Lithuania,LTU,European Union,Europe,2786844,28/12/2020,2270,0.081454147,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Luxembourg,LUX,European Union,Europe,619896,30/12/2020,1200,0.193580859,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Malta,MLT,European Union,Europe,502653,03/01/2021,1400,0.278522161,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,05/01/2021,48236,0.037809759,4244,4250.142857,33.31471866,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,04/01/2021,43960,0.034458019,4912,4089.714286,32.05720029,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,03/01/2021,NA,NA,4763,3625.714286,28.42013915,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,02/01/2021,NA,NA,4407,3131,24.54232426,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,01/01/2021,NA,NA,4051,2687.142857,21.06315277,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,31/12/2020,21319,0.016710885,3695,2294.142857,17.98262469,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,30/12/2020,24998,0.019594667,3679,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,29/12/2020,18529,0.014523945,3121,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,28/12/2020,9579,0.007508493,1664,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,27/12/2020,6824,0.005348988,1300,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,26/12/2020,NA,NA,1300,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,25/12/2020,NA,NA,1300,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Mexico,MEX,Mexico,Latam and Caribbean,127575529,24/12/2020,2924,0.002291976,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,05/01/2021,4036,0.075468932,339,471.7142857,88.20558323,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,04/01/2021,NA,NA,424,541.5714286,101.2681302,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,03/01/2021,NA,NA,442,565.4285714,105.7291637,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,02/01/2021,1728,0.032311773,437,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,01/01/2021,2159,0.040371017,431,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,31/12/2020,2154,0.040277522,537,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,30/12/2020,2082,0.038931198,692,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,29/12/2020,1662,0.031077642,828,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,28/12/2020,596,0.01114457,591,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Norway,NOR,Rest of Europe,Europe,5347896,27/12/2020,5,9.35E-05,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,05/01/2021,12751,0.256302229,1576,1541,309.7496154,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,04/01/2021,10728,0.215638798,1502,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,03/01/2021,8826,0.177407534,1422,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,02/01/2021,7231,0.145347143,1378,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,01/01/2021,6516,0.130975243,1600,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,31/12/2020,5043,0.101367119,1663,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,30/12/2020,3363,0.06759818,1646,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Oman,OMN,Middle East,Middle East,4974986,29/12/2020,1717,0.03451266,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,06/01/2021,140226,0.369298847,14847,11212.42857,295.290242,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,05/01/2021,92220,0.242870364,12274,11541.42857,303.9547778,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,04/01/2021,50833,0.133873663,6976,10402.28571,273.9543397,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,03/01/2021,50391,0.132709613,8065,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,02/01/2021,NA,NA,9492,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,01/01/2021,32400,0.08532856,11633,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,31/12/2020,47600,0.125359242,15200,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,30/12/2020,36300,0.09559959,17150,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,29/12/2020,6300,0.016591664,4300,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Poland,POL,European Union,Europe,37970874,28/12/2020,2000,0.005267195,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Portugal,PRT,European Union,Europe,10269417,03/01/2021,32000,0.311604836,4529,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Portugal,PRT,European Union,Europe,10269417,02/01/2021,NA,NA,5177,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Portugal,PRT,European Union,Europe,10269417,01/01/2021,NA,NA,6149,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Portugal,PRT,European Union,Europe,10269417,31/12/2020,15839,0.154234656,7770,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Portugal,PRT,European Union,Europe,10269417,30/12/2020,26850,0.261455933,11011,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Portugal,PRT,European Union,Europe,10269417,29/12/2020,16701,0.162628511,11873,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Portugal,PRT,European Union,Europe,10269417,28/12/2020,4828,0.04701338,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,06/01/2021,58554,0.302502348,7555,3678.142857,190.0206389,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,05/01/2021,41609,0.214960894,5547,2856,147.5470001,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,04/01/2021,25508,0.131779723,3349,2165.285714,111.8632393,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,03/01/2021,13596,0.070239811,1922,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,02/01/2021,13242,0.068410973,2235,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,01/01/2021,11656,0.060217361,2398,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,31/12/2020,10289,0.05315515,2741,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,30/12/2020,5666,0.029271754,1800,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,29/12/2020,2778,0.014351736,712,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Romania,ROU,European Union,Europe,19356544,28/12/2020,2066,0.010673393,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,02/01/2021,800000,0.554118177,68000,64042.28571,443.5874325,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,01/01/2021,NA,NA,68000,60084.57143,416.1744147,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,31/12/2020,NA,NA,68000,54807.57143,379.6233945,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,30/12/2020,NA,NA,68000,48211.42857,333.9353613,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,29/12/2020,NA,NA,68000,40296,279.1093257,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,28/12/2020,NA,NA,58765,31061.28571,215.1452876,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,27/12/2020,NA,NA,49531,23145.85714,160.319252,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,26/12/2020,NA,NA,40296,16549.57143,114.6302293,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,25/12/2020,NA,NA,31061,11272.57143,78.07920911,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,24/12/2020,NA,NA,21827,7314.857143,50.6661913,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,23/12/2020,48643,0.033692463,12592,4676.285714,32.39018643,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,22/12/2020,52000,0.036017681,3357,3357,23.252184,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,21/12/2020,NA,NA,3357,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,20/12/2020,NA,NA,3357,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,19/12/2020,NA,NA,3357,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,18/12/2020,NA,NA,3357,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,17/12/2020,NA,NA,3357,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,16/12/2020,NA,NA,3357,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Russia,RUS,Rest of Europe,Europe,144373535,15/12/2020,28500,0.01974046,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Saudi Arabia,SAU,Middle East,Middle East,34268528,06/01/2021,100000,0.291812943,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Slovakia,SVK,European Union,Europe,5454073,04/01/2021,7201,0.132029769,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Slovenia,SVN,European Union,Europe,2087946,28/12/2020,5934,0.284202752,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Spain,ESP,European Union,Europe,47076781,05/01/2021,139339,0.295982429,56505,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+Spain,ESP,European Union,Europe,47076781,04/01/2021,82834,0.175955106,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Arab Emirates,ARE,Middle East,Middle East,9770529,05/01/2021,826301,8.457075354,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,27/12/2020,346769,0.519140084,43346.14286,43346.08163,648.9244558,UK Government dashboard,https://coronavirus.data.gov.uk/details/healthcare#card-people_who_have_received_vaccinations_by_nation,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,27/12/2020,944539,1.41404813,43346,43346.06122,648.9241503,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,26/12/2020,303423,0.454247761,43346.14286,43346.08163,648.9244558,FT estimate,NA,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,26/12/2020,NA,NA,43346,43346.06122,648.9241503,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,25/12/2020,260077,0.389355437,43346.14286,43346.08163,648.9244558,FT estimate,NA,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,25/12/2020,NA,NA,43346,43346.06122,648.9241503,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,24/12/2020,216731,0.324463114,43346.14286,43346.08163,648.9244558,FT estimate,NA,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,24/12/2020,NA,NA,43346,43346.06122,648.9241503,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,23/12/2020,173385,0.259570791,43346.14286,NA,NA,FT estimate,NA,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,23/12/2020,NA,NA,43346,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,22/12/2020,130038,0.19467697,43346.14286,NA,NA,FT estimate,NA,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,22/12/2020,NA,NA,43346,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,21/12/2020,86692,0.129784647,43346.14286,NA,NA,FT estimate,NA,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,21/12/2020,NA,NA,43346,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,20/12/2020,43346,0.064892323,43346.14286,NA,NA,UK Government dashboard,https://coronavirus.data.gov.uk/details/healthcare#card-people_who_have_received_vaccinations_by_nation,07/01/2021 15:55
+United Kingdom,GBR,UK,Europe,66796807,20/12/2020,641116,0.959800369,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,06/01/2021,5306797,1.616745282,358887,327173.1429,996.7512135,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,05/01/2021,4836469,1.473457235,339372,312364,951.6343344,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,04/01/2021,4563260,1.390222591,348017,297551.5714,906.5074453,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,03/01/2021,3899874,1.188118349,336949,278713,849.1146875,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,02/01/2021,4225756,1.287400116,325882,260774.4286,794.4638299,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,01/01/2021,NA,NA,302329,247276.4286,753.3414207,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,31/12/2020,2539365,0.773631699,278776,234834.8571,715.4374799,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,30/12/2020,2794588,0.851386809,255223,222295.5714,677.2358472,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,29/12/2020,1910996,0.582195582,235685,207350.2857,631.7042013,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,28/12/2020,2127143,0.64804597,216147,191885.5714,584.5900874,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,27/12/2020,1713189,0.521932577,211379,169280.1429,515.7213894,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,26/12/2020,1944585,0.592428658,231396,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,25/12/2020,NA,NA,215238,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,24/12/2020,857419,0.261217477,191001,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,23/12/2020,1008025,0.307100434,150606,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,22/12/2020,556208,0.169451867,127432,NA,NA,Our World in Data and FT estimate,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,21/12/2020,614117,0.187094167,57909,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
+United States,USA,US,N America,328239523,20/12/2020,556208,0.169451867,NA,NA,NA,Our World in Data,https://ourworldindata.org/covid-vaccinations,07/01/2021 15:55
