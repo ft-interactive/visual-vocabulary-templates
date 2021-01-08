@@ -27,10 +27,9 @@ export function draw() {
 
         parent.selectAll('.pie-name')
         .data((d) => {
-            
             console.log('data', d.chartData)
             console.log('frameTimes', frameTimes)
-            const test = d.chartData.filter((el) => {el.date == frameTimes[0]})
+            const test = d.chartData.filter((el) => {el.date === frameTimes[0]})
             console.log('test', test)
             return d.chartData
         })
