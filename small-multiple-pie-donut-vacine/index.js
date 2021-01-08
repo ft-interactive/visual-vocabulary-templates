@@ -13,8 +13,8 @@ const dataFile = 'country_vax_trajectories.csv';
 const dateFormat = '%d/%m/%Y';
 
 const sharedConfig = {
-    title: 'Title not yet added',
-    subtitle: 'Subtitle not yet added',
+    title: 'Percent of population vacinated',
+    subtitle: 'By country, as of Jan 7 2021',
     source: 'Source not yet added',
 };
 
