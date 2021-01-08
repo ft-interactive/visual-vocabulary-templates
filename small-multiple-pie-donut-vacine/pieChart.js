@@ -60,11 +60,9 @@ export function draw() {
             .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.55})`)
 
         function getFrame(frames) {
-            console.log(frames.chartData.length)
-            const timeFrame = frames.chartData.filter(el => el.date.getTime() <= frameTimes[0].getTime())
-            const latestFrame = timeFrame.length
-            console.log('latestFrame', latestFrame, timeFrame[0])
-            return frames.chartData.filter(el => el.date.getTime() === frameTimes[0].getTime())
+            const frame = frames.chartData.filter((el, i) => el.date.getTime() <= frameTimes[0].getTime() && i === 0)
+            ///const frame = frames.chartData.filter(el => el.date.getTime() === frameTimes[0].getTime())
+            return frame
         }
 
     }
