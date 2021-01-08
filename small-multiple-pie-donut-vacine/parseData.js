@@ -24,6 +24,20 @@ export function load(url, options) { // eslint-disable-line
         const tickRange = dateRange.map((d) => {
             return parseDate(d);
         });
+        console.log('tickRange', tickRange)
+        console.log('tickRange', tickRange[0])
+        console.log('tickRange', tickRange.length)
+
+        const filteredDates = tickRange.length > 1
+        ? data.filter( d => d.date >= tickRange[0] && d.date <= tickRange[1])
+        : data.filter( d => d.date.getTime() === tickRange[0].getTime()
+)
+
+        console.log('filteredDates', filteredDates)
+
+        function getFrames(allData) {
+            return allData.filter( d => d.date >= tickRange[0] && d.date <= tickRange[1])
+        }
 
         const frameTimes = tickRange.length > 1 ? getTicks(tickRange)
         : tickRange

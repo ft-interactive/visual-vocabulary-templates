@@ -23,7 +23,6 @@ export function draw() {
             .sort(null)
             .value(function(d) { return d; });
         var data = [1, 99]
-        console.log ("frameTimes", frameTimes)
 
         parent.append('text')
         .attr('class','pie-name')
