@@ -21,14 +21,15 @@ export function draw() {
     function chart(parent) {
         var pie = d3.pie()
             .sort(null)
-            .value(function(d) { return d; });
-        var data = [1, 99]
+            .value(function(d) { return d.value; });
+        var defaultPie = [{Name: 'Vacinated', value: 0},
+       {Name: 'Not vacinated', value: 100}]
 
         parent.append('text')
         .attr('class','pie-name')
         .attr('x',0)
         .attr('dy', rem *1.5)
-        .text(d => d.code)
+        .text(d => d.chartData[0].area)
         
         var arc = d3.arc()
             .outerRadius(50)
@@ -37,27 +38,26 @@ export function draw() {
         const smallPie = parent
             .append ('g')
             .selectAll(".arc")
-                .data(pie(data))
+                .data((d) => {
+                    const frame = getFrame(d).length === 0
+                    ? defaultPie
+                    : [getFrame(d)[0].values[0],getFrame(d)[0].values[1]]
+                    console.log('frame', frame)
+                return pie(frame)
+                })
                 .enter()
                 .append("g")
                 .attr("class", "arc")
                 .append("path")
                 .attr("d", arc)
                 .style("fill", "#a3b2f1");
-        smallPie.attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1]})`)
+        smallPie
+            .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.9})`)
 
-        
-            // parent.append ('g')
-            //     //.attr("transform", "translate(100,100);
-            // .selectAll('mySlices')
-            //     .data(data_ready)
-            //     .enter()
-            //     .append('path')
-            //         .attr('d', arcGenerator)
-            //         .attr('fill', '#fff3a4')
-            //         .attr("stroke", "black")
-            //         .style("stroke-width", "2px")
-            //         .style("opacity", 0.7);
+        function getFrame(frames) {
+            return frames.chartData.filter(el => el.date.getTime() === frameTimes[0].getTime())
+        }
+
     }
 
     chart.seriesNames = (d) => {

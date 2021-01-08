@@ -15,38 +15,35 @@ export function load(url, options) { // eslint-disable-line
         const data = result.data ? result.data : result;
         const {dateFormat, countries, dateRange} = options;
         const parseDate = d3.timeParse(dateFormat);
+        
+        //make sure dates are formated correctly and very basic data cleaning
         data.forEach((d) => {
             d.date = parseDate(d.date);
             d.area = d.area === 'United States' ?'US'
             : d.area === 'United Kingdom' ?'UK'
             : d.area
         });
+
+        //make sure dates are formated correctly
         const tickRange = dateRange.map((d) => {
             return parseDate(d);
         });
-        console.log('tickRange', tickRange)
-        console.log('tickRange', tickRange[0])
-        console.log('tickRange', tickRange.length)
-
+        //Filter data to date range speciufied in indes.js
         const filteredDates = tickRange.length > 1
         ? data.filter( d => d.date >= tickRange[0] && d.date <= tickRange[1])
-        : data.filter( d => d.date.getTime() === tickRange[0].getTime()
-)
+        : data.filter( d => d.date.getTime() === tickRange[0].getTime())
 
-        console.log('filteredDates', filteredDates)
-
-        function getFrames(allData) {
-            return allData.filter( d => d.date >= tickRange[0] && d.date <= tickRange[1])
-        }
-
-        const frameTimes = tickRange.length > 1 ? getTicks(tickRange)
+        //create an aray of frame time stamps for animating
+        const frameTimes = tickRange.length > 1
+        ? getTicks(tickRange)
         : tickRange
+
         function getTicks(dates) {
             let newRange = d3.timeDay.every(1).range(dates[0], dates[1])
             newRange.push(dates[1]) 
             return newRange  
         }
-        console.log(frameTimes)
+
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
         const seriesNames = countries[0] === 'All' ?  getSeriesNames(data) : countries
         console.log('seriesNames', seriesNames)
@@ -54,6 +51,7 @@ export function load(url, options) { // eslint-disable-line
 
         const plotData = seriesNames.map(d => ({
             code: d,
+            area: 'not yet aded',
             chartData: getPieData(data, d)
         }));
 

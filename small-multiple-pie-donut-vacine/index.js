@@ -19,8 +19,8 @@ const sharedConfig = {
 };
 
 const donut = true; // set to true to turn on donut and display total
-const countries = ['USA', 'GBR', 'ISR']
-const dateRange= ['04/01/2021']
+const countries = ['All']
+const dateRange= ['04/01/2021', '07/01/2021']
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
