@@ -22,8 +22,8 @@ export function draw() {
         var pie = d3.pie()
             .sort(null)
             .value(function(d) { return d.value; });
-        var defaultPie = [{Name: 'Vacinated', value: 0},
-       {Name: 'Not vacinated', value: 100}]
+        var defaultPie = [{name: 'Vacinated', value: 0},
+       {name: 'Not vacinated', value: 100}]
 
         parent.append('text')
         .attr('class','pie-name')
@@ -50,11 +50,20 @@ export function draw() {
                 .attr("class", "arc")
                 .append("path")
                 .attr("d", arc)
+                .style('opacity', d => {
+                    return d.data.name === 'Vacinated' ? 1.0 : 0.3}
+                    )
                 .style("fill", "#a3b2f1");
+
+
         smallPie
             .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.55})`)
 
         function getFrame(frames) {
+            console.log(frames.chartData.length)
+            const timeFrame = frames.chartData.filter(el => el.date.getTime() <= frameTimes[0].getTime())
+            const latestFrame = timeFrame.length
+            console.log('latestFrame', latestFrame, timeFrame[0])
             return frames.chartData.filter(el => el.date.getTime() === frameTimes[0].getTime())
         }
 

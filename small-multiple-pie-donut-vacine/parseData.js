@@ -18,6 +18,13 @@ export function load(url, options) { // eslint-disable-line
         
         //make sure dates are formated correctly and very basic data cleaning
         data.forEach((d) => {
+            if(isNaN(d.vaccinated_percent)) {
+                d.vaccinated_percent = 0
+            }
+            //d.vaccinated_percent = isNaN(d.vaccinated_percent) ? 0;
+        })
+            
+        data.forEach((d) => {
             d.date = parseDate(d.date);
             d.area = d.area === 'United States' ?'US'
             : d.area === 'United Kingdom' ?'UK'

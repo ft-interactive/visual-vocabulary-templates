@@ -20,7 +20,7 @@ const sharedConfig = {
 
 const donut = true; // set to true to turn on donut and display total
 const countries = ['All']
-const dateRange= ['06/01/2021']
+const dateRange= ['05/01/2021']
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -39,7 +39,7 @@ const frame = {
             top: 100, left: 30, bottom: 62, right: 30,
         })
     // .title("Put headline here")
-        .height(500)
+        .height(1500)
         .extend('numberOfColumns', 5)
         .extend('numberOfRows', 3),
 
