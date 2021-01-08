@@ -25,20 +25,11 @@ export function draw() {
         var data = [1, 99]
         console.log ("frameTimes", frameTimes)
 
-        parent.selectAll('.pie-name')
-        .data((d) => {
-            console.log('data', d.chartData)
-            console.log('frameTimes', frameTimes)
-            const test = d.chartData.filter((el) => {el.date === frameTimes[0]})
-            console.log('test', test)
-            return d.chartData
-        })
-        .enter()
-        .append('text')
+        parent.append('text')
         .attr('class','pie-name')
         .attr('x',0)
         .attr('dy', rem *1.5)
-        .text(d => d.area)
+        .text(d => d.code)
         
         var arc = d3.arc()
             .outerRadius(50)
