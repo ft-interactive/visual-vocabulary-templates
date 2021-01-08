@@ -21,6 +21,7 @@ export function load(url, options) { // eslint-disable-line
             d.date = parseDate(d.date);
             d.area = d.area === 'United States' ?'US'
             : d.area === 'United Kingdom' ?'UK'
+            : d.area ==='United Arab Emirates' ? 'UAE'
             : d.area
         });
 

@@ -8,8 +8,8 @@ export function draw() {
     // .domain(['group']);
     let colourProperty = 'group'; // eslint-disable-line no-unused-vars
     let seriesNames = []; // eslint-disable-line no-unused-vars
-    let radius;
-    let smallRadius;
+    let outerRadius;
+    let innerRadius;
     let totalSize;
     let frameName;
     let frameTimes;
@@ -32,8 +32,8 @@ export function draw() {
         .text(d => d.chartData[0].area)
         
         var arc = d3.arc()
-            .outerRadius(50)
-            .innerRadius(10);
+            .outerRadius(outerRadius)
+            .innerRadius(innerRadius);
 
         const smallPie = parent
             .append ('g')
@@ -52,7 +52,7 @@ export function draw() {
                 .attr("d", arc)
                 .style("fill", "#a3b2f1");
         smallPie
-            .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.9})`)
+            .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.55})`)
 
         function getFrame(frames) {
             return frames.chartData.filter(el => el.date.getTime() === frameTimes[0].getTime())
@@ -72,15 +72,15 @@ export function draw() {
         return chart;
     };
 
-    chart.radius = (d) => {
-        if (!d) return radius;
-        radius = d;
+    chart.outerRadius = (d) => {
+        if (!d) return outerRadius;
+        outerRadius = d;
         return chart;
     };
 
-    chart.smallRadius = (d) => {
-        if (!d) return radius;
-        smallRadius = d;
+    chart.innerRadius = (d) => {
+        if (!d) return innerRadius;
+        innerRadius = d;
         return chart;
     };
 

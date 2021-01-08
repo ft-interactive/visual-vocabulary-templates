@@ -20,13 +20,13 @@ const sharedConfig = {
 
 const donut = true; // set to true to turn on donut and display total
 const countries = ['All']
-const dateRange= ['04/01/2021', '07/01/2021']
+const dateRange= ['06/01/2021']
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
     webS: gChartframe.webFrameS(sharedConfig)
         .margin({
-            top: 100, left: 30, bottom: 62, right: 30,
+            top: 100, left: 15, bottom: 62, right: 15,
         })
     // .title("Put headline here") //use this if you need to override the defaults
     // .subtitle("Put headline |here") //use this if you need to override the defaults
@@ -48,9 +48,9 @@ const frame = {
             top: 100, left: 30, bottom: 86, right: 30,
         })
     // .title("Put headline here")
-        .height(500)
+        .height(1000)
         .extend('numberOfColumns', 5)
-        .extend('numberOfRows', 3),
+        .extend('numberOfRows', 5),
 
 
     webL: gChartframe.webFrameL(sharedConfig)
@@ -111,13 +111,15 @@ parseData.load([dataFile], { dateFormat, countries, dateRange}).then(({ seriesNa
         const currentFrame = frame[frameName];
         const plotDim = [currentFrame.dimension().width,currentFrame.dimension().height]
         const pieWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
-        const pieDim = [pieWidth, (pieWidth * 1)];
-        const smallRadius = 0.1;
+        const pieDim = [pieWidth, (pieWidth * 1.3) + currentFrame.rem()];
+        const innerRadius = pieWidth * 0.15;
+        const outerRadius = pieWidth * 0.5;
 
-        const radius = Math.min(currentFrame.dimension().width, currentFrame.dimension().height) / 2;
         // define chart
         const myChart = pieChart.draw()
             .seriesNames(seriesNames)
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius)
             .frameTimes(frameTimes)
             .plotDim(plotDim)
             .pieDim(pieDim)
