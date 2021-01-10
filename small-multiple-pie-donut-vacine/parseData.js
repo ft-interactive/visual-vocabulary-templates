@@ -63,6 +63,9 @@ export function load(url, options) { // eslint-disable-line
             chartData: getPieData(data, d)
         }));
 
+        plotData.sort((a, b) =>
+                b.chartData[0].vaccinated_percent - a.chartData[0].vaccinated_percent);// Sorts biggest rects to the left
+        
         console.log('plotData', plotData)
         
         function getPieData(data, key) {
