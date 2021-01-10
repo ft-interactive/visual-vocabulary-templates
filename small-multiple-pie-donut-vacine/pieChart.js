@@ -61,7 +61,8 @@ export function draw() {
 
         function getFrame(frames) {
             let frame = frames.chartData.filter((el, i) => el.date.getTime() <= frameTimes[0].getTime())
-            console.log('grame zero', frame[0])
+            console.log('frame', frame[0])
+            console.log('frame zero', frame[0])
                 return [frame[0]]
         }
 
