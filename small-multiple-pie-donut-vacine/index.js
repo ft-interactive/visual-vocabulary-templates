@@ -7,6 +7,8 @@ import * as gLegend from 'g-legend'; // eslint-disable-line no-unused-vars
 import gChartframe from 'g-chartframe';
 import * as parseData from './parseData.js';
 import * as pieChart from './pieChart.js';
+import gChartcolour from 'g-chartcolour';
+
 
 
 const dataFile = 'country_vax_trajectories.csv';
@@ -20,7 +22,8 @@ const sharedConfig = {
 
 const donut = true; // set to true to turn on donut and display total
 const countries = ['All']
-const dateRange= ['06/01/2021']
+const dateRange = ['15/12/2020']
+const colourProperty = 'continent'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -104,7 +107,7 @@ d3.selectAll('.framed')
             .call(frame[figure.node().dataset.frame]);
     });
 
-parseData.load([dataFile], { dateFormat, countries, dateRange}).then(({ seriesNames, data, plotData, frameTimes }) => {
+parseData.load([dataFile], { dateFormat, countries, dateRange, colourProperty}).then(({ seriesNames, data, plotData, frameTimes, colorSeries }) => {
 
 
     Object.keys(frame).forEach((frameName) => {
@@ -114,16 +117,20 @@ parseData.load([dataFile], { dateFormat, countries, dateRange}).then(({ seriesNa
         const pieDim = [pieWidth, (pieWidth * 1.3) + currentFrame.rem()];
         const innerRadius = pieWidth * 0.15;
         const outerRadius = pieWidth * 0.5;
+        const colourScale = d3.scaleOrdinal()
+            .domain(colorSeries)
 
         // define chart
         const myChart = pieChart.draw()
-            .seriesNames(seriesNames)
+            .seriesNames(colorSeries)
             .innerRadius(innerRadius)
             .outerRadius(outerRadius)
             .frameTimes(frameTimes)
             .plotDim(plotDim)
             .pieDim(pieDim)
-
+            .colourPalette((frameName))
+            .colourProperty(colourProperty)
+        
         const pie = currentFrame.plot()
           .selectAll('.pieHolder')
           .data(plotData)

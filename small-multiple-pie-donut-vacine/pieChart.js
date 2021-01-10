@@ -42,7 +42,7 @@ export function draw() {
                     const frame = getFrame(d).length === 0
                     ? defaultPie
                     : [getFrame(d)[0].values[0],getFrame(d)[0].values[1]]
-                    console.log('frame', frame)
+                    //console.log('frame', frame)
                 return pie(frame)
                 })
                 .enter()
@@ -53,16 +53,16 @@ export function draw() {
                 .style('opacity', d => {
                     return d.data.name === 'Vacinated' ? 1.0 : 0.3}
                     )
-                .style("fill", "#a3b2f1");
+                .attr("fill", d => colourScale(d.data.fillColor));
 
 
         smallPie
             .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.55})`)
 
         function getFrame(frames) {
-            const frame = frames.chartData.filter((el, i) => el.date.getTime() <= frameTimes[0].getTime() && i === 0)
-            ///const frame = frames.chartData.filter(el => el.date.getTime() === frameTimes[0].getTime())
-            return frame
+            let frame = frames.chartData.filter((el, i) => el.date.getTime() <= frameTimes[0].getTime())
+            console.log('grame zero', frame[0])
+                return [frame[0]]
         }
 
     }

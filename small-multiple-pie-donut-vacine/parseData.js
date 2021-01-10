@@ -13,7 +13,7 @@ import loadData from '@financial-times/load-data';
 export function load(url, options) { // eslint-disable-line
     return loadData(url).then((result) => {
         const data = result.data ? result.data : result;
-        const {dateFormat, countries, dateRange} = options;
+        const {dateFormat, countries, dateRange, colourProperty} = options;
         const parseDate = d3.timeParse(dateFormat);
         
         //make sure dates are formated correctly and very basic data cleaning
@@ -26,6 +26,7 @@ export function load(url, options) { // eslint-disable-line
             
         data.forEach((d) => {
             d.date = parseDate(d.date);
+            // d.region = d.region === 'European Union' ? 'EU';
             d.area = d.area === 'United States' ?'US'
             : d.area === 'United Kingdom' ?'UK'
             : d.area ==='United Arab Emirates' ? 'UAE'
@@ -38,9 +39,10 @@ export function load(url, options) { // eslint-disable-line
         });
         //Filter data to date range speciufied in indes.js
         const filteredDates = tickRange.length > 1
-        ? data.filter( d => d.date >= tickRange[0] && d.date <= tickRange[1])
+        ? data.filter( d => d.date.getTime() >= tickRange[0] && d.date.getTime() <= tickRange[1])
         : data.filter( d => d.date.getTime() === tickRange[0].getTime())
 
+        console.log(filteredDates)
         //create an aray of frame time stamps for animating
         const frameTimes = tickRange.length > 1
         ? getTicks(tickRange)
@@ -53,14 +55,18 @@ export function load(url, options) { // eslint-disable-line
         }
 
         // automatically calculate the seriesnames excluding the "marker" and "annotate column"
-        const seriesNames = countries[0] === 'All' ?  getSeriesNames(data) : countries
+        const seriesNames = countries[0] === 'All' ?  getSeriesNames(filteredDates) : countries
         console.log('seriesNames', seriesNames)
-        // identify total size - used for y axis
+        
+        const colorSeries = filteredDates.map( d => d[colourProperty])
+        .filter((item, pos, groupNames) => groupNames.indexOf(item) === pos);
 
+        console.log('colorSeries', colorSeries)
+        
         const plotData = seriesNames.map(d => ({
             code: d,
             area: 'not yet aded',
-            chartData: getPieData(data, d)
+            chartData: getPieData(filteredDates, d)
         }));
 
         plotData.sort((a, b) =>
@@ -86,8 +92,8 @@ export function load(url, options) { // eslint-disable-line
                 source: el.source,
                 last_updated: el.last_updated,
                 values: [
-                    {name: 'Vacinated', value: Number(el.vaccinated_percent)},
-                    {name: 'Not vcinated', value: Number(100 - el.vaccinated_percent)},
+                    {name: 'Vacinated', value: Number(el.vaccinated_percent), fillColor: el[colourProperty]},
+                    {name: 'Not vcinated', value: Number(100 - el.vaccinated_percent), fillColor: el[colourProperty]},
                 ]
         
             }));
@@ -101,6 +107,7 @@ export function load(url, options) { // eslint-disable-line
             data,
             plotData,
             frameTimes,
+            colorSeries,
         };
     });
 }
