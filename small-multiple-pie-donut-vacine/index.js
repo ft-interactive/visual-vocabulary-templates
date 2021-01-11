@@ -22,7 +22,7 @@ const sharedConfig = {
 
 const donut = true; // set to true to turn on donut and display total
 const countries = ['All']
-const dateRange = ['04/01/2021']
+const dateRange = ['10/01/2021']
 const colourProperty = 'region'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
