@@ -16,14 +16,14 @@ const dateFormat = '%d/%m/%Y';
 
 const sharedConfig = {
     title: 'Percent of population vacinated',
-    subtitle: 'By country, as of Jan 7 2021',
+    subtitle: 'By country, as of Jan 10 2021',
     source: 'Source not yet added',
 };
 
 const donut = true; // set to true to turn on donut and display total
 const countries = ['All']
-const dateRange = ['27/12/2020']
-const colourProperty = 'continent'
+const dateRange = ['04/01/2021']
+const colourProperty = 'region'
 
 // Individual frame configuratiuon, used to set margins (defaults shown below) etc
 const frame = {
@@ -114,7 +114,7 @@ parseData.load([dataFile], { dateFormat, countries, dateRange, colourProperty}).
         const currentFrame = frame[frameName];
         const plotDim = [currentFrame.dimension().width,currentFrame.dimension().height]
         const pieWidth = plotDim[0] / currentFrame.numberOfColumns()-(currentFrame.rem() * 1.5)
-        const pieDim = [pieWidth, (pieWidth * 1.3) + currentFrame.rem()];
+        const pieDim = [pieWidth, (pieWidth * 1.4) + currentFrame.rem()];
         const innerRadius = pieWidth * 0.15;
         const outerRadius = pieWidth * 0.5;
         const colourScale = d3.scaleOrdinal()

@@ -25,6 +25,7 @@ export function load(url, options) { // eslint-disable-line
         })
             
         data.forEach((d) => {
+            console.log(d.date)
             d.date = parseDate(d.date);
             // d.region = d.region === 'European Union' ? 'EU';
             d.area = d.area === 'United States' ?'US'
@@ -37,10 +38,11 @@ export function load(url, options) { // eslint-disable-line
         const tickRange = dateRange.map((d) => {
             return parseDate(d);
         });
+        console.log(tickRange)
         //Filter data to date range speciufied in indes.js
         const filteredDates = tickRange.length > 1
-        ? data.filter( d => d.date.getTime() >= tickRange[0] && d.date.getTime() <= tickRange[1])
-        : data.filter( d => d.date.getTime() === tickRange[0].getTime())
+        ? data.filter( d => d.date.getTime() >= tickRange[0] && d.date.getTime() <= tickRange[1] && typeof d.vaccinated_percent != 'number')
+        : data.filter( d => d.date.getTime() === tickRange[0].getTime() && typeof d.vaccinated_percent != 'number')
 
         console.log(filteredDates)
         //create an aray of frame time stamps for animating

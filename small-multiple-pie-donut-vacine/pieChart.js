@@ -19,10 +19,10 @@ export function draw() {
 
 
     function chart(parent) {
-        var pie = d3.pie()
+        const pie = d3.pie()
             .sort(null)
             .value(function(d) { return d.value; });
-        var defaultPie = [{name: 'Vacinated', value: 0},
+        const defaultPie = [{name: 'Vacinated', value: 0},
        {name: 'Not vacinated', value: 100}]
 
         parent.append('text')
@@ -39,31 +39,34 @@ export function draw() {
             .append ('g')
             .selectAll(".arc")
                 .data((d) => {
-                    const frame = getFrame(d).length === 0
+                    const pieData = getFrame(d).length === 0
                     ? defaultPie
-                    : [getFrame(d)[0].values[0],getFrame(d)[0].values[1]]
+                    : getFrame(d)
                     //console.log('frame', frame)
-                return pie(frame)
+                return pie(pieData)
                 })
                 .enter()
                 .append("g")
                 .attr("class", "arc")
                 .append("path")
                 .attr("d", arc)
-                .style('opacity', d => {
+                .attr('opacity', d => {
                     return d.data.name === 'Vacinated' ? 1.0 : 0.3}
                     )
                 .attr("fill", d => colourScale(d.data.fillColor));
 
 
         smallPie
-            .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.55})`)
+            .attr('transform', `translate(${pieDim[0] * .5}, ${pieDim[1] *.5})`)
 
         function getFrame(frames) {
-            let frame = frames.chartData.filter((el, i) => el.date.getTime() <= frameTimes[0].getTime())
+            console.log('frames', frames)
+            console.log(frameTimes[0])
+            const frame = frames.chartData.filter((el, i) => el.date.getTime() <= frameTimes[0].getTime())
+            console.log('length', frame.length)
             console.log('frame', frame[0])
             console.log('frame zero', frame[0])
-                return [frame[0]]
+            return frame.length === 0 ? defaultPie : frame[0].values
         }
 
     }
