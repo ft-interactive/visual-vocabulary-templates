@@ -162,7 +162,7 @@ parseData.load(dataURL, {
             rotate: 0
         }
         const sqrtScale = d3.scaleSqrt()
-            .domain(sizeExtent)
+            .domain([0,sizeExtent[1]])
             .range([0,(currentFrame.rem()*scaleFactor)]);
         const plotDim = [currentFrame.dimension().width, currentFrame.dimension().height];
         // define other functions to be called
