@@ -15,5 +15,6 @@
   },
   "env": {
     "browser": true
-  }
+  },
+  "root": true
 }
