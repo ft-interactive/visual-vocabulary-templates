@@ -29,6 +29,7 @@ export function load(url, options) { // eslint-disable-line
             circleCats: getCircles(seriesNames, d, divisor),
         }));
 
+        console.log(plotData)
         if (sort === 'descending') {
             plotData.sort((a, b) =>
                 b.groups[sortOn].value - a.groups[sortOn].value);// Sorts biggest rects to the left

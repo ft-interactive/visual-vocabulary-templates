@@ -1,0 +1,107 @@
+.ft-webgraphic-s .grid,
+.ft-webgraphic-m .grid,
+.ft-webgraphic-m-default .grid,
+.ft-webgraphic-l .grid {
+    stroke-width: 1px;
+    stroke: #fff1e5;
+}
+
+.ft-printgraphic .grid {
+    stroke-width: 1px;
+    stroke: #ffffff;
+}
+
+.ft-socialgraphic .grid,
+.ft-videographic .grid {
+    stroke: #212121;
+}
+
+.ft-socialgraphic .grid{
+    stroke-width: 2px;
+}
+
+.ft-videographic .grid {
+    stroke-width: 4px;
+}
+
+.ft-webgraphic-s .grid.noData,
+.ft-webgraphic-m .grid.noData,
+.ft-webgraphic-m-default .grid.noData,
+.ft-webgraphic-l .grid.noData {
+    fill: #e6d9ce;
+}
+
+.ft-printgraphic .grid.noData {
+    fill: #dddddd;
+}
+
+.ft-socialgraphic .grid.noData,
+.ft-videographic .grid.noData {
+    fill: #ffffff;
+    fill-opacity: 0.2;
+}
+
+.ft-webgraphic-s .blockValue,
+.ft-webgraphic-m .blockValue,
+.ft-webgraphic-m-default .blockValue,
+.ft-webgraphic-l .blockValue {
+    fill: #000000;
+    text-anchor: middle;
+}
+
+.ft-printgraphic .blockValue {
+    fill: #000000;
+    text-anchor: middle;
+}
+
+.ft-socialgraphic .blockValue,
+.ft-videographic .blockValue {
+    fill: #ffffff;
+    text-anchor: middle;
+}
+
+.chart-label {
+    text-anchor: middle;
+}
+.ft-webgraphic-s .chart-label,
+.ft-webgraphic-m .chart-label,
+.ft-webgraphic-m-default .chart-label,
+.ft-webgraphic-l .chart-label {
+  fill: #66605c;
+}
+
+.ft-socialgraphic .chart-label,
+.ft-videographic .chart-label {
+    fill: #ffffff;
+    opacity: 0.7
+}
+
+.ft-webgraphic-s .chart-label {
+    font-size: 12px;
+}
+
+.ft-webgraphic-m .chart-label {
+    font-size: 14px;
+}
+
+
+.ft-webgraphic-m-default .chart-label {
+    font-size: 18px;
+}
+
+.ft-webgraphic-l .chart-label {
+    font-size: 16px;
+}
+
+.ft-printgraphic .chart-label {
+    font-size: 8px;
+    fill: #000000;
+}
+
+.ft-socialgraphic .chart-label {
+    font-size: 24px;
+}
+
+.ft-videographic .chart-label {
+    font-size: 36px;
+}
