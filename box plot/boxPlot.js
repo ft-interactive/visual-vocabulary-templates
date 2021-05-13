@@ -48,7 +48,7 @@ export function draw() {
                 .attr('class', 'bars')
                 .attr('y', d => yScale(d.group) - (yScale.bandwidth() / 4))
                 .attr('height', yScale.bandwidth() / 2)
-                .attr('x', d => xScale(Math.max(0, d.q1)))
+                .attr('x', d => xScale(d.q1))
                 .attr('width', d => Math.abs(xScale(d.q3) - xScale(d.q1)))
                 .attr('fill', colourScale.range()[1]);
 

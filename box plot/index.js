@@ -23,7 +23,7 @@ const yAxisAlign = 'left';// alignment of the axis
 const xAxisAlign = 'bottom';
 const lines = true;//connecting lines on circles
 const mean = false;//add a marker to show mean
-const geometry = 'circle'; // set the geometry of the data options are 'circle' or 'rect'
+const geometry = 'rect'; // set the geometry of the data options are 'circle' or 'rect'
 const logScale = false;
 const quantile = false; // circle geometry only
 
