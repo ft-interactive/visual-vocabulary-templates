@@ -53,6 +53,7 @@ const logScale = false;//if setting to true, don't forget to set the yMin to gre
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 const turnWidth = 6.5
+const labelMarkers = false
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
@@ -260,13 +261,15 @@ parseData.load(dataFile, { dateFormat, yMin, joinPoints, highlightNames })
           .plotDim(currentFrame.dimension())
           .rem(currentFrame.rem())
           .colourPalette((frameName));
-        
-      labels
+      
+      if(labelMarkers) {
+        labels
         .yScale(myYAxis.scale())
         .xScale(myXAxis.scale())
         .plotDim(currentFrame.dimension())
         .rem(currentFrame.rem())
         .colourPalette((frameName))
+      }
 
         myHighLines
           .yScale(myYAxis.scale())
