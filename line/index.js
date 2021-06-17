@@ -53,7 +53,7 @@ const logScale = false;//if setting to true, don't forget to set the yMin to gre
 const joinPoints = true;// Joints gaps in lines where there are no data points
 const intraday = false;
 const turnWidth = 6.5
-const labelMarkers = false
+const labelMarkers = true //tioggles on and off line labels
 
 // Individual frame configuration, used to set margins (defaults shown below) etc
 const frame = {
