@@ -153,7 +153,7 @@ svg {
 .ft-webgraphic-m .timelineHolder .baseline line,
 .ft-webgraphic-m-default .timelineHolder .baseline line,
 .ft-webgraphic-l .timelineHolder .baseline line {
-    stroke: #000000;
+    stroke: #999189;
     stroke-width: 1px;
     stroke-dasharray: 1, 0;
     stroke-opacity: 0.4;
@@ -201,7 +201,7 @@ svg {
 .ft-webgraphic-m .xAxis line,
 .ft-webgraphic-m-default .xAxis line,
 .ft-webgraphic-l .xAxis line {
-    stroke: #999189;
+    stroke: #CCC1B7;
     stroke-width: 1px;
 }
 .ft-printgraphic .xAxis line {
@@ -221,7 +221,7 @@ svg {
 .ft-webgraphic-m .baseline line,
 .ft-webgraphic-m-default .baseline line,
 .ft-webgraphic-l .baseline line {
-    stroke: #ccc1b7;
+    stroke: #999189;
     stroke-width: 1px;
     stroke-dasharray: 1, 0;
 }
