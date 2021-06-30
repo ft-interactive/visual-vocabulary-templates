@@ -35,7 +35,7 @@ svg {
 .ft-webgraphic-m-default .axis text,
 .ft-webgraphic-l .axis text {
     font-family: metric, MetricWeb;
-    fill: #66605c;
+    fill: #4d4845;
 }
 
 .ft-socialgraphic .axis text {
@@ -50,7 +50,7 @@ svg {
 .ft-webgraphic-m .highlighted-label,
 .ft-webgraphic-m-default .highlighted-label,
 .ft-webgraphic-l .highlighted-label {
-    fill: #000000;
+    fill: #4d4845;
 }
 
 .ft-socialgraphic .highlighted-label,
@@ -98,7 +98,7 @@ svg {
 .ft-webgraphic-m .yAxis text,
 .ft-webgraphic-m-default .yAxis text,
 .ft-webgraphic-l .yAxis text {
-    fill: #66605c;
+    fill: #4d4845;
     text-anchor: end;
 }
 .ft-printgraphic .yAxis text {
@@ -153,7 +153,7 @@ svg {
 .ft-webgraphic-m .timelineHolder .baseline line,
 .ft-webgraphic-m-default .timelineHolder .baseline line,
 .ft-webgraphic-l .timelineHolder .baseline line {
-    stroke: #000000;
+    stroke: #999189;
     stroke-width: 1px;
     stroke-dasharray: 1, 0;
     stroke-opacity: 0.4;
@@ -185,7 +185,7 @@ svg {
 .ft-webgraphic-m .xAxis text,
 .ft-webgraphic-m-default .xAxis text,
 .ft-webgraphic-l .xAxis text {
-    fill: #66605c;
+    fill: #4d4845;
     text-anchor: middle;
 }
 .ft-printgraphic .xAxis text {
@@ -201,7 +201,7 @@ svg {
 .ft-webgraphic-m .xAxis line,
 .ft-webgraphic-m-default .xAxis line,
 .ft-webgraphic-l .xAxis line {
-    stroke: #e6d9ce;
+    stroke: #CCC1B7;
     stroke-width: 1px;
 }
 .ft-printgraphic .xAxis line {
@@ -221,7 +221,7 @@ svg {
 .ft-webgraphic-m .baseline line,
 .ft-webgraphic-m-default .baseline line,
 .ft-webgraphic-l .baseline line {
-    stroke: #cec6b9;
+    stroke: #999189;
     stroke-width: 1px;
     stroke-dasharray: 1, 0;
 }
@@ -334,7 +334,7 @@ svg {
 .ft-webgraphic-m .annotations-holder text,
 .ft-webgraphic-m-default .annotations-holder text,
 .ft-webgraphic-l .annotations-holder text {
-    fill: #66605c;
+    fill: #4d4845;
 }
 
 .ft-printgraphic .annotations-holder text {
@@ -379,7 +379,7 @@ svg {
 .ft-webgraphic-m-default .timeline-label,
 .ft-webgraphic-l .timeline-label {
     font-family: metric, MetricWeb;
-    fill: #000000;
+    fill: #4d4845;
 }
 
 /* legend */
@@ -388,7 +388,7 @@ svg {
 .ft-webgraphic-m-default .legend,
 .ft-webgraphic-l .legend {
     font-family: metric, MetricWeb;
-    fill: #66605c;
+    fill: #4d4845;
 }
 
 .ft-webgraphic-s .timeline-label,
