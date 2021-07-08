@@ -1,0 +1,18 @@
+.violin-plot path {
+    stroke: #000;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+}
+
+.violin-plot line {
+    stroke: #000;
+    stroke-width: 1.5;
+}
+
+.violin-plot rect {
+    fill: #000;
+}
+
+.violin-plot circle {
+    fill: #fff;
+}
