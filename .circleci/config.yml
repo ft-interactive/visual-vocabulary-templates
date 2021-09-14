@@ -27,7 +27,7 @@ jobs:
       - deploy:
           name: Deploy CSS to S3
           command: |
-            if [[ `git diff-tree --no-commit-id --name-only -r master | grep styles.css` ]]
+            if [[ `git diff-tree --no-commit-id --name-only -r main | grep styles.css` ]]
             then
                 npm run deploy-css
             fi

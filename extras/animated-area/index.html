@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>FT boiler-frame</title>
-   <!--  <link rel="stylesheet" href="//rawgit.com/ft-interactive/visual-vocabulary-templates/master/styles.css"/>
+   <!--  <link rel="stylesheet" href="//rawgit.com/ft-interactive/visual-vocabulary-templates/main/styles.css"/>
     <link rel="stylesheet" href="//www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^2.2.0" />
     <script src="//unpkg.com/d3@4.9.1"></script>
     <script src="//unpkg.com/g-chartframe@latest"></script>
@@ -165,7 +165,7 @@ plot.call(xAxis)//need to figure out why it's not offset
 
     //define an area generator for drawing
     var area = d3.area()
-        .x(function(d) { 
+        .x(function(d) {
           return xScale(d.data.date); })
         .y0(function(d) { return yScale(d[0]); })
         .y1(function(d) { return yScale(d[1]); });
@@ -205,7 +205,7 @@ const myLegend = gLegend.legend();
           .geometry("rect")
           .rem(rem)
           .alignment("hori")
-          .colourPalette(frameConfig.chartType.split("Frame")[0].toLowerCase()); 
+          .colourPalette(frameConfig.chartType.split("Frame")[0].toLowerCase());
 
         chartFrame.plot()
           .append("g")
@@ -230,7 +230,7 @@ let timeout = setInterval(function(){
 
 
       layers.datum(function(d,i){
-                    return stacks[appConfig.stackIndex][i];   
+                    return stacks[appConfig.stackIndex][i];
                 })
       .transition(1000)
         .attr("d",area)
