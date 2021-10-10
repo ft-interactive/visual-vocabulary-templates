@@ -13,7 +13,7 @@ if you're using Atom, or [SublimeLinter-eslint][sublime] for Sublime Text.
 Install everything globally if you plan to move folders out of this repo to do work:
 
 ```bash
-$ npm install --global eslint@^3 eslint-config-airbnb-base@^11 eslint-plugin-html eslint-plugin-import
+$ npm install --global eslint@^3 eslint-config-airbnb-base@^11 eslint-plugin-import
 ```
 
 Both of the aforementioned editor plugins have an option to use global installations.
