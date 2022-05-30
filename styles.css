@@ -2,7 +2,7 @@
  * Global styles for Visual Vocabulary Templates
  */
 
-@import url('https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-fonts@^3.0.4');
+@import url('https://www.ft.com/__origami/service/build/v3/bundles/css?components=o-fonts@^5.3.3&system_code=ig-content&brand=internal');
 
 .section-heading {
     background-color: #00757f;
