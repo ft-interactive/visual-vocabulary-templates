@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/visual-vocabulary
     # The primary container is an instance of the first list image listed. Your build commands run in this container.
     docker:
-      - image: node:8
+      - image: node:22
     steps:
       - checkout
       - run:
