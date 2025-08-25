@@ -30,7 +30,7 @@
         "serve-static": "^1.13.2"
     },
     "dependencies": {
-        "d3": "^4.9.1",
+        "d3": "^7.6.1",
         "g-chartcolour": "^0.8.11",
         "locate-path": "^2.0.0"
     },
