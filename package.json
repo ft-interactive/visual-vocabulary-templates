@@ -19,7 +19,7 @@
     "homepage": "https://github.com/ft-interactive/visual-vocabulary-templates#readme",
     "devDependencies": {
         "connect": "^3.6.6",
-        "eslint": "^3.19.0",
+        "eslint": "^4.18.2",
         "eslint-config-airbnb-base": "^11.2.0",
         "eslint-plugin-import": "^2.6.0",
         "ft-graphics-deploy": "^2.1.6",
